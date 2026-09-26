@@ -1,0 +1,45 @@
+---
+number-sections: false
+---
+
+```{=latex}
+\makeatletter
+\let\ps@plain\ps@empty
+\makeatother
+\pagenumbering{gobble}
+\renewcommand{\thepage}{}
+\pagestyle{empty}
+\thispagestyle{empty}
+\centering
+\vspace*{2cm}
+\includegraphics[width=6cm]{images/logo_estc.png}
+\vfill
+{\Huge\bfseries Machine Learning\par}
+\vspace{1cm}
+{\Large IAOUSSE M'barek\par}
+\vspace{0.5cm}
+{\large 2026\par}
+\newpage
+\thispagestyle{empty}
+\centering
+\vspace*{\fill}
+\includegraphics[width=0.9\textwidth]{images/qrcode.png}
+\vspace*{\fill}
+\newpage
+```
+
+```{=html}
+<p style="text-align: center;">
+  <img src="images/qrcode.png" style="width: 60%;" alt="Code QR pour accéder à la ressource éducative libre">
+</p>
+```
+
+::: {.content-visible when-format="pdf"}
+{{< include _deuxieme_page.qmd >}}
+:::
+
+::: {.content-visible when-format="html"}
+<h1 class="visually-hidden">Accueil</h1>
+
+{{< include _deuxieme_page.qmd >}}
+:::
