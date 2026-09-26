@@ -1,0 +1,4693 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  french,
+  letterpaper,
+  open=any]{scrbook}
+\usepackage{xcolor}
+\usepackage[top=25mm,bottom=25mm,left=20mm,right=20mm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\ifLuaTeX
+\usepackage[bidi=basic,shorthands=off]{babel}
+\else
+\usepackage[bidi=default,shorthands=off]{babel}
+\fi
+\ifLuaTeX
+  \usepackage{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\makeatletter
+\renewcommand{\maketitle}{}
+\AtBeginDocument{\frontmatter\pagenumbering{gobble}\pagestyle{empty}}
+\let\ps@plain\ps@empty
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table des matières}
+\else
+  \newcommand\contentsname{Table des matières}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{Liste des Figures}
+\else
+  \newcommand\listfigurename{Liste des Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{Liste des Tables}
+\else
+  \newcommand\listtablename{Liste des Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{Liste des Listings}}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercice}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}[section]
+\theoremstyle{remark}
+\AtBeginDocument{\renewcommand*{\proofname}{Preuve}}
+\newtheorem*{remark}{Remarque}
+\newtheorem*{solution}{Solution}
+\newtheorem{refremark}{Remarque}[section]
+\newtheorem{refsolution}{Solution}[section]
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  pdftitle={Analyse et visualisation de données},
+  pdfauthor={IAOUSSE M'barek},
+  pdflang={fr},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Analyse et visualisation de données}
+\author{IAOUSSE M'barek}
+\date{2026}
+\begin{document}
+\frontmatter
+\maketitle
+
+
+\mainmatter
+\bookmarksetup{startatroot}
+
+\chapter{}\label{section}
+
+\makeatletter
+\let\ps@plain\ps@empty
+\makeatother
+\pagenumbering{gobble}
+\renewcommand{\thepage}{}
+\pagestyle{empty}
+\thispagestyle{empty}
+\centering
+\vspace*{2cm}
+\includegraphics[width=6cm]{images/logo_estc.png}
+\vfill
+{\Huge\bfseries Analyse et visualisation de données\par}
+\vspace{1cm}
+{\large De la donnée brute au tableau de bord\par}
+\vspace{0.5cm}
+{\Large IAOUSSE M'barek\par}
+\vspace{0.5cm}
+{\large 2026\par}
+\newpage
+\thispagestyle{empty}
+\centering
+\vspace*{\fill}
+\includegraphics[width=0.9\textwidth]{images/qrcode.png}
+\vspace*{\fill}
+\newpage
+
+\small
+
+\textbf{Ce manuel} a été élaboré pour servir de support de cours
+principal pour l'élément \emph{Analyse et visualisation de données}
+dispensé dans le cadre de la Licence Professionnelle DBT-DAIA
+(\emph{Développement d'Applications et Intelligence Artificielle}) en
+Temps Aménagé à l'École Supérieure de Technologie de Casablanca (ESTC).
+
+\textbf{L'auteur}: M'barek IAOUSSE, Enseignant-Chercheur à l'EST
+Casablanca, Université Hassan II de Casablanca.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, breakable, colback=white, colframe=quarto-callout-color-frame, left=2mm, leftrule=.75mm, opacityback=0, rightrule=.15mm, toprule=.15mm]
+
+\begin{figure}[H]
+
+\begin{minipage}[c]{0.23\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{images/CC/by.png}}\end{minipage}%
+%
+\begin{minipage}[c]{0.02\linewidth}
+~\end{minipage}%
+%
+\begin{minipage}[c]{0.76\linewidth}
+\justifying\small Sauf indications contraires, le contenu de ce manuel
+électronique est disponible en vertu des termes de la
+\href{https://creativecommons.org/licenses/by/4.0/deed.fr}{Licence
+Creative Commons Attribution 4.0 International}.\end{minipage}%
+
+\end{figure}%
+
+\textbf{Autorisations accordées :}\\
+\textbf{Partager} -- copier, distribuer et communiquer le matériel par
+tous moyens et sous tous formats.\\
+\textbf{Adapter} -- remixer, transformer et créer à partir du matériel
+pour toute utilisation, y compris commerciale.
+
+\textbf{Sous réserve de citer l'auteur.}
+
+\end{tcolorbox}
+
+\filbreak
+
+© M'barek IAOUSSE (2026)\\
+Pour citer ce manuel : M'barek IAOUSSE. (2026). \textbf{Analyse et
+visualisation de données}. École Supérieure de Technologie de
+Casablanca. Sous licence CC BY 4.0.
+
+\bookmarksetup{startatroot}
+
+\chapter{Préface}\label{pruxe9face}
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+\makeatletter
+\def\ps@preface{%
+  \let\@mkboth\@gobbletwo
+  \def\@oddhead{}%
+  \def\@evenhead{}%
+  \def\@oddfoot{\hfil\thepage\hfil}%
+  \let\@evenfoot\@oddfoot
+}
+\makeatother
+\pagestyle{preface}
+\thispagestyle{preface}
+\phantomsection
+%{\usekomafont{chapter}\strut Préface\par}
+
+Le présent manuel est le support de cours officiel de l'élément
+\textbf{Analyse et Visualisation des Données}, dispensé dans le cadre
+d'une formation en Développement d'Applications et Intelligence
+Artificielle.
+
+La communauté étudiante visée par ce module provient de parcours
+techniques variés (DUT, BTS, DTS ou diplômes équivalents), ayant déjà
+acquis un bagage de base en programmation Python. La familiarité
+préalable avec la Data Science, l'analyse de données ou le Machine
+Learning n'est pas un prérequis : ce manuel se concentre volontairement
+sur ce qui précède et accompagne la modélisation --- comprendre,
+préparer, explorer et représenter une donnée --- sans aborder les
+algorithmes d'apprentissage automatique, qui font l'objet d'un module
+distinct.
+
+Ce manuel vise à outiller les étudiants d'une \textbf{démarche
+méthodique et reproductible} face à un jeu de données : savoir le
+questionner avant de le modéliser, savoir le nettoyer avant de
+l'analyser, et savoir le représenter avant de le communiquer. Il
+introduit progressivement les statistiques descriptives nécessaires,
+l'écosystème Python (\texttt{pandas}, \texttt{numpy},
+\texttt{matplotlib}, \texttt{seaborn}), les principes d'un entrepôt de
+données, puis la construction d'une solution de Business Intelligence
+avec Power BI et Taipy. Un cas pratique final relie ces notions dans un
+même projet.
+
+La progression est volontairement graduelle : les chapitres 00 à 02
+présentent l'analyse, la préparation et l'exploration ; le chapitre 03
+organise les données pour l'analytique ; le chapitre 04 transforme ces
+données en solution BI ; le chapitre 05 réunit l'ensemble dans une étude
+de cas guidée.
+
+\subsection*{Prérequis}
+
+Le contenu de ce manuel est organisé pour des personnes ayant déjà une
+base et une expérience avec :
+
+\begin{itemize}
+\tightlist
+\item
+  la programmation en langage Python (variables, boucles, fonctions,
+  structures de données de base) ;
+\item
+  la manipulation élémentaire de fichiers et de tableaux.
+\end{itemize}
+
+Aucune connaissance préalable en analyse de données, en statistique ou
+en data visualization n'est nécessaire : les indicateurs utiles sont
+introduits et illustrés progressivement.
+
+\subsection*{Livres et ressources complémentaires}
+
+Ce manuel s'inspire des ouvrages de référence en analyse de données et
+en visualisation, notamment \emph{Python for Data Analysis}
+(\citeproc{ref-mckinney2022}{McKinney 2022}), consacré à la manipulation
+de données avec \texttt{pandas}, ainsi que \emph{Storytelling with Data}
+(\citeproc{ref-knaflic2015}{Knaflic 2015}), référence sur la
+communication visuelle de résultats analytiques.
+
+L'ensemble des exemples et exercices pratiques est développé en
+utilisant \href{https://python.org}{Python} comme langage principal,
+avec \texttt{pandas} et \texttt{numpy} pour la manipulation des données,
+et \texttt{matplotlib}/\texttt{seaborn} pour la visualisation statique.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Les bibliothèques scientifiques Python évoluant rapidement, veillez à
+utiliser un environnement virtuel basé sur Python 3.10 ou supérieur pour
+garantir la compatibilité des extraits de code présentés dans ce manuel.
+
+\end{tcolorbox}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\clearpage
+\setcounter{chapter}{0}
+\pagenumbering{arabic}
+\pagestyle{headings}
+\makeatletter
+\let\ps@plain\ps@headings
+\makeatother
+
+\bookmarksetup{startatroot}
+
+\chapter{Introduction à l'analyse de
+données}\label{introduction-uxe0-lanalyse-de-donnuxe9es}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Objectifs du chapitre}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+À la fin de ce chapitre introductif, l'étudiant sera capable de :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Définir} l'analyse de données et la \textbf{situer} par
+  rapport à la Data Science, la Business Intelligence (BI) et le Machine
+  Learning ;
+\item
+  \textbf{Distinguer} les quatre types d'analyse : descriptive,
+  diagnostique, prédictive et prescriptive ;
+\item
+  \textbf{Identifier} les grandes étapes du cycle de vie d'un projet
+  d'analyse de données ;
+\item
+  \textbf{Identifier} les outils de base utilisés dans ce cours (Python,
+  JupyterLab, \texttt{pandas}, \texttt{numpy}, \texttt{uv}) et les
+  tendances récentes de l'écosystème.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{1. Qu'est-ce que l'analyse de données
+?}\label{quest-ce-que-lanalyse-de-donnuxe9es}
+
+\subsection{1.1. Définition}\label{duxe9finition}
+
+L'\textbf{analyse de données} (\emph{Data Analysis}) désigne l'ensemble
+des démarches permettant d'inspecter, de nettoyer, de transformer et de
+modéliser statistiquement des données, dans le but d'en extraire des
+informations utiles, de soutenir une décision ou de valider une
+hypothèse.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Analyse de données}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{definition}[]\protect\hypertarget{def-analyse-donnees}{}\label{def-analyse-donnees}
+
+L'analyse de données consiste à transformer des données brutes, souvent
+volumineuses et désorganisées, en \textbf{informations exploitables}, à
+travers une succession d'étapes de collecte, de nettoyage, d'exploration
+et de représentation.
+
+\end{definition}
+
+\end{tcolorbox}
+
+Contrairement à ce que l'on pense parfois, l'essentiel du travail d'un
+analyste ne consiste pas à produire des graphiques, mais à
+\textbf{comprendre les données} : d'où elles viennent, ce qu'elles
+représentent réellement, quelles sont leurs limites et leurs biais. La
+visualisation n'intervient qu'en bout de chaîne, pour communiquer un
+résultat déjà établi.
+
+\subsection{1.2. Data Analysis, Data Science, Business Intelligence,
+Machine Learning : quelles frontières
+?}\label{data-analysis-data-science-business-intelligence-machine-learning-quelles-frontiuxe8res}
+
+Ces quatre termes sont souvent confondus. Ils partagent une matière
+première commune --- la donnée --- mais diffèrent par leurs objectifs et
+leurs méthodes.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Quatre disciplines complémentaires autour de la
+donnée}\label{tbl-disciplines-donnees}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Domaine
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Question typique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Résultat produit
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Domaine
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Question typique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Résultat produit
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Business Intelligence (BI)} & « Que s'est-il passé, et où en
+sommes-nous ? » & Tableaux de bord, indicateurs (KPI) suivis dans le
+temps \\
+\textbf{Analyse de données (Data Analysis)} & « Pourquoi cela s'est-il
+produit ? Que peut-on en conclure ? » & Rapports, visualisations,
+recommandations argumentées \\
+\textbf{Data Science} & « Que va-t-il probablement se passer ? » &
+Modèles statistiques et modèles de Machine Learning \\
+\textbf{Machine Learning} & « Comment automatiser une prédiction ou une
+décision à grande échelle ? » & Un modèle entraîné, déployé en
+production \\
+\end{longtable}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Périmètre de ce cours}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Ce module se concentre sur les deux premières colonnes de la
+Table~\ref{tbl-disciplines-donnees} : la \textbf{préparation},
+l'\textbf{exploration} et la \textbf{visualisation} des données. Les
+algorithmes de Machine Learning (régression, classification,
+clustering\ldots) ne sont volontairement \textbf{pas traités ici} : ils
+font l'objet d'un module dédié. Une bonne partie du travail présenté
+dans ce cours reste néanmoins un prérequis indispensable à tout projet
+de Machine Learning.
+
+\end{tcolorbox}
+
+En pratique, ces frontières sont poreuses : un même professionnel peut,
+selon les entreprises, être appelé \emph{Data Analyst} et exercer des
+missions de \emph{Data Scientist}, ou inversement. Ce qui compte est de
+comprendre \textbf{la nature de la question posée} plutôt que le titre
+du poste.
+
+\section{2. Les quatre types d'analyse de
+données}\label{les-quatre-types-danalyse-de-donnuxe9es}
+
+On distingue classiquement quatre niveaux d'analyse, de la simple
+observation du passé jusqu'à la recommandation d'action, chacun
+s'appuyant sur le précédent.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/chapitres/../images/types-analyse-donnees.pdf}}
+
+}
+
+\caption{\label{fig-types-analyse}Les quatre types d'analyse de données}
+
+\end{figure}%
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Les quatre types d'analyse de
+données}\label{tbl-types-analyse}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Type d'analyse
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Question posée
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemple
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Type d'analyse
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Question posée
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemple
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Descriptive} & Que s'est-il passé ? & Le chiffre d'affaires du
+mois dernier par région \\
+\textbf{Diagnostique} & Pourquoi cela s'est-il passé ? & Pourquoi les
+ventes ont-elles chuté en mars dans le nord ? \\
+\textbf{Prédictive} & Que va-t-il probablement se passer ? & Quel sera
+le chiffre d'affaires du mois prochain ? \\
+\textbf{Prescriptive} & Que devrait-on faire ? & Quelle action marketing
+maximiserait les ventes du trimestre ? \\
+\end{longtable}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Exemple filé : une chaîne de supermarchés marocaine}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Descriptive} : « Les ventes de la région de Casablanca ont
+  baissé de 12 \% en mars par rapport à février. »
+\item
+  \textbf{Diagnostique} : en croisant les ventes avec le calendrier et
+  la météo, on découvre que la baisse coïncide avec des travaux routiers
+  ayant réduit l'affluence dans deux magasins.
+\item
+  \textbf{Prédictive} \emph{(hors périmètre de ce cours, traité en
+  Machine Learning)} : un modèle estime les ventes attendues pour le
+  mois suivant compte tenu de la reprise du trafic.
+\item
+  \textbf{Prescriptive} : sur la base du diagnostic, l'équipe décide de
+  renforcer temporairement les promotions dans les magasins concernés.
+\end{itemize}
+
+\end{tcolorbox}
+
+Ce cours se concentre principalement sur les analyses
+\textbf{descriptive} et \textbf{diagnostique} : elles reposent
+entièrement sur les techniques de préparation, d'exploration et de
+visualisation présentées dans les chapitres suivants, et ne nécessitent
+pas d'algorithme d'apprentissage automatique.
+
+\section{3. Les premiers indicateurs à
+connaître}\label{les-premiers-indicateurs-uxe0-connauxeetre}
+
+Avant de construire un graphique ou un tableau de bord, il faut savoir
+décrire simplement les données. Une \textbf{observation} est une ligne
+du tableau (par exemple une commande) et une \textbf{variable} est une
+colonne (par exemple le montant de la commande). Une variable peut être
+:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{qualitative} : une catégorie ou une étiquette, comme une ville
+  ou un moyen de paiement ;
+\item
+  \textbf{quantitative} : un nombre sur lequel on peut calculer, comme
+  un prix, une quantité ou une durée ;
+\item
+  \textbf{temporelle} : une date ou une période, que l'on peut ordonner
+  dans le temps.
+\end{itemize}
+
+\subsection{3.1. Compter et comparer}\label{compter-et-comparer}
+
+Le \textbf{nombre d'observations} indique la taille du jeu de données.
+Pour une catégorie, on utilise un effectif (combien de commandes à
+Casablanca ?) et une fréquence (quelle part des commandes vient de
+Casablanca ?).
+
+Si 30 commandes sur 120 viennent de Casablanca :
+
+\[
+\text{fréquence} = \frac{30}{120} = 0{,}25 = 25\%.
+\]
+
+Pour comparer deux périodes, on peut calculer une variation :
+
+\[
+\text{variation en \%} =
+\frac{\text{valeur finale} - \text{valeur initiale}}
+{\text{valeur initiale}}\times 100.
+\]
+
+Une vente qui passe de 200 à 240 MAD a donc augmenté de
+\(\frac{240-200}{200}\times 100=20\%\).
+
+\subsection{3.2. Résumer une variable
+numérique}\label{ruxe9sumer-une-variable-numuxe9rique}
+
+Les indicateurs de tendance centrale et de dispersion seront utilisés
+tout au long du manuel :
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Indicateur
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Question à laquelle il répond
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemple d'interprétation
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Moyenne & Quel serait le partage équitable du total ? & 10 commandes
+totalisent 2 000 MAD : moyenne = 200 MAD. \\
+Médiane & Quelle valeur partage les observations en deux groupes égaux ?
+& La moitié des commandes vaut au plus la médiane. \\
+Minimum / maximum & Quelles sont les valeurs extrêmes observées ? & La
+commande la moins chère et la plus chère. \\
+Quartiles \(Q_1\) et \(Q_3\) & Où se situent les 25 \% et 75 \% des
+observations ? & 50 \% des valeurs sont entre \(Q_1\) et \(Q_3\). \\
+Écart interquartile (IQR) & Quelle est la largeur de la moitié centrale
+? & \(IQR=Q_3-Q_1\). \\
+Écart-type & Les valeurs sont-elles plutôt proches de la moyenne ? &
+Plus il est grand, plus les valeurs sont dispersées autour de la
+moyenne. \\
+\end{longtable}
+}
+
+La moyenne est calculée en additionnant les valeurs puis en divisant par
+leur nombre. La médiane nécessite de trier les valeurs : avec un nombre
+impair de valeurs, c'est la valeur du milieu ; avec un nombre pair,
+c'est la moyenne des deux valeurs centrales. Une valeur très élevée peut
+augmenter fortement la moyenne, mais elle influence beaucoup moins la
+médiane. C'est pourquoi les deux indicateurs doivent souvent être
+présentés ensemble.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resume }\OperatorTok{=}\NormalTok{ df[}\StringTok{"montant"}\NormalTok{].describe()}
+\BuiltInTok{print}\NormalTok{(resume[[}\StringTok{"count"}\NormalTok{, }\StringTok{"mean"}\NormalTok{, }\StringTok{"50\%"}\NormalTok{, }\StringTok{"min"}\NormalTok{, }\StringTok{"max"}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+La commande \texttt{describe()} fournit notamment l'effectif
+(\texttt{count}), la moyenne (\texttt{mean}), les quartiles
+(\texttt{25\%}, \texttt{50\%}, \texttt{75\%}), le minimum et le maximum.
+Elle ne remplace pas l'interprétation : un indicateur doit toujours être
+accompagné de son unité, de sa période et de la population étudiée.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Un indicateur n'est pas une conclusion}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Une moyenne de 250 MAD ne dit pas si les commandes sont toutes proches
+de 250 MAD ou si quelques très grosses commandes compensent beaucoup de
+petites commandes. Pour comprendre cela, on complète la moyenne par la
+médiane, les quartiles ou un graphique.
+
+\end{tcolorbox}
+
+\section{4. Le cycle de vie d'un projet d'analyse de
+données}\label{le-cycle-de-vie-dun-projet-danalyse-de-donnuxe9es}
+
+Un projet d'analyse de données suit une succession d'étapes, rarement
+linéaire, que l'on peut résumer ainsi :
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/chapitres/../images/cycle-vie-analyse-donnees.pdf}}
+
+}
+
+\caption{\label{fig-cycle-vie-analyse}Le cycle de vie d'un projet
+d'analyse de données}
+
+\end{figure}%
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Cadrage} : formuler clairement la question métier à laquelle
+  l'analyse doit répondre.
+\item
+  \textbf{Collecte} : rassembler les données nécessaires (bases de
+  données, fichiers, API, web scraping\ldots).
+\item
+  \textbf{Nettoyage} : traiter les valeurs manquantes, les valeurs
+  aberrantes, les doublons et les incohérences --- l'étape la plus
+  chronophage en pratique.
+\item
+  \textbf{Transformation} : encoder, normaliser, recalculer certaines
+  variables pour les rendre exploitables.
+\item
+  \textbf{Exploration (EDA)} : décrire statistiquement les données, en
+  dégager des tendances, des corrélations, des anomalies.
+\item
+  \textbf{Visualisation et communication} : représenter graphiquement
+  les résultats et les traduire en recommandations compréhensibles par
+  un public non technique.
+\end{enumerate}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Repère}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Ce découpage est proche du cadre \textbf{OSEMN} (\emph{Obtain, Scrub,
+Explore, Model, iNterpret}), popularisé par la communauté Data Science.
+Nous l'adaptons ici en retirant l'étape de modélisation prédictive («
+Model »), hors périmètre de ce cours, et en insistant davantage sur la
+communication des résultats.
+
+\end{tcolorbox}
+
+Comme pour tout cycle de projet, ces étapes sont \textbf{itératives} :
+une exploration révélant un problème de qualité de données ramène
+généralement à l'étape de nettoyage, et une visualisation peu
+convaincante amène souvent à revisiter l'exploration.
+
+\section{5. Écosystème d'outils Python pour l'analyse de
+données}\label{uxe9cosystuxe8me-doutils-python-pour-lanalyse-de-donnuxe9es}
+
+\subsection{5.1. Bibliothèques cœur}\label{bibliothuxe8ques-cux153ur}
+
+Comme pour le Machine Learning, Python s'impose comme langage principal
+pour l'analyse de données, grâce à la richesse de son écosystème
+scientifique et à la lisibilité de sa syntaxe.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\caption{Bibliothèques Python cœur de ce
+cours}\label{tbl-bibliotheques-eda}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Bibliothèque
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Rôle
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Bibliothèque
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Rôle
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{pandas} & Manipulation de tableaux de données
+(\texttt{DataFrame}) : lecture, nettoyage, agrégation \\
+\texttt{numpy} & Calcul numérique et vectoriel sous-jacent à
+\texttt{pandas} \\
+\texttt{matplotlib} & Bibliothèque de visualisation de référence,
+hautement personnalisable \\
+\texttt{seaborn} & Visualisation statistique construite sur
+\texttt{matplotlib}, orientée exploration rapide \\
+\end{longtable}
+
+\subsection{5.2. Environnements de
+travail}\label{environnements-de-travail}
+
+Comme dans le reste de la formation, nous privilégions les
+\textbf{notebooks Jupyter} (JupyterLab, Google Colab) pour l'exploration
+interactive et la visualisation immédiate cellule par cellule, et
+\textbf{Visual Studio Code} pour consolider un script d'analyse
+reproductible destiné à être réexécuté ou partagé.
+
+\subsection{\texorpdfstring{5.3. Gestion de projet avec
+\texttt{uv}}{5.3. Gestion de projet avec uv}}\label{gestion-de-projet-avec-uv}
+
+Comme pour les autres modules de la formation, les projets de ce cours
+sont organisés avec \href{https://docs.astral.sh/uv/}{\texttt{uv}}, qui
+centralise la gestion de l'environnement virtuel, des dépendances
+(\texttt{pyproject.toml}, \texttt{uv.lock}) et de l'exécution des
+scripts et notebooks. Se référer au module précédent pour le détail de
+son fonctionnement.
+
+\subsection{5.4. Tendances récentes de
+l'écosystème}\label{tendances-ruxe9centes-de-luxe9cosystuxe8me}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Zoom sur les tendances actuelles}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+L'écosystème de l'analyse de données évolue rapidement. Sans remplacer
+les outils historiques présentés ci-dessus, plusieurs bibliothèques
+récentes gagnent en popularité et méritent d'être connues :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\href{https://pola.rs}{\texttt{Polars}}} : une alternative à
+  \texttt{pandas}, écrite en Rust, offrant des performances nettement
+  supérieures sur de gros volumes de données grâce à l'exécution
+  parallèle et à l'évaluation paresseuse (\emph{lazy evaluation}).
+\item
+  \textbf{\href{https://duckdb.org}{\texttt{DuckDB}}} : un moteur de
+  base de données analytique embarqué, permettant d'exécuter des
+  requêtes SQL directement sur des fichiers CSV ou Parquet, sans
+  serveur, avec des performances proches d'un entrepôt de données.
+\item
+  \textbf{Outils de profilage automatique} (\texttt{ydata-profiling},
+  \texttt{Sweetviz}) : génèrent en une commande un rapport exploratoire
+  complet d'un jeu de données (statistiques, distributions,
+  corrélations, valeurs manquantes) --- voir le chapitre sur
+  l'exploration des données.
+\item
+  \textbf{Assistants d'analyse par IA générative} : des outils
+  permettant d'interroger un \texttt{DataFrame} en langage naturel
+  commencent à s'intégrer aux environnements de data analysis, sans se
+  substituer à une compréhension rigoureuse des données par l'analyste.
+\end{itemize}
+
+Ces outils ne sont pas obligatoires dans ce cours, mais seront
+mentionnés ponctuellement à titre de complément, car ils représentent
+une évolution significative des pratiques professionnelles actuelles.
+
+\end{tcolorbox}
+
+\section{6. Les métiers de la
+donnée}\label{les-muxe9tiers-de-la-donnuxe9e}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Les principaux métiers autour de la
+donnée}\label{tbl-metiers-donnee}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Métier
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Mission principale
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Compétences clés
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Métier
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Mission principale
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Compétences clés
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Data Analyst} & Explorer, visualiser et interpréter les données
+pour éclairer une décision & SQL, \texttt{pandas}, visualisation,
+statistiques descriptives \\
+\textbf{BI Analyst / BI Developer} & Construire et maintenir des
+tableaux de bord et indicateurs récurrents & SQL, outils de BI (Power
+BI, Tableau), modélisation de données \\
+\textbf{Data Scientist} & Concevoir des modèles statistiques et
+prédictifs & Statistique inférentielle, Machine Learning,
+programmation \\
+\textbf{Data Engineer} & Construire et fiabiliser les pipelines
+d'acquisition et de stockage des données & Bases de données,
+orchestration, ingénierie logicielle \\
+\end{longtable}
+
+Ce cours prépare avant tout au cœur du métier de \textbf{Data Analyst},
+tout en posant des bases indispensables aux trois autres profils.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Auto-évaluation}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre «
+oui » aux questions suivantes :
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  Je peux expliquer la différence entre analyse de données, Data
+  Science, BI et Machine Learning.
+\item[$\square$]
+  Je peux citer et illustrer les quatre types d'analyse de données.
+\item[$\square$]
+  Je peux énumérer, dans l'ordre, les étapes du cycle de vie d'un projet
+  d'analyse de données.
+\item[$\square$]
+  Je connais au moins deux outils récents qui complètent \texttt{pandas}
+  et \texttt{matplotlib}.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Exercices}\label{exercices}
+
+\begin{exercise}[Vrai ou
+Faux]\protect\hypertarget{exr-intro-ad-1}{}\label{exr-intro-ad-1}
+
+~
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  La Business Intelligence répond principalement à la question «
+  pourquoi ? ».
+\item
+  Une analyse diagnostique s'appuie généralement sur une analyse
+  descriptive préalable.
+\item
+  Le Machine Learning est un prérequis indispensable pour produire une
+  analyse descriptive.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-intro-ad-1}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Faux.} La BI répond surtout à « que s'est-il passé, et où en
+  sommes-nous ? » (analyse descriptive) ; c'est l'analyse diagnostique
+  qui répond au « pourquoi ».
+\item
+  \textbf{Vrai.} On ne peut expliquer une variation (diagnostic) sans
+  l'avoir d'abord constatée et quantifiée (description).
+\item
+  \textbf{Faux.} L'analyse descriptive repose sur des statistiques et
+  des visualisations ; aucun modèle prédictif n'est nécessaire.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Classer les
+questions]\protect\hypertarget{exr-intro-ad-2}{}\label{exr-intro-ad-2}
+
+Pour chacune des questions suivantes, indiquez le type d'analyse
+correspondant (descriptive, diagnostique, prédictive ou prescriptive) :
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Combien de visiteurs le site web a-t-il reçus la semaine dernière ?
+\item
+  Pourquoi le taux d'abandon de panier a-t-il augmenté en juillet ?
+\item
+  Quelle campagne publicitaire faut-il privilégier pour la rentrée ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-intro-ad-2}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Descriptive} --- simple constat chiffré.
+\item
+  \textbf{Diagnostique} --- recherche d'une cause à une variation
+  observée.
+\item
+  \textbf{Prescriptive} --- recommandation d'action.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Étude de cas
+courte]\protect\hypertarget{exr-intro-ad-3}{}\label{exr-intro-ad-3}
+
+Une association marocaine de protection de l'environnement souhaite
+comprendre l'évolution du volume de déchets collectés dans trois villes
+sur les deux dernières années, puis identifier les facteurs expliquant
+les écarts entre villes.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quelles étapes du cycle de vie présenté en
+  Figure~\ref{fig-cycle-vie-analyse} cette association devra-t-elle
+  suivre ?
+\item
+  À quel(s) type(s) d'analyse (Table~\ref{tbl-types-analyse}) ce projet
+  correspond-il ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-intro-ad-3}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Cadrage de la question (comparer trois villes) → collecte des données
+  de collecte de déchets → nettoyage (unités, doublons, données
+  manquantes par ville/mois) → exploration statistique → visualisation
+  comparative dans le temps et par ville.
+\item
+  \textbf{Descriptive} (évolution des volumes) puis
+  \textbf{diagnostique} (recherche des facteurs expliquant les écarts
+  entre villes).
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Moyenne, médiane et
+fréquence]\protect\hypertarget{exr-intro-ad-4}{}\label{exr-intro-ad-4}
+
+Les montants de cinq commandes sont : 80, 100, 100, 120 et 600 MAD.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Calculez la moyenne et la médiane.
+\item
+  Quel indicateur décrit le mieux une commande « typique » ? Pourquoi ?
+\item
+  Quel est l'effectif et la fréquence des commandes d'au moins 100 MAD ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-intro-ad-4}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  La moyenne vaut \((80+100+100+120+600)/5=200\) MAD. La médiane est la
+  troisième valeur triée : \textbf{100 MAD}.
+\item
+  La médiane est plus représentative : la commande de 600 MAD tire
+  fortement la moyenne vers le haut.
+\item
+  Quatre commandes sur cinq sont d'au moins 100 MAD : effectif
+  \textbf{4}, fréquence \textbf{80 \%}.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Lire une
+variation]\protect\hypertarget{exr-intro-ad-5}{}\label{exr-intro-ad-5}
+
+Le nombre de visiteurs d'un site passe de 2 000 en avril à 2 400 en mai,
+puis à 2 280 en juin.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Calculez la variation en pourcentage entre avril et mai.
+\item
+  Calculez la variation en pourcentage entre mai et juin.
+\item
+  La baisse de mai à juin annule-t-elle entièrement la hausse précédente
+  ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-intro-ad-5}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \((2400-2000)/2000 \times 100 = 20\%\).
+\item
+  \((2280-2400)/2400 \times 100 = -5\%\).
+\item
+  Non. Le niveau de juin reste supérieur à avril :
+  \((2280-2000)/2000 \times 100 = 14\%\) environ.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Identifier les indicateurs
+utiles]\protect\hypertarget{exr-intro-ad-6}{}\label{exr-intro-ad-6}
+
+Pour chacune des questions, choisissez l'indicateur le plus directement
+utile : effectif, fréquence, moyenne, médiane, minimum/maximum ou IQR.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quelle part des clients utilise le paiement par carte ?
+\item
+  Quel est le montant central des salaires ?
+\item
+  Quelle est la largeur de la moitié centrale des durées de livraison ?
+\item
+  Combien de commandes ont été enregistrées ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-intro-ad-6}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Fréquence} ; b. \textbf{médiane} ; c.~\textbf{IQR} ;
+  d.~\textbf{effectif}.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Reconnaître le type de
+variable]\protect\hypertarget{exr-intro-ad-7}{}\label{exr-intro-ad-7}
+
+Classez les variables suivantes en qualitative, quantitative ou
+temporelle : \texttt{quartier}, \texttt{nombre\_de\_produits},
+\texttt{date\_commande}, \texttt{satisfaction} codée « faible / moyenne
+/ élevée ».
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-intro-ad-7}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\texttt{quartier} est \textbf{qualitative nominale} ;
+\texttt{nombre\_de\_produits} est \textbf{quantitative discrète} ;
+\texttt{date\_commande} est \textbf{temporelle} ; \texttt{satisfaction}
+est \textbf{qualitative ordinale}, car ses catégories possèdent un
+ordre.
+
+\end{tcolorbox}
+
+\begin{exercise}[Choisir une
+analyse]\protect\hypertarget{exr-intro-ad-8}{}\label{exr-intro-ad-8}
+
+Une responsable constate que les ventes sont plus faibles en août. Elle
+veut d'abord mesurer la baisse, puis comprendre si elle concerne
+seulement une région.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quel type d'analyse répond à la première question ?
+\item
+  Quelle comparaison simple peut aider pour la seconde ?
+\item
+  Pourquoi faut-il éviter de conclure à une cause avant d'avoir comparé
+  les données ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-intro-ad-8}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Une analyse \textbf{descriptive} : comparer les ventes d'août à celles
+  d'une période de référence.
+\item
+  Comparer les ventes par région et par mois, avec des effectifs, des
+  totaux ou des moyennes.
+\item
+  Une baisse peut coïncider avec plusieurs facteurs ; une comparaison
+  permet d'abord de vérifier si le phénomène est général ou localisé.
+  Elle ne prouve pas à elle seule une causalité.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Préparation des données}\label{pruxe9paration-des-donnuxe9es}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Objectifs du chapitre}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+À la fin de ce chapitre, l'étudiant sera capable de :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identifier} les principales sources de collecte de données
+  (bases de données, fichiers plats, API, web scraping) ;
+\item
+  \textbf{Diagnostiquer} les problèmes de qualité d'un jeu de données
+  (valeurs manquantes, aberrantes, dupliquées) ;
+\item
+  \textbf{Appliquer} des stratégies adaptées de traitement des valeurs
+  manquantes et aberrantes avec \texttt{pandas} ;
+\item
+  \textbf{Transformer} des variables (encodage, normalisation,
+  discrétisation) en vue de leur exploration ou de leur visualisation.
+\end{itemize}
+
+\end{tcolorbox}
+
+\begin{quote}
+Si les données sont de mauvaise qualité, corrompues ou biaisées, aucune
+analyse --- aussi soignée soit-elle --- ne pourra produire de
+conclusions fiables (\emph{Garbage In, Garbage Out}).
+
+--- Principe fondamental de l'analyse de données
+\end{quote}
+
+Avant de pouvoir explorer ou visualiser un jeu de données, il faut
+d'abord le \textbf{rassembler} puis le \textbf{rendre exploitable}. Ce
+chapitre couvre les étapes 2, 3 et 4 du cycle de vie présenté au
+chapitre précédent (Figure~\ref{fig-cycle-vie-analyse}) : où trouver les
+données, comment détecter et corriger leurs défauts, puis comment les
+transformer pour l'exploration et la visualisation.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Réflexe de débutant : connaître son tableau}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant toute modification, conservez une copie du fichier original et
+rédigez un petit \textbf{dictionnaire de données}. Pour chaque colonne,
+notez son nom, sa signification, son unité, son type attendu et les
+valeurs possibles. Par exemple, \texttt{prix} peut être un nombre
+positif en MAD, tandis que \texttt{type\_bien} peut prendre les valeurs
+« appartement », « maison » ou « terrain ». Ce dictionnaire évite de
+corriger une valeur qui était en réalité valide.
+
+\end{tcolorbox}
+
+\section{1. Collecte de données}\label{collecte-de-donnuxe9es}
+
+\subsection{1.1. Les bases de données}\label{les-bases-de-donnuxe9es}
+
+La source la plus courante en entreprise reste la base de données
+interne :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{relationnelle (SQL)} : données organisées en tables reliées
+  par des clés (PostgreSQL, MySQL, SQL Server), interrogées avec le
+  langage \textbf{SQL} ;
+\item
+  \textbf{non-relationnelle (NoSQL)} : données stockées sous une forme
+  plus flexible --- documents JSON (MongoDB), paires clé-valeur (Redis)
+  --- adaptées à des données peu structurées ou à très grande échelle.
+\end{itemize}
+
+\texttt{pandas} permet de charger directement le résultat d'une requête
+SQL dans un \texttt{DataFrame} :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ pandas }\ImportTok{as}\NormalTok{ pd}
+\ImportTok{import}\NormalTok{ sqlite3}
+
+\NormalTok{connexion }\OperatorTok{=}\NormalTok{ sqlite3.}\ExtensionTok{connect}\NormalTok{(}\StringTok{"ventes.db"}\NormalTok{)}
+\NormalTok{df }\OperatorTok{=}\NormalTok{ pd.read\_sql(}\StringTok{"SELECT * FROM transactions WHERE annee = 2025"}\NormalTok{, connexion)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{1.2. Les fichiers plats et formats de
+données}\label{les-fichiers-plats-et-formats-de-donnuxe9es}
+
+En dehors des bases de données, les données sont fréquemment échangées
+sous forme de fichiers :
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Principaux formats de données rencontrés en analyse de
+données}\label{tbl-formats-donnees}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Format
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Caractéristiques
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Lecture avec \texttt{pandas}
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Format
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Caractéristiques
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Lecture avec \texttt{pandas}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{CSV} & Texte tabulaire, très répandu, lisible par un humain &
+\texttt{pd.read\_csv()} \\
+\textbf{JSON} & Structure hiérarchique (objets imbriqués), courant pour
+les API & \texttt{pd.read\_json()} \\
+\textbf{Excel (\texttt{.xlsx})} & Tableur, souvent utilisé en entreprise
+& \texttt{pd.read\_excel()} \\
+\textbf{Parquet} & Format binaire columnaire, compressé, optimisé pour
+l'analytique & \texttt{pd.read\_parquet()} \\
+\end{longtable}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Zoom sur les tendances : le format Parquet}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Contrairement au CSV, le format \textbf{Parquet} stocke les données par
+colonne plutôt que par ligne. Cela permet de ne lire que les colonnes
+réellement nécessaires à une analyse, de bénéficier d'une compression
+efficace et de conserver les types de données (un entier reste un
+entier, pas une chaîne de caractères à réinterpréter). Il est
+aujourd'hui privilégié pour les jeux de données volumineux, et s'utilise
+nativement avec \texttt{pandas}, \texttt{Polars} ou \texttt{DuckDB}.
+
+\end{tcolorbox}
+
+\subsection{1.3. Les API}\label{les-api}
+
+Une \textbf{API} (\emph{Application Programming Interface}) permet
+d'obtenir des données structurées de façon normalisée, sans avoir à
+analyser du HTML :
+
+\begin{itemize}
+\tightlist
+\item
+  les \textbf{API REST}, les plus répandues, où chaque ressource est
+  accessible via une URL et une méthode HTTP (\texttt{GET},
+  \texttt{POST}\ldots), avec une réponse généralement au format JSON ;
+\item
+  les \textbf{API GraphQL}, plus récentes, qui permettent au client de
+  préciser exactement les champs souhaités en une seule requête.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ requests}
+\ImportTok{import}\NormalTok{ pandas }\ImportTok{as}\NormalTok{ pd}
+
+\NormalTok{reponse }\OperatorTok{=}\NormalTok{ requests.get(}\StringTok{"https://api.exemple.org/ventes?annee=2025"}\NormalTok{)}
+\NormalTok{df }\OperatorTok{=}\NormalTok{ pd.json\_normalize(reponse.json()[}\StringTok{"resultats"}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{\texorpdfstring{1.4. Le \emph{web
+scraping}}{1.4. Le web scraping}}\label{le-web-scraping}
+
+Lorsque les données ne sont disponibles que sur des pages web, on
+recourt au \textbf{web scraping} : l'extraction automatisée
+d'informations à partir du code HTML. Les bibliothèques Python de
+référence sont \texttt{BeautifulSoup} (analyse d'une page unique) et
+\texttt{Scrapy} (collecte à grande échelle, avec gestion de la
+pagination et des files d'attente).
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Éthique et légalité du web scraping}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant de collecter des données sur un site, il convient de vérifier son
+fichier \texttt{robots.txt}, ses conditions générales d'utilisation,
+ainsi que le cadre réglementaire applicable à la protection des données
+personnelles (RGPD, ou la loi marocaine 09-08), en particulier si des
+données à caractère personnel sont concernées.
+
+\end{tcolorbox}
+
+\subsection{1.5. Open data et capteurs /
+IoT}\label{open-data-et-capteurs-iot}
+
+Deux autres sources méritent d'être mentionnées :
+
+\begin{itemize}
+\tightlist
+\item
+  les \textbf{portails d'open data} (données publiques mises à
+  disposition par des institutions, ex. données démographiques,
+  économiques ou climatiques) ;
+\item
+  les \textbf{capteurs et objets connectés (IoT)}, qui génèrent des flux
+  de données en continu (température, géolocalisation, fréquentation),
+  souvent collectés via des files de messages (ex. MQTT, Kafka) avant
+  d'être stockés pour l'analyse.
+\end{itemize}
+
+\section{2. Nettoyage des données}\label{nettoyage-des-donnuxe9es}
+
+Une fois collectées, les données contiennent presque toujours des
+imperfections. Le nettoyage est l'étape la plus chronophage d'un projet
+d'analyse --- souvent estimée à 60-80 \% du temps réel passé sur un
+projet.
+
+Un nettoyage fiable vérifie au moins cinq dimensions :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{complétude} : les informations importantes sont-elles
+  présentes ?
+\item
+  \textbf{validité} : les valeurs respectent-elles les règles attendues
+  (un prix positif, une date valide) ?
+\item
+  \textbf{unicité} : une même observation n'est-elle pas enregistrée
+  deux fois ?
+\item
+  \textbf{cohérence} : les colonnes et les unités sont-elles compatibles
+  entre elles ?
+\item
+  \textbf{actualité} : les dates couvrent-elles la période utile à la
+  question ?
+\end{enumerate}
+
+Il faut garder une trace de chaque correction : colonne concernée, règle
+appliquée, nombre de lignes modifiées et justification. Cette
+documentation permet de revenir en arrière et d'expliquer les résultats.
+
+\subsection{2.1. Les valeurs manquantes}\label{les-valeurs-manquantes}
+
+Une valeur manquante peut avoir des origines très différentes, ce qui
+conditionne la stratégie à adopter :
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Typologie des valeurs
+manquantes}\label{tbl-typologie-manquantes}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemple
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Signification
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemple
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{MCAR} (\emph{Missing Completely At Random}) & L'absence ne
+dépend d'aucune variable, ni observée ni cachée & Un capteur tombe en
+panne aléatoirement \\
+\textbf{MAR} (\emph{Missing At Random}) & L'absence dépend d'une autre
+variable observée & Les hommes répondent moins souvent à une question
+sur le revenu \\
+\textbf{MNAR} (\emph{Missing Not At Random}) & L'absence dépend de la
+valeur manquante elle-même & Les personnes aux revenus très élevés
+refusent de répondre \\
+\end{longtable}
+
+Ces trois étiquettes servent surtout à réfléchir à la cause d'une
+absence. Il n'est pas demandé de réaliser un test statistique pour les
+distinguer dans ce cours : l'étudiant doit surtout éviter d'imputer
+automatiquement sans comprendre ce que signifie la valeur manquante.
+
+Avec \texttt{pandas}, on détecte et on traite les valeurs manquantes
+ainsi :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Détection}
+\NormalTok{df.isna().}\BuiltInTok{sum}\NormalTok{()                      }\CommentTok{\# nombre de valeurs manquantes par colonne}
+\NormalTok{df.isna().mean().}\BuiltInTok{round}\NormalTok{(}\DecValTok{2}\NormalTok{) }\OperatorTok{*} \DecValTok{100}      \CommentTok{\# pourcentage de valeurs manquantes}
+
+\CommentTok{\# Suppression}
+\NormalTok{df.dropna(subset}\OperatorTok{=}\NormalTok{[}\StringTok{"prix"}\NormalTok{])           }\CommentTok{\# supprime les lignes sans prix}
+
+\CommentTok{\# Imputation}
+\NormalTok{df[}\StringTok{"surface"}\NormalTok{] }\OperatorTok{=}\NormalTok{ df[}\StringTok{"surface"}\NormalTok{].fillna(df[}\StringTok{"surface"}\NormalTok{].median())}
+\NormalTok{df[}\StringTok{"quartier"}\NormalTok{] }\OperatorTok{=}\NormalTok{ df[}\StringTok{"quartier"}\NormalTok{].fillna(}\StringTok{"Non renseigné"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Comment choisir entre suppression et imputation ?}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  Si la proportion de valeurs manquantes est \textbf{faible} (quelques
+  pourcents) et que le mécanisme semble MCAR, la \textbf{suppression}
+  des lignes concernées est souvent acceptable.
+\item
+  Si la proportion est \textbf{élevée}, ou si l'absence porte sur une
+  variable centrale de l'analyse, on préfère une \textbf{imputation}
+  (moyenne, médiane, mode, ou une valeur explicite comme « Non renseigné
+  »), en gardant à l'esprit qu'elle introduit un biais qu'il faut
+  documenter.
+\end{itemize}
+
+\end{tcolorbox}
+
+\subsection{\texorpdfstring{2.2. Les valeurs aberrantes
+(\emph{outliers})}{2.2. Les valeurs aberrantes (outliers)}}\label{les-valeurs-aberrantes-outliers}
+
+Une valeur aberrante est une observation qui s'écarte fortement du reste
+de la distribution. Deux méthodes usuelles permettent de les détecter :
+
+\begin{itemize}
+\tightlist
+\item
+  la méthode du \textbf{score Z}, qui signale une observation aberrante
+  lorsque \(|z| = \left|\dfrac{x - \bar{x}}{\sigma}\right| > 3\) ;
+\item
+  la méthode de l'\textbf{écart interquartile (IQR)}, plus robuste aux
+  distributions asymétriques : on considère comme aberrante toute valeur
+  en dehors de l'intervalle
+  \([Q_1 - 1{,}5 \times IQR,\ Q_3 + 1{,}5 \times IQR]\), avec
+  \(IQR = Q_3 - Q_1\).
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q1, q3 }\OperatorTok{=}\NormalTok{ df[}\StringTok{"prix"}\NormalTok{].quantile([}\FloatTok{0.25}\NormalTok{, }\FloatTok{0.75}\NormalTok{])}
+\NormalTok{iqr }\OperatorTok{=}\NormalTok{ q3 }\OperatorTok{{-}}\NormalTok{ q1}
+\NormalTok{borne\_basse, borne\_haute }\OperatorTok{=}\NormalTok{ q1 }\OperatorTok{{-}} \FloatTok{1.5} \OperatorTok{*}\NormalTok{ iqr, q3 }\OperatorTok{+} \FloatTok{1.5} \OperatorTok{*}\NormalTok{ iqr}
+
+\NormalTok{aberrants }\OperatorTok{=}\NormalTok{ df[(df[}\StringTok{"prix"}\NormalTok{] }\OperatorTok{\textless{}}\NormalTok{ borne\_basse) }\OperatorTok{|}\NormalTok{ (df[}\StringTok{"prix"}\NormalTok{] }\OperatorTok{\textgreater{}}\NormalTok{ borne\_haute)]}
+\end{Highlighting}
+\end{Shaded}
+
+La \textbf{boîte à moustaches} (\emph{boxplot}), présentée au chapitre
+suivant sur la visualisation, est l'outil graphique privilégié pour
+repérer visuellement ces valeurs.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Une valeur aberrante n'est pas toujours une erreur}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant de supprimer une valeur aberrante, il faut se demander si elle
+correspond à une \textbf{erreur de saisie} (à corriger ou supprimer) ou
+à un \textbf{phénomène réel mais rare} (par exemple une vente
+exceptionnelle), qu'il peut être pertinent de conserver, voire d'étudier
+spécifiquement.
+
+\end{tcolorbox}
+
+\subsection{2.3. Doublons et
+incohérences}\label{doublons-et-incohuxe9rences}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df.duplicated().}\BuiltInTok{sum}\NormalTok{()                     }\CommentTok{\# nombre de lignes strictement dupliquées}
+\NormalTok{df }\OperatorTok{=}\NormalTok{ df.drop\_duplicates()}
+
+\NormalTok{df[}\StringTok{"ville"}\NormalTok{] }\OperatorTok{=}\NormalTok{ df[}\StringTok{"ville"}\NormalTok{].}\BuiltInTok{str}\NormalTok{.strip().}\BuiltInTok{str}\NormalTok{.title()   }\CommentTok{\# espaces superflus, casse}
+\NormalTok{df[}\StringTok{"date"}\NormalTok{] }\OperatorTok{=}\NormalTok{ pd.to\_datetime(df[}\StringTok{"date"}\NormalTok{], errors}\OperatorTok{=}\StringTok{"coerce"}\NormalTok{)  }\CommentTok{\# type de données cohérent}
+\end{Highlighting}
+\end{Shaded}
+
+Les incohérences les plus fréquentes concernent la \textbf{casse} et les
+\textbf{espaces superflus} dans les chaînes de caractères (« casablanca
+» vs « Casablanca »), les \textbf{types de données} mal interprétés (une
+date lue comme texte), et les \textbf{unités hétérogènes} (des prix
+exprimés tantôt en MAD, tantôt en euros).
+
+\subsection{2.4. Vers une démarche de qualité des
+données}\label{vers-une-duxe9marche-de-qualituxe9-des-donnuxe9es}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Zoom sur les tendances : la validation systématique de la qualité}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Sur des projets d'analyse récurrents (tableaux de bord alimentés
+quotidiennement, par exemple), il devient risqué de vérifier la qualité
+des données « à l'œil » à chaque exécution. Des bibliothèques comme
+\textbf{\href{https://greatexpectations.io}{\texttt{Great\ Expectations}}}
+permettent de définir des règles de validation explicites (« la colonne
+\texttt{prix} doit toujours être positive », « la colonne \texttt{date}
+ne doit jamais être manquante ») et de les exécuter automatiquement à
+chaque nouvelle collecte de données, afin de détecter une dérive de
+qualité avant qu'elle n'affecte l'analyse.
+
+\end{tcolorbox}
+
+\section{3. Transformation des
+données}\label{transformation-des-donnuxe9es}
+
+Une fois nettoyées, les données doivent souvent être reformatées avant
+l'exploration ou la visualisation.
+
+\subsection{3.1. Encodage des variables
+catégorielles}\label{encodage-des-variables-catuxe9gorielles}
+
+De nombreux outils statistiques et graphiques manipulent plus facilement
+des valeurs numériques que du texte. On distingue deux stratégies
+principales :
+
+\begin{itemize}
+\tightlist
+\item
+  l'\textbf{encodage ordinal}, adapté aux catégories qui possèdent un
+  ordre naturel (ex. « Faible » \textless{} « Moyen » \textless{} «
+  Élevé ») ;
+\item
+  l'\textbf{encodage one-hot} (variables indicatrices), adapté aux
+  catégories sans ordre (ex. les quartiers d'une ville), qui crée une
+  colonne binaire par catégorie.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Encodage ordinal}
+\NormalTok{ordre }\OperatorTok{=}\NormalTok{ \{}\StringTok{"Faible"}\NormalTok{: }\DecValTok{0}\NormalTok{, }\StringTok{"Moyen"}\NormalTok{: }\DecValTok{1}\NormalTok{, }\StringTok{"Élevé"}\NormalTok{: }\DecValTok{2}\NormalTok{\}}
+\NormalTok{df[}\StringTok{"niveau\_encode"}\NormalTok{] }\OperatorTok{=}\NormalTok{ df[}\StringTok{"niveau"}\NormalTok{].}\BuiltInTok{map}\NormalTok{(ordre)}
+
+\CommentTok{\# Encodage one{-}hot}
+\NormalTok{df\_encode }\OperatorTok{=}\NormalTok{ pd.get\_dummies(df, columns}\OperatorTok{=}\NormalTok{[}\StringTok{"quartier"}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+L'encodage détaillé des variables (avec \texttt{scikit-learn}, gestion
+des catégories rares, etc.) sera approfondi dans le module de Machine
+Learning. Dans ce cours, il est surtout utile pour faciliter certains
+graphiques et calculs de corrélation présentés au chapitre suivant.
+
+\end{tcolorbox}
+
+\subsection{3.2. Normalisation et
+standardisation}\label{normalisation-et-standardisation}
+
+Lorsque plusieurs variables numériques ont des échelles très différentes
+(ex. une surface en \(m^2\) et un prix en millions de MAD), il est
+parfois utile de les ramener à une échelle comparable, notamment pour
+certaines visualisations combinées :
+
+\begin{itemize}
+\tightlist
+\item
+  la \textbf{normalisation min-max} ramène chaque valeur dans
+  l'intervalle \([0, 1]\) :
+  \(x' = \dfrac{x - x_{min}}{x_{max} - x_{min}}\) ;
+\item
+  la \textbf{standardisation} (score Z) centre la variable autour de 0
+  avec un écart-type de 1 : \(x' = \dfrac{x - \bar{x}}{\sigma}\).
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\StringTok{"prix\_norm"}\NormalTok{] }\OperatorTok{=}\NormalTok{ (df[}\StringTok{"prix"}\NormalTok{] }\OperatorTok{{-}}\NormalTok{ df[}\StringTok{"prix"}\NormalTok{].}\BuiltInTok{min}\NormalTok{()) }\OperatorTok{/}\NormalTok{ (df[}\StringTok{"prix"}\NormalTok{].}\BuiltInTok{max}\NormalTok{() }\OperatorTok{{-}}\NormalTok{ df[}\StringTok{"prix"}\NormalTok{].}\BuiltInTok{min}\NormalTok{())}
+\NormalTok{df[}\StringTok{"prix\_standard"}\NormalTok{] }\OperatorTok{=}\NormalTok{ (df[}\StringTok{"prix"}\NormalTok{] }\OperatorTok{{-}}\NormalTok{ df[}\StringTok{"prix"}\NormalTok{].mean()) }\OperatorTok{/}\NormalTok{ df[}\StringTok{"prix"}\NormalTok{].std()}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{\texorpdfstring{3.3. Discrétisation
+(\emph{binning})}{3.3. Discrétisation (binning)}}\label{discruxe9tisation-binning}
+
+La discrétisation consiste à transformer une variable numérique continue
+en catégories, souvent utile pour simplifier une visualisation (par
+exemple des tranches d'âge plutôt qu'un âge exact) :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\StringTok{"tranche\_age"}\NormalTok{] }\OperatorTok{=}\NormalTok{ pd.cut(}
+\NormalTok{    df[}\StringTok{"age"}\NormalTok{],}
+\NormalTok{    bins}\OperatorTok{=}\NormalTok{[}\DecValTok{0}\NormalTok{, }\DecValTok{18}\NormalTok{, }\DecValTok{35}\NormalTok{, }\DecValTok{60}\NormalTok{, }\DecValTok{120}\NormalTok{],}
+\NormalTok{    labels}\OperatorTok{=}\NormalTok{[}\StringTok{"Mineur"}\NormalTok{, }\StringTok{"Jeune adulte"}\NormalTok{, }\StringTok{"Adulte"}\NormalTok{, }\StringTok{"Senior"}\NormalTok{]}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{3.4. Quelques transformations usuelles
+supplémentaires}\label{quelques-transformations-usuelles-suppluxe9mentaires}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Extraction de composantes temporelles} : à partir d'une
+  colonne \texttt{date}, on extrait fréquemment l'année, le mois, le
+  jour de semaine (\texttt{df{[}"date"{]}.dt.month}), utiles pour
+  l'exploration de séries temporelles.
+\item
+  \textbf{Agrégats dérivés} : création de nouvelles colonnes résumant
+  une information (ex. le prix au mètre carré =
+  \texttt{prix\ /\ surface}), qui facilitent grandement l'exploration et
+  la comparaison.
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Ne pas transformer sans objectif}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Une transformation n'est pas automatiquement une amélioration. Par
+exemple, remplacer toutes les valeurs manquantes par zéro change la
+signification de la variable : « absence d'information » devient «
+valeur nulle ». Avant chaque transformation, demandez-vous quelle
+question elle facilite et si son effet sera documenté.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Auto-évaluation}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre «
+oui » aux questions suivantes :
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  Je sais citer trois sources possibles de collecte de données et un cas
+  d'usage pour chacune.
+\item[$\square$]
+  Je sais distinguer les valeurs manquantes MCAR, MAR et MNAR et adapter
+  ma stratégie en conséquence.
+\item[$\square$]
+  Je sais détecter des valeurs aberrantes avec la méthode de l'IQR.
+\item[$\square$]
+  Je sais choisir entre encodage ordinal et one-hot selon la nature
+  d'une variable catégorielle.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Exercices}\label{exercices-1}
+
+\begin{exercise}[Choisir une stratégie de traitement des valeurs
+manquantes]\protect\hypertarget{exr-prep-1}{}\label{exr-prep-1}
+
+Un jeu de données de candidatures à un emploi comporte une colonne
+\texttt{salaire\_souhaite} manquante pour 40 \% des lignes. Une analyse
+rapide montre que les candidats les plus expérimentés (souvent plus
+exigeants sur le salaire) sont surreprésentés parmi les valeurs
+manquantes.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  À quel type de valeur manquante (Table~\ref{tbl-typologie-manquantes})
+  correspond cette situation ?
+\item
+  Recommanderiez-vous une suppression ou une imputation ? Justifiez.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-prep-1}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Il s'agit d'un cas \textbf{MNAR} : l'absence de réponse dépend de la
+  valeur elle-même (les candidats avec un salaire souhaité élevé
+  répondent moins).
+\item
+  Ni la suppression pure ni une imputation par la moyenne ne sont
+  satisfaisantes ici, car elles biaiseraient l'analyse à la baisse. Il
+  est préférable de \textbf{documenter explicitement} cette non-réponse
+  (par exemple une catégorie « Non communiqué ») plutôt que de l'imputer
+  silencieusement, et d'en tenir compte dans l'interprétation des
+  résultats.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Détection
+d'outliers]\protect\hypertarget{exr-prep-2}{}\label{exr-prep-2}
+
+Pour une variable \texttt{prix} avec \(Q_1 = 200\,000\) et
+\(Q_3 = 450\,000\) (en MAD), calculez les bornes de détection des
+valeurs aberrantes selon la méthode de l'IQR.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-prep-2}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\(IQR = 450\,000 - 200\,000 = 250\,000\).
+
+\begin{itemize}
+\tightlist
+\item
+  Borne basse : \(200\,000 - 1{,}5 \times 250\,000 = -175\,000\) (donc,
+  en pratique, aucune valeur basse ne sera jamais considérée comme
+  aberrante ici, un prix ne pouvant être négatif).
+\item
+  Borne haute : \(450\,000 + 1{,}5 \times 250\,000 = 825\,000\).
+\end{itemize}
+
+Tout bien affiché à plus de 825 000 MAD serait donc signalé comme
+potentiellement aberrant.
+
+\end{tcolorbox}
+
+\begin{exercise}[Encodage]\protect\hypertarget{exr-prep-3}{}\label{exr-prep-3}
+
+Pour chacune des variables suivantes, indiquez si un encodage
+\textbf{ordinal} ou \textbf{one-hot} est le plus adapté, et pourquoi :
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Le niveau d'étude (« Bac », « Bac+2 », « Bac+3 », « Bac+5 ») ;
+\item
+  La couleur préférée d'un client (« Rouge », « Bleu », « Vert »).
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-prep-3}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Encodage ordinal} : les niveaux d'étude possèdent un ordre
+  naturel croissant.
+\item
+  \textbf{Encodage one-hot} : les couleurs n'ont pas d'ordre logique
+  entre elles ; leur attribuer un ordre arbitraire introduirait une
+  fausse relation numérique.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Diagnostic de
+qualité]\protect\hypertarget{exr-prep-4}{}\label{exr-prep-4}
+
+Un fichier de ventes contient 1 000 lignes. La colonne \texttt{date}
+comporte 20 valeurs manquantes, \texttt{prix} contient 5 valeurs
+négatives et 12 lignes sont des doublons exacts.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quel pourcentage de dates est manquant ?
+\item
+  Quel problème doit être vérifié en priorité avant de calculer le
+  chiffre d'affaires ?
+\item
+  Les doublons doivent-ils être supprimés automatiquement ? Justifiez.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-prep-4}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \(20/1000 \times 100 = 2\%\).
+\item
+  Les \textbf{prix négatifs}, car ils rendent le total incohérent et
+  peuvent signaler une règle métier particulière (remboursement) ou une
+  erreur.
+\item
+  Non. Il faut vérifier si les lignes sont réellement identiques ou si
+  elles représentent deux transactions légitimes saisies avec les mêmes
+  valeurs. Une suppression aveugle pourrait supprimer de vraies ventes.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Choisir une stratégie
+d'imputation]\protect\hypertarget{exr-prep-5}{}\label{exr-prep-5}
+
+Associez chaque situation à une stratégie raisonnable : supprimer
+quelques lignes, utiliser la médiane, créer la catégorie « Non renseigné
+» ou ne pas imputer sans investigation.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  1 \% des lignes n'ont pas de surface, et la surface est numérique.
+\item
+  35 \% des lignes n'ont pas de quartier.
+\item
+  Une date manquante empêche de savoir à quelle période appartient une
+  vente.
+\item
+  Une variable \texttt{remise} a 2 \% de valeurs manquantes dans une
+  distribution très asymétrique.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-prep-5}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Médiane} (ou suppression des rares lignes si elles ne sont pas
+  centrales), après vérification.
+\item
+  \textbf{« Non renseigné »}, afin de ne pas perdre un tiers du jeu de
+  données.
+\item
+  \textbf{Ne pas imputer sans investigation} : il faut retrouver la date
+  dans la source ou exclure la vente d'une analyse temporelle.
+\item
+  \textbf{Médiane} plutôt que moyenne, car elle est plus robuste à
+  l'asymétrie ; la décision doit être documentée.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Calculer une normalisation
+min-max]\protect\hypertarget{exr-prep-6}{}\label{exr-prep-6}
+
+Une variable \texttt{score} varie de 20 à 80. Calculez la valeur
+normalisée d'un score égal à 50 avec :
+
+\[x'=\frac{x-x_{\min}}{x_{\max}-x_{\min}}.\]
+
+Que signifie le résultat ?
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-prep-6}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\(x'=(50-20)/(80-20)=30/60=\textbf{0,5}\). Le score 50 se situe au
+milieu de l'intervalle observé. La normalisation ne signifie pas que 50
+est la moyenne : elle indique sa position entre le minimum et le
+maximum.
+
+\end{tcolorbox}
+
+\begin{exercise}[Unités et
+cohérence]\protect\hypertarget{exr-prep-7}{}\label{exr-prep-7}
+
+Une colonne \texttt{distance} contient les valeurs 5, 12 et 8 pour trois
+trajets, mais le dictionnaire indique que certaines lignes sont en
+kilomètres et d'autres en mètres.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Pourquoi est-il dangereux de calculer une moyenne directement ?
+\item
+  Quelle action doit être réalisée avant l'analyse ?
+\item
+  Est-ce un problème de valeur manquante, de validité ou de cohérence ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-prep-7}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Les nombres n'ont pas la même unité : la moyenne mélangerait des
+  grandeurs incomparables.
+\item
+  Identifier l'unité de chaque ligne puis convertir toutes les valeurs
+  dans une unité commune, par exemple le kilomètre.
+\item
+  C'est principalement un problème de \textbf{cohérence} ; certaines
+  valeurs peuvent aussi être invalides si leur unité est inconnue.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Discrétisation et
+interprétation]\protect\hypertarget{exr-prep-8}{}\label{exr-prep-8}
+
+On regroupe les âges selon les intervalles \texttt{{[}0,18{[}},
+\texttt{{[}18,35{[}}, \texttt{{[}35,60{[}} et \texttt{{[}60,120{]}}.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Dans quelle classe place-t-on les âges 18, 34, 35 et 60 ?
+\item
+  Quel avantage apporte cette transformation pour un tableau de bord ?
+\item
+  Quel risque faut-il signaler ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-prep-8}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  18 et 34 vont dans \texttt{{[}18,35{[}}, 35 dans \texttt{{[}35,60{[}},
+  et 60 dans \texttt{{[}60,120{]}}.
+\item
+  Elle simplifie la lecture et permet de comparer des groupes d'âge.
+\item
+  Elle fait perdre de la précision : deux personnes de 18 et 34 ans sont
+  dans le même groupe malgré un écart important. Les bornes doivent donc
+  être documentées.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Exploration des données}\label{exploration-des-donnuxe9es}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Objectifs du chapitre}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+À la fin de ce chapitre, l'étudiant sera capable de :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Calculer et interpréter} les principales statistiques
+  descriptives (tendance centrale, dispersion, forme) ;
+\item
+  \textbf{Distinguer} l'analyse univariée, bivariée et multivariée ;
+\item
+  \textbf{Mesurer} une corrélation ou une association entre deux
+  variables et en connaître les limites ;
+\item
+  \textbf{Construire} des tableaux d'agrégation (\texttt{groupby},
+  tableaux croisés dynamiques) pour résumer un jeu de données ;
+\item
+  \textbf{Utiliser} un outil de profilage automatique pour accélérer une
+  première exploration.
+\end{itemize}
+
+\end{tcolorbox}
+
+L'\textbf{analyse exploratoire de données} (\emph{Exploratory Data
+Analysis}, EDA), popularisée par le statisticien John Tukey, consiste à
+examiner un jeu de données déjà nettoyé afin d'en dégager les tendances
+principales, les relations entre variables et les éventuelles anomalies
+restantes --- avant toute conclusion définitive ou toute visualisation
+destinée à un public externe.
+
+\section{1. Statistiques descriptives}\label{statistiques-descriptives}
+
+\subsection{1.1. Tendance centrale}\label{tendance-centrale}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Indicateurs de tendance
+centrale}\label{tbl-tendance-centrale}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Indicateur
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Définition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Sensibilité aux valeurs extrêmes
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Indicateur
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Définition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Sensibilité aux valeurs extrêmes
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Moyenne} & Somme des valeurs divisée par leur nombre & Élevée \\
+\textbf{Médiane} & Valeur qui sépare la distribution en deux moitiés
+égales & Faible \\
+\textbf{Mode} & Valeur la plus fréquente & Faible (mais peu informatif
+pour une variable continue) \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\StringTok{"prix"}\NormalTok{].mean()}
+\NormalTok{df[}\StringTok{"prix"}\NormalTok{].median()}
+\NormalTok{df[}\StringTok{"quartier"}\NormalTok{].mode()[}\DecValTok{0}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Moyenne ou médiane ?}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Sur une distribution fortement asymétrique --- typiquement les salaires
+ou les prix de l'immobilier --- la moyenne peut être fortement tirée
+vers le haut par quelques valeurs extrêmes. La \textbf{médiane} donne
+alors une image plus représentative de la « valeur typique ».
+
+\end{tcolorbox}
+
+\subsection{1.2. Dispersion}\label{dispersion}
+
+\begin{itemize}
+\tightlist
+\item
+  l'\textbf{écart-type} (\(\sigma\)) et la \textbf{variance}
+  (\(\sigma^2\)) mesurent l'écart moyen à la moyenne ;
+\item
+  l'\textbf{écart interquartile} (\(IQR = Q_3 - Q_1\)), déjà rencontré
+  au chapitre précédent, mesure la dispersion de la moitié centrale des
+  données, de façon robuste aux valeurs extrêmes ;
+\item
+  l'\textbf{étendue} (maximum − minimum) donne une idée rapide, mais
+  très sensible aux valeurs aberrantes.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\StringTok{"prix"}\NormalTok{].std()}
+\NormalTok{df[}\StringTok{"prix"}\NormalTok{].var()}
+\NormalTok{df[}\StringTok{"prix"}\NormalTok{].quantile([}\FloatTok{0.25}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.75}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+Pour un petit tableau, on peut calculer les indicateurs à la main. Pour
+les valeurs \(2, 4, 4, 6, 9\), la moyenne est \(25/5=5\) et la médiane
+est \(4\). L'étendue vaut \(9-2=7\). Les quartiles dépendent de la
+convention de calcul utilisée par l'outil ; dans un cours débutant,
+l'important est de préciser la convention et de comparer les résultats
+avec la même méthode.
+
+L'écart-type est exprimé dans la même unité que la variable,
+contrairement à la variance. Il est utile pour décrire la dispersion,
+mais il est sensible aux valeurs extrêmes. L'IQR est souvent plus facile
+à interpréter pour une distribution asymétrique. Le \textbf{coefficient
+de variation}, défini par \(\sigma/\bar{x}\) lorsque la moyenne est
+positive et non nulle, permet parfois de comparer la dispersion relative
+de variables ayant des échelles différentes ; il est présenté ici comme
+un repère et non comme un indicateur obligatoire.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Priorité pour débuter}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Les indicateurs indispensables sont l'effectif, la moyenne, la médiane,
+le minimum, le maximum, les quartiles et l'écart-type ou l'IQR.
+L'asymétrie, l'aplatissement et le coefficient de variation sont des
+compléments : il suffit d'en comprendre l'idée et de savoir quand
+demander une explication supplémentaire.
+
+\end{tcolorbox}
+
+\subsection{1.3. Forme de la
+distribution}\label{forme-de-la-distribution}
+
+Deux indicateurs complètent la description d'une distribution :
+
+\begin{itemize}
+\tightlist
+\item
+  l'\textbf{asymétrie} (\emph{skewness}) : une valeur positive indique
+  une distribution étalée vers la droite (queue de valeurs élevées), une
+  valeur négative vers la gauche ;
+\item
+  l'\textbf{aplatissement} (\emph{kurtosis}) : indique si la
+  distribution comporte davantage de valeurs extrêmes qu'une
+  distribution normale.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\StringTok{"prix"}\NormalTok{].skew()}
+\NormalTok{df[}\StringTok{"prix"}\NormalTok{].kurt()}
+\end{Highlighting}
+\end{Shaded}
+
+La méthode \texttt{describe()} de \texttt{pandas} regroupe l'essentiel
+de ces indicateurs en une seule commande :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df.describe()}
+\end{Highlighting}
+\end{Shaded}
+
+\section{2. Analyse univariée, bivariée et
+multivariée}\label{analyse-univariuxe9e-bivariuxe9e-et-multivariuxe9e}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Les trois niveaux de l'analyse
+exploratoire}\label{tbl-niveaux-analyse}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Niveau d'analyse
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nombre de variables étudiées simultanément
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemple
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Niveau d'analyse
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nombre de variables étudiées simultanément
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemple
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Univariée} & Une seule & Distribution des prix de vente \\
+\textbf{Bivariée} & Deux & Relation entre surface et prix \\
+\textbf{Multivariée} & Trois ou plus & Relation entre surface, quartier
+et prix \\
+\end{longtable}
+
+L'\textbf{analyse univariée} décrit une variable isolément (statistiques
+descriptives, distribution). L'\textbf{analyse bivariée} cherche une
+relation entre deux variables --- par exemple à l'aide d'un tableau
+croisé pour deux variables catégorielles, ou d'un coefficient de
+corrélation pour deux variables numériques. L'\textbf{analyse
+multivariée} étend cette logique à plusieurs variables simultanément,
+souvent à l'aide de tableaux d'agrégation ou de visualisations combinant
+plusieurs dimensions (couleur, taille, facettes), présentées au chapitre
+suivant.
+
+\section{3. Corrélations et
+associations}\label{corruxe9lations-et-associations}
+
+\subsection{3.1. Variables numériques : Pearson et
+Spearman}\label{variables-numuxe9riques-pearson-et-spearman}
+
+\begin{itemize}
+\tightlist
+\item
+  le \textbf{coefficient de corrélation de Pearson} (\(r\), entre −1 et
+  1) mesure l'intensité d'une relation \textbf{linéaire} entre deux
+  variables numériques ;
+\item
+  le \textbf{coefficient de corrélation de Spearman} mesure une relation
+  \textbf{monotone} (pas nécessairement linéaire), en travaillant sur
+  les rangs des valeurs plutôt que sur les valeurs elles-mêmes --- plus
+  robuste aux valeurs aberrantes.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[[}\StringTok{"surface"}\NormalTok{, }\StringTok{"prix"}\NormalTok{]].corr(method}\OperatorTok{=}\StringTok{"pearson"}\NormalTok{)}
+\NormalTok{df[[}\StringTok{"surface"}\NormalTok{, }\StringTok{"prix"}\NormalTok{]].corr(method}\OperatorTok{=}\StringTok{"spearman"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Corrélation n'est pas causalité}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Une corrélation élevée entre deux variables ne signifie pas que l'une
+provoque l'autre : elle peut résulter d'une \textbf{variable cachée}
+commune, ou d'une pure coïncidence statistique. Un exemple classique est
+la corrélation observée entre les ventes de glaces et le nombre de
+noyades : les deux augmentent en été, sans lien de cause à effet direct
+entre elles.
+
+\end{tcolorbox}
+
+\subsection{3.2. Variables catégorielles : tableaux croisés et V de
+Cramér}\label{variables-catuxe9gorielles-tableaux-croisuxe9s-et-v-de-cramuxe9r}
+
+Pour deux variables catégorielles, on utilise un \textbf{tableau croisé}
+(\emph{crosstab}), éventuellement complété par le \textbf{V de Cramér},
+qui résume en un seul indicateur (entre 0 et 1) l'intensité de
+l'association :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tableau\_croise }\OperatorTok{=}\NormalTok{ pd.crosstab(df[}\StringTok{"quartier"}\NormalTok{], df[}\StringTok{"type\_bien"}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{\texorpdfstring{4. Agrégation : \texttt{groupby} et tableaux
+croisés
+dynamiques}{4. Agrégation : groupby et tableaux croisés dynamiques}}\label{agruxe9gation-groupby-et-tableaux-croisuxe9s-dynamiques}
+
+L'outil central de l'exploration multivariée avec \texttt{pandas} est la
+méthode \texttt{groupby()}, qui permet de calculer un indicateur pour
+chaque sous-groupe d'une variable catégorielle :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df.groupby(}\StringTok{"quartier"}\NormalTok{)[}\StringTok{"prix"}\NormalTok{].mean().sort\_values(ascending}\OperatorTok{=}\VariableTok{False}\NormalTok{)}
+
+\NormalTok{df.groupby([}\StringTok{"quartier"}\NormalTok{, }\StringTok{"type\_bien"}\NormalTok{]).agg(}
+\NormalTok{    prix\_moyen}\OperatorTok{=}\NormalTok{(}\StringTok{"prix"}\NormalTok{, }\StringTok{"mean"}\NormalTok{),}
+\NormalTok{    nombre\_biens}\OperatorTok{=}\NormalTok{(}\StringTok{"prix"}\NormalTok{, }\StringTok{"count"}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Le \textbf{tableau croisé dynamique} (\emph{pivot table}) offre une
+présentation plus lisible lorsque l'on croise deux dimensions
+catégorielles avec une mesure numérique :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pd.pivot\_table(}
+\NormalTok{    df,}
+\NormalTok{    values}\OperatorTok{=}\StringTok{"prix"}\NormalTok{,}
+\NormalTok{    index}\OperatorTok{=}\StringTok{"quartier"}\NormalTok{,}
+\NormalTok{    columns}\OperatorTok{=}\StringTok{"type\_bien"}\NormalTok{,}
+\NormalTok{    aggfunc}\OperatorTok{=}\StringTok{"mean"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Ces deux outils constituent la base de la quasi-totalité des tableaux de
+bord et des rapports produits par un Data Analyst.
+
+\section{5. Choisir une visualisation
+simple}\label{choisir-une-visualisation-simple}
+
+Les statistiques répondent à des questions numériques ; les graphiques
+rendent les formes et les comparaisons plus faciles à voir. Pour
+débuter, on peut retenir les associations suivantes :
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Question
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Graphique conseillé
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ce que l'on observe
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Quelle est la répartition d'une variable numérique ? & Histogramme &
+Forme, concentration et asymétrie \\
+Y a-t-il des valeurs atypiques ? & Boîte à moustaches & Médiane,
+quartiles et valeurs éloignées \\
+Comment une valeur évolue-t-elle dans le temps ? & Courbe & Tendance,
+saisonnalité et ruptures \\
+Comment comparer des catégories ? & Barres & Effectifs, sommes ou
+moyennes par catégorie \\
+Deux variables numériques évoluent-elles ensemble ? & Nuage de points &
+Relation, groupes et valeurs atypiques \\
+\end{longtable}
+}
+
+Un graphique ne doit pas seulement être « joli ». Son titre doit
+préciser la mesure, l'unité et la période ; ses axes doivent être
+lisibles ; la source et les filtres importants doivent être connus. Pour
+comparer des catégories, l'effectif et la moyenne ne racontent pas la
+même histoire : une catégorie peut avoir une moyenne élevée avec très
+peu d'observations.
+
+\section{6. Profilage automatique des
+données}\label{profilage-automatique-des-donnuxe9es}
+
+Sur un nouveau jeu de données, il est souvent utile d'obtenir rapidement
+une vue d'ensemble avant de se lancer dans une exploration manuelle
+détaillée.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Zoom sur les tendances : rapports d'exploration automatisés}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Des bibliothèques comme
+\textbf{\href{https://github.com/ydataai/ydata-profiling}{\texttt{ydata-profiling}}}
+(anciennement \texttt{pandas-profiling}) ou
+\textbf{\href{https://github.com/fbdesignpro/sweetviz}{\texttt{Sweetviz}}}
+génèrent, en une seule instruction, un rapport HTML complet :
+statistiques descriptives par variable, distributions, valeurs
+manquantes, corrélations entre variables, alertes de qualité (variables
+constantes, fortement corrélées, etc.).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ ydata\_profiling }\ImportTok{import}\NormalTok{ ProfileReport}
+
+\NormalTok{profil }\OperatorTok{=}\NormalTok{ ProfileReport(df, title}\OperatorTok{=}\StringTok{"Exploration du jeu de données"}\NormalTok{)}
+\NormalTok{profil.to\_file(}\StringTok{"rapport\_exploration.html"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Ces outils ne remplacent pas le raisonnement de l'analyste --- ils
+accélèrent la première prise de contact avec un jeu de données et aident
+à repérer rapidement les points nécessitant une attention particulière,
+avant une exploration ciblée avec les techniques présentées dans ce
+chapitre.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Auto-évaluation}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre «
+oui » aux questions suivantes :
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  Je sais expliquer pourquoi la médiane est parfois préférable à la
+  moyenne.
+\item[$\square$]
+  Je sais distinguer une analyse univariée, bivariée et multivariée avec
+  un exemple pour chacune.
+\item[$\square$]
+  Je sais expliquer pourquoi une forte corrélation n'implique pas une
+  relation de cause à effet.
+\item[$\square$]
+  Je sais construire un tableau croisé dynamique avec \texttt{pandas}.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Exercices}\label{exercices-2}
+
+\begin{exercise}[Interpréter des statistiques
+descriptives]\protect\hypertarget{exr-eda-1}{}\label{exr-eda-1}
+
+Pour une variable \texttt{revenu\_mensuel} (en MAD), on obtient :
+moyenne = 8 500, médiane = 6 200, écart-type = 5 400, asymétrie
+(\emph{skewness}) = 2,3.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Que suggère l'écart important entre la moyenne et la médiane ?
+\item
+  Que confirme la valeur positive et élevée de l'asymétrie ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-eda-1}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Un écart important entre une moyenne nettement supérieure à la médiane
+  suggère la présence de quelques revenus très élevés qui tirent la
+  moyenne vers le haut, sans être représentatifs de la majorité des
+  observations.
+\item
+  Une asymétrie positive et élevée confirme une distribution étalée vers
+  la droite (une « longue traîne » de hauts revenus), cohérente avec
+  l'écart observé entre moyenne et médiane.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Choisir le bon coefficient de
+corrélation]\protect\hypertarget{exr-eda-2}{}\label{exr-eda-2}
+
+Pour chacune des situations suivantes, indiquez s'il est préférable
+d'utiliser Pearson ou Spearman :
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  La relation entre l'ancienneté d'un employé (en années) et son
+  salaire, globalement croissante mais pas forcément linéaire.
+\item
+  La relation entre la taille et le poids d'un ensemble d'individus
+  adultes, approximativement linéaire.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-eda-2}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Spearman}, car la relation est monotone (croissante) sans être
+  nécessairement linéaire ; Spearman capte ce type de relation même s'il
+  n'est pas de forme parfaitement linéaire.
+\item
+  \textbf{Pearson}, adapté à une relation linéaire entre deux variables
+  numériques.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Construire un plan
+d'exploration]\protect\hypertarget{exr-eda-3}{}\label{exr-eda-3}
+
+On dispose d'un jeu de données de transactions d'un site e-commerce
+marocain, avec les colonnes suivantes : \texttt{date\_commande},
+\texttt{categorie\_produit}, \texttt{prix}, \texttt{region\_client},
+\texttt{moyen\_paiement}.
+
+Proposez, pour ce jeu de données, un exemple concret d'analyse
+univariée, un exemple d'analyse bivariée et un exemple d'analyse
+multivariée, en vous appuyant sur ces colonnes.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-eda-3}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Univariée} : distribution du \texttt{prix} des commandes
+  (moyenne, médiane, dispersion).
+\item
+  \textbf{Bivariée} : prix moyen selon la \texttt{categorie\_produit}
+  (via \texttt{groupby}).
+\item
+  \textbf{Multivariée} : prix moyen croisé par \texttt{region\_client}
+  \textbf{et} \texttt{moyen\_paiement} (via un tableau croisé
+  dynamique), permettant de voir si certaines régions privilégient
+  certains moyens de paiement pour des achats plus ou moins coûteux.
+\end{itemize}
+
+\end{tcolorbox}
+
+\begin{exercise}[Calculer des indicateurs
+simples]\protect\hypertarget{exr-eda-4}{}\label{exr-eda-4}
+
+Les durées de livraison, en jours, sont : 2, 3, 3, 4, 8.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Calculez la moyenne, la médiane et l'étendue.
+\item
+  Quel indicateur est le moins influencé par la durée de 8 jours ?
+\item
+  Quelle question supplémentaire poseriez-vous avant de conclure que le
+  service est lent ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-eda-4}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Moyenne \(=(2+3+3+4+8)/5=\textbf{4}\) jours ; médiane = \textbf{3
+  jours} ; étendue \(=8-2=\textbf{6}\) jours.
+\item
+  La \textbf{médiane}.
+\item
+  Il faut connaître le nombre total de livraisons, la période, la région
+  et la proportion de livraisons de 8 jours : une seule valeur extrême
+  ne suffit pas.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Lire une
+dispersion]\protect\hypertarget{exr-eda-5}{}\label{exr-eda-5}
+
+Deux classes ont la même moyenne à un examen : 12/20. La classe A a un
+écart-type de 1,5 et la classe B un écart-type de 4.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quelle classe est la plus homogène ?
+\item
+  Que signifie l'écart-type plus élevé de la classe B ?
+\item
+  Peut-on dire que les étudiants de B ont de moins bonnes notes ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-eda-5}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  La classe \textbf{A} est plus homogène.
+\item
+  Les notes de B sont plus éloignées de leur moyenne : les niveaux sont
+  davantage dispersés.
+\item
+  Non. Les deux moyennes sont identiques ; B est seulement plus
+  hétérogène.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Choisir le bon
+graphique]\protect\hypertarget{exr-eda-6}{}\label{exr-eda-6}
+
+Associez chaque besoin à un graphique : histogramme, courbe, barres,
+boîte à moustaches ou nuage de points.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Comparer le chiffre d'affaires de quatre régions.
+\item
+  Observer le nombre de commandes chaque mois.
+\item
+  Repérer des valeurs extrêmes dans les salaires.
+\item
+  Étudier le lien entre surface et prix d'un logement.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-eda-6}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Barres} ; b. \textbf{Courbe} ; c.~\textbf{Boîte à moustaches}
+  ; d.~\textbf{Nuage de points}. Un histogramme serait adapté pour la
+  répartition d'une seule variable numérique.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Corrélation et
+causalité]\protect\hypertarget{exr-eda-7}{}\label{exr-eda-7}
+
+Dans une ville, le nombre de glaces vendues et le nombre de baignades
+augmentent tous les deux en été.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quelle relation statistique peut-on observer ?
+\item
+  Pourquoi ne peut-on pas conclure que les glaces provoquent les
+  baignades ?
+\item
+  Quelle variable cachée peut expliquer les deux évolutions ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-eda-7}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Une corrélation positive.
+\item
+  Une corrélation décrit une association, pas une cause.
+\item
+  La \textbf{température} ou la saison : le beau temps favorise à la
+  fois l'achat de glaces et les baignades.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Interpréter un tableau
+agrégé]\protect\hypertarget{exr-eda-8}{}\label{exr-eda-8}
+
+Un tableau par région présente les résultats suivants :
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+Région & Nombre de commandes & Montant moyen (MAD) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Nord & 100 & 180 \\
+Centre & 20 & 350 \\
+Sud & 80 & 200 \\
+\end{longtable}
+}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quelle région a le montant moyen le plus élevé ?
+\item
+  Pourquoi faut-il également regarder le nombre de commandes ?
+\item
+  Calculez le montant total estimé pour chaque région et identifiez la
+  région au total le plus élevé.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-eda-8}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Le \textbf{Centre} (350 MAD).
+\item
+  Sa moyenne repose sur seulement 20 commandes ; elle est donc moins
+  représentative d'un volume important que celle d'une région avec
+  beaucoup de commandes.
+\item
+  Nord : \(100\times180=\textbf{18\,000}\) MAD ; Centre :
+  \(20\times350=\textbf{7\,000}\) MAD ; Sud :
+  \(80\times200=\textbf{16\,000}\) MAD. Le total le plus élevé est celui
+  du \textbf{Nord}.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Introduction à l'entrepôt de
+données}\label{introduction-uxe0-lentrepuxf4t-de-donnuxe9es}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Objectifs du chapitre}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+À la fin de ce chapitre, l'étudiant sera capable de :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Expliquer} pourquoi une organisation sépare souvent les
+  systèmes opérationnels des données destinées à l'analyse ;
+\item
+  \textbf{Distinguer} une base transactionnelle, un entrepôt de données,
+  un lac de données et un datamart ;
+\item
+  \textbf{Lire} un modèle en étoile composé d'une table de faits et de
+  tables de dimensions ;
+\item
+  \textbf{Définir} le grain d'une table de faits et choisir des mesures
+  adaptées ;
+\item
+  \textbf{Décrire} les grandes étapes d'un flux ETL/ELT, de la source au
+  tableau de bord.
+\end{itemize}
+
+\end{tcolorbox}
+
+Un tableau de bord fiable ne commence pas par un graphique. Il commence
+par des données organisées, documentées et mises à jour de façon
+régulière. L'\textbf{entrepôt de données} (\emph{data warehouse})
+fournit cette base pour l'analyse.
+
+\section{1. Pourquoi un entrepôt de données
+?}\label{pourquoi-un-entrepuxf4t-de-donnuxe9es}
+
+\subsection{1.1. Les systèmes
+opérationnels}\label{les-systuxe8mes-opuxe9rationnels}
+
+Une application de vente, une caisse ou un site web utilise une base
+\textbf{opérationnelle} pour enregistrer les événements du quotidien :
+créer une commande, modifier une adresse, enregistrer un paiement. Ces
+systèmes doivent répondre vite à de petites opérations et éviter les
+incohérences.
+
+Une base opérationnelle est souvent organisée pour limiter la répétition
+des informations. Une commande peut être répartie entre
+\texttt{clients}, \texttt{commandes} et \texttt{lignes\_commande},
+reliées par des identifiants.
+
+Cette organisation est adaptée à l'écriture, mais une question
+analytique comme « Quel est le chiffre d'affaires mensuel par région et
+par catégorie depuis trois ans ? » peut nécessiter de nombreuses
+jointures et plusieurs sources. Exécuter ce type de requête directement
+sur la base de production peut ralentir l'application.
+
+\subsection{1.2. La base analytique}\label{la-base-analytique}
+
+Un \textbf{entrepôt de données} est un espace centralisé, organisé pour
+analyser l'historique de l'organisation. Il rassemble des données
+provenant de plusieurs sources, conserve leur contexte et les transforme
+dans un format plus simple à interroger.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Système
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+But principal
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exemple de question
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Base opérationnelle (OLTP) & Enregistrer les événements courants & «
+Quel est le statut de la commande 1524 ? » \\
+Entrepôt analytique (OLAP) & Comparer, agréger et suivre l'historique &
+« Comment les ventes ont-elles évolué par région ? » \\
+\end{longtable}
+}
+
+Les deux systèmes sont complémentaires. L'entrepôt n'a pas pour objectif
+de remplacer l'application métier.
+
+\subsection{1.3. Entrepôt, lac et
+datamart}\label{entrepuxf4t-lac-et-datamart}
+
+\begin{itemize}
+\tightlist
+\item
+  Un \textbf{data warehouse} contient des données structurées, préparées
+  et gouvernées pour l'analyse.
+\item
+  Un \textbf{data lake} peut stocker des données brutes de formats
+  variés (fichiers, textes, événements) avant leur usage ; il demande
+  des règles claires pour rester compréhensible.
+\item
+  Un \textbf{datamart} est une partie orientée vers un besoin ou un
+  service, par exemple un datamart des ventes ou des ressources
+  humaines.
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Un entrepôt ne corrige pas une mauvaise question}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Centraliser beaucoup de données ne suffit pas. Il faut définir le
+vocabulaire métier, les unités, la fréquence de mise à jour et les
+indicateurs attendus. Sinon, on obtient plusieurs chiffres différents
+pour un même « chiffre d'affaires ».
+
+\end{tcolorbox}
+
+\section{2. Le modèle en étoile}\label{le-moduxe8le-en-uxe9toile}
+
+Le modèle en étoile est une organisation pédagogique et professionnelle
+très fréquente pour les données analytiques. Il place une \textbf{table
+de faits} au centre et des \textbf{tables de dimensions} autour.
+
+\subsection{2.1. La table de faits}\label{la-table-de-faits}
+
+Une table de faits contient les événements mesurables : ventes,
+livraisons, appels ou visites. Elle comprend généralement :
+
+\begin{itemize}
+\tightlist
+\item
+  des clés vers les dimensions (\texttt{client\_id},
+  \texttt{produit\_id}, \texttt{date\_id}, \texttt{magasin\_id}) ;
+\item
+  des mesures numériques (\texttt{quantite}, \texttt{montant},
+  \texttt{remise}) ;
+\item
+  une ligne par événement selon un niveau de détail défini.
+\end{itemize}
+
+Le \textbf{grain} est la phrase qui précise ce que représente une ligne.
+Par exemple : « une ligne représente un produit d'une commande, dans un
+magasin, à une date donnée ». Le grain doit être défini avant de choisir
+les mesures.
+
+\subsection{2.2. Les tables de
+dimensions}\label{les-tables-de-dimensions}
+
+Une dimension décrit le contexte d'un fait :
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{dim\_date} : jour, mois, trimestre, année ;
+\item
+  \texttt{dim\_produit} : produit, catégorie, marque ;
+\item
+  \texttt{dim\_client} : ville, région, segment ;
+\item
+  \texttt{dim\_magasin} : magasin, ville, zone.
+\end{itemize}
+
+Les dimensions contiennent les attributs utilisés pour filtrer,
+regrouper et expliquer les mesures. Elles sont souvent dénormalisées
+pour rendre l'exploration plus simple.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{                         dim\_date}
+\NormalTok{                            |}
+\NormalTok{dim\_client {-}{-}{-}{-} fact\_ventes {-}{-}{-}{-} dim\_produit}
+\NormalTok{                            |}
+\NormalTok{                       dim\_magasin}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{2.3. Exemple de modèle de
+ventes}\label{exemple-de-moduxe8le-de-ventes}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fact\_ventes}
+\NormalTok{{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{date\_id}
+\NormalTok{produit\_id}
+\NormalTok{client\_id}
+\NormalTok{magasin\_id}
+\NormalTok{quantite}
+\NormalTok{prix\_unitaire}
+\NormalTok{remise}
+\NormalTok{montant\_net}
+
+\NormalTok{dim\_produit}
+\NormalTok{{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{produit\_id}
+\NormalTok{libelle}
+\NormalTok{categorie}
+\NormalTok{marque}
+
+\NormalTok{dim\_date}
+\NormalTok{{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{date\_id}
+\NormalTok{date\_complete}
+\NormalTok{mois}
+\NormalTok{trimestre}
+\NormalTok{annee}
+\end{Highlighting}
+\end{Shaded}
+
+Le montant net peut être calculé par :
+
+\[
+\text{montant\_net}
+=\text{quantité}\times\text{prix unitaire}-\text{remise}.
+\]
+
+Un modèle en étoile ne dicte pas un seul outil : il peut être utilisé
+dans une base SQL, un fichier analytique ou un modèle Power BI.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Le rôle de la dimension Date}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Même si la source contient déjà une date, une dimension Date facilite
+les regroupements par mois, trimestre, semaine ou jour ouvré. Elle
+permet aussi de définir clairement les périodes comparées.
+
+\end{tcolorbox}
+
+\section{3. Les mesures et les
+indicateurs}\label{les-mesures-et-les-indicateurs}
+
+Une \textbf{mesure additive} peut être additionnée sur toutes les
+dimensions, comme le nombre d'articles ou le montant des ventes. Une
+mesure \textbf{semi-additive}, comme un stock de fin de journée, peut
+être additionnée par produit mais pas dans le temps. Une mesure
+\textbf{non additive}, comme un taux ou une moyenne, doit être
+recalculée à partir de ses éléments plutôt que sommée.
+
+Exemple : si une région a 10 commandes et une autre 2 commandes, la
+moyenne globale ne doit pas être calculée comme la moyenne des deux
+moyennes si les effectifs sont différents. Il faut utiliser :
+
+\[
+\text{moyenne globale} =
+\frac{\text{total des montants}}{\text{nombre total de commandes}}.
+\]
+
+Les noms des indicateurs doivent préciser leur définition. « Ventes »
+peut signifier chiffre d'affaires brut, chiffre d'affaires net,
+commandes payées ou unités vendues. Dans un dictionnaire métier, on
+documente la formule, l'unité, la période et les filtres.
+
+\section{4. Le flux ETL/ELT}\label{le-flux-etlelt}
+
+Les données passent généralement par un flux en plusieurs étapes :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Extract (extraire)} : lire les sources opérationnelles,
+  fichiers ou API ;
+\item
+  \textbf{Transform (transformer)} : convertir les dates, harmoniser les
+  unités, dédupliquer, contrôler les valeurs et calculer les champs
+  dérivés ;
+\item
+  \textbf{Load (charger)} : déposer les données préparées dans les
+  tables de l'entrepôt.
+\end{enumerate}
+
+Dans une approche \textbf{ELT}, on charge d'abord les données dans une
+plateforme capable de les traiter, puis on réalise les transformations à
+l'intérieur de cette plateforme. Les deux approches poursuivent le même
+but : rendre les données fiables et exploitables.
+
+Un chargement quotidien doit pouvoir répondre à quatre questions simples
+: quelles sources ont été lues ? combien de lignes ont été reçues ?
+combien ont été rejetées ? quand le chargement s'est-il terminé ?
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Qualité et traçabilité}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Conservez les données sources ou un journal de chargement, le nombre de
+lignes avant et après transformation, les erreurs détectées et la date
+de mise à jour. Ces informations permettent de comprendre pourquoi un
+indicateur a changé.
+
+\end{tcolorbox}
+
+\section{5. Gouvernance et sécurité, sans complexité
+inutile}\label{gouvernance-et-suxe9curituxe9-sans-complexituxe9-inutile}
+
+La \textbf{gouvernance} désigne les règles qui rendent les données
+compréhensibles, accessibles aux bonnes personnes et utilisées de
+manière responsable. Pour commencer, un projet peut mettre en place :
+
+\begin{itemize}
+\tightlist
+\item
+  un dictionnaire des tables et des indicateurs ;
+\item
+  un responsable pour chaque donnée importante ;
+\item
+  des règles de qualité (unicité d'un identifiant, prix positif, date
+  obligatoire) ;
+\item
+  des droits d'accès adaptés, notamment pour les données personnelles ;
+\item
+  une fréquence de mise à jour annoncée.
+\end{itemize}
+
+Un tableau de bord ne devrait pas exposer inutilement des noms, numéros
+de téléphone ou adresses. On peut agréger les résultats, masquer les
+colonnes sensibles et limiter les accès selon le rôle de l'utilisateur.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Auto-évaluation}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre «
+oui » aux questions suivantes :
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  Je sais expliquer la différence entre OLTP et OLAP.
+\item[$\square$]
+  Je peux définir le grain d'une table de faits.
+\item[$\square$]
+  Je peux reconnaître une dimension et une mesure dans un exemple.
+\item[$\square$]
+  Je sais distinguer ETL et ELT.
+\item[$\square$]
+  Je comprends pourquoi les indicateurs doivent être documentés.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Exercices}\label{exercices-3}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Consigne}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Les exercices vérifient la compréhension et peuvent être résolus sans
+ordinateur. Les calculs sont volontairement courts.
+
+\end{tcolorbox}
+
+\begin{exercise}[OLTP ou OLAP
+?]\protect\hypertarget{exr-dwh-1}{}\label{exr-dwh-1}
+
+Indiquez si la question relève plutôt d'un système opérationnel ou
+analytique :
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Modifier l'adresse d'un client.
+\item
+  Comparer les ventes des quatre derniers trimestres par région.
+\item
+  Vérifier si une commande est payée.
+\item
+  Calculer la médiane des délais de livraison de l'année.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-dwh-1}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{OLTP} ; b. \textbf{OLAP} ; c.~\textbf{OLTP} ;
+  d.~\textbf{OLAP}.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Identifier le
+grain]\protect\hypertarget{exr-dwh-2}{}\label{exr-dwh-2}
+
+Une table \texttt{fact\_ventes} contient une ligne par produit présent
+dans une commande. Formulez le grain avec une phrase et expliquez
+pourquoi une commande de trois produits peut produire trois lignes.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-dwh-2}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Le grain est : \textbf{une ligne représente un produit d'une commande}.
+Une commande contenant trois produits possède donc trois lignes de
+détail, même si elle n'a qu'un seul numéro de commande.
+
+\end{tcolorbox}
+
+\begin{exercise}[Faits ou
+dimensions]\protect\hypertarget{exr-dwh-3}{}\label{exr-dwh-3}
+
+Classez les éléments suivants : \texttt{montant\_net},
+\texttt{categorie}, \texttt{annee}, \texttt{quantite},
+\texttt{ville\_client}, \texttt{prix\_unitaire}.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-dwh-3}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Faits ou mesures : \texttt{montant\_net}, \texttt{quantite},
+\texttt{prix\_unitaire}. Dimensions ou attributs de dimensions :
+\texttt{categorie}, \texttt{annee}, \texttt{ville\_client}.
+
+\end{tcolorbox}
+
+\begin{exercise}[Calculer une
+mesure]\protect\hypertarget{exr-dwh-4}{}\label{exr-dwh-4}
+
+Une ligne indique 3 articles à 120 MAD chacun et une remise de 40 MAD.
+Calculez le montant net. Une deuxième ligne indique 2 articles à 80 MAD
+sans remise. Quel est le montant total des deux lignes ?
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-dwh-4}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Première ligne : \(3\times120-40=\textbf{320}\) MAD. Deuxième ligne :
+\(2\times80=\textbf{160}\) MAD. Total : \(320+160=\textbf{480}\) MAD.
+
+\end{tcolorbox}
+
+\begin{exercise}[Mesure additive ou non
+?]\protect\hypertarget{exr-dwh-5}{}\label{exr-dwh-5}
+
+Indiquez si l'on peut additionner directement la mesure sur les périodes
+suivantes :
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Le montant de ventes.
+\item
+  Le stock disponible à la fin de chaque jour.
+\item
+  Un taux de conversion en pourcentage.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-dwh-5}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Le montant de ventes est \textbf{additif}.
+\item
+  Le stock de fin de journée est \textbf{semi-additif} : on peut
+  comparer ou prendre le dernier stock, mais le sommer sur les jours n'a
+  généralement pas de sens.
+\item
+  Un taux est \textbf{non additif} : il faut recalculer le taux à partir
+  des numérateurs et dénominateurs.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Comprendre
+ETL]\protect\hypertarget{exr-dwh-6}{}\label{exr-dwh-6}
+
+Remettez dans l'ordre : charger les données préparées, extraire un
+fichier CSV, convertir les dates et contrôler les prix négatifs.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-dwh-6}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Extraire le fichier CSV.
+\item
+  Convertir les dates et contrôler les prix négatifs.
+\item
+  Charger les données préparées.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Moyenne
+globale]\protect\hypertarget{exr-dwh-7}{}\label{exr-dwh-7}
+
+La région A compte 10 commandes de 100 MAD en moyenne. La région B
+compte 2 commandes de 300 MAD en moyenne.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quel est le total estimé de chaque région ?
+\item
+  Calculez la moyenne globale.
+\item
+  Pourquoi la moyenne des deux moyennes, 200 MAD, est-elle incorrecte ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-dwh-7}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  A : \(10\times100=\textbf{1\,000}\) MAD ; B :
+  \(2\times300=\textbf{600}\) MAD.
+\item
+  Moyenne globale : \((1000+600)/(10+2)=1600/12=\textbf{133,33}\) MAD
+  environ.
+\item
+  Les régions n'ont pas le même nombre de commandes ; la moyenne de 200
+  MAD donne le même poids aux deux groupes.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Qualité et
+sécurité]\protect\hypertarget{exr-dwh-8}{}\label{exr-dwh-8}
+
+Proposez une règle de qualité et une mesure de protection pour chacune
+des situations :
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  La colonne \texttt{prix} contient parfois des valeurs négatives.
+\item
+  Un tableau de bord doit être partagé avec des responsables régionaux.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-dwh-8}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Règle : \texttt{prix\ \textgreater{}=\ 0}, avec rejet ou examen des
+  exceptions.
+\item
+  Protection : filtrer les données selon la région de l'utilisateur et
+  ne partager que les colonnes nécessaires ; les noms ou coordonnées
+  personnelles peuvent être masqués.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Business Intelligence avec Power BI et
+Taipy}\label{business-intelligence-avec-power-bi-et-taipy}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Objectifs du chapitre}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+À la fin de ce chapitre, l'étudiant sera capable de :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Définir} la Business Intelligence et distinguer un indicateur,
+  un rapport et un tableau de bord ;
+\item
+  \textbf{Construire} mentalement le parcours d'une donnée depuis la
+  source jusqu'à une décision ;
+\item
+  \textbf{Importer et préparer} des données dans Power BI avec Power
+  Query ;
+\item
+  \textbf{Comprendre} un modèle en étoile et créer des mesures simples
+  en DAX ;
+\item
+  \textbf{Choisir} entre Power BI et une application Python avec Taipy
+  selon le besoin ;
+\item
+  \textbf{Expliquer} les principes d'un tableau de bord lisible :
+  objectif, public, filtres, contexte et action.
+\end{itemize}
+
+\end{tcolorbox}
+
+La \textbf{Business Intelligence (BI)} transforme des données préparées
+en informations régulièrement consultées pour piloter une activité. Elle
+ne consiste pas à accumuler des graphiques : un bon tableau de bord aide
+une personne précise à répondre à des questions précises et à décider.
+
+\section{1. Comprendre la BI}\label{comprendre-la-bi}
+
+\subsection{1.1. Du besoin à
+l'indicateur}\label{du-besoin-uxe0-lindicateur}
+
+Un \textbf{indicateur} est une mesure définie par une formule, une
+période et une population. Un \textbf{KPI} (\emph{Key Performance
+Indicator}) est un indicateur considéré comme essentiel pour suivre un
+objectif.
+
+Exemple pour un site de livraison :
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Élément & Exemple \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Objectif & Livrer les commandes à temps \\
+KPI & Taux de livraison à temps \\
+Formule & livraisons à temps / livraisons terminées \\
+Période & semaine ou mois \\
+Cible & au moins 95 \% \\
+Action possible & examiner les villes sous la cible \\
+\end{longtable}
+}
+
+Un rapport peut contenir plusieurs pages et analyses détaillées. Un
+tableau de bord est généralement plus synthétique : il met en évidence
+les quelques indicateurs et alertes nécessaires au suivi.
+
+\subsection{1.2. Le parcours d'une solution
+BI}\label{le-parcours-dune-solution-bi}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Sources → préparation → modèle sémantique → mesures → visuels}
+\NormalTok{                                      ↓}
+\NormalTok{                             rapport / tableau de bord}
+\NormalTok{                                      ↓}
+\NormalTok{                              décision et action}
+\end{Highlighting}
+\end{Shaded}
+
+Le modèle \textbf{sémantique} donne un sens commun aux tables, aux
+relations et aux mesures. Deux personnes doivent obtenir le même chiffre
+lorsqu'elles utilisent le même KPI.
+
+\subsection{1.3. Règles d'un tableau de bord
+débutant}\label{ruxe8gles-dun-tableau-de-bord-duxe9butant}
+
+Un tableau de bord lisible :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  commence par le public et la décision attendue ;
+\item
+  affiche une période et une unité ;
+\item
+  présente quelques KPI importants avant les détails ;
+\item
+  utilise une couleur pour signaler une information, pas pour décorer
+  chaque objet ;
+\item
+  permet d'explorer sans cacher la définition des indicateurs ;
+\item
+  indique la date de dernière actualisation.
+\end{enumerate}
+
+\section{2. Power BI : une démarche
+structurée}\label{power-bi-une-duxe9marche-structuruxe9e}
+
+Power BI est une plateforme de Business Intelligence qui permet de
+connecter des sources, de les transformer, de créer un modèle de
+données, de calculer des mesures et de construire des rapports
+interactifs. Le parcours présenté ici commence dans Power BI Desktop ;
+le partage dépend ensuite de l'environnement et des droits de
+l'organisation.
+
+\subsection{2.1. Étape 1 --- Importer les
+sources}\label{uxe9tape-1-importer-les-sources}
+
+On peut importer un fichier CSV, un classeur Excel, une base SQL ou
+d'autres sources disponibles dans l'environnement. À l'import, il faut
+vérifier :
+
+\begin{itemize}
+\tightlist
+\item
+  les noms de colonnes et leurs types ;
+\item
+  le séparateur et l'encodage d'un CSV ;
+\item
+  le type date, nombre ou texte ;
+\item
+  le nombre de lignes et la période couverte ;
+\item
+  la présence de doublons et de valeurs manquantes.
+\end{itemize}
+
+Importer n'est pas encore analyser : il faut comprendre ce qui a été
+chargé.
+
+\subsection{2.2. Étape 2 --- Transformer avec Power
+Query}\label{uxe9tape-2-transformer-avec-power-query}
+
+\textbf{Power Query} sert à préparer les données avant leur utilisation
+dans le modèle. On peut supprimer des colonnes inutiles, renommer un
+champ, convertir un type, filtrer des lignes, remplacer une valeur,
+fusionner des tables ou ajouter une colonne calculée.
+
+Une transformation doit rester explicable et reproductible. Power Query
+conserve les étapes appliquées ; il vaut mieux créer plusieurs étapes
+nommées et simples qu'une modification manuelle impossible à refaire.
+
+Exemples de contrôles :
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{Montant} est numérique et positif ;
+\item
+  \texttt{DateCommande} est bien de type date ;
+\item
+  \texttt{ProduitID} et \texttt{DateID} sont présents ;
+\item
+  la catégorie vide est traitée explicitement ;
+\item
+  le nombre de lignes final est comparé au nombre attendu.
+\end{itemize}
+
+\subsection{2.3. Étape 3 --- Construire le
+modèle}\label{uxe9tape-3-construire-le-moduxe8le}
+
+Pour un modèle de ventes, on privilégie un schéma en étoile :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dim\_Date       dim\_Produit       dim\_Client}
+\NormalTok{      \textbackslash{}             |             /}
+\NormalTok{             fact\_Ventes}
+\NormalTok{                   |}
+\NormalTok{              dim\_Magasin}
+\end{Highlighting}
+\end{Shaded}
+
+La table de faits contient les lignes de vente et les dimensions
+permettent de filtrer par date, produit, client ou magasin. Les
+relations doivent être vérifiées : une dimension possède généralement
+une ligne par identifiant, et plusieurs lignes de faits peuvent lui être
+liées.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Le piège des relations ambiguës}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Si une dimension contient plusieurs lignes pour le même identifiant, ou
+si deux tables sont reliées de manière inattendue, les totaux peuvent
+être multipliés. Vérifiez toujours le grain, les clés et un total connu
+avant de publier un rapport.
+
+\end{tcolorbox}
+
+\subsection{2.4. Étape 4 --- Créer des mesures en
+DAX}\label{uxe9tape-4-cruxe9er-des-mesures-en-dax}
+
+DAX est le langage de formules utilisé dans les modèles Power BI. Une
+\textbf{mesure} est recalculée selon le contexte de filtre du visuel, de
+la page ou de l'utilisateur.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ChiffreAffaires = SUM(fact\_Ventes[MontantNet])}
+
+\NormalTok{NombreCommandes = DISTINCTCOUNT(fact\_Ventes[CommandeID])}
+
+\NormalTok{PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{DIVIDE} évite une erreur lorsque le dénominateur est nul. Pour
+débuter, il faut distinguer une mesure d'une colonne calculée : la
+mesure s'adapte aux filtres, tandis qu'une colonne calculée est créée
+ligne par ligne dans la table.
+
+Une mesure peut être comparée à une période précédente, mais la logique
+de dates doit être préparée soigneusement. Dans un premier tableau de
+bord, trois ou quatre mesures bien définies valent mieux que de
+nombreuses formules difficiles à expliquer.
+
+\subsection{2.5. Étape 5 --- Construire les
+visuels}\label{uxe9tape-5-construire-les-visuels}
+
+Pour une page de suivi des ventes, une composition simple peut être :
+
+\begin{itemize}
+\tightlist
+\item
+  une ligne de cartes KPI : chiffre d'affaires, commandes, panier moyen,
+  taux de livraison à temps ;
+\item
+  une courbe du chiffre d'affaires par mois ;
+\item
+  un graphique en barres par région ou catégorie ;
+\item
+  un tableau détaillé filtrable ;
+\item
+  des segments (\emph{slicers}) pour l'année, la région et la catégorie.
+\end{itemize}
+
+Chaque visuel doit répondre à une question. Un graphique avec trop de
+séries ou trop de couleurs devient difficile à lire.
+
+\subsection{2.6. Étape 6 --- Vérifier et
+partager}\label{uxe9tape-6-vuxe9rifier-et-partager}
+
+Avant tout partage, vérifiez les totaux sur un petit exemple connu, la
+date d'actualisation, les filtres, les titres et les droits d'accès. Un
+rapport partagé avec des données personnelles doit respecter les règles
+de l'organisation et le principe du moindre accès.
+
+\section{3. Taipy : créer une application BI en
+Python}\label{taipy-cruxe9er-une-application-bi-en-python}
+
+Taipy permet de construire des applications Python interactives avec des
+contrôles, des graphiques, des tableaux et des filtres. Il est
+particulièrement intéressant quand l'équipe veut intégrer l'analyse dans
+une application métier ou conserver une logique Python personnalisée.
+
+\subsection{3.1. Quand choisir Taipy ?}\label{quand-choisir-taipy}
+
+Taipy peut être pertinent lorsque :
+
+\begin{itemize}
+\tightlist
+\item
+  les traitements sont déjà écrits en Python ;
+\item
+  l'application doit combiner un tableau de bord avec une logique métier
+  ;
+\item
+  l'on veut contrôler l'interface et le déploiement comme un projet
+  logiciel ;
+\item
+  l'utilisateur doit modifier un paramètre et observer immédiatement un
+  résultat.
+\end{itemize}
+
+Power BI peut être plus adapté lorsqu'une organisation veut une solution
+de BI prête à l'emploi, un catalogue de rapports, des connexions gérées
+et des usages majoritairement orientés vers l'exploration métier.
+
+Ce ne sont pas des outils absolument opposés. Une équipe peut préparer
+les données avec Python, les exposer dans Power BI, ou intégrer un
+indicateur Power BI dans un parcours applicatif selon son architecture.
+
+\subsection{3.2. Un exemple Taipy
+minimal}\label{un-exemple-taipy-minimal}
+
+Le code suivant illustre le principe avec des données déjà disponibles.
+Il ne remplace pas la préparation et la validation des données.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ pandas }\ImportTok{as}\NormalTok{ pd}
+\ImportTok{from}\NormalTok{ taipy.gui }\ImportTok{import}\NormalTok{ Gui}
+
+\NormalTok{df }\OperatorTok{=}\NormalTok{ pd.DataFrame(\{}
+    \StringTok{"Mois"}\NormalTok{: [}\StringTok{"Janvier"}\NormalTok{, }\StringTok{"Février"}\NormalTok{, }\StringTok{"Mars"}\NormalTok{],}
+    \StringTok{"Ventes"}\NormalTok{: [}\DecValTok{12000}\NormalTok{, }\DecValTok{14500}\NormalTok{, }\DecValTok{13200}\NormalTok{],}
+\NormalTok{\})}
+
+\NormalTok{mois }\OperatorTok{=} \StringTok{"Tous"}
+\NormalTok{texte }\OperatorTok{=} \StringTok{"\#\#\# Suivi des ventes"}
+
+\NormalTok{page }\OperatorTok{=} \StringTok{"""}
+\StringTok{\# Suivi des ventes}
+
+\StringTok{Sélection : \textless{}|}\SpecialCharTok{\{mois\}}\StringTok{|selector|lov=Tous;Janvier;Février;Mars|\textgreater{}}
+
+\StringTok{\textless{}|}\SpecialCharTok{\{df\}}\StringTok{|table|\textgreater{}}
+\StringTok{"""}
+
+\NormalTok{Gui(page}\OperatorTok{=}\NormalTok{page).run()}
+\end{Highlighting}
+\end{Shaded}
+
+Dans cet exemple, \texttt{df} contient les données affichées,
+\texttt{page} décrit l'interface et le sélecteur permet de choisir une
+valeur. Dans un vrai projet, on ajoute une fonction qui filtre les
+données, des indicateurs calculés et des graphiques adaptés. Les noms
+exacts de certains contrôles peuvent évoluer selon la version de Taipy :
+il faut vérifier la documentation de la version utilisée.
+
+\subsection{3.3. Organiser une petite
+application}\label{organiser-une-petite-application}
+
+Même une application pédagogique gagne à séparer :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{projet/}
+\NormalTok{├── data/              \# données sources ou exemple}
+\NormalTok{├── preparation.py     \# lecture et nettoyage}
+\NormalTok{├── indicateurs.py     \# calculs métier}
+\NormalTok{├── app.py             \# interface Taipy}
+\NormalTok{└── README.md          \# installation et utilisation}
+\end{Highlighting}
+\end{Shaded}
+
+Cette séparation permet de tester les indicateurs indépendamment de
+l'interface. L'application ne doit pas recalculer silencieusement un
+indicateur avec une définition différente de celle du rapport.
+
+\section{4. Comparaison synthétique}\label{comparaison-synthuxe9tique}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Critère
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Power BI
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Taipy
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Profil & Plateforme BI avec interface graphique &
+Bibliothèque/applications Python \\
+Préparation & Power Query et connexions & Python, pandas ou autres
+outils \\
+Mesures & DAX et modèle sémantique & Fonctions et code Python \\
+Usage principal & Rapports, exploration et partage BI & Application
+interactive intégrée à un projet \\
+Point d'attention & Relations, contexte des mesures, droits &
+Organisation du code, déploiement, versions \\
+\end{longtable}
+}
+
+Le choix doit partir du besoin, pas de la préférence pour un outil. Dans
+les deux cas, les mêmes bases restent indispensables : question métier,
+qualité des données, modèle clair, indicateurs documentés et
+visualisation lisible.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Auto-évaluation}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant le cas pratique, assurez-vous de pouvoir répondre « oui » aux
+questions suivantes :
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  Je peux distinguer un KPI, une mesure et un visuel.
+\item[$\square$]
+  Je sais expliquer le rôle de Power Query.
+\item[$\square$]
+  Je peux décrire la place de la table de faits dans un modèle Power BI.
+\item[$\square$]
+  Je sais pourquoi une mesure DAX n'est pas toujours une colonne
+  calculée.
+\item[$\square$]
+  Je peux citer une situation où Taipy est pertinent.
+\item[$\square$]
+  Je sais vérifier un tableau de bord avant de le partager.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Exercices}\label{exercices-4}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Consigne}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Ces exercices sont conceptuels ou demandent seulement un calcul court.
+Aucun logiciel n'est nécessaire.
+
+\end{tcolorbox}
+
+\begin{exercise}[Indicateur ou action
+?]\protect\hypertarget{exr-bi-1}{}\label{exr-bi-1}
+
+Pour l'objectif « réduire les retards de livraison », proposez un KPI,
+sa formule et une action possible si sa valeur diminue.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-bi-1}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Exemple : KPI = \textbf{taux de livraison à temps} ; formule =
+livraisons à temps / livraisons terminées × 100 ; action = analyser les
+villes ou transporteurs dont le taux est le plus faible.
+
+\end{tcolorbox}
+
+\begin{exercise}[Lire un parcours
+BI]\protect\hypertarget{exr-bi-2}{}\label{exr-bi-2}
+
+Associez chaque étape à son rôle : préparer, modéliser, visualiser,
+décider.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Relier les ventes à la dimension Date.
+\item
+  Convertir une colonne texte en date.
+\item
+  Afficher les ventes par mois.
+\item
+  Renforcer un transporteur après avoir constaté des retards.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-bi-2}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Modéliser} ; b. \textbf{Préparer} ; c.~\textbf{Visualiser} ;
+  d.~\textbf{Décider}.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Calculer un
+KPI]\protect\hypertarget{exr-bi-3}{}\label{exr-bi-3}
+
+Sur 250 livraisons terminées, 225 ont été livrées à temps. Calculez le
+taux de livraison à temps et indiquez s'il atteint une cible de 95 \%.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-bi-3}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\(225/250\times100=90\%\). Le taux n'atteint pas la cible de 95 \%.
+
+\end{tcolorbox}
+
+\begin{exercise}[Power Query ou DAX
+?]\protect\hypertarget{exr-bi-4}{}\label{exr-bi-4}
+
+Indiquez l'outil le plus adapté :
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Corriger le type d'une colonne \texttt{Date}.
+\item
+  Calculer le chiffre d'affaires selon les filtres du rapport.
+\item
+  Supprimer une colonne inutilisée avant le modèle.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-bi-4}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \textbf{Power Query} ; b. \textbf{mesure DAX} ; c.~\textbf{Power
+  Query}.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Vérifier une
+relation]\protect\hypertarget{exr-bi-5}{}\label{exr-bi-5}
+
+Une dimension \texttt{Produit} contient deux lignes pour le même
+\texttt{ProduitID}. Quel risque cela crée-t-il lorsqu'on relie cette
+dimension à une table de ventes ? Quelle vérification simple
+proposeriez-vous ?
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-bi-5}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Les ventes peuvent être comptées plusieurs fois lors d'un regroupement
+ou d'un filtre. Il faut vérifier l'unicité de \texttt{ProduitID} dans la
+dimension et retrouver la cause du doublon avant de publier.
+
+\end{tcolorbox}
+
+\begin{exercise}[Choisir un
+outil]\protect\hypertarget{exr-bi-6}{}\label{exr-bi-6}
+
+Une équipe possède déjà plusieurs fonctions Python et veut intégrer un
+indicateur interactif dans une application interne. Une autre équipe
+veut surtout créer rapidement des rapports métiers partagés. Quel outil
+recommander à chacune, et pourquoi ?
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-bi-6}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+La première équipe peut choisir \textbf{Taipy}, pour réutiliser sa
+logique Python dans une application. La seconde peut choisir
+\textbf{Power BI}, orienté vers les modèles, rapports et usages BI
+partagés. Le contexte de sécurité et de déploiement doit aussi être
+vérifié.
+
+\end{tcolorbox}
+
+\begin{exercise}[Lire une
+mesure]\protect\hypertarget{exr-bi-7}{}\label{exr-bi-7}
+
+Le chiffre d'affaires est de 48 000 MAD pour 300 commandes.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Calculez le panier moyen.
+\item
+  Pourquoi faut-il utiliser le nombre de commandes et non le nombre de
+  lignes de produits si le KPI est défini par commande ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-bi-7}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \(48\,000/300=\textbf{160}\) MAD par commande.
+\item
+  Une commande peut contenir plusieurs lignes de produits ; compter les
+  lignes gonflerait le dénominateur et changerait la définition du KPI.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Critiquer une
+page]\protect\hypertarget{exr-bi-8}{}\label{exr-bi-8}
+
+Une page affiche 25 graphiques sans unité, sans date de mise à jour et
+avec une couleur différente pour chaque barre. Citez trois améliorations
+prioritaires et justifiez-les.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-bi-8}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Exemples : réduire le nombre de visuels pour mettre en avant les KPI ;
+ajouter titres, unités et période ; afficher la date d'actualisation ;
+réserver les couleurs aux catégories ou alertes utiles ; ajouter des
+filtres compréhensibles. Ces changements facilitent la lecture et
+évitent des interprétations différentes.
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Cas pratique complet : analyser les ventes d'une petite chaîne
+de
+magasins}\label{cas-pratique-complet-analyser-les-ventes-dune-petite-chauxeene-de-magasins}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Objectifs du chapitre}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+À la fin de ce cas pratique, l'étudiant sera capable de :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Cadrer} une question d'analyse à partir d'un besoin métier ;
+\item
+  \textbf{Repérer} les problèmes de qualité dans un petit jeu de données
+  ;
+\item
+  \textbf{Calculer et interpréter} des indicateurs simples : chiffre
+  d'affaires, quantité, panier moyen, médiane et taux ;
+\item
+  \textbf{Choisir} un modèle en étoile adapté à une analyse de ventes ;
+\item
+  \textbf{Proposer} une page Power BI et une vue Taipy cohérentes avec
+  les questions ;
+\item
+  \textbf{Rédiger} une conclusion prudente, fondée sur les données et
+  accompagnée de limites.
+\end{itemize}
+
+\end{tcolorbox}
+
+Ce chapitre suit un projet de bout en bout. L'entreprise fictive
+\textbf{Atlas Marchés} possède trois magasins à Casablanca, Rabat et
+Tanger. La direction souhaite comprendre les ventes du premier trimestre
+2026 et décider où concentrer ses efforts commerciaux. Les données sont
+volontairement petites afin que les calculs puissent être vérifiés à la
+main.
+
+\section{1. Le besoin métier}\label{le-besoin-muxe9tier}
+
+La direction pose quatre questions :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Quel est le chiffre d'affaires net par mois et par magasin ?
+\item
+  Quels produits ou catégories contribuent le plus aux ventes ?
+\item
+  Le panier moyen est-il différent selon les magasins ?
+\item
+  Quelles informations faudrait-il surveiller dans un tableau de bord
+  mensuel ?
+\end{enumerate}
+
+La question n'est pas « faire un graphique ». Le livrable attendu est
+une analyse descriptive, quelques explications prudentes et une
+proposition de suivi.
+
+\subsection{1.1. Périmètre et
+définitions}\label{puxe9rimuxe8tre-et-duxe9finitions}
+
+Le périmètre est limité aux ventes \textbf{payées} enregistrées entre le
+1er janvier et le 31 mars 2026. Une ligne du fichier correspond à une
+ligne de produit dans une commande. Le montant net est défini ainsi :
+
+\[
+\text{montant net}
+=\text{quantité}\times\text{prix unitaire}-\text{remise}.
+\]
+
+Le \textbf{panier moyen} est :
+
+\[
+\text{panier moyen}
+=\frac{\text{chiffre d'affaires net}}{\text{nombre de commandes distinctes}}.
+\]
+
+Ces définitions sont annoncées avant les calculs ; elles évitent de
+changer de formule au milieu de l'analyse.
+
+\section{2. Le jeu de données}\label{le-jeu-de-donnuxe9es}
+
+Voici un extrait pédagogique. Dans un vrai projet, le fichier complet
+pourrait contenir beaucoup plus de lignes.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+Ligne
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Commande
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Date
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Magasin
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Catégorie
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Produit
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Qté
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Prix unitaire
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Remise
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Statut
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & C001 & 05/01/2026 & Casablanca & Épicerie & Huile & 2 & 75 & 0 &
+Payée \\
+2 & C001 & 05/01/2026 & Casablanca & Épicerie & Riz & 3 & 20 & 0 &
+Payée \\
+3 & C002 & 08/01/2026 & Rabat & Boissons & Jus & 4 & 18 & 5 & Payée \\
+4 & C003 & 15/01/2026 & Tanger & Hygiène & Savon & 5 & 12 & 0 & Payée \\
+5 & C004 & 03/02/2026 & Casablanca & Épicerie & Huile & 1 & 75 & 0 &
+Payée \\
+6 & C005 & 10/02/2026 & Rabat & Épicerie & Riz & 5 & 20 & 10 & Payée \\
+7 & C006 & 18/02/2026 & Tanger & Boissons & Jus & 2 & 18 & 0 &
+Annulée \\
+8 & C007 & 22/02/2026 & Casablanca & Hygiène & Savon & 6 & 12 & 0 &
+Payée \\
+9 & C008 & 06/03/2026 & Rabat & Boissons & Jus & 6 & 18 & 0 & Payée \\
+10 & C009 & 12/03/2026 & Tanger & Épicerie & Riz & 2 & 20 & 0 & Payée \\
+11 & C010 & 20/03/2026 & Casablanca & Boissons & Jus & 3 & 18 & 5 &
+Payée \\
+12 & C010 & 20/03/2026 & Casablanca & Hygiène & Savon & 2 & 12 & 0 &
+Payée \\
+\end{longtable}
+}
+
+\subsection{2.1. Première lecture}\label{premiuxe8re-lecture}
+
+Le grain est \textbf{une ligne de produit dans une commande}. La
+commande C001 apparaît deux fois car elle contient deux produits. Pour
+compter les commandes, il faut compter les identifiants distincts, et
+non les lignes.
+
+La ligne C006 est annulée. Si le chiffre d'affaires concerne les ventes
+payées, elle doit être exclue, mais cette décision doit être documentée.
+Elle ne doit pas être supprimée du fichier original : on conserve le
+statut pour pouvoir analyser les annulations.
+
+\section{3. Préparer les données}\label{pruxe9parer-les-donnuxe9es}
+
+\subsection{3.1. Dictionnaire minimal}\label{dictionnaire-minimal}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Colonne & Type attendu & Règle \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{Commande} & Texte & Identifiant non vide \\
+\texttt{Date} & Date & Date comprise dans la période \\
+\texttt{Magasin} & Catégorie & Casablanca, Rabat ou Tanger \\
+\texttt{Qté} & Entier & Strictement positive pour une vente \\
+\texttt{Prix\ unitaire} & Décimal & Positif, en MAD \\
+\texttt{Remise} & Décimal & Supérieure ou égale à 0, en MAD \\
+\texttt{Statut} & Catégorie & Payée ou Annulée \\
+\end{longtable}
+}
+
+Il faut également vérifier que la remise ne dépasse pas le montant brut
+de la ligne, que les dates ne sont pas inversées et que les identifiants
+ne comportent pas d'espaces cachés.
+
+\subsection{3.2. Transformation}\label{transformation}
+
+Pour chaque ligne, on calcule :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{montant\_brut = quantité × prix\_unitaire}
+\NormalTok{montant\_net = montant\_brut − remise}
+\NormalTok{mois = mois(date)}
+\end{Highlighting}
+\end{Shaded}
+
+Puis on filtre \texttt{Statut\ =\ Payée} pour les indicateurs de chiffre
+d'affaires. On conserve une copie de l'ensemble initial et on compte les
+lignes exclues.
+
+Pour l'extrait, 11 lignes sur 12 sont payées. La ligne annulée
+représente 1 ligne sur 12, soit environ 8,3 \% des lignes ; ce
+pourcentage ne doit pas être interprété comme un taux de commandes
+annulées, car une commande peut comporter plusieurs lignes.
+
+\section{4. Calculer les indicateurs}\label{calculer-les-indicateurs}
+
+\subsection{4.1. Montants ligne par
+ligne}\label{montants-ligne-par-ligne}
+
+Sur les lignes payées :
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lllr@{}}
+\toprule\noalign{}
+Commande & Produit & Calcul & Montant net \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+C001 & Huile & \(2\times75-0\) & 150 \\
+C001 & Riz & \(3\times20-0\) & 60 \\
+C002 & Jus & \(4\times18-5\) & 67 \\
+C003 & Savon & \(5\times12-0\) & 60 \\
+C004 & Huile & \(1\times75-0\) & 75 \\
+C005 & Riz & \(5\times20-10\) & 90 \\
+C007 & Savon & \(6\times12-0\) & 72 \\
+C008 & Jus & \(6\times18-0\) & 108 \\
+C009 & Riz & \(2\times20-0\) & 40 \\
+C010 & Jus & \(3\times18-5\) & 49 \\
+C010 & Savon & \(2\times12-0\) & 24 \\
+\end{longtable}
+}
+
+Le chiffre d'affaires net de l'extrait est donc :
+
+\[
+150+60+67+60+75+90+72+108+40+49+24
+=\textbf{795 MAD}.
+\]
+
+\subsection{4.2. Par mois}\label{par-mois}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrrr@{}}
+\toprule\noalign{}
+Mois & Chiffre d'affaires net & Commandes distinctes & Panier moyen \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Janvier & 337 & 3 & 112,33 \\
+Février & 237 & 3 & 79,00 \\
+Mars & 221 & 3 & 73,67 \\
+\textbf{Total} & \textbf{795} & \textbf{9} & \textbf{88,33} \\
+\end{longtable}
+}
+
+Le panier moyen total est \(795/9=88,33\) MAD. Il ne faut pas faire la
+moyenne simple des trois paniers mensuels sans vérifier les effectifs ;
+ici ils sont égaux, mais ce n'est pas toujours le cas.
+
+\subsection{4.3. Par magasin et par
+catégorie}\label{par-magasin-et-par-catuxe9gorie}
+
+En regroupant les lignes payées :
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Magasin
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Chiffre d'affaires net
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Commandes distinctes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Panier moyen
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Casablanca & 435 & 4 & 108,75 \\
+Rabat & 157 & 3 & 52,33 \\
+Tanger & 100 & 2 & 50,00 \\
+\end{longtable}
+}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Catégorie & Chiffre d'affaires net \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Épicerie & 415 \\
+Boissons & 224 \\
+Hygiène & 156 \\
+\end{longtable}
+}
+
+Casablanca contribue le plus au chiffre d'affaires et possède le panier
+moyen le plus élevé dans cet extrait. Cela ne suffit pas à conclure que
+le magasin est le plus performant : il faudrait connaître le nombre de
+visiteurs, les coûts, la taille des magasins et une période plus longue.
+
+\subsection{4.4. Moyenne et médiane des montants de
+lignes}\label{moyenne-et-muxe9diane-des-montants-de-lignes}
+
+Les montants des lignes payées sont :
+
+\[60,\ 60,\ 67,\ 72,\ 75,\ 90,\ 108,\ 24,\ 40,\ 49,\ 150\]
+
+Triés :
+
+\[24,\ 40,\ 49,\ 60,\ 60,\ 67,\ 72,\ 75,\ 90,\ 108,\ 150.\]
+
+La médiane est la sixième valeur, soit \textbf{67 MAD}. La moyenne est
+\(795/11 \approx \textbf{72,27}\) MAD. La moyenne un peu supérieure à la
+médiane suggère que quelques lignes élevées, notamment 150 MAD, tirent
+la moyenne vers le haut.
+
+\section{5. Construire le modèle
+analytique}\label{construire-le-moduxe8le-analytique}
+
+À partir de ce fichier, un modèle en étoile simple pourrait être :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dim\_date {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}\textbackslash{}}
+\NormalTok{dim\_produit {-}{-}{-}{-}{-}{-}{-}{-}{-} fact\_ventes}
+\NormalTok{dim\_magasin {-}{-}{-}{-}{-}{-}{-}{-}/}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{fact\_ventes} contient \texttt{Commande}, \texttt{DateID},
+\texttt{ProduitID}, \texttt{MagasinID}, \texttt{Quantite},
+\texttt{PrixUnitaire}, \texttt{Remise}, \texttt{MontantNet} et
+\texttt{Statut}. Les dimensions décrivent les dates, produits et
+magasins.
+
+Les mesures attendues sont :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ChiffreAffaires = somme de MontantNet pour les lignes payées}
+\NormalTok{Commandes = nombre d\textquotesingle{}identifiants Commande distincts pour les lignes payées}
+\NormalTok{PanierMoyen = ChiffreAffaires / Commandes}
+\NormalTok{Quantités = somme de Quantite pour les lignes payées}
+\end{Highlighting}
+\end{Shaded}
+
+Le tableau de bord ne doit pas calculer le panier moyen comme la moyenne
+des montants de lignes : une commande peut contenir plusieurs lignes. Le
+grain explique cette différence.
+
+\section{6. Concevoir la page Power
+BI}\label{concevoir-la-page-power-bi}
+
+Une page « Vue générale » peut contenir :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  quatre cartes : chiffre d'affaires net, commandes, panier moyen et
+  quantités vendues ;
+\item
+  une courbe du chiffre d'affaires par mois ;
+\item
+  des barres du chiffre d'affaires par magasin ;
+\item
+  des barres du chiffre d'affaires par catégorie ;
+\item
+  des segments pour le mois, le magasin et la catégorie ;
+\item
+  une note indiquant « données payées, période janvier--mars 2026,
+  dernière actualisation ».
+\end{enumerate}
+
+Une deuxième page « Diagnostic » peut détailler les produits, les
+annulations et les différences entre magasins. La première page répond à
+« où en sommes-nous ? », la seconde aide à explorer « où regarder
+ensuite ? ».
+
+Avant le partage, on compare les cartes aux totaux calculés manuellement
+: 795 MAD, 9 commandes distinctes et 88,33 MAD de panier moyen.
+
+\section{7. Construire une vue Taipy}\label{construire-une-vue-taipy}
+
+La même analyse peut être intégrée à une application Python. La logique
+doit être séparée de l'affichage :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def}\NormalTok{ indicateurs(df):}
+\NormalTok{    payees }\OperatorTok{=}\NormalTok{ df[df[}\StringTok{"Statut"}\NormalTok{] }\OperatorTok{==} \StringTok{"Payée"}\NormalTok{]}
+\NormalTok{    chiffre\_affaires }\OperatorTok{=}\NormalTok{ payees[}\StringTok{"MontantNet"}\NormalTok{].}\BuiltInTok{sum}\NormalTok{()}
+\NormalTok{    commandes }\OperatorTok{=}\NormalTok{ payees[}\StringTok{"Commande"}\NormalTok{].nunique()}
+\NormalTok{    panier\_moyen }\OperatorTok{=}\NormalTok{ chiffre\_affaires }\OperatorTok{/}\NormalTok{ commandes }\ControlFlowTok{if}\NormalTok{ commandes }\ControlFlowTok{else} \DecValTok{0}
+    \ControlFlowTok{return}\NormalTok{ \{}
+        \StringTok{"chiffre\_affaires"}\NormalTok{: chiffre\_affaires,}
+        \StringTok{"commandes"}\NormalTok{: commandes,}
+        \StringTok{"panier\_moyen"}\NormalTok{: panier\_moyen,}
+\NormalTok{    \}}
+\end{Highlighting}
+\end{Shaded}
+
+Une interface Taipy peut ensuite proposer un filtre \texttt{Magasin},
+afficher les trois indicateurs et mettre à jour une table mensuelle. Le
+résultat doit rester cohérent avec le dictionnaire métier et les calculs
+Power BI.
+
+\section{8. Interpréter et
+communiquer}\label{interpruxe9ter-et-communiquer}
+
+Une conclusion raisonnable pour l'extrait serait :
+
+\begin{quote}
+Sur les ventes payées de l'extrait, le chiffre d'affaires net atteint
+795 MAD pour 9 commandes, avec un panier moyen de 88,33 MAD. Casablanca
+représente 435 MAD et le panier moyen y est supérieur à celui de Rabat
+et Tanger. Les lignes de vente ont une médiane de 67 MAD et une moyenne
+de 72,27 MAD, ce qui signale une légère influence de quelques montants
+élevés. Ces résultats sont exploratoires : l'échantillon est très petit,
+ne couvre que trois mois et ne permet pas d'expliquer les causes ni de
+mesurer la rentabilité.
+\end{quote}
+
+La conclusion sépare les \textbf{faits calculés}, les
+\textbf{interprétations prudentes} et les \textbf{limites}. Elle ne
+transforme pas une différence observée en causalité.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Auto-évaluation}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Avant de considérer le cas comme terminé, assurez-vous de pouvoir
+répondre « oui » aux questions suivantes :
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  Je peux formuler le grain du fichier.
+\item[$\square$]
+  Je sais pourquoi la ligne annulée est filtrée pour le chiffre
+  d'affaires.
+\item[$\square$]
+  Je peux recalculer le total de 795 MAD.
+\item[$\square$]
+  Je distingue lignes de produits et commandes distinctes.
+\item[$\square$]
+  Je peux expliquer la différence entre moyenne et médiane dans ce cas.
+\item[$\square$]
+  Je peux proposer une page de tableau de bord sans surcharger
+  l'utilisateur.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Exercices}\label{exercices-5}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Consigne}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Répondez sans ordinateur. Les données de l'énoncé suffisent ; les
+calculs sont courts et peuvent être réalisés avec une calculatrice.
+
+\end{tcolorbox}
+
+\begin{exercise}[Définir le
+grain]\protect\hypertarget{exr-cas-1}{}\label{exr-cas-1}
+
+Quelle phrase décrit le grain du fichier ? Pourquoi la commande C001
+occupe-t-elle deux lignes ?
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-cas-1}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Une ligne représente \textbf{un produit dans une commande}. C001
+contient de l'huile et du riz : elle possède donc deux lignes de
+produits.
+
+\end{tcolorbox}
+
+\begin{exercise}[Exclure une
+annulation]\protect\hypertarget{exr-cas-2}{}\label{exr-cas-2}
+
+Pourquoi la ligne C006 n'est-elle pas incluse dans le chiffre d'affaires
+payé ? Peut-on la supprimer du fichier original ?
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-cas-2}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Elle est marquée \textbf{Annulée}, donc elle ne représente pas une vente
+payée selon la définition du périmètre. Il faut la conserver dans la
+source afin de pouvoir suivre les annulations et documenter le filtre.
+
+\end{tcolorbox}
+
+\begin{exercise}[Calculer une
+ligne]\protect\hypertarget{exr-cas-3}{}\label{exr-cas-3}
+
+Calculez le montant net de 4 jus à 18 MAD avec une remise de 5 MAD, puis
+celui de 5 savons à 12 MAD sans remise.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-cas-3}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Jus : \(4\times18-5=\textbf{67}\) MAD. Savons :
+\(5\times12=\textbf{60}\) MAD.
+
+\end{tcolorbox}
+
+\begin{exercise}[Vérifier le
+total]\protect\hypertarget{exr-cas-4}{}\label{exr-cas-4}
+
+Le chiffre d'affaires net est de 795 MAD et le magasin de Casablanca
+réalise 435 MAD.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Quelle part du chiffre d'affaires total représente Casablanca ?
+\item
+  Quel montant reste pour Rabat et Tanger ensemble ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-cas-4}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  \(435/795\times100 \approx 54,7\%\).
+\item
+  \(795-435=\textbf{360}\) MAD.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Commandes et
+lignes]\protect\hypertarget{exr-cas-5}{}\label{exr-cas-5}
+
+Il y a 11 lignes payées mais seulement 9 commandes distinctes.
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Pourquoi ces deux nombres sont-ils différents ?
+\item
+  Quel nombre utiliser pour calculer le panier moyen ?
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-cas-5}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Certaines commandes contiennent plusieurs produits et donc plusieurs
+  lignes ; C001 et C010 en sont des exemples.
+\item
+  Il faut utiliser \textbf{9 commandes distinctes}, car le panier moyen
+  est défini par commande.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{exercise}[Comparer moyenne et
+médiane]\protect\hypertarget{exr-cas-6}{}\label{exr-cas-6}
+
+La moyenne des montants de lignes est 72,27 MAD et la médiane est 67
+MAD. Que suggère cette différence ? Quelle valeur de la liste contribue
+particulièrement à tirer la moyenne vers le haut ?
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-cas-6}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+La moyenne supérieure à la médiane suggère une légère asymétrie à droite
+: quelques montants élevés influencent la moyenne. La ligne à 150 MAD y
+contribue particulièrement.
+
+\end{tcolorbox}
+
+\begin{exercise}[Choisir les indicateurs du tableau de
+bord]\protect\hypertarget{exr-cas-7}{}\label{exr-cas-7}
+
+Parmi les éléments suivants, lesquels doivent apparaître en priorité sur
+la page générale : chiffre d'affaires net, identifiant de chaque client,
+commandes distinctes, panier moyen, une liste de 25 couleurs, date
+d'actualisation ? Justifiez les choix.
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-cas-7}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Les priorités sont le \textbf{chiffre d'affaires net}, les
+\textbf{commandes distinctes}, le \textbf{panier moyen} et la
+\textbf{date d'actualisation}. Un identifiant individuel n'est pas
+nécessaire pour la vue générale et peut poser un problème de
+confidentialité ; 25 couleurs nuisent à la lecture.
+
+\end{tcolorbox}
+
+\begin{exercise}[Limites et
+décisions]\protect\hypertarget{exr-cas-8}{}\label{exr-cas-8}
+
+La direction demande : « Casablanca est-elle le meilleur magasin ? »
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Donnez une conclusion que les données permettent de soutenir.
+\item
+  Citez deux informations manquantes avant de conclure sur la
+  performance globale.
+\end{enumerate}
+
+\end{exercise}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Solution de l'exercice Exercice~\ref{exr-cas-8}}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  On peut dire que Casablanca a le chiffre d'affaires net et le panier
+  moyen les plus élevés dans \textbf{cet extrait de ventes payées}.
+\item
+  Il manque par exemple les coûts et la marge, le nombre de visiteurs,
+  la taille des magasins, le stock disponible, une période plus longue
+  et les objectifs de chaque magasin. Le chiffre d'affaires seul ne
+  suffit pas à définir la performance globale.
+\end{enumerate}
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter*{References}\label{references}
+\addcontentsline{toc}{chapter}{References}
+
+\markboth{References}{References}
+
+\protect\phantomsection\label{refs}
+\begin{CSLReferences}{1}{1}
+\bibitem[\citeproctext]{ref-knaflic2015}
+Knaflic, Cole. 2015. \emph{Storytelling with Data}. Wiley.
+
+\bibitem[\citeproctext]{ref-mckinney2022}
+McKinney, Wes. 2022. \emph{Python for Data Analysis}. O'Reilly Media.
+
+\end{CSLReferences}
+
+
+\backmatter
+
+
+\end{document}
