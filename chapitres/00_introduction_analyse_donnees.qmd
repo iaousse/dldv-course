@@ -68,7 +68,62 @@ On distingue classiquement quatre niveaux d'analyse, de la simple observation du
 
 Ce cours se concentre principalement sur les analyses **descriptive** et **diagnostique** : elles reposent entièrement sur les techniques de préparation, d'exploration et de visualisation présentées dans les chapitres suivants, et ne nécessitent pas d'algorithme d'apprentissage automatique.
 
-## 3. Le cycle de vie d'un projet d'analyse de données
+## 3. Les premiers indicateurs à connaître
+
+Avant de construire un graphique ou un tableau de bord, il faut savoir décrire simplement les données. Une **observation** est une ligne du tableau (par exemple une commande) et une **variable** est une colonne (par exemple le montant de la commande). Une variable peut être :
+
+- **qualitative** : une catégorie ou une étiquette, comme une ville ou un moyen de paiement ;
+- **quantitative** : un nombre sur lequel on peut calculer, comme un prix, une quantité ou une durée ;
+- **temporelle** : une date ou une période, que l'on peut ordonner dans le temps.
+
+### 3.1. Compter et comparer
+
+Le **nombre d'observations** indique la taille du jeu de données. Pour une catégorie, on utilise un effectif (combien de commandes à Casablanca ?) et une fréquence (quelle part des commandes vient de Casablanca ?).
+
+Si 30 commandes sur 120 viennent de Casablanca :
+
+$$
+\text{fréquence} = \frac{30}{120} = 0{,}25 = 25\%.
+$$
+
+Pour comparer deux périodes, on peut calculer une variation :
+
+$$
+\text{variation en \%} =
+\frac{\text{valeur finale} - \text{valeur initiale}}
+{\text{valeur initiale}}\times 100.
+$$
+
+Une vente qui passe de 200 à 240 MAD a donc augmenté de
+$\frac{240-200}{200}\times 100=20\%$.
+
+### 3.2. Résumer une variable numérique
+
+Les indicateurs de tendance centrale et de dispersion seront utilisés tout au long du manuel :
+
+| Indicateur | Question à laquelle il répond | Exemple d'interprétation |
+|:---|:---|:---|
+| Moyenne | Quel serait le partage équitable du total ? | 10 commandes totalisent 2 000 MAD : moyenne = 200 MAD. |
+| Médiane | Quelle valeur partage les observations en deux groupes égaux ? | La moitié des commandes vaut au plus la médiane. |
+| Minimum / maximum | Quelles sont les valeurs extrêmes observées ? | La commande la moins chère et la plus chère. |
+| Quartiles $Q_1$ et $Q_3$ | Où se situent les 25 % et 75 % des observations ? | 50 % des valeurs sont entre $Q_1$ et $Q_3$. |
+| Écart interquartile (IQR) | Quelle est la largeur de la moitié centrale ? | $IQR=Q_3-Q_1$. |
+| Écart-type | Les valeurs sont-elles plutôt proches de la moyenne ? | Plus il est grand, plus les valeurs sont dispersées autour de la moyenne. |
+
+La moyenne est calculée en additionnant les valeurs puis en divisant par leur nombre. La médiane nécessite de trier les valeurs : avec un nombre impair de valeurs, c'est la valeur du milieu ; avec un nombre pair, c'est la moyenne des deux valeurs centrales. Une valeur très élevée peut augmenter fortement la moyenne, mais elle influence beaucoup moins la médiane. C'est pourquoi les deux indicateurs doivent souvent être présentés ensemble.
+
+```python
+resume = df["montant"].describe()
+print(resume[["count", "mean", "50%", "min", "max"]])
+```
+
+La commande `describe()` fournit notamment l'effectif (`count`), la moyenne (`mean`), les quartiles (`25%`, `50%`, `75%`), le minimum et le maximum. Elle ne remplace pas l'interprétation : un indicateur doit toujours être accompagné de son unité, de sa période et de la population étudiée.
+
+::: {.callout-warning title="Un indicateur n'est pas une conclusion"}
+Une moyenne de 250 MAD ne dit pas si les commandes sont toutes proches de 250 MAD ou si quelques très grosses commandes compensent beaucoup de petites commandes. Pour comprendre cela, on complète la moyenne par la médiane, les quartiles ou un graphique.
+:::
+
+## 4. Le cycle de vie d'un projet d'analyse de données
 
 Un projet d'analyse de données suit une succession d'étapes, rarement linéaire, que l'on peut résumer ainsi :
 
@@ -87,9 +142,9 @@ Ce découpage est proche du cadre **OSEMN** (*Obtain, Scrub, Explore, Model, iNt
 
 Comme pour tout cycle de projet, ces étapes sont **itératives** : une exploration révélant un problème de qualité de données ramène généralement à l'étape de nettoyage, et une visualisation peu convaincante amène souvent à revisiter l'exploration.
 
-## 4. Écosystème d'outils Python pour l'analyse de données
+## 5. Écosystème d'outils Python pour l'analyse de données
 
-### 4.1. Bibliothèques cœur
+### 5.1. Bibliothèques cœur
 
 Comme pour le Machine Learning, Python s'impose comme langage principal pour l'analyse de données, grâce à la richesse de son écosystème scientifique et à la lisibilité de sa syntaxe.
 
@@ -102,15 +157,15 @@ Comme pour le Machine Learning, Python s'impose comme langage principal pour l'a
 
 : Bibliothèques Python cœur de ce cours {#tbl-bibliotheques-eda}
 
-### 4.2. Environnements de travail
+### 5.2. Environnements de travail
 
 Comme dans le reste de la formation, nous privilégions les **notebooks Jupyter** (JupyterLab, Google Colab) pour l'exploration interactive et la visualisation immédiate cellule par cellule, et **Visual Studio Code** pour consolider un script d'analyse reproductible destiné à être réexécuté ou partagé.
 
-### 4.3. Gestion de projet avec `uv`
+### 5.3. Gestion de projet avec `uv`
 
 Comme pour les autres modules de la formation, les projets de ce cours sont organisés avec [`uv`](https://docs.astral.sh/uv/), qui centralise la gestion de l'environnement virtuel, des dépendances (`pyproject.toml`, `uv.lock`) et de l'exécution des scripts et notebooks. Se référer au module précédent pour le détail de son fonctionnement.
 
-### 4.4. Tendances récentes de l'écosystème
+### 5.4. Tendances récentes de l'écosystème
 
 ::: {.callout-important title="Zoom sur les tendances actuelles"}
 L'écosystème de l'analyse de données évolue rapidement. Sans remplacer les outils historiques présentés ci-dessus, plusieurs bibliothèques récentes gagnent en popularité et méritent d'être connues :
@@ -123,7 +178,7 @@ L'écosystème de l'analyse de données évolue rapidement. Sans remplacer les o
 Ces outils ne sont pas obligatoires dans ce cours, mais seront mentionnés ponctuellement à titre de complément, car ils représentent une évolution significative des pratiques professionnelles actuelles.
 :::
 
-## 5. Les métiers de la donnée
+## 6. Les métiers de la donnée
 
 | Métier | Mission principale | Compétences clés |
 |:---|:---|:---|
@@ -189,4 +244,77 @@ b. À quel(s) type(s) d'analyse (@tbl-types-analyse) ce projet correspond-il ?
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-3"}
 a. Cadrage de la question (comparer trois villes) → collecte des données de collecte de déchets → nettoyage (unités, doublons, données manquantes par ville/mois) → exploration statistique → visualisation comparative dans le temps et par ville.
 b. **Descriptive** (évolution des volumes) puis **diagnostique** (recherche des facteurs expliquant les écarts entre villes).
+:::
+
+::: {#exr-intro-ad-4}
+### Moyenne, médiane et fréquence
+
+Les montants de cinq commandes sont : 80, 100, 100, 120 et 600 MAD.
+
+a. Calculez la moyenne et la médiane.
+b. Quel indicateur décrit le mieux une commande « typique » ? Pourquoi ?
+c. Quel est l'effectif et la fréquence des commandes d'au moins 100 MAD ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-4"}
+a. La moyenne vaut $(80+100+100+120+600)/5=200$ MAD. La médiane est la troisième valeur triée : **100 MAD**.
+b. La médiane est plus représentative : la commande de 600 MAD tire fortement la moyenne vers le haut.
+c. Quatre commandes sur cinq sont d'au moins 100 MAD : effectif **4**, fréquence **80 %**.
+:::
+
+::: {#exr-intro-ad-5}
+### Lire une variation
+
+Le nombre de visiteurs d'un site passe de 2 000 en avril à 2 400 en mai, puis à 2 280 en juin.
+
+a. Calculez la variation en pourcentage entre avril et mai.
+b. Calculez la variation en pourcentage entre mai et juin.
+c. La baisse de mai à juin annule-t-elle entièrement la hausse précédente ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-5"}
+a. $(2400-2000)/2000 \times 100 = 20\%$.
+b. $(2280-2400)/2400 \times 100 = -5\%$.
+c. Non. Le niveau de juin reste supérieur à avril : $(2280-2000)/2000 \times 100 = 14\%$ environ.
+:::
+
+::: {#exr-intro-ad-6}
+### Identifier les indicateurs utiles
+
+Pour chacune des questions, choisissez l'indicateur le plus directement utile : effectif, fréquence, moyenne, médiane, minimum/maximum ou IQR.
+
+a. Quelle part des clients utilise le paiement par carte ?
+b. Quel est le montant central des salaires ?
+c. Quelle est la largeur de la moitié centrale des durées de livraison ?
+d. Combien de commandes ont été enregistrées ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-6"}
+a. **Fréquence** ; b. **médiane** ; c. **IQR** ; d. **effectif**.
+:::
+
+::: {#exr-intro-ad-7}
+### Reconnaître le type de variable
+
+Classez les variables suivantes en qualitative, quantitative ou temporelle : `quartier`, `nombre_de_produits`, `date_commande`, `satisfaction` codée « faible / moyenne / élevée ».
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-7"}
+`quartier` est **qualitative nominale** ; `nombre_de_produits` est **quantitative discrète** ; `date_commande` est **temporelle** ; `satisfaction` est **qualitative ordinale**, car ses catégories possèdent un ordre.
+:::
+
+::: {#exr-intro-ad-8}
+### Choisir une analyse
+
+Une responsable constate que les ventes sont plus faibles en août. Elle veut d'abord mesurer la baisse, puis comprendre si elle concerne seulement une région.
+
+a. Quel type d'analyse répond à la première question ?
+b. Quelle comparaison simple peut aider pour la seconde ?
+c. Pourquoi faut-il éviter de conclure à une cause avant d'avoir comparé les données ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-8"}
+a. Une analyse **descriptive** : comparer les ventes d'août à celles d'une période de référence.
+b. Comparer les ventes par région et par mois, avec des effectifs, des totaux ou des moyennes.
+c. Une baisse peut coïncider avec plusieurs facteurs ; une comparaison permet d'abord de vérifier si le phénomène est général ou localisé. Elle ne prouve pas à elle seule une causalité.
 :::

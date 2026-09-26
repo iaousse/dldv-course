@@ -46,6 +46,14 @@ df["prix"].var()
 df["prix"].quantile([0.25, 0.5, 0.75])
 ```
 
+Pour un petit tableau, on peut calculer les indicateurs à la main. Pour les valeurs $2, 4, 4, 6, 9$, la moyenne est $25/5=5$ et la médiane est $4$. L'étendue vaut $9-2=7$. Les quartiles dépendent de la convention de calcul utilisée par l'outil ; dans un cours débutant, l'important est de préciser la convention et de comparer les résultats avec la même méthode.
+
+L'écart-type est exprimé dans la même unité que la variable, contrairement à la variance. Il est utile pour décrire la dispersion, mais il est sensible aux valeurs extrêmes. L'IQR est souvent plus facile à interpréter pour une distribution asymétrique. Le **coefficient de variation**, défini par $\sigma/\bar{x}$ lorsque la moyenne est positive et non nulle, permet parfois de comparer la dispersion relative de variables ayant des échelles différentes ; il est présenté ici comme un repère et non comme un indicateur obligatoire.
+
+::: {.callout-note title="Priorité pour débuter"}
+Les indicateurs indispensables sont l'effectif, la moyenne, la médiane, le minimum, le maximum, les quartiles et l'écart-type ou l'IQR. L'asymétrie, l'aplatissement et le coefficient de variation sont des compléments : il suffit d'en comprendre l'idée et de savoir quand demander une explication supplémentaire.
+:::
+
 ### 1.3. Forme de la distribution
 
 Deux indicateurs complètent la description d'une distribution :
@@ -127,7 +135,21 @@ pd.pivot_table(
 
 Ces deux outils constituent la base de la quasi-totalité des tableaux de bord et des rapports produits par un Data Analyst.
 
-## 5. Profilage automatique des données
+## 5. Choisir une visualisation simple
+
+Les statistiques répondent à des questions numériques ; les graphiques rendent les formes et les comparaisons plus faciles à voir. Pour débuter, on peut retenir les associations suivantes :
+
+| Question | Graphique conseillé | Ce que l'on observe |
+|:---|:---|:---|
+| Quelle est la répartition d'une variable numérique ? | Histogramme | Forme, concentration et asymétrie |
+| Y a-t-il des valeurs atypiques ? | Boîte à moustaches | Médiane, quartiles et valeurs éloignées |
+| Comment une valeur évolue-t-elle dans le temps ? | Courbe | Tendance, saisonnalité et ruptures |
+| Comment comparer des catégories ? | Barres | Effectifs, sommes ou moyennes par catégorie |
+| Deux variables numériques évoluent-elles ensemble ? | Nuage de points | Relation, groupes et valeurs atypiques |
+
+Un graphique ne doit pas seulement être « joli ». Son titre doit préciser la mesure, l'unité et la période ; ses axes doivent être lisibles ; la source et les filtres importants doivent être connus. Pour comparer des catégories, l'effectif et la moyenne ne racontent pas la même histoire : une catégorie peut avoir une moyenne élevée avec très peu d'observations.
+
+## 6. Profilage automatique des données
 
 Sur un nouveau jeu de données, il est souvent utile d'obtenir rapidement une vue d'ensemble avant de se lancer dans une exploration manuelle détaillée.
 
@@ -195,4 +217,89 @@ Proposez, pour ce jeu de données, un exemple concret d'analyse univariée, un e
 - **Univariée** : distribution du `prix` des commandes (moyenne, médiane, dispersion).
 - **Bivariée** : prix moyen selon la `categorie_produit` (via `groupby`).
 - **Multivariée** : prix moyen croisé par `region_client` **et** `moyen_paiement` (via un tableau croisé dynamique), permettant de voir si certaines régions privilégient certains moyens de paiement pour des achats plus ou moins coûteux.
+:::
+
+::: {#exr-eda-4}
+### Calculer des indicateurs simples
+
+Les durées de livraison, en jours, sont : 2, 3, 3, 4, 8.
+
+a. Calculez la moyenne, la médiane et l'étendue.
+b. Quel indicateur est le moins influencé par la durée de 8 jours ?
+c. Quelle question supplémentaire poseriez-vous avant de conclure que le service est lent ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-4"}
+a. Moyenne $=(2+3+3+4+8)/5=\textbf{4}$ jours ; médiane = **3 jours** ; étendue $=8-2=\textbf{6}$ jours.
+b. La **médiane**.
+c. Il faut connaître le nombre total de livraisons, la période, la région et la proportion de livraisons de 8 jours : une seule valeur extrême ne suffit pas.
+:::
+
+::: {#exr-eda-5}
+### Lire une dispersion
+
+Deux classes ont la même moyenne à un examen : 12/20. La classe A a un écart-type de 1,5 et la classe B un écart-type de 4.
+
+a. Quelle classe est la plus homogène ?
+b. Que signifie l'écart-type plus élevé de la classe B ?
+c. Peut-on dire que les étudiants de B ont de moins bonnes notes ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-5"}
+a. La classe **A** est plus homogène.
+b. Les notes de B sont plus éloignées de leur moyenne : les niveaux sont davantage dispersés.
+c. Non. Les deux moyennes sont identiques ; B est seulement plus hétérogène.
+:::
+
+::: {#exr-eda-6}
+### Choisir le bon graphique
+
+Associez chaque besoin à un graphique : histogramme, courbe, barres, boîte à moustaches ou nuage de points.
+
+a. Comparer le chiffre d'affaires de quatre régions.
+b. Observer le nombre de commandes chaque mois.
+c. Repérer des valeurs extrêmes dans les salaires.
+d. Étudier le lien entre surface et prix d'un logement.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-6"}
+a. **Barres** ; b. **Courbe** ; c. **Boîte à moustaches** ; d. **Nuage de points**. Un histogramme serait adapté pour la répartition d'une seule variable numérique.
+:::
+
+::: {#exr-eda-7}
+### Corrélation et causalité
+
+Dans une ville, le nombre de glaces vendues et le nombre de baignades augmentent tous les deux en été.
+
+a. Quelle relation statistique peut-on observer ?
+b. Pourquoi ne peut-on pas conclure que les glaces provoquent les baignades ?
+c. Quelle variable cachée peut expliquer les deux évolutions ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-7"}
+a. Une corrélation positive.
+b. Une corrélation décrit une association, pas une cause.
+c. La **température** ou la saison : le beau temps favorise à la fois l'achat de glaces et les baignades.
+:::
+
+::: {#exr-eda-8}
+### Interpréter un tableau agrégé
+
+Un tableau par région présente les résultats suivants :
+
+| Région | Nombre de commandes | Montant moyen (MAD) |
+|:---|---:|---:|
+| Nord | 100 | 180 |
+| Centre | 20 | 350 |
+| Sud | 80 | 200 |
+
+a. Quelle région a le montant moyen le plus élevé ?
+b. Pourquoi faut-il également regarder le nombre de commandes ?
+c. Calculez le montant total estimé pour chaque région et identifiez la région au total le plus élevé.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-8"}
+a. Le **Centre** (350 MAD).
+b. Sa moyenne repose sur seulement 20 commandes ; elle est donc moins représentative d'un volume important que celle d'une région avec beaucoup de commandes.
+c. Nord : $100\times180=\textbf{18\,000}$ MAD ; Centre : $20\times350=\textbf{7\,000}$ MAD ; Sud : $80\times200=\textbf{16\,000}$ MAD. Le total le plus élevé est celui du **Nord**.
 :::

@@ -1,0 +1,340 @@
+# Cas pratique complet : analyser les ventes d'une petite chaîne de magasins
+
+::: {.callout-tip title="Objectifs du chapitre"}
+À la fin de ce cas pratique, l'étudiant sera capable de :
+
+- **Cadrer** une question d'analyse à partir d'un besoin métier ;
+- **Repérer** les problèmes de qualité dans un petit jeu de données ;
+- **Calculer et interpréter** des indicateurs simples : chiffre d'affaires, quantité, panier moyen, médiane et taux ;
+- **Choisir** un modèle en étoile adapté à une analyse de ventes ;
+- **Proposer** une page Power BI et une vue Taipy cohérentes avec les questions ;
+- **Rédiger** une conclusion prudente, fondée sur les données et accompagnée de limites.
+:::
+
+Ce chapitre suit un projet de bout en bout. L'entreprise fictive **Atlas Marchés** possède trois magasins à Casablanca, Rabat et Tanger. La direction souhaite comprendre les ventes du premier trimestre 2026 et décider où concentrer ses efforts commerciaux. Les données sont volontairement petites afin que les calculs puissent être vérifiés à la main.
+
+## 1. Le besoin métier
+
+La direction pose quatre questions :
+
+1. Quel est le chiffre d'affaires net par mois et par magasin ?
+2. Quels produits ou catégories contribuent le plus aux ventes ?
+3. Le panier moyen est-il différent selon les magasins ?
+4. Quelles informations faudrait-il surveiller dans un tableau de bord mensuel ?
+
+La question n'est pas « faire un graphique ». Le livrable attendu est une analyse descriptive, quelques explications prudentes et une proposition de suivi.
+
+### 1.1. Périmètre et définitions
+
+Le périmètre est limité aux ventes **payées** enregistrées entre le 1er janvier et le 31 mars 2026. Une ligne du fichier correspond à une ligne de produit dans une commande. Le montant net est défini ainsi :
+
+$$
+\text{montant net}
+=\text{quantité}\times\text{prix unitaire}-\text{remise}.
+$$
+
+Le **panier moyen** est :
+
+$$
+\text{panier moyen}
+=\frac{\text{chiffre d'affaires net}}{\text{nombre de commandes distinctes}}.
+$$
+
+Ces définitions sont annoncées avant les calculs ; elles évitent de changer de formule au milieu de l'analyse.
+
+## 2. Le jeu de données
+
+Voici un extrait pédagogique. Dans un vrai projet, le fichier complet pourrait contenir beaucoup plus de lignes.
+
+| Ligne | Commande | Date | Magasin | Catégorie | Produit | Qté | Prix unitaire | Remise | Statut |
+|---:|:---|:---|:---|:---|:---|---:|---:|---:|:---|
+| 1 | C001 | 05/01/2026 | Casablanca | Épicerie | Huile | 2 | 75 | 0 | Payée |
+| 2 | C001 | 05/01/2026 | Casablanca | Épicerie | Riz | 3 | 20 | 0 | Payée |
+| 3 | C002 | 08/01/2026 | Rabat | Boissons | Jus | 4 | 18 | 5 | Payée |
+| 4 | C003 | 15/01/2026 | Tanger | Hygiène | Savon | 5 | 12 | 0 | Payée |
+| 5 | C004 | 03/02/2026 | Casablanca | Épicerie | Huile | 1 | 75 | 0 | Payée |
+| 6 | C005 | 10/02/2026 | Rabat | Épicerie | Riz | 5 | 20 | 10 | Payée |
+| 7 | C006 | 18/02/2026 | Tanger | Boissons | Jus | 2 | 18 | 0 | Annulée |
+| 8 | C007 | 22/02/2026 | Casablanca | Hygiène | Savon | 6 | 12 | 0 | Payée |
+| 9 | C008 | 06/03/2026 | Rabat | Boissons | Jus | 6 | 18 | 0 | Payée |
+| 10 | C009 | 12/03/2026 | Tanger | Épicerie | Riz | 2 | 20 | 0 | Payée |
+| 11 | C010 | 20/03/2026 | Casablanca | Boissons | Jus | 3 | 18 | 5 | Payée |
+| 12 | C010 | 20/03/2026 | Casablanca | Hygiène | Savon | 2 | 12 | 0 | Payée |
+
+### 2.1. Première lecture
+
+Le grain est **une ligne de produit dans une commande**. La commande C001 apparaît deux fois car elle contient deux produits. Pour compter les commandes, il faut compter les identifiants distincts, et non les lignes.
+
+La ligne C006 est annulée. Si le chiffre d'affaires concerne les ventes payées, elle doit être exclue, mais cette décision doit être documentée. Elle ne doit pas être supprimée du fichier original : on conserve le statut pour pouvoir analyser les annulations.
+
+## 3. Préparer les données
+
+### 3.1. Dictionnaire minimal
+
+| Colonne | Type attendu | Règle |
+|:---|:---|:---|
+| `Commande` | Texte | Identifiant non vide |
+| `Date` | Date | Date comprise dans la période |
+| `Magasin` | Catégorie | Casablanca, Rabat ou Tanger |
+| `Qté` | Entier | Strictement positive pour une vente |
+| `Prix unitaire` | Décimal | Positif, en MAD |
+| `Remise` | Décimal | Supérieure ou égale à 0, en MAD |
+| `Statut` | Catégorie | Payée ou Annulée |
+
+Il faut également vérifier que la remise ne dépasse pas le montant brut de la ligne, que les dates ne sont pas inversées et que les identifiants ne comportent pas d'espaces cachés.
+
+### 3.2. Transformation
+
+Pour chaque ligne, on calcule :
+
+```text
+montant_brut = quantité × prix_unitaire
+montant_net = montant_brut − remise
+mois = mois(date)
+```
+
+Puis on filtre `Statut = Payée` pour les indicateurs de chiffre d'affaires. On conserve une copie de l'ensemble initial et on compte les lignes exclues.
+
+Pour l'extrait, 11 lignes sur 12 sont payées. La ligne annulée représente 1 ligne sur 12, soit environ 8,3 % des lignes ; ce pourcentage ne doit pas être interprété comme un taux de commandes annulées, car une commande peut comporter plusieurs lignes.
+
+## 4. Calculer les indicateurs
+
+### 4.1. Montants ligne par ligne
+
+Sur les lignes payées :
+
+| Commande | Produit | Calcul | Montant net |
+|:---|:---|:---|---:|
+| C001 | Huile | $2\times75-0$ | 150 |
+| C001 | Riz | $3\times20-0$ | 60 |
+| C002 | Jus | $4\times18-5$ | 67 |
+| C003 | Savon | $5\times12-0$ | 60 |
+| C004 | Huile | $1\times75-0$ | 75 |
+| C005 | Riz | $5\times20-10$ | 90 |
+| C007 | Savon | $6\times12-0$ | 72 |
+| C008 | Jus | $6\times18-0$ | 108 |
+| C009 | Riz | $2\times20-0$ | 40 |
+| C010 | Jus | $3\times18-5$ | 49 |
+| C010 | Savon | $2\times12-0$ | 24 |
+
+Le chiffre d'affaires net de l'extrait est donc :
+
+$$
+150+60+67+60+75+90+72+108+40+49+24
+=\textbf{795 MAD}.
+$$
+
+### 4.2. Par mois
+
+| Mois | Chiffre d'affaires net | Commandes distinctes | Panier moyen |
+|:---|---:|---:|---:|
+| Janvier | 337 | 3 | 112,33 |
+| Février | 237 | 3 | 79,00 |
+| Mars | 221 | 3 | 73,67 |
+| **Total** | **795** | **9** | **88,33** |
+
+Le panier moyen total est $795/9=88,33$ MAD. Il ne faut pas faire la moyenne simple des trois paniers mensuels sans vérifier les effectifs ; ici ils sont égaux, mais ce n'est pas toujours le cas.
+
+### 4.3. Par magasin et par catégorie
+
+En regroupant les lignes payées :
+
+| Magasin | Chiffre d'affaires net | Commandes distinctes | Panier moyen |
+|:---|---:|---:|---:|
+| Casablanca | 435 | 4 | 108,75 |
+| Rabat | 157 | 3 | 52,33 |
+| Tanger | 100 | 2 | 50,00 |
+
+| Catégorie | Chiffre d'affaires net |
+|:---|---:|
+| Épicerie | 415 |
+| Boissons | 224 |
+| Hygiène | 156 |
+
+Casablanca contribue le plus au chiffre d'affaires et possède le panier moyen le plus élevé dans cet extrait. Cela ne suffit pas à conclure que le magasin est le plus performant : il faudrait connaître le nombre de visiteurs, les coûts, la taille des magasins et une période plus longue.
+
+### 4.4. Moyenne et médiane des montants de lignes
+
+Les montants des lignes payées sont :
+
+$$60,\ 60,\ 67,\ 72,\ 75,\ 90,\ 108,\ 24,\ 40,\ 49,\ 150$$
+
+Triés :
+
+$$24,\ 40,\ 49,\ 60,\ 60,\ 67,\ 72,\ 75,\ 90,\ 108,\ 150.$$
+
+La médiane est la sixième valeur, soit **67 MAD**. La moyenne est $795/11 \approx \textbf{72,27}$ MAD. La moyenne un peu supérieure à la médiane suggère que quelques lignes élevées, notamment 150 MAD, tirent la moyenne vers le haut.
+
+## 5. Construire le modèle analytique
+
+À partir de ce fichier, un modèle en étoile simple pourrait être :
+
+```text
+dim_date -----------\
+dim_produit --------- fact_ventes
+dim_magasin --------/
+```
+
+`fact_ventes` contient `Commande`, `DateID`, `ProduitID`, `MagasinID`, `Quantite`, `PrixUnitaire`, `Remise`, `MontantNet` et `Statut`. Les dimensions décrivent les dates, produits et magasins.
+
+Les mesures attendues sont :
+
+```text
+ChiffreAffaires = somme de MontantNet pour les lignes payées
+Commandes = nombre d'identifiants Commande distincts pour les lignes payées
+PanierMoyen = ChiffreAffaires / Commandes
+Quantités = somme de Quantite pour les lignes payées
+```
+
+Le tableau de bord ne doit pas calculer le panier moyen comme la moyenne des montants de lignes : une commande peut contenir plusieurs lignes. Le grain explique cette différence.
+
+## 6. Concevoir la page Power BI
+
+Une page « Vue générale » peut contenir :
+
+1. quatre cartes : chiffre d'affaires net, commandes, panier moyen et quantités vendues ;
+2. une courbe du chiffre d'affaires par mois ;
+3. des barres du chiffre d'affaires par magasin ;
+4. des barres du chiffre d'affaires par catégorie ;
+5. des segments pour le mois, le magasin et la catégorie ;
+6. une note indiquant « données payées, période janvier–mars 2026, dernière actualisation ».
+
+Une deuxième page « Diagnostic » peut détailler les produits, les annulations et les différences entre magasins. La première page répond à « où en sommes-nous ? », la seconde aide à explorer « où regarder ensuite ? ».
+
+Avant le partage, on compare les cartes aux totaux calculés manuellement : 795 MAD, 9 commandes distinctes et 88,33 MAD de panier moyen.
+
+## 7. Construire une vue Taipy
+
+La même analyse peut être intégrée à une application Python. La logique doit être séparée de l'affichage :
+
+```python
+def indicateurs(df):
+    payees = df[df["Statut"] == "Payée"]
+    chiffre_affaires = payees["MontantNet"].sum()
+    commandes = payees["Commande"].nunique()
+    panier_moyen = chiffre_affaires / commandes if commandes else 0
+    return {
+        "chiffre_affaires": chiffre_affaires,
+        "commandes": commandes,
+        "panier_moyen": panier_moyen,
+    }
+```
+
+Une interface Taipy peut ensuite proposer un filtre `Magasin`, afficher les trois indicateurs et mettre à jour une table mensuelle. Le résultat doit rester cohérent avec le dictionnaire métier et les calculs Power BI.
+
+## 8. Interpréter et communiquer
+
+Une conclusion raisonnable pour l'extrait serait :
+
+> Sur les ventes payées de l'extrait, le chiffre d'affaires net atteint 795 MAD pour 9 commandes, avec un panier moyen de 88,33 MAD. Casablanca représente 435 MAD et le panier moyen y est supérieur à celui de Rabat et Tanger. Les lignes de vente ont une médiane de 67 MAD et une moyenne de 72,27 MAD, ce qui signale une légère influence de quelques montants élevés. Ces résultats sont exploratoires : l'échantillon est très petit, ne couvre que trois mois et ne permet pas d'expliquer les causes ni de mesurer la rentabilité.
+
+La conclusion sépare les **faits calculés**, les **interprétations prudentes** et les **limites**. Elle ne transforme pas une différence observée en causalité.
+
+::: {.callout-note title="Auto-évaluation" collapse="true"}
+Avant de considérer le cas comme terminé, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
+
+- [ ] Je peux formuler le grain du fichier.
+- [ ] Je sais pourquoi la ligne annulée est filtrée pour le chiffre d'affaires.
+- [ ] Je peux recalculer le total de 795 MAD.
+- [ ] Je distingue lignes de produits et commandes distinctes.
+- [ ] Je peux expliquer la différence entre moyenne et médiane dans ce cas.
+- [ ] Je peux proposer une page de tableau de bord sans surcharger l'utilisateur.
+:::
+
+## Exercices
+
+::: {.callout-note title="Consigne"}
+Répondez sans ordinateur. Les données de l'énoncé suffisent ; les calculs sont courts et peuvent être réalisés avec une calculatrice.
+:::
+
+::: {#exr-cas-1}
+### Définir le grain
+
+Quelle phrase décrit le grain du fichier ? Pourquoi la commande C001 occupe-t-elle deux lignes ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-1"}
+Une ligne représente **un produit dans une commande**. C001 contient de l'huile et du riz : elle possède donc deux lignes de produits.
+:::
+
+::: {#exr-cas-2}
+### Exclure une annulation
+
+Pourquoi la ligne C006 n'est-elle pas incluse dans le chiffre d'affaires payé ? Peut-on la supprimer du fichier original ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-2"}
+Elle est marquée **Annulée**, donc elle ne représente pas une vente payée selon la définition du périmètre. Il faut la conserver dans la source afin de pouvoir suivre les annulations et documenter le filtre.
+:::
+
+::: {#exr-cas-3}
+### Calculer une ligne
+
+Calculez le montant net de 4 jus à 18 MAD avec une remise de 5 MAD, puis celui de 5 savons à 12 MAD sans remise.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-3"}
+Jus : $4\times18-5=\textbf{67}$ MAD. Savons : $5\times12=\textbf{60}$ MAD.
+:::
+
+::: {#exr-cas-4}
+### Vérifier le total
+
+Le chiffre d'affaires net est de 795 MAD et le magasin de Casablanca réalise 435 MAD.
+
+a. Quelle part du chiffre d'affaires total représente Casablanca ?
+b. Quel montant reste pour Rabat et Tanger ensemble ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-4"}
+a. $435/795\times100 \approx 54,7\%$.
+b. $795-435=\textbf{360}$ MAD.
+:::
+
+::: {#exr-cas-5}
+### Commandes et lignes
+
+Il y a 11 lignes payées mais seulement 9 commandes distinctes.
+
+a. Pourquoi ces deux nombres sont-ils différents ?
+b. Quel nombre utiliser pour calculer le panier moyen ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-5"}
+a. Certaines commandes contiennent plusieurs produits et donc plusieurs lignes ; C001 et C010 en sont des exemples.
+b. Il faut utiliser **9 commandes distinctes**, car le panier moyen est défini par commande.
+:::
+
+::: {#exr-cas-6}
+### Comparer moyenne et médiane
+
+La moyenne des montants de lignes est 72,27 MAD et la médiane est 67 MAD. Que suggère cette différence ? Quelle valeur de la liste contribue particulièrement à tirer la moyenne vers le haut ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-6"}
+La moyenne supérieure à la médiane suggère une légère asymétrie à droite : quelques montants élevés influencent la moyenne. La ligne à 150 MAD y contribue particulièrement.
+:::
+
+::: {#exr-cas-7}
+### Choisir les indicateurs du tableau de bord
+
+Parmi les éléments suivants, lesquels doivent apparaître en priorité sur la page générale : chiffre d'affaires net, identifiant de chaque client, commandes distinctes, panier moyen, une liste de 25 couleurs, date d'actualisation ? Justifiez les choix.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-7"}
+Les priorités sont le **chiffre d'affaires net**, les **commandes distinctes**, le **panier moyen** et la **date d'actualisation**. Un identifiant individuel n'est pas nécessaire pour la vue générale et peut poser un problème de confidentialité ; 25 couleurs nuisent à la lecture.
+:::
+
+::: {#exr-cas-8}
+### Limites et décisions
+
+La direction demande : « Casablanca est-elle le meilleur magasin ? »
+
+a. Donnez une conclusion que les données permettent de soutenir.
+b. Citez deux informations manquantes avant de conclure sur la performance globale.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-8"}
+a. On peut dire que Casablanca a le chiffre d'affaires net et le panier moyen les plus élevés dans **cet extrait de ventes payées**.
+b. Il manque par exemple les coûts et la marge, le nombre de visiteurs, la taille des magasins, le stock disponible, une période plus longue et les objectifs de chaque magasin. Le chiffre d'affaires seul ne suffit pas à définir la performance globale.
+:::

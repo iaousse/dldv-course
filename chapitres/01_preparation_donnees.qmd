@@ -15,6 +15,10 @@
 
 Avant de pouvoir explorer ou visualiser un jeu de données, il faut d'abord le **rassembler** puis le **rendre exploitable**. Ce chapitre couvre les étapes 2, 3 et 4 du cycle de vie présenté au chapitre précédent (@fig-cycle-vie-analyse) : où trouver les données, comment détecter et corriger leurs défauts, puis comment les transformer pour l'exploration et la visualisation.
 
+::: {.callout-note title="Réflexe de débutant : connaître son tableau"}
+Avant toute modification, conservez une copie du fichier original et rédigez un petit **dictionnaire de données**. Pour chaque colonne, notez son nom, sa signification, son unité, son type attendu et les valeurs possibles. Par exemple, `prix` peut être un nombre positif en MAD, tandis que `type_bien` peut prendre les valeurs « appartement », « maison » ou « terrain ». Ce dictionnaire évite de corriger une valeur qui était en réalité valide.
+:::
+
 ## 1. Collecte de données
 
 ### 1.1. Les bases de données
@@ -85,6 +89,16 @@ Deux autres sources méritent d'être mentionnées :
 
 Une fois collectées, les données contiennent presque toujours des imperfections. Le nettoyage est l'étape la plus chronophage d'un projet d'analyse — souvent estimée à 60-80 % du temps réel passé sur un projet.
 
+Un nettoyage fiable vérifie au moins cinq dimensions :
+
+1. **complétude** : les informations importantes sont-elles présentes ?
+2. **validité** : les valeurs respectent-elles les règles attendues (un prix positif, une date valide) ?
+3. **unicité** : une même observation n'est-elle pas enregistrée deux fois ?
+4. **cohérence** : les colonnes et les unités sont-elles compatibles entre elles ?
+5. **actualité** : les dates couvrent-elles la période utile à la question ?
+
+Il faut garder une trace de chaque correction : colonne concernée, règle appliquée, nombre de lignes modifiées et justification. Cette documentation permet de revenir en arrière et d'expliquer les résultats.
+
 ### 2.1. Les valeurs manquantes
 
 Une valeur manquante peut avoir des origines très différentes, ce qui conditionne la stratégie à adopter :
@@ -96,6 +110,8 @@ Une valeur manquante peut avoir des origines très différentes, ce qui conditio
 | **MNAR** (*Missing Not At Random*) | L'absence dépend de la valeur manquante elle-même | Les personnes aux revenus très élevés refusent de répondre |
 
 : Typologie des valeurs manquantes {#tbl-typologie-manquantes}
+
+Ces trois étiquettes servent surtout à réfléchir à la cause d'une absence. Il n'est pas demandé de réaliser un test statistique pour les distinguer dans ce cours : l'étudiant doit surtout éviter d'imputer automatiquement sans comprendre ce que signifie la valeur manquante.
 
 Avec `pandas`, on détecte et on traite les valeurs manquantes ainsi :
 
@@ -209,6 +225,10 @@ df["tranche_age"] = pd.cut(
 - **Extraction de composantes temporelles** : à partir d'une colonne `date`, on extrait fréquemment l'année, le mois, le jour de semaine (`df["date"].dt.month`), utiles pour l'exploration de séries temporelles.
 - **Agrégats dérivés** : création de nouvelles colonnes résumant une information (ex. le prix au mètre carré = `prix / surface`), qui facilitent grandement l'exploration et la comparaison.
 
+::: {.callout-warning title="Ne pas transformer sans objectif"}
+Une transformation n'est pas automatiquement une amélioration. Par exemple, remplacer toutes les valeurs manquantes par zéro change la signification de la variable : « absence d'information » devient « valeur nulle ». Avant chaque transformation, demandez-vous quelle question elle facilite et si son effet sera documenté.
+:::
+
 ::: {.callout-note title="Auto-évaluation" collapse="true"}
 Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
 
@@ -261,4 +281,84 @@ b. La couleur préférée d'un client (« Rouge », « Bleu », « Vert »).
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-3"}
 a. **Encodage ordinal** : les niveaux d'étude possèdent un ordre naturel croissant.
 b. **Encodage one-hot** : les couleurs n'ont pas d'ordre logique entre elles ; leur attribuer un ordre arbitraire introduirait une fausse relation numérique.
+:::
+
+::: {#exr-prep-4}
+### Diagnostic de qualité
+
+Un fichier de ventes contient 1 000 lignes. La colonne `date` comporte 20 valeurs manquantes, `prix` contient 5 valeurs négatives et 12 lignes sont des doublons exacts.
+
+a. Quel pourcentage de dates est manquant ?
+b. Quel problème doit être vérifié en priorité avant de calculer le chiffre d'affaires ?
+c. Les doublons doivent-ils être supprimés automatiquement ? Justifiez.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-4"}
+a. $20/1000 \times 100 = 2\%$.
+b. Les **prix négatifs**, car ils rendent le total incohérent et peuvent signaler une règle métier particulière (remboursement) ou une erreur.
+c. Non. Il faut vérifier si les lignes sont réellement identiques ou si elles représentent deux transactions légitimes saisies avec les mêmes valeurs. Une suppression aveugle pourrait supprimer de vraies ventes.
+:::
+
+::: {#exr-prep-5}
+### Choisir une stratégie d'imputation
+
+Associez chaque situation à une stratégie raisonnable : supprimer quelques lignes, utiliser la médiane, créer la catégorie « Non renseigné » ou ne pas imputer sans investigation.
+
+a. 1 % des lignes n'ont pas de surface, et la surface est numérique.
+b. 35 % des lignes n'ont pas de quartier.
+c. Une date manquante empêche de savoir à quelle période appartient une vente.
+d. Une variable `remise` a 2 % de valeurs manquantes dans une distribution très asymétrique.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-5"}
+a. **Médiane** (ou suppression des rares lignes si elles ne sont pas centrales), après vérification.
+b. **« Non renseigné »**, afin de ne pas perdre un tiers du jeu de données.
+c. **Ne pas imputer sans investigation** : il faut retrouver la date dans la source ou exclure la vente d'une analyse temporelle.
+d. **Médiane** plutôt que moyenne, car elle est plus robuste à l'asymétrie ; la décision doit être documentée.
+:::
+
+::: {#exr-prep-6}
+### Calculer une normalisation min-max
+
+Une variable `score` varie de 20 à 80. Calculez la valeur normalisée d'un score égal à 50 avec :
+
+$$x'=\frac{x-x_{\min}}{x_{\max}-x_{\min}}.$$
+
+Que signifie le résultat ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-6"}
+$x'=(50-20)/(80-20)=30/60=\textbf{0,5}$. Le score 50 se situe au milieu de l'intervalle observé. La normalisation ne signifie pas que 50 est la moyenne : elle indique sa position entre le minimum et le maximum.
+:::
+
+::: {#exr-prep-7}
+### Unités et cohérence
+
+Une colonne `distance` contient les valeurs 5, 12 et 8 pour trois trajets, mais le dictionnaire indique que certaines lignes sont en kilomètres et d'autres en mètres.
+
+a. Pourquoi est-il dangereux de calculer une moyenne directement ?
+b. Quelle action doit être réalisée avant l'analyse ?
+c. Est-ce un problème de valeur manquante, de validité ou de cohérence ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-7"}
+a. Les nombres n'ont pas la même unité : la moyenne mélangerait des grandeurs incomparables.
+b. Identifier l'unité de chaque ligne puis convertir toutes les valeurs dans une unité commune, par exemple le kilomètre.
+c. C'est principalement un problème de **cohérence** ; certaines valeurs peuvent aussi être invalides si leur unité est inconnue.
+:::
+
+::: {#exr-prep-8}
+### Discrétisation et interprétation
+
+On regroupe les âges selon les intervalles `[0,18[`, `[18,35[`, `[35,60[` et `[60,120]`.
+
+a. Dans quelle classe place-t-on les âges 18, 34, 35 et 60 ?
+b. Quel avantage apporte cette transformation pour un tableau de bord ?
+c. Quel risque faut-il signaler ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-8"}
+a. 18 et 34 vont dans `[18,35[`, 35 dans `[35,60[`, et 60 dans `[60,120]`.
+b. Elle simplifie la lecture et permet de comparer des groupes d'âge.
+c. Elle fait perdre de la précision : deux personnes de 18 et 34 ans sont dans le même groupe malgré un écart important. Les bornes doivent donc être documentées.
 :::

@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: _build
+  output-dir: docs
 lang: fr
 number-sections: false
 language:
@@ -33,6 +33,9 @@ book:
     - chapitres/00_introduction_analyse_donnees.qmd
     - chapitres/01_preparation_donnees.qmd
     - chapitres/02_exploration_donnees.qmd
+    - chapitres/03_entropot_donnees.qmd
+    - chapitres/04_powerbi-taipy.qmd
+    - chapitres/05_cas_pratique.qmd
     - references.qmd
 
 # Configuration pour le code Python
