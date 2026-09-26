@@ -1,0 +1,192 @@
+# Introduction à l'analyse de données
+
+::: {.callout-tip title="Objectifs du chapitre"}
+À la fin de ce chapitre introductif, l'étudiant sera capable de :
+
+- **Définir** l'analyse de données et la **situer** par rapport à la Data Science, la Business Intelligence (BI) et le Machine Learning ;
+- **Distinguer** les quatre types d'analyse : descriptive, diagnostique, prédictive et prescriptive ;
+- **Identifier** les grandes étapes du cycle de vie d'un projet d'analyse de données ;
+- **Identifier** les outils de base utilisés dans ce cours (Python, JupyterLab, `pandas`, `numpy`, `uv`) et les tendances récentes de l'écosystème.
+:::
+
+## 1. Qu'est-ce que l'analyse de données ?
+
+### 1.1. Définition
+
+L'**analyse de données** (*Data Analysis*) désigne l'ensemble des démarches permettant d'inspecter, de nettoyer, de transformer et de modéliser statistiquement des données, dans le but d'en extraire des informations utiles, de soutenir une décision ou de valider une hypothèse.
+
+::: {.callout-tip}
+## Analyse de données
+
+::: {#def-analyse-donnees}
+L'analyse de données consiste à transformer des données brutes, souvent volumineuses et désorganisées, en **informations exploitables**, à travers une succession d'étapes de collecte, de nettoyage, d'exploration et de représentation.
+:::
+:::
+
+Contrairement à ce que l'on pense parfois, l'essentiel du travail d'un analyste ne consiste pas à produire des graphiques, mais à **comprendre les données** : d'où elles viennent, ce qu'elles représentent réellement, quelles sont leurs limites et leurs biais. La visualisation n'intervient qu'en bout de chaîne, pour communiquer un résultat déjà établi.
+
+### 1.2. Data Analysis, Data Science, Business Intelligence, Machine Learning : quelles frontières ?
+
+Ces quatre termes sont souvent confondus. Ils partagent une matière première commune — la donnée — mais diffèrent par leurs objectifs et leurs méthodes.
+
+| Domaine | Question typique | Résultat produit |
+|:---|:---|:---|
+| **Business Intelligence (BI)** | « Que s'est-il passé, et où en sommes-nous ? » | Tableaux de bord, indicateurs (KPI) suivis dans le temps |
+| **Analyse de données (Data Analysis)** | « Pourquoi cela s'est-il produit ? Que peut-on en conclure ? » | Rapports, visualisations, recommandations argumentées |
+| **Data Science** | « Que va-t-il probablement se passer ? » | Modèles statistiques et modèles de Machine Learning |
+| **Machine Learning** | « Comment automatiser une prédiction ou une décision à grande échelle ? » | Un modèle entraîné, déployé en production |
+
+: Quatre disciplines complémentaires autour de la donnée {#tbl-disciplines-donnees}
+
+::: {.callout-warning title="Périmètre de ce cours"}
+Ce module se concentre sur les deux premières colonnes de la @tbl-disciplines-donnees : la **préparation**, l'**exploration** et la **visualisation** des données. Les algorithmes de Machine Learning (régression, classification, clustering...) ne sont volontairement **pas traités ici** : ils font l'objet d'un module dédié. Une bonne partie du travail présenté dans ce cours reste néanmoins un prérequis indispensable à tout projet de Machine Learning.
+:::
+
+En pratique, ces frontières sont poreuses : un même professionnel peut, selon les entreprises, être appelé *Data Analyst* et exercer des missions de *Data Scientist*, ou inversement. Ce qui compte est de comprendre **la nature de la question posée** plutôt que le titre du poste.
+
+## 2. Les quatre types d'analyse de données
+
+On distingue classiquement quatre niveaux d'analyse, de la simple observation du passé jusqu'à la recommandation d'action, chacun s'appuyant sur le précédent.
+
+![Les quatre types d'analyse de données](../images/types-analyse-donnees.svg){#fig-types-analyse}
+
+| Type d'analyse | Question posée | Exemple |
+|:---|:---|:---|
+| **Descriptive** | Que s'est-il passé ? | Le chiffre d'affaires du mois dernier par région |
+| **Diagnostique** | Pourquoi cela s'est-il passé ? | Pourquoi les ventes ont-elles chuté en mars dans le nord ? |
+| **Prédictive** | Que va-t-il probablement se passer ? | Quel sera le chiffre d'affaires du mois prochain ? |
+| **Prescriptive** | Que devrait-on faire ? | Quelle action marketing maximiserait les ventes du trimestre ? |
+
+: Les quatre types d'analyse de données {#tbl-types-analyse}
+
+::: {.callout-tip title="Exemple filé : une chaîne de supermarchés marocaine"}
+- **Descriptive** : « Les ventes de la région de Casablanca ont baissé de 12 % en mars par rapport à février. »
+- **Diagnostique** : en croisant les ventes avec le calendrier et la météo, on découvre que la baisse coïncide avec des travaux routiers ayant réduit l'affluence dans deux magasins.
+- **Prédictive** *(hors périmètre de ce cours, traité en Machine Learning)* : un modèle estime les ventes attendues pour le mois suivant compte tenu de la reprise du trafic.
+- **Prescriptive** : sur la base du diagnostic, l'équipe décide de renforcer temporairement les promotions dans les magasins concernés.
+:::
+
+Ce cours se concentre principalement sur les analyses **descriptive** et **diagnostique** : elles reposent entièrement sur les techniques de préparation, d'exploration et de visualisation présentées dans les chapitres suivants, et ne nécessitent pas d'algorithme d'apprentissage automatique.
+
+## 3. Le cycle de vie d'un projet d'analyse de données
+
+Un projet d'analyse de données suit une succession d'étapes, rarement linéaire, que l'on peut résumer ainsi :
+
+![Le cycle de vie d'un projet d'analyse de données](../images/cycle-vie-analyse-donnees.svg){#fig-cycle-vie-analyse}
+
+1. **Cadrage** : formuler clairement la question métier à laquelle l'analyse doit répondre.
+2. **Collecte** : rassembler les données nécessaires (bases de données, fichiers, API, web scraping...).
+3. **Nettoyage** : traiter les valeurs manquantes, les valeurs aberrantes, les doublons et les incohérences — l'étape la plus chronophage en pratique.
+4. **Transformation** : encoder, normaliser, recalculer certaines variables pour les rendre exploitables.
+5. **Exploration (EDA)** : décrire statistiquement les données, en dégager des tendances, des corrélations, des anomalies.
+6. **Visualisation et communication** : représenter graphiquement les résultats et les traduire en recommandations compréhensibles par un public non technique.
+
+::: {.callout-note title="Repère" collapse="true"}
+Ce découpage est proche du cadre **OSEMN** (*Obtain, Scrub, Explore, Model, iNterpret*), popularisé par la communauté Data Science. Nous l'adaptons ici en retirant l'étape de modélisation prédictive (« Model »), hors périmètre de ce cours, et en insistant davantage sur la communication des résultats.
+:::
+
+Comme pour tout cycle de projet, ces étapes sont **itératives** : une exploration révélant un problème de qualité de données ramène généralement à l'étape de nettoyage, et une visualisation peu convaincante amène souvent à revisiter l'exploration.
+
+## 4. Écosystème d'outils Python pour l'analyse de données
+
+### 4.1. Bibliothèques cœur
+
+Comme pour le Machine Learning, Python s'impose comme langage principal pour l'analyse de données, grâce à la richesse de son écosystème scientifique et à la lisibilité de sa syntaxe.
+
+| Bibliothèque | Rôle |
+|:---|:---|
+| `pandas` | Manipulation de tableaux de données (`DataFrame`) : lecture, nettoyage, agrégation |
+| `numpy` | Calcul numérique et vectoriel sous-jacent à `pandas` |
+| `matplotlib` | Bibliothèque de visualisation de référence, hautement personnalisable |
+| `seaborn` | Visualisation statistique construite sur `matplotlib`, orientée exploration rapide |
+
+: Bibliothèques Python cœur de ce cours {#tbl-bibliotheques-eda}
+
+### 4.2. Environnements de travail
+
+Comme dans le reste de la formation, nous privilégions les **notebooks Jupyter** (JupyterLab, Google Colab) pour l'exploration interactive et la visualisation immédiate cellule par cellule, et **Visual Studio Code** pour consolider un script d'analyse reproductible destiné à être réexécuté ou partagé.
+
+### 4.3. Gestion de projet avec `uv`
+
+Comme pour les autres modules de la formation, les projets de ce cours sont organisés avec [`uv`](https://docs.astral.sh/uv/), qui centralise la gestion de l'environnement virtuel, des dépendances (`pyproject.toml`, `uv.lock`) et de l'exécution des scripts et notebooks. Se référer au module précédent pour le détail de son fonctionnement.
+
+### 4.4. Tendances récentes de l'écosystème
+
+::: {.callout-important title="Zoom sur les tendances actuelles"}
+L'écosystème de l'analyse de données évolue rapidement. Sans remplacer les outils historiques présentés ci-dessus, plusieurs bibliothèques récentes gagnent en popularité et méritent d'être connues :
+
+- **[`Polars`](https://pola.rs)** : une alternative à `pandas`, écrite en Rust, offrant des performances nettement supérieures sur de gros volumes de données grâce à l'exécution parallèle et à l'évaluation paresseuse (*lazy evaluation*).
+- **[`DuckDB`](https://duckdb.org)** : un moteur de base de données analytique embarqué, permettant d'exécuter des requêtes SQL directement sur des fichiers CSV ou Parquet, sans serveur, avec des performances proches d'un entrepôt de données.
+- **Outils de profilage automatique** (`ydata-profiling`, `Sweetviz`) : génèrent en une commande un rapport exploratoire complet d'un jeu de données (statistiques, distributions, corrélations, valeurs manquantes) — voir le chapitre sur l'exploration des données.
+- **Assistants d'analyse par IA générative** : des outils permettant d'interroger un `DataFrame` en langage naturel commencent à s'intégrer aux environnements de data analysis, sans se substituer à une compréhension rigoureuse des données par l'analyste.
+
+Ces outils ne sont pas obligatoires dans ce cours, mais seront mentionnés ponctuellement à titre de complément, car ils représentent une évolution significative des pratiques professionnelles actuelles.
+:::
+
+## 5. Les métiers de la donnée
+
+| Métier | Mission principale | Compétences clés |
+|:---|:---|:---|
+| **Data Analyst** | Explorer, visualiser et interpréter les données pour éclairer une décision | SQL, `pandas`, visualisation, statistiques descriptives |
+| **BI Analyst / BI Developer** | Construire et maintenir des tableaux de bord et indicateurs récurrents | SQL, outils de BI (Power BI, Tableau), modélisation de données |
+| **Data Scientist** | Concevoir des modèles statistiques et prédictifs | Statistique inférentielle, Machine Learning, programmation |
+| **Data Engineer** | Construire et fiabiliser les pipelines d'acquisition et de stockage des données | Bases de données, orchestration, ingénierie logicielle |
+
+: Les principaux métiers autour de la donnée {#tbl-metiers-donnee}
+
+Ce cours prépare avant tout au cœur du métier de **Data Analyst**, tout en posant des bases indispensables aux trois autres profils.
+
+::: {.callout-note title="Auto-évaluation" collapse="true"}
+Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
+
+- [ ] Je peux expliquer la différence entre analyse de données, Data Science, BI et Machine Learning.
+- [ ] Je peux citer et illustrer les quatre types d'analyse de données.
+- [ ] Je peux énumérer, dans l'ordre, les étapes du cycle de vie d'un projet d'analyse de données.
+- [ ] Je connais au moins deux outils récents qui complètent `pandas` et `matplotlib`.
+:::
+
+## Exercices
+
+::: {#exr-intro-ad-1}
+### Vrai ou Faux
+
+a. La Business Intelligence répond principalement à la question « pourquoi ? ».
+b. Une analyse diagnostique s'appuie généralement sur une analyse descriptive préalable.
+c. Le Machine Learning est un prérequis indispensable pour produire une analyse descriptive.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-1"}
+a. **Faux.** La BI répond surtout à « que s'est-il passé, et où en sommes-nous ? » (analyse descriptive) ; c'est l'analyse diagnostique qui répond au « pourquoi ».
+b. **Vrai.** On ne peut expliquer une variation (diagnostic) sans l'avoir d'abord constatée et quantifiée (description).
+c. **Faux.** L'analyse descriptive repose sur des statistiques et des visualisations ; aucun modèle prédictif n'est nécessaire.
+:::
+
+::: {#exr-intro-ad-2}
+### Classer les questions
+
+Pour chacune des questions suivantes, indiquez le type d'analyse correspondant (descriptive, diagnostique, prédictive ou prescriptive) :
+
+a. Combien de visiteurs le site web a-t-il reçus la semaine dernière ?
+b. Pourquoi le taux d'abandon de panier a-t-il augmenté en juillet ?
+c. Quelle campagne publicitaire faut-il privilégier pour la rentrée ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-2"}
+a. **Descriptive** — simple constat chiffré.
+b. **Diagnostique** — recherche d'une cause à une variation observée.
+c. **Prescriptive** — recommandation d'action.
+:::
+
+::: {#exr-intro-ad-3}
+### Étude de cas courte
+
+Une association marocaine de protection de l'environnement souhaite comprendre l'évolution du volume de déchets collectés dans trois villes sur les deux dernières années, puis identifier les facteurs expliquant les écarts entre villes.
+
+a. Quelles étapes du cycle de vie présenté en @fig-cycle-vie-analyse cette association devra-t-elle suivre ?
+b. À quel(s) type(s) d'analyse (@tbl-types-analyse) ce projet correspond-il ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-3"}
+a. Cadrage de la question (comparer trois villes) → collecte des données de collecte de déchets → nettoyage (unités, doublons, données manquantes par ville/mois) → exploration statistique → visualisation comparative dans le temps et par ville.
+b. **Descriptive** (évolution des volumes) puis **diagnostique** (recherche des facteurs expliquant les écarts entre villes).
+:::

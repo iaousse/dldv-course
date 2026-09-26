@@ -20,13 +20,11 @@ number-sections: false
 %{\usekomafont{chapter}\strut Préface\par}
 ```
 
-Le présent manuel est le support de cours officiel du module **Machine Learning**, dispensé dans le cadre de la Licence Professionnelle DBT-DAIA (Développement d'Applications et Intelligence Artificielle) en temps aménagé à l'École Supérieure de Technologie de Casablanca (ESTC). 
+Le présent manuel est le support de cours officiel de l'element **Analyse et Visualisation des Données**, dispensé dans le cadre d'une formation en Développement d'Applications et Intelligence Artificielle.
 
-À l'origine, la communauté étudiante dans ce programme provient de parcours techniques variés (DUT, BTS, DTS ou diplômes équivalents), ayant déjà acquis un bagage en programmation informatique et les prérequis nécessaires en mathématiques appliquées pour suivre et comprendre les formules de ce manuel.
+La communauté étudiante visée par ce module provient de parcours techniques variés (DUT, BTS, DTS ou diplômes équivalents), ayant déjà acquis un bagage de base en programmation Python. La familiarité préalable avec la Data Science, l'analyse de données ou le Machine Learning n'est pas un prérequis : ce manuel se concentre volontairement sur ce qui précède et accompagne la modélisation — comprendre, préparer, explorer et représenter une donnée — sans aborder les algorithmes d'apprentissage automatique, qui font l'objet d'un module distinct.
 
-Le manuel vise à simplifier l'accès aux concepts clés **Machine Learning** du sous forme de ressource éducative libre. Il propose une approche, combinant les bases mathématiques nécessaires, l'ingénierie des données et une transition pratique vers des outils de production.
-
-
+Ce manuel vise à outiller les étudiants d'une **démarche méthodique et reproductible** face à un jeu de données : savoir le questionner avant de le modéliser, savoir le nettoyer avant de l'analyser, et savoir le représenter avant de le communiquer. Il combine les bases statistiques nécessaires, la pratique intensive avec l'écosystème Python (`pandas`, `numpy`, `matplotlib`, `seaborn`), et une ouverture progressive vers des outils plus récents (`Polars`, `DuckDB`, `Plotly`, outils de profilage automatique) qui redessinent aujourd'hui les pratiques de l'analyse de données.
 
 ```{=latex}
 \subsection*{Prérequis}
@@ -36,12 +34,12 @@ Le manuel vise à simplifier l'accès aux concepts clés **Machine Learning** du
 <h2>Prérequis</h2>
 ```
 
-Le contenu de ce manuel est organisé pour les personnes ayant déjà une base et une expérience avec :
-  
-- la programmation en langage Python ;
-- les notions élémentaires de mathématiques pour l'informatique (calcul matriciel de base, dérivées, probabilités et Statistique) ;
+Le contenu de ce manuel est organisé pour des personnes ayant déjà une base et une expérience avec :
 
-La familiarité préalable avec le Machine Learning n'est pas un prérequis : les concepts sont réintroduits progressivement depuis leurs fondements mathématiques jusqu'à leur mise en œuvre logicielle.
+- la programmation en langage Python (variables, boucles, fonctions, structures de données de base) ;
+- les notions élémentaires de statistique descriptive (moyenne, médiane, écart-type).
+
+Aucune connaissance préalable en analyse de données ni en data visualization n'est nécessaire : ce cours se limite délibérément à l'analyse et à la visualisation des données.
 
 ```{=latex}
 \subsection*{Livres et ressources complémentaires}
@@ -51,9 +49,9 @@ La familiarité préalable avec le Machine Learning n'est pas un prérequis : le
 <h2>Livres et ressources complémentaires</h2>
 ```
 
-Pendant longtemps, l'enseignement du Machine Learning s'est appuyé sur des ouvrages de référence académiques classiques, tels que *Pattern Recognition and Machine Learning* [@bishop2006] ou *Hands-On Machine Learning* [@geron2022].
+Ce manuel s'inspire des ouvrages de référence en analyse de données et en visualisation, notamment *Python for Data Analysis* [@mckinney2022], consacré à la manipulation de données avec `pandas`, ainsi que *Storytelling with Data* [@knaflic2015], référence sur la communication visuelle de résultats analytiques.
 
-Ce manuel s'inspire largement de leurs approches et de leurs méthodes pour structurer le cours. L'ensemble des applications pratiques et des algorithmes y est développé en utilisant [Python](https://python.org) comme outil de programmation principal.
+L'ensemble des exemples et exercices pratiques est développé en utilisant [Python](https://python.org) comme langage principal, avec `pandas` et `numpy` pour la manipulation des données, et `matplotlib`/`seaborn` pour la visualisation statique.
 
 ::: {.callout-note}
 Les bibliothèques scientifiques Python évoluant rapidement, veillez à utiliser un environnement virtuel basé sur Python 3.10 ou supérieur pour garantir la compatibilité des extraits de code présentés dans ce manuel.

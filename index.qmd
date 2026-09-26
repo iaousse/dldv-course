@@ -14,7 +14,7 @@ number-sections: false
 \vspace*{2cm}
 \includegraphics[width=6cm]{images/logo_estc.png}
 \vfill
-{\Huge\bfseries Machine Learning\par}
+{\Huge\bfseries Analyse et visualisation de données\par}
 \vspace{1cm}
 {\Large IAOUSSE M'barek\par}
 \vspace{0.5cm}

@@ -1,0 +1,264 @@
+# Préparation des données
+
+::: {.callout-tip title="Objectifs du chapitre"}
+À la fin de ce chapitre, l'étudiant sera capable de :
+
+- **Identifier** les principales sources de collecte de données (bases de données, fichiers plats, API, web scraping) ;
+- **Diagnostiquer** les problèmes de qualité d'un jeu de données (valeurs manquantes, aberrantes, dupliquées) ;
+- **Appliquer** des stratégies adaptées de traitement des valeurs manquantes et aberrantes avec `pandas` ;
+- **Transformer** des variables (encodage, normalisation, discrétisation) en vue de leur exploration ou de leur visualisation.
+:::
+
+> Si les données sont de mauvaise qualité, corrompues ou biaisées, aucune analyse — aussi soignée soit-elle — ne pourra produire de conclusions fiables (*Garbage In, Garbage Out*).
+>
+> --- Principe fondamental de l'analyse de données
+
+Avant de pouvoir explorer ou visualiser un jeu de données, il faut d'abord le **rassembler** puis le **rendre exploitable**. Ce chapitre couvre les étapes 2, 3 et 4 du cycle de vie présenté au chapitre précédent (@fig-cycle-vie-analyse) : où trouver les données, comment détecter et corriger leurs défauts, puis comment les transformer pour l'exploration et la visualisation.
+
+## 1. Collecte de données
+
+### 1.1. Les bases de données
+
+La source la plus courante en entreprise reste la base de données interne :
+
+- **relationnelle (SQL)** : données organisées en tables reliées par des clés (PostgreSQL, MySQL, SQL Server), interrogées avec le langage **SQL** ;
+- **non-relationnelle (NoSQL)** : données stockées sous une forme plus flexible — documents JSON (MongoDB), paires clé-valeur (Redis) — adaptées à des données peu structurées ou à très grande échelle.
+
+`pandas` permet de charger directement le résultat d'une requête SQL dans un `DataFrame` :
+
+```python
+import pandas as pd
+import sqlite3
+
+connexion = sqlite3.connect("ventes.db")
+df = pd.read_sql("SELECT * FROM transactions WHERE annee = 2025", connexion)
+```
+
+### 1.2. Les fichiers plats et formats de données
+
+En dehors des bases de données, les données sont fréquemment échangées sous forme de fichiers :
+
+| Format | Caractéristiques | Lecture avec `pandas` |
+|:---|:---|:---|
+| **CSV** | Texte tabulaire, très répandu, lisible par un humain | `pd.read_csv()` |
+| **JSON** | Structure hiérarchique (objets imbriqués), courant pour les API | `pd.read_json()` |
+| **Excel (`.xlsx`)** | Tableur, souvent utilisé en entreprise | `pd.read_excel()` |
+| **Parquet** | Format binaire columnaire, compressé, optimisé pour l'analytique | `pd.read_parquet()` |
+
+: Principaux formats de données rencontrés en analyse de données {#tbl-formats-donnees}
+
+::: {.callout-important title="Zoom sur les tendances : le format Parquet"}
+Contrairement au CSV, le format **Parquet** stocke les données par colonne plutôt que par ligne. Cela permet de ne lire que les colonnes réellement nécessaires à une analyse, de bénéficier d'une compression efficace et de conserver les types de données (un entier reste un entier, pas une chaîne de caractères à réinterpréter). Il est aujourd'hui privilégié pour les jeux de données volumineux, et s'utilise nativement avec `pandas`, `Polars` ou `DuckDB`.
+:::
+
+### 1.3. Les API
+
+Une **API** (*Application Programming Interface*) permet d'obtenir des données structurées de façon normalisée, sans avoir à analyser du HTML :
+
+- les **API REST**, les plus répandues, où chaque ressource est accessible via une URL et une méthode HTTP (`GET`, `POST`...), avec une réponse généralement au format JSON ;
+- les **API GraphQL**, plus récentes, qui permettent au client de préciser exactement les champs souhaités en une seule requête.
+
+```python
+import requests
+import pandas as pd
+
+reponse = requests.get("https://api.exemple.org/ventes?annee=2025")
+df = pd.json_normalize(reponse.json()["resultats"])
+```
+
+### 1.4. Le *web scraping*
+
+Lorsque les données ne sont disponibles que sur des pages web, on recourt au **web scraping** : l'extraction automatisée d'informations à partir du code HTML. Les bibliothèques Python de référence sont `BeautifulSoup` (analyse d'une page unique) et `Scrapy` (collecte à grande échelle, avec gestion de la pagination et des files d'attente).
+
+::: {.callout-warning title="Éthique et légalité du web scraping"}
+Avant de collecter des données sur un site, il convient de vérifier son fichier `robots.txt`, ses conditions générales d'utilisation, ainsi que le cadre réglementaire applicable à la protection des données personnelles (RGPD, ou la loi marocaine 09-08), en particulier si des données à caractère personnel sont concernées.
+:::
+
+### 1.5. Open data et capteurs / IoT
+
+Deux autres sources méritent d'être mentionnées :
+
+- les **portails d'open data** (données publiques mises à disposition par des institutions, ex. données démographiques, économiques ou climatiques) ;
+- les **capteurs et objets connectés (IoT)**, qui génèrent des flux de données en continu (température, géolocalisation, fréquentation), souvent collectés via des files de messages (ex. MQTT, Kafka) avant d'être stockés pour l'analyse.
+
+## 2. Nettoyage des données
+
+Une fois collectées, les données contiennent presque toujours des imperfections. Le nettoyage est l'étape la plus chronophage d'un projet d'analyse — souvent estimée à 60-80 % du temps réel passé sur un projet.
+
+### 2.1. Les valeurs manquantes
+
+Une valeur manquante peut avoir des origines très différentes, ce qui conditionne la stratégie à adopter :
+
+| Type | Signification | Exemple |
+|:---|:---|:---|
+| **MCAR** (*Missing Completely At Random*) | L'absence ne dépend d'aucune variable, ni observée ni cachée | Un capteur tombe en panne aléatoirement |
+| **MAR** (*Missing At Random*) | L'absence dépend d'une autre variable observée | Les hommes répondent moins souvent à une question sur le revenu |
+| **MNAR** (*Missing Not At Random*) | L'absence dépend de la valeur manquante elle-même | Les personnes aux revenus très élevés refusent de répondre |
+
+: Typologie des valeurs manquantes {#tbl-typologie-manquantes}
+
+Avec `pandas`, on détecte et on traite les valeurs manquantes ainsi :
+
+```python
+# Détection
+df.isna().sum()                      # nombre de valeurs manquantes par colonne
+df.isna().mean().round(2) * 100      # pourcentage de valeurs manquantes
+
+# Suppression
+df.dropna(subset=["prix"])           # supprime les lignes sans prix
+
+# Imputation
+df["surface"] = df["surface"].fillna(df["surface"].median())
+df["quartier"] = df["quartier"].fillna("Non renseigné")
+```
+
+::: {.callout-tip title="Comment choisir entre suppression et imputation ?"}
+- Si la proportion de valeurs manquantes est **faible** (quelques pourcents) et que le mécanisme semble MCAR, la **suppression** des lignes concernées est souvent acceptable.
+- Si la proportion est **élevée**, ou si l'absence porte sur une variable centrale de l'analyse, on préfère une **imputation** (moyenne, médiane, mode, ou une valeur explicite comme « Non renseigné »), en gardant à l'esprit qu'elle introduit un biais qu'il faut documenter.
+:::
+
+### 2.2. Les valeurs aberrantes (*outliers*)
+
+Une valeur aberrante est une observation qui s'écarte fortement du reste de la distribution. Deux méthodes usuelles permettent de les détecter :
+
+- la méthode du **score Z**, qui signale une observation aberrante lorsque $|z| = \left|\dfrac{x - \bar{x}}{\sigma}\right| > 3$ ;
+- la méthode de l'**écart interquartile (IQR)**, plus robuste aux distributions asymétriques : on considère comme aberrante toute valeur en dehors de l'intervalle $[Q_1 - 1{,}5 \times IQR,\ Q_3 + 1{,}5 \times IQR]$, avec $IQR = Q_3 - Q_1$.
+
+```python
+q1, q3 = df["prix"].quantile([0.25, 0.75])
+iqr = q3 - q1
+borne_basse, borne_haute = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+
+aberrants = df[(df["prix"] < borne_basse) | (df["prix"] > borne_haute)]
+```
+
+La **boîte à moustaches** (*boxplot*), présentée au chapitre suivant sur la visualisation, est l'outil graphique privilégié pour repérer visuellement ces valeurs.
+
+::: {.callout-warning title="Une valeur aberrante n'est pas toujours une erreur"}
+Avant de supprimer une valeur aberrante, il faut se demander si elle correspond à une **erreur de saisie** (à corriger ou supprimer) ou à un **phénomène réel mais rare** (par exemple une vente exceptionnelle), qu'il peut être pertinent de conserver, voire d'étudier spécifiquement.
+:::
+
+### 2.3. Doublons et incohérences
+
+```python
+df.duplicated().sum()                     # nombre de lignes strictement dupliquées
+df = df.drop_duplicates()
+
+df["ville"] = df["ville"].str.strip().str.title()   # espaces superflus, casse
+df["date"] = pd.to_datetime(df["date"], errors="coerce")  # type de données cohérent
+```
+
+Les incohérences les plus fréquentes concernent la **casse** et les **espaces superflus** dans les chaînes de caractères (« casablanca » vs « Casablanca »), les **types de données** mal interprétés (une date lue comme texte), et les **unités hétérogènes** (des prix exprimés tantôt en MAD, tantôt en euros).
+
+### 2.4. Vers une démarche de qualité des données
+
+::: {.callout-important title="Zoom sur les tendances : la validation systématique de la qualité"}
+Sur des projets d'analyse récurrents (tableaux de bord alimentés quotidiennement, par exemple), il devient risqué de vérifier la qualité des données « à l'œil » à chaque exécution. Des bibliothèques comme **[`Great Expectations`](https://greatexpectations.io)** permettent de définir des règles de validation explicites (« la colonne `prix` doit toujours être positive », « la colonne `date` ne doit jamais être manquante ») et de les exécuter automatiquement à chaque nouvelle collecte de données, afin de détecter une dérive de qualité avant qu'elle n'affecte l'analyse.
+:::
+
+## 3. Transformation des données
+
+Une fois nettoyées, les données doivent souvent être reformatées avant l'exploration ou la visualisation.
+
+### 3.1. Encodage des variables catégorielles
+
+De nombreux outils statistiques et graphiques manipulent plus facilement des valeurs numériques que du texte. On distingue deux stratégies principales :
+
+- l'**encodage ordinal**, adapté aux catégories qui possèdent un ordre naturel (ex. « Faible » < « Moyen » < « Élevé ») ;
+- l'**encodage one-hot** (variables indicatrices), adapté aux catégories sans ordre (ex. les quartiers d'une ville), qui crée une colonne binaire par catégorie.
+
+```python
+# Encodage ordinal
+ordre = {"Faible": 0, "Moyen": 1, "Élevé": 2}
+df["niveau_encode"] = df["niveau"].map(ordre)
+
+# Encodage one-hot
+df_encode = pd.get_dummies(df, columns=["quartier"])
+```
+
+::: {.callout-note}
+L'encodage détaillé des variables (avec `scikit-learn`, gestion des catégories rares, etc.) sera approfondi dans le module de Machine Learning. Dans ce cours, il est surtout utile pour faciliter certains graphiques et calculs de corrélation présentés au chapitre suivant.
+:::
+
+### 3.2. Normalisation et standardisation
+
+Lorsque plusieurs variables numériques ont des échelles très différentes (ex. une surface en $m^2$ et un prix en millions de MAD), il est parfois utile de les ramener à une échelle comparable, notamment pour certaines visualisations combinées :
+
+- la **normalisation min-max** ramène chaque valeur dans l'intervalle $[0, 1]$ : $x' = \dfrac{x - x_{min}}{x_{max} - x_{min}}$ ;
+- la **standardisation** (score Z) centre la variable autour de 0 avec un écart-type de 1 : $x' = \dfrac{x - \bar{x}}{\sigma}$.
+
+```python
+df["prix_norm"] = (df["prix"] - df["prix"].min()) / (df["prix"].max() - df["prix"].min())
+df["prix_standard"] = (df["prix"] - df["prix"].mean()) / df["prix"].std()
+```
+
+### 3.3. Discrétisation (*binning*)
+
+La discrétisation consiste à transformer une variable numérique continue en catégories, souvent utile pour simplifier une visualisation (par exemple des tranches d'âge plutôt qu'un âge exact) :
+
+```python
+df["tranche_age"] = pd.cut(
+    df["age"],
+    bins=[0, 18, 35, 60, 120],
+    labels=["Mineur", "Jeune adulte", "Adulte", "Senior"]
+)
+```
+
+### 3.4. Quelques transformations usuelles supplémentaires
+
+- **Extraction de composantes temporelles** : à partir d'une colonne `date`, on extrait fréquemment l'année, le mois, le jour de semaine (`df["date"].dt.month`), utiles pour l'exploration de séries temporelles.
+- **Agrégats dérivés** : création de nouvelles colonnes résumant une information (ex. le prix au mètre carré = `prix / surface`), qui facilitent grandement l'exploration et la comparaison.
+
+::: {.callout-note title="Auto-évaluation" collapse="true"}
+Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
+
+- [ ] Je sais citer trois sources possibles de collecte de données et un cas d'usage pour chacune.
+- [ ] Je sais distinguer les valeurs manquantes MCAR, MAR et MNAR et adapter ma stratégie en conséquence.
+- [ ] Je sais détecter des valeurs aberrantes avec la méthode de l'IQR.
+- [ ] Je sais choisir entre encodage ordinal et one-hot selon la nature d'une variable catégorielle.
+:::
+
+## Exercices
+
+::: {#exr-prep-1}
+### Choisir une stratégie de traitement des valeurs manquantes
+
+Un jeu de données de candidatures à un emploi comporte une colonne `salaire_souhaite` manquante pour 40 % des lignes. Une analyse rapide montre que les candidats les plus expérimentés (souvent plus exigeants sur le salaire) sont surreprésentés parmi les valeurs manquantes.
+
+a. À quel type de valeur manquante (@tbl-typologie-manquantes) correspond cette situation ?
+b. Recommanderiez-vous une suppression ou une imputation ? Justifiez.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-1"}
+a. Il s'agit d'un cas **MNAR** : l'absence de réponse dépend de la valeur elle-même (les candidats avec un salaire souhaité élevé répondent moins).
+b. Ni la suppression pure ni une imputation par la moyenne ne sont satisfaisantes ici, car elles biaiseraient l'analyse à la baisse. Il est préférable de **documenter explicitement** cette non-réponse (par exemple une catégorie « Non communiqué ») plutôt que de l'imputer silencieusement, et d'en tenir compte dans l'interprétation des résultats.
+:::
+
+::: {#exr-prep-2}
+### Détection d'outliers
+
+Pour une variable `prix` avec $Q_1 = 200\,000$ et $Q_3 = 450\,000$ (en MAD), calculez les bornes de détection des valeurs aberrantes selon la méthode de l'IQR.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-2"}
+$IQR = 450\,000 - 200\,000 = 250\,000$.
+
+- Borne basse : $200\,000 - 1{,}5 \times 250\,000 = -175\,000$ (donc, en pratique, aucune valeur basse ne sera jamais considérée comme aberrante ici, un prix ne pouvant être négatif).
+- Borne haute : $450\,000 + 1{,}5 \times 250\,000 = 825\,000$.
+
+Tout bien affiché à plus de 825 000 MAD serait donc signalé comme potentiellement aberrant.
+:::
+
+::: {#exr-prep-3}
+### Encodage
+
+Pour chacune des variables suivantes, indiquez si un encodage **ordinal** ou **one-hot** est le plus adapté, et pourquoi :
+
+a. Le niveau d'étude (« Bac », « Bac+2 », « Bac+3 », « Bac+5 ») ;
+b. La couleur préférée d'un client (« Rouge », « Bleu », « Vert »).
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-prep-3"}
+a. **Encodage ordinal** : les niveaux d'étude possèdent un ordre naturel croissant.
+b. **Encodage one-hot** : les couleurs n'ont pas d'ordre logique entre elles ; leur attribuer un ordre arbitraire introduirait une fausse relation numérique.
+:::

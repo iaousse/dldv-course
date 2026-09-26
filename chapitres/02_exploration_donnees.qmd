@@ -1,0 +1,198 @@
+# Exploration des données
+
+::: {.callout-tip title="Objectifs du chapitre"}
+À la fin de ce chapitre, l'étudiant sera capable de :
+
+- **Calculer et interpréter** les principales statistiques descriptives (tendance centrale, dispersion, forme) ;
+- **Distinguer** l'analyse univariée, bivariée et multivariée ;
+- **Mesurer** une corrélation ou une association entre deux variables et en connaître les limites ;
+- **Construire** des tableaux d'agrégation (`groupby`, tableaux croisés dynamiques) pour résumer un jeu de données ;
+- **Utiliser** un outil de profilage automatique pour accélérer une première exploration.
+:::
+
+L'**analyse exploratoire de données** (*Exploratory Data Analysis*, EDA), popularisée par le statisticien John Tukey, consiste à examiner un jeu de données déjà nettoyé afin d'en dégager les tendances principales, les relations entre variables et les éventuelles anomalies restantes — avant toute conclusion définitive ou toute visualisation destinée à un public externe.
+
+## 1. Statistiques descriptives
+
+### 1.1. Tendance centrale
+
+| Indicateur | Définition | Sensibilité aux valeurs extrêmes |
+|:---|:---|:---|
+| **Moyenne** | Somme des valeurs divisée par leur nombre | Élevée |
+| **Médiane** | Valeur qui sépare la distribution en deux moitiés égales | Faible |
+| **Mode** | Valeur la plus fréquente | Faible (mais peu informatif pour une variable continue) |
+
+: Indicateurs de tendance centrale {#tbl-tendance-centrale}
+
+```python
+df["prix"].mean()
+df["prix"].median()
+df["quartier"].mode()[0]
+```
+
+::: {.callout-warning title="Moyenne ou médiane ?"}
+Sur une distribution fortement asymétrique — typiquement les salaires ou les prix de l'immobilier — la moyenne peut être fortement tirée vers le haut par quelques valeurs extrêmes. La **médiane** donne alors une image plus représentative de la « valeur typique ».
+:::
+
+### 1.2. Dispersion
+
+- l'**écart-type** ($\sigma$) et la **variance** ($\sigma^2$) mesurent l'écart moyen à la moyenne ;
+- l'**écart interquartile** ($IQR = Q_3 - Q_1$), déjà rencontré au chapitre précédent, mesure la dispersion de la moitié centrale des données, de façon robuste aux valeurs extrêmes ;
+- l'**étendue** (maximum − minimum) donne une idée rapide, mais très sensible aux valeurs aberrantes.
+
+```python
+df["prix"].std()
+df["prix"].var()
+df["prix"].quantile([0.25, 0.5, 0.75])
+```
+
+### 1.3. Forme de la distribution
+
+Deux indicateurs complètent la description d'une distribution :
+
+- l'**asymétrie** (*skewness*) : une valeur positive indique une distribution étalée vers la droite (queue de valeurs élevées), une valeur négative vers la gauche ;
+- l'**aplatissement** (*kurtosis*) : indique si la distribution comporte davantage de valeurs extrêmes qu'une distribution normale.
+
+```python
+df["prix"].skew()
+df["prix"].kurt()
+```
+
+La méthode `describe()` de `pandas` regroupe l'essentiel de ces indicateurs en une seule commande :
+
+```python
+df.describe()
+```
+
+## 2. Analyse univariée, bivariée et multivariée
+
+| Niveau d'analyse | Nombre de variables étudiées simultanément | Exemple |
+|:---|:---|:---|
+| **Univariée** | Une seule | Distribution des prix de vente |
+| **Bivariée** | Deux | Relation entre surface et prix |
+| **Multivariée** | Trois ou plus | Relation entre surface, quartier et prix |
+
+: Les trois niveaux de l'analyse exploratoire {#tbl-niveaux-analyse}
+
+L'**analyse univariée** décrit une variable isolément (statistiques descriptives, distribution). L'**analyse bivariée** cherche une relation entre deux variables — par exemple à l'aide d'un tableau croisé pour deux variables catégorielles, ou d'un coefficient de corrélation pour deux variables numériques. L'**analyse multivariée** étend cette logique à plusieurs variables simultanément, souvent à l'aide de tableaux d'agrégation ou de visualisations combinant plusieurs dimensions (couleur, taille, facettes), présentées au chapitre suivant.
+
+## 3. Corrélations et associations
+
+### 3.1. Variables numériques : Pearson et Spearman
+
+- le **coefficient de corrélation de Pearson** ($r$, entre −1 et 1) mesure l'intensité d'une relation **linéaire** entre deux variables numériques ;
+- le **coefficient de corrélation de Spearman** mesure une relation **monotone** (pas nécessairement linéaire), en travaillant sur les rangs des valeurs plutôt que sur les valeurs elles-mêmes — plus robuste aux valeurs aberrantes.
+
+```python
+df[["surface", "prix"]].corr(method="pearson")
+df[["surface", "prix"]].corr(method="spearman")
+```
+
+::: {.callout-warning title="Corrélation n'est pas causalité"}
+Une corrélation élevée entre deux variables ne signifie pas que l'une provoque l'autre : elle peut résulter d'une **variable cachée** commune, ou d'une pure coïncidence statistique. Un exemple classique est la corrélation observée entre les ventes de glaces et le nombre de noyades : les deux augmentent en été, sans lien de cause à effet direct entre elles.
+:::
+
+### 3.2. Variables catégorielles : tableaux croisés et V de Cramér
+
+Pour deux variables catégorielles, on utilise un **tableau croisé** (*crosstab*), éventuellement complété par le **V de Cramér**, qui résume en un seul indicateur (entre 0 et 1) l'intensité de l'association :
+
+```python
+tableau_croise = pd.crosstab(df["quartier"], df["type_bien"])
+```
+
+## 4. Agrégation : `groupby` et tableaux croisés dynamiques
+
+L'outil central de l'exploration multivariée avec `pandas` est la méthode `groupby()`, qui permet de calculer un indicateur pour chaque sous-groupe d'une variable catégorielle :
+
+```python
+df.groupby("quartier")["prix"].mean().sort_values(ascending=False)
+
+df.groupby(["quartier", "type_bien"]).agg(
+    prix_moyen=("prix", "mean"),
+    nombre_biens=("prix", "count")
+)
+```
+
+Le **tableau croisé dynamique** (*pivot table*) offre une présentation plus lisible lorsque l'on croise deux dimensions catégorielles avec une mesure numérique :
+
+```python
+pd.pivot_table(
+    df,
+    values="prix",
+    index="quartier",
+    columns="type_bien",
+    aggfunc="mean"
+)
+```
+
+Ces deux outils constituent la base de la quasi-totalité des tableaux de bord et des rapports produits par un Data Analyst.
+
+## 5. Profilage automatique des données
+
+Sur un nouveau jeu de données, il est souvent utile d'obtenir rapidement une vue d'ensemble avant de se lancer dans une exploration manuelle détaillée.
+
+::: {.callout-important title="Zoom sur les tendances : rapports d'exploration automatisés"}
+Des bibliothèques comme **[`ydata-profiling`](https://github.com/ydataai/ydata-profiling)** (anciennement `pandas-profiling`) ou **[`Sweetviz`](https://github.com/fbdesignpro/sweetviz)** génèrent, en une seule instruction, un rapport HTML complet : statistiques descriptives par variable, distributions, valeurs manquantes, corrélations entre variables, alertes de qualité (variables constantes, fortement corrélées, etc.).
+
+```python
+from ydata_profiling import ProfileReport
+
+profil = ProfileReport(df, title="Exploration du jeu de données")
+profil.to_file("rapport_exploration.html")
+```
+
+Ces outils ne remplacent pas le raisonnement de l'analyste — ils accélèrent la première prise de contact avec un jeu de données et aident à repérer rapidement les points nécessitant une attention particulière, avant une exploration ciblée avec les techniques présentées dans ce chapitre.
+:::
+
+::: {.callout-note title="Auto-évaluation" collapse="true"}
+Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
+
+- [ ] Je sais expliquer pourquoi la médiane est parfois préférable à la moyenne.
+- [ ] Je sais distinguer une analyse univariée, bivariée et multivariée avec un exemple pour chacune.
+- [ ] Je sais expliquer pourquoi une forte corrélation n'implique pas une relation de cause à effet.
+- [ ] Je sais construire un tableau croisé dynamique avec `pandas`.
+:::
+
+## Exercices
+
+::: {#exr-eda-1}
+### Interpréter des statistiques descriptives
+
+Pour une variable `revenu_mensuel` (en MAD), on obtient : moyenne = 8 500, médiane = 6 200, écart-type = 5 400, asymétrie (*skewness*) = 2,3.
+
+a. Que suggère l'écart important entre la moyenne et la médiane ?
+b. Que confirme la valeur positive et élevée de l'asymétrie ?
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-1"}
+a. Un écart important entre une moyenne nettement supérieure à la médiane suggère la présence de quelques revenus très élevés qui tirent la moyenne vers le haut, sans être représentatifs de la majorité des observations.
+b. Une asymétrie positive et élevée confirme une distribution étalée vers la droite (une « longue traîne » de hauts revenus), cohérente avec l'écart observé entre moyenne et médiane.
+:::
+
+::: {#exr-eda-2}
+### Choisir le bon coefficient de corrélation
+
+Pour chacune des situations suivantes, indiquez s'il est préférable d'utiliser Pearson ou Spearman :
+
+a. La relation entre l'ancienneté d'un employé (en années) et son salaire, globalement croissante mais pas forcément linéaire.
+b. La relation entre la taille et le poids d'un ensemble d'individus adultes, approximativement linéaire.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-2"}
+a. **Spearman**, car la relation est monotone (croissante) sans être nécessairement linéaire ; Spearman capte ce type de relation même s'il n'est pas de forme parfaitement linéaire.
+b. **Pearson**, adapté à une relation linéaire entre deux variables numériques.
+:::
+
+::: {#exr-eda-3}
+### Construire un plan d'exploration
+
+On dispose d'un jeu de données de transactions d'un site e-commerce marocain, avec les colonnes suivantes : `date_commande`, `categorie_produit`, `prix`, `region_client`, `moyen_paiement`.
+
+Proposez, pour ce jeu de données, un exemple concret d'analyse univariée, un exemple d'analyse bivariée et un exemple d'analyse multivariée, en vous appuyant sur ces colonnes.
+:::
+
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-3"}
+- **Univariée** : distribution du `prix` des commandes (moyenne, médiane, dispersion).
+- **Bivariée** : prix moyen selon la `categorie_produit` (via `groupby`).
+- **Multivariée** : prix moyen croisé par `region_client` **et** `moyen_paiement` (via un tableau croisé dynamique), permettant de voir si certaines régions privilégient certains moyens de paiement pour des achats plus ou moins coûteux.
+:::

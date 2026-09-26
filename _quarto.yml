@@ -16,7 +16,7 @@ crossref:
   chapters: false
 
 book:
-  title: "Machine Learning"
+  title: "Analyse et visualisation de données"
   sidebar:
     logo: images/logo_estc.png
   author: "IAOUSSE M'barek"
@@ -30,18 +30,10 @@ book:
   chapters:
     - index.qmd
     - preface.qmd
-    - chapitres/00_intro_ml.qmd
-    - chapitres/01_ecosysteme_ml.qmd
-    - chapitres/02_pretraitement_donnees.qmd
-    - chapitres/03_regression_lineaire.qmd
-    - chapitres/04_classification.qmd
-    - chapitres/04_ml_non_supervise.qmd
+    - chapitres/00_introduction_analyse_donnees.qmd
+    - chapitres/01_preparation_donnees.qmd
+    - chapitres/02_exploration_donnees.qmd
     - references.qmd
-    - tp/lab0_environnement_python.qmd
-    - tp/lab1_fondements_sklearn.qmd
-    - tp/lab2_collecte_pretraitement.qmd
-    - tp/lab3_regression.qmd
-    - tp/lab4_classification.qmd
 
 # Configuration pour le code Python
 execute:
