@@ -160,6 +160,7 @@ La **gouvernance** désigne les règles qui rendent les données compréhensible
 
 Un tableau de bord ne devrait pas exposer inutilement des noms, numéros de téléphone ou adresses. On peut agréger les résultats, masquer les colonnes sensibles et limiter les accès selon le rôle de l'utilisateur.
 
+:::{.content-visible when-profile="teacher"}
 ::: {.callout-note title="Auto-évaluation" collapse="true"}
 Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
 
@@ -168,6 +169,7 @@ Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui »
 - [ ] Je peux reconnaître une dimension et une mesure dans un exemple.
 - [ ] Je sais distinguer ETL et ELT.
 - [ ] Je comprends pourquoi les indicateurs doivent être documentés.
+:::
 :::
 
 ## Exercices
@@ -187,8 +189,11 @@ c. Vérifier si une commande est payée.
 d. Calculer la médiane des délais de livraison de l'année.
 :::
 
+
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-dwh-1"}
 a. **OLTP** ; b. **OLAP** ; c. **OLTP** ; d. **OLAP**.
+:::
 :::
 
 ::: {#exr-dwh-2}
@@ -197,8 +202,11 @@ a. **OLTP** ; b. **OLAP** ; c. **OLTP** ; d. **OLAP**.
 Une table `fact_ventes` contient une ligne par produit présent dans une commande. Formulez le grain avec une phrase et expliquez pourquoi une commande de trois produits peut produire trois lignes.
 :::
 
+
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-dwh-2"}
 Le grain est : **une ligne représente un produit d'une commande**. Une commande contenant trois produits possède donc trois lignes de détail, même si elle n'a qu'un seul numéro de commande.
+:::
 :::
 
 ::: {#exr-dwh-3}
@@ -207,8 +215,10 @@ Le grain est : **une ligne représente un produit d'une commande**. Une commande
 Classez les éléments suivants : `montant_net`, `categorie`, `annee`, `quantite`, `ville_client`, `prix_unitaire`.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-dwh-3"}
 Faits ou mesures : `montant_net`, `quantite`, `prix_unitaire`. Dimensions ou attributs de dimensions : `categorie`, `annee`, `ville_client`.
+:::
 :::
 
 ::: {#exr-dwh-4}
@@ -217,8 +227,10 @@ Faits ou mesures : `montant_net`, `quantite`, `prix_unitaire`. Dimensions ou att
 Une ligne indique 3 articles à 120 MAD chacun et une remise de 40 MAD. Calculez le montant net. Une deuxième ligne indique 2 articles à 80 MAD sans remise. Quel est le montant total des deux lignes ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-dwh-4"}
 Première ligne : $3\times120-40=\textbf{320}$ MAD. Deuxième ligne : $2\times80=\textbf{160}$ MAD. Total : $320+160=\textbf{480}$ MAD.
+:::
 :::
 
 ::: {#exr-dwh-5}
@@ -231,10 +243,12 @@ b. Le stock disponible à la fin de chaque jour.
 c. Un taux de conversion en pourcentage.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-dwh-5"}
 a. Le montant de ventes est **additif**.
 b. Le stock de fin de journée est **semi-additif** : on peut comparer ou prendre le dernier stock, mais le sommer sur les jours n'a généralement pas de sens.
 c. Un taux est **non additif** : il faut recalculer le taux à partir des numérateurs et dénominateurs.
+:::
 :::
 
 ::: {#exr-dwh-6}
@@ -243,10 +257,12 @@ c. Un taux est **non additif** : il faut recalculer le taux à partir des numér
 Remettez dans l'ordre : charger les données préparées, extraire un fichier CSV, convertir les dates et contrôler les prix négatifs.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-dwh-6"}
 1. Extraire le fichier CSV.
 2. Convertir les dates et contrôler les prix négatifs.
 3. Charger les données préparées.
+:::
 :::
 
 ::: {#exr-dwh-7}
@@ -259,10 +275,12 @@ b. Calculez la moyenne globale.
 c. Pourquoi la moyenne des deux moyennes, 200 MAD, est-elle incorrecte ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-dwh-7"}
 a. A : $10\times100=\textbf{1\,000}$ MAD ; B : $2\times300=\textbf{600}$ MAD.
 b. Moyenne globale : $(1000+600)/(10+2)=1600/12=\textbf{133,33}$ MAD environ.
 c. Les régions n'ont pas le même nombre de commandes ; la moyenne de 200 MAD donne le même poids aux deux groupes.
+:::
 :::
 
 ::: {#exr-dwh-8}
@@ -274,7 +292,9 @@ a. La colonne `prix` contient parfois des valeurs négatives.
 b. Un tableau de bord doit être partagé avec des responsables régionaux.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-dwh-8"}
 a. Règle : `prix >= 0`, avec rejet ou examen des exceptions. 
 b. Protection : filtrer les données selon la région de l'utilisateur et ne partager que les colonnes nécessaires ; les noms ou coordonnées personnelles peuvent être masqués.
+:::
 :::

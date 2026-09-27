@@ -230,6 +230,7 @@ Une conclusion raisonnable pour l'extrait serait :
 
 La conclusion sépare les **faits calculés**, les **interprétations prudentes** et les **limites**. Elle ne transforme pas une différence observée en causalité.
 
+:::{.content-visible when-profile="teacher"}
 ::: {.callout-note title="Auto-évaluation" collapse="true"}
 Avant de considérer le cas comme terminé, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
 
@@ -239,6 +240,7 @@ Avant de considérer le cas comme terminé, assurez-vous de pouvoir répondre «
 - [ ] Je distingue lignes de produits et commandes distinctes.
 - [ ] Je peux expliquer la différence entre moyenne et médiane dans ce cas.
 - [ ] Je peux proposer une page de tableau de bord sans surcharger l'utilisateur.
+:::
 :::
 
 ## Exercices
@@ -253,8 +255,11 @@ Répondez sans ordinateur. Les données de l'énoncé suffisent ; les calculs so
 Quelle phrase décrit le grain du fichier ? Pourquoi la commande C001 occupe-t-elle deux lignes ?
 :::
 
+
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-1"}
 Une ligne représente **un produit dans une commande**. C001 contient de l'huile et du riz : elle possède donc deux lignes de produits.
+:::
 :::
 
 ::: {#exr-cas-2}
@@ -263,8 +268,10 @@ Une ligne représente **un produit dans une commande**. C001 contient de l'huile
 Pourquoi la ligne C006 n'est-elle pas incluse dans le chiffre d'affaires payé ? Peut-on la supprimer du fichier original ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-2"}
 Elle est marquée **Annulée**, donc elle ne représente pas une vente payée selon la définition du périmètre. Il faut la conserver dans la source afin de pouvoir suivre les annulations et documenter le filtre.
+:::
 :::
 
 ::: {#exr-cas-3}
@@ -273,8 +280,10 @@ Elle est marquée **Annulée**, donc elle ne représente pas une vente payée se
 Calculez le montant net de 4 jus à 18 MAD avec une remise de 5 MAD, puis celui de 5 savons à 12 MAD sans remise.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-3"}
 Jus : $4\times18-5=\textbf{67}$ MAD. Savons : $5\times12=\textbf{60}$ MAD.
+:::
 :::
 
 ::: {#exr-cas-4}
@@ -286,9 +295,11 @@ a. Quelle part du chiffre d'affaires total représente Casablanca ?
 b. Quel montant reste pour Rabat et Tanger ensemble ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-4"}
 a. $435/795\times100 \approx 54,7\%$.
 b. $795-435=\textbf{360}$ MAD.
+:::
 :::
 
 ::: {#exr-cas-5}
@@ -300,9 +311,11 @@ a. Pourquoi ces deux nombres sont-ils différents ?
 b. Quel nombre utiliser pour calculer le panier moyen ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-5"}
 a. Certaines commandes contiennent plusieurs produits et donc plusieurs lignes ; C001 et C010 en sont des exemples.
 b. Il faut utiliser **9 commandes distinctes**, car le panier moyen est défini par commande.
+:::
 :::
 
 ::: {#exr-cas-6}
@@ -311,8 +324,10 @@ b. Il faut utiliser **9 commandes distinctes**, car le panier moyen est défini 
 La moyenne des montants de lignes est 72,27 MAD et la médiane est 67 MAD. Que suggère cette différence ? Quelle valeur de la liste contribue particulièrement à tirer la moyenne vers le haut ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-6"}
 La moyenne supérieure à la médiane suggère une légère asymétrie à droite : quelques montants élevés influencent la moyenne. La ligne à 150 MAD y contribue particulièrement.
+:::
 :::
 
 ::: {#exr-cas-7}
@@ -321,8 +336,10 @@ La moyenne supérieure à la médiane suggère une légère asymétrie à droite
 Parmi les éléments suivants, lesquels doivent apparaître en priorité sur la page générale : chiffre d'affaires net, identifiant de chaque client, commandes distinctes, panier moyen, une liste de 25 couleurs, date d'actualisation ? Justifiez les choix.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-7"}
 Les priorités sont le **chiffre d'affaires net**, les **commandes distinctes**, le **panier moyen** et la **date d'actualisation**. Un identifiant individuel n'est pas nécessaire pour la vue générale et peut poser un problème de confidentialité ; 25 couleurs nuisent à la lecture.
+:::
 :::
 
 ::: {#exr-cas-8}
@@ -334,7 +351,9 @@ a. Donnez une conclusion que les données permettent de soutenir.
 b. Citez deux informations manquantes avant de conclure sur la performance globale.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-cas-8"}
 a. On peut dire que Casablanca a le chiffre d'affaires net et le panier moyen les plus élevés dans **cet extrait de ventes payées**.
 b. Il manque par exemple les coûts et la marge, le nombre de visiteurs, la taille des magasins, le stock disponible, une période plus longue et les objectifs de chaque magasin. Le chiffre d'affaires seul ne suffit pas à définir la performance globale.
+:::
 :::

@@ -166,6 +166,7 @@ profil.to_file("rapport_exploration.html")
 Ces outils ne remplacent pas le raisonnement de l'analyste — ils accélèrent la première prise de contact avec un jeu de données et aident à repérer rapidement les points nécessitant une attention particulière, avant une exploration ciblée avec les techniques présentées dans ce chapitre.
 :::
 
+:::{.content-visible when-profile="teacher"}
 ::: {.callout-note title="Auto-évaluation" collapse="true"}
 Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
 
@@ -173,6 +174,7 @@ Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui »
 - [ ] Je sais distinguer une analyse univariée, bivariée et multivariée avec un exemple pour chacune.
 - [ ] Je sais expliquer pourquoi une forte corrélation n'implique pas une relation de cause à effet.
 - [ ] Je sais construire un tableau croisé dynamique avec `pandas`.
+:::
 :::
 
 ## Exercices
@@ -186,9 +188,12 @@ a. Que suggère l'écart important entre la moyenne et la médiane ?
 b. Que confirme la valeur positive et élevée de l'asymétrie ?
 :::
 
+
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-1"}
 a. Un écart important entre une moyenne nettement supérieure à la médiane suggère la présence de quelques revenus très élevés qui tirent la moyenne vers le haut, sans être représentatifs de la majorité des observations.
 b. Une asymétrie positive et élevée confirme une distribution étalée vers la droite (une « longue traîne » de hauts revenus), cohérente avec l'écart observé entre moyenne et médiane.
+:::
 :::
 
 ::: {#exr-eda-2}
@@ -200,9 +205,11 @@ a. La relation entre l'ancienneté d'un employé (en années) et son salaire, gl
 b. La relation entre la taille et le poids d'un ensemble d'individus adultes, approximativement linéaire.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-2"}
 a. **Spearman**, car la relation est monotone (croissante) sans être nécessairement linéaire ; Spearman capte ce type de relation même s'il n'est pas de forme parfaitement linéaire.
 b. **Pearson**, adapté à une relation linéaire entre deux variables numériques.
+:::
 :::
 
 ::: {#exr-eda-3}
@@ -213,10 +220,12 @@ On dispose d'un jeu de données de transactions d'un site e-commerce marocain, a
 Proposez, pour ce jeu de données, un exemple concret d'analyse univariée, un exemple d'analyse bivariée et un exemple d'analyse multivariée, en vous appuyant sur ces colonnes.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-3"}
 - **Univariée** : distribution du `prix` des commandes (moyenne, médiane, dispersion).
 - **Bivariée** : prix moyen selon la `categorie_produit` (via `groupby`).
 - **Multivariée** : prix moyen croisé par `region_client` **et** `moyen_paiement` (via un tableau croisé dynamique), permettant de voir si certaines régions privilégient certains moyens de paiement pour des achats plus ou moins coûteux.
+:::
 :::
 
 ::: {#exr-eda-4}
@@ -229,10 +238,12 @@ b. Quel indicateur est le moins influencé par la durée de 8 jours ?
 c. Quelle question supplémentaire poseriez-vous avant de conclure que le service est lent ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-4"}
 a. Moyenne $=(2+3+3+4+8)/5=\textbf{4}$ jours ; médiane = **3 jours** ; étendue $=8-2=\textbf{6}$ jours.
 b. La **médiane**.
 c. Il faut connaître le nombre total de livraisons, la période, la région et la proportion de livraisons de 8 jours : une seule valeur extrême ne suffit pas.
+:::
 :::
 
 ::: {#exr-eda-5}
@@ -245,10 +256,12 @@ b. Que signifie l'écart-type plus élevé de la classe B ?
 c. Peut-on dire que les étudiants de B ont de moins bonnes notes ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-5"}
 a. La classe **A** est plus homogène.
 b. Les notes de B sont plus éloignées de leur moyenne : les niveaux sont davantage dispersés.
 c. Non. Les deux moyennes sont identiques ; B est seulement plus hétérogène.
+:::
 :::
 
 ::: {#exr-eda-6}
@@ -262,8 +275,10 @@ c. Repérer des valeurs extrêmes dans les salaires.
 d. Étudier le lien entre surface et prix d'un logement.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-6"}
 a. **Barres** ; b. **Courbe** ; c. **Boîte à moustaches** ; d. **Nuage de points**. Un histogramme serait adapté pour la répartition d'une seule variable numérique.
+:::
 :::
 
 ::: {#exr-eda-7}
@@ -276,10 +291,12 @@ b. Pourquoi ne peut-on pas conclure que les glaces provoquent les baignades ?
 c. Quelle variable cachée peut expliquer les deux évolutions ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-7"}
 a. Une corrélation positive.
 b. Une corrélation décrit une association, pas une cause.
 c. La **température** ou la saison : le beau temps favorise à la fois l'achat de glaces et les baignades.
+:::
 :::
 
 ::: {#exr-eda-8}
@@ -298,8 +315,10 @@ b. Pourquoi faut-il également regarder le nombre de commandes ?
 c. Calculez le montant total estimé pour chaque région et identifiez la région au total le plus élevé.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-8"}
 a. Le **Centre** (350 MAD).
 b. Sa moyenne repose sur seulement 20 commandes ; elle est donc moins représentative d'un volume important que celle d'une région avec beaucoup de commandes.
 c. Nord : $100\times180=\textbf{18\,000}$ MAD ; Centre : $20\times350=\textbf{7\,000}$ MAD ; Sud : $80\times200=\textbf{16\,000}$ MAD. Le total le plus élevé est celui du **Nord**.
+:::
 :::

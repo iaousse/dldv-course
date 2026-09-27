@@ -208,6 +208,7 @@ Cette séparation permet de tester les indicateurs indépendamment de l'interfac
 
 Le choix doit partir du besoin, pas de la préférence pour un outil. Dans les deux cas, les mêmes bases restent indispensables : question métier, qualité des données, modèle clair, indicateurs documentés et visualisation lisible.
 
+:::{.content-visible when-profile="teacher"}
 ::: {.callout-note title="Auto-évaluation" collapse="true"}
 Avant le cas pratique, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
 
@@ -217,6 +218,7 @@ Avant le cas pratique, assurez-vous de pouvoir répondre « oui » aux questions
 - [ ] Je sais pourquoi une mesure DAX n'est pas toujours une colonne calculée.
 - [ ] Je peux citer une situation où Taipy est pertinent.
 - [ ] Je sais vérifier un tableau de bord avant de le partager.
+:::
 :::
 
 ## Exercices
@@ -231,8 +233,11 @@ Ces exercices sont conceptuels ou demandent seulement un calcul court. Aucun log
 Pour l'objectif « réduire les retards de livraison », proposez un KPI, sa formule et une action possible si sa valeur diminue.
 :::
 
+
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-bi-1"}
 Exemple : KPI = **taux de livraison à temps** ; formule = livraisons à temps / livraisons terminées × 100 ; action = analyser les villes ou transporteurs dont le taux est le plus faible.
+:::
 :::
 
 ::: {#exr-bi-2}
@@ -246,8 +251,10 @@ c. Afficher les ventes par mois.
 d. Renforcer un transporteur après avoir constaté des retards.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-bi-2"}
 a. **Modéliser** ; b. **Préparer** ; c. **Visualiser** ; d. **Décider**.
+:::
 :::
 
 ::: {#exr-bi-3}
@@ -256,8 +263,11 @@ a. **Modéliser** ; b. **Préparer** ; c. **Visualiser** ; d. **Décider**.
 Sur 250 livraisons terminées, 225 ont été livrées à temps. Calculez le taux de livraison à temps et indiquez s'il atteint une cible de 95 %.
 :::
 
+
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-bi-3"}
 $225/250\times100=90\%$. Le taux n'atteint pas la cible de 95 %.
+:::
 :::
 
 ::: {#exr-bi-4}
@@ -270,8 +280,10 @@ b. Calculer le chiffre d'affaires selon les filtres du rapport.
 c. Supprimer une colonne inutilisée avant le modèle.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-bi-4"}
 a. **Power Query** ; b. **mesure DAX** ; c. **Power Query**.
+:::
 :::
 
 ::: {#exr-bi-5}
@@ -280,8 +292,10 @@ a. **Power Query** ; b. **mesure DAX** ; c. **Power Query**.
 Une dimension `Produit` contient deux lignes pour le même `ProduitID`. Quel risque cela crée-t-il lorsqu'on relie cette dimension à une table de ventes ? Quelle vérification simple proposeriez-vous ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-bi-5"}
 Les ventes peuvent être comptées plusieurs fois lors d'un regroupement ou d'un filtre. Il faut vérifier l'unicité de `ProduitID` dans la dimension et retrouver la cause du doublon avant de publier.
+:::
 :::
 
 ::: {#exr-bi-6}
@@ -290,8 +304,10 @@ Les ventes peuvent être comptées plusieurs fois lors d'un regroupement ou d'un
 Une équipe possède déjà plusieurs fonctions Python et veut intégrer un indicateur interactif dans une application interne. Une autre équipe veut surtout créer rapidement des rapports métiers partagés. Quel outil recommander à chacune, et pourquoi ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-bi-6"}
 La première équipe peut choisir **Taipy**, pour réutiliser sa logique Python dans une application. La seconde peut choisir **Power BI**, orienté vers les modèles, rapports et usages BI partagés. Le contexte de sécurité et de déploiement doit aussi être vérifié.
+:::
 :::
 
 ::: {#exr-bi-7}
@@ -303,9 +319,11 @@ a. Calculez le panier moyen.
 b. Pourquoi faut-il utiliser le nombre de commandes et non le nombre de lignes de produits si le KPI est défini par commande ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-bi-7"}
 a. $48\,000/300=\textbf{160}$ MAD par commande.
 b. Une commande peut contenir plusieurs lignes de produits ; compter les lignes gonflerait le dénominateur et changerait la définition du KPI.
+:::
 :::
 
 ::: {#exr-bi-8}
@@ -314,6 +332,8 @@ b. Une commande peut contenir plusieurs lignes de produits ; compter les lignes 
 Une page affiche 25 graphiques sans unité, sans date de mise à jour et avec une couleur différente pour chaque barre. Citez trois améliorations prioritaires et justifiez-les.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-bi-8"}
 Exemples : réduire le nombre de visuels pour mettre en avant les KPI ; ajouter titres, unités et période ; afficher la date d'actualisation ; réserver les couleurs aux catégories ou alertes utiles ; ajouter des filtres compréhensibles. Ces changements facilitent la lecture et évitent des interprétations différentes.
+:::
 :::

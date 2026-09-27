@@ -6,13 +6,12 @@
 - **Définir** l'analyse de données et la **situer** par rapport à la Data Science, la Business Intelligence (BI) et le Machine Learning ;
 - **Distinguer** les quatre types d'analyse : descriptive, diagnostique, prédictive et prescriptive ;
 - **Identifier** les grandes étapes du cycle de vie d'un projet d'analyse de données ;
-- **Identifier** les outils de base utilisés dans ce cours (Python, JupyterLab, `pandas`, `numpy`, `uv`) et les tendances récentes de l'écosystème.
+- **Identifier** les outils de base utilisés dans ce cours.
 :::
 
 ## 1. Qu'est-ce que l'analyse de données ?
 
-### 1.1. Définition
-
+### Définition et Positionnement
 L'**analyse de données** (*Data Analysis*) désigne l'ensemble des démarches permettant d'inspecter, de nettoyer, de transformer et de modéliser statistiquement des données, dans le but d'en extraire des informations utiles, de soutenir une décision ou de valider une hypothèse.
 
 ::: {.callout-tip}
@@ -25,9 +24,7 @@ L'analyse de données consiste à transformer des données brutes, souvent volum
 
 Contrairement à ce que l'on pense parfois, l'essentiel du travail d'un analyste ne consiste pas à produire des graphiques, mais à **comprendre les données** : d'où elles viennent, ce qu'elles représentent réellement, quelles sont leurs limites et leurs biais. La visualisation n'intervient qu'en bout de chaîne, pour communiquer un résultat déjà établi.
 
-### 1.2. Data Analysis, Data Science, Business Intelligence, Machine Learning : quelles frontières ?
-
-Ces quatre termes sont souvent confondus. Ils partagent une matière première commune — la donnée — mais diffèrent par leurs objectifs et leurs méthodes.
+Il existe quatre domaines liés à l'analyse de données : Data Analysis, Data Science, Business Intelligence, et Machine Learning. Ces quatre termes sont souvent confondus. Ils partagent une matière première commune (la donnée) mais diffèrent par leurs objectifs et leurs méthodes.
 
 | Domaine | Question typique | Résultat produit |
 |:---|:---|:---|
@@ -39,12 +36,12 @@ Ces quatre termes sont souvent confondus. Ils partagent une matière première c
 : Quatre disciplines complémentaires autour de la donnée {#tbl-disciplines-donnees}
 
 ::: {.callout-warning title="Périmètre de ce cours"}
-Ce module se concentre sur les deux premières colonnes de la @tbl-disciplines-donnees : la **préparation**, l'**exploration** et la **visualisation** des données. Les algorithmes de Machine Learning (régression, classification, clustering...) ne sont volontairement **pas traités ici** : ils font l'objet d'un module dédié. Une bonne partie du travail présenté dans ce cours reste néanmoins un prérequis indispensable à tout projet de Machine Learning.
+Ce module se concentre sur les deux premières colonnes de la @tbl-disciplines-donnees : la **préparation**, l'**exploration** et la **visualisation** des données. Les algorithmes de Machine Learning (régression, classification, clustering...) ne sont **pas traités ici** : ils font l'objet du cours [Machine Learning](https://iaousse.github.io/ml-course/). Une bonne partie du travail présenté dans ce cours reste néanmoins un prérequis indispensable à tout projet de Machine Learning.
 :::
 
 En pratique, ces frontières sont poreuses : un même professionnel peut, selon les entreprises, être appelé *Data Analyst* et exercer des missions de *Data Scientist*, ou inversement. Ce qui compte est de comprendre **la nature de la question posée** plutôt que le titre du poste.
 
-## 2. Les quatre types d'analyse de données
+### Les quatre types d'analyse de données
 
 On distingue classiquement quatre niveaux d'analyse, de la simple observation du passé jusqu'à la recommandation d'action, chacun s'appuyant sur le précédent.
 
@@ -59,7 +56,7 @@ On distingue classiquement quatre niveaux d'analyse, de la simple observation du
 
 : Les quatre types d'analyse de données {#tbl-types-analyse}
 
-::: {.callout-tip title="Exemple filé : une chaîne de supermarchés marocaine"}
+::: {.callout-tip title="Exemple : une chaîne de supermarchés marocaine"}
 - **Descriptive** : « Les ventes de la région de Casablanca ont baissé de 12 % en mars par rapport à février. »
 - **Diagnostique** : en croisant les ventes avec le calendrier et la météo, on découvre que la baisse coïncide avec des travaux routiers ayant réduit l'affluence dans deux magasins.
 - **Prédictive** *(hors périmètre de ce cours, traité en Machine Learning)* : un modèle estime les ventes attendues pour le mois suivant compte tenu de la reprise du trafic.
@@ -68,62 +65,254 @@ On distingue classiquement quatre niveaux d'analyse, de la simple observation du
 
 Ce cours se concentre principalement sur les analyses **descriptive** et **diagnostique** : elles reposent entièrement sur les techniques de préparation, d'exploration et de visualisation présentées dans les chapitres suivants, et ne nécessitent pas d'algorithme d'apprentissage automatique.
 
-## 3. Les premiers indicateurs à connaître
+## 2. Les premiers indicateurs à connaître
 
-Avant de construire un graphique ou un tableau de bord, il faut savoir décrire simplement les données. Une **observation** est une ligne du tableau (par exemple une commande) et une **variable** est une colonne (par exemple le montant de la commande). Une variable peut être :
+Avant de construire un graphique ou un tableau de bord, il faut savoir **décrire simplement les données**.  
+Une **observation** est une ligne du tableau (par exemple une commande) et une **variable** est une colonne (par exemple le montant de la commande).
 
-- **qualitative** : une catégorie ou une étiquette, comme une ville ou un moyen de paiement ;
-- **quantitative** : un nombre sur lequel on peut calculer, comme un prix, une quantité ou une durée ;
-- **temporelle** : une date ou une période, que l'on peut ordonner dans le temps.
+Une variable peut être de trois natures :
 
-### 3.1. Compter et comparer
+- **qualitative** : une catégorie ou une étiquette (ville, moyen de paiement, segment client…) ;
+- **quantitative** : un nombre sur lequel on peut calculer (prix, quantité, durée, chiffre d’affaires…) ;
+- **temporelle** : une date ou une période que l’on peut ordonner dans le temps (jour, mois, trimestre…).
 
-Le **nombre d'observations** indique la taille du jeu de données. Pour une catégorie, on utilise un effectif (combien de commandes à Casablanca ?) et une fréquence (quelle part des commandes vient de Casablanca ?).
+Ces distinctions sont fondamentales : les indicateurs et les graphiques adaptés ne sont pas les mêmes selon le type de variable.
 
-Si 30 commandes sur 120 viennent de Casablanca :
+### Compter et comparer
+
+::: {.callout-tip title="Effectif et fréquence"}
+
+L’**effectif** d’une catégorie est le nombre d’observations qui appartiennent à cette catégorie.  
+La **fréquence** (ou proportion) est la part que représente cet effectif dans l’ensemble des observations.
 
 $$
-\text{fréquence} = \frac{30}{120} = 0{,}25 = 25\%.
+\text{fréquence} = \frac{\text{effectif de la catégorie}}{\text{effectif total}}
 $$
 
-Pour comparer deux périodes, on peut calculer une variation :
+On l’exprime souvent en pourcentage en multipliant par 100.
+
+::: {.callout-note title="Exemple – Effectif et fréquence"}
+Sur 120 commandes, 30 proviennent de Casablanca :
+
+$$
+\text{fréquence} = \frac{30}{120} = 0{,}25 = 25\,\%.
+$$
+
+**Interprétation** : une commande sur quatre est passée à Casablanca.
+:::
+
+:::
+
+::: {.callout-tip title="Variation relative (ou taux de variation)"}
+
+Pour comparer une même grandeur entre deux périodes (ou deux situations), on calcule la **variation relative** :
 
 $$
 \text{variation en \%} =
 \frac{\text{valeur finale} - \text{valeur initiale}}
-{\text{valeur initiale}}\times 100.
+{\text{valeur initiale}} \times 100.
 $$
 
-Une vente qui passe de 200 à 240 MAD a donc augmenté de
-$\frac{240-200}{200}\times 100=20\%$.
+- Un résultat positif indique une hausse.
+- Un résultat négatif indique une baisse.
 
-### 3.2. Résumer une variable numérique
+::: {.callout-note title="Exemple – Variation relative"}
+Le chiffre d’affaires d’un produit passe de 200 MAD à 240 MAD :
 
-Les indicateurs de tendance centrale et de dispersion seront utilisés tout au long du manuel :
+$$
+\frac{240 - 200}{200} \times 100 = 20\,\%.
+$$
 
-| Indicateur | Question à laquelle il répond | Exemple d'interprétation |
-|:---|:---|:---|
-| Moyenne | Quel serait le partage équitable du total ? | 10 commandes totalisent 2 000 MAD : moyenne = 200 MAD. |
-| Médiane | Quelle valeur partage les observations en deux groupes égaux ? | La moitié des commandes vaut au plus la médiane. |
-| Minimum / maximum | Quelles sont les valeurs extrêmes observées ? | La commande la moins chère et la plus chère. |
-| Quartiles $Q_1$ et $Q_3$ | Où se situent les 25 % et 75 % des observations ? | 50 % des valeurs sont entre $Q_1$ et $Q_3$. |
-| Écart interquartile (IQR) | Quelle est la largeur de la moitié centrale ? | $IQR=Q_3-Q_1$. |
-| Écart-type | Les valeurs sont-elles plutôt proches de la moyenne ? | Plus il est grand, plus les valeurs sont dispersées autour de la moyenne. |
-
-La moyenne est calculée en additionnant les valeurs puis en divisant par leur nombre. La médiane nécessite de trier les valeurs : avec un nombre impair de valeurs, c'est la valeur du milieu ; avec un nombre pair, c'est la moyenne des deux valeurs centrales. Une valeur très élevée peut augmenter fortement la moyenne, mais elle influence beaucoup moins la médiane. C'est pourquoi les deux indicateurs doivent souvent être présentés ensemble.
-
-```python
-resume = df["montant"].describe()
-print(resume[["count", "mean", "50%", "min", "max"]])
-```
-
-La commande `describe()` fournit notamment l'effectif (`count`), la moyenne (`mean`), les quartiles (`25%`, `50%`, `75%`), le minimum et le maximum. Elle ne remplace pas l'interprétation : un indicateur doit toujours être accompagné de son unité, de sa période et de la population étudiée.
-
-::: {.callout-warning title="Un indicateur n'est pas une conclusion"}
-Une moyenne de 250 MAD ne dit pas si les commandes sont toutes proches de 250 MAD ou si quelques très grosses commandes compensent beaucoup de petites commandes. Pour comprendre cela, on complète la moyenne par la médiane, les quartiles ou un graphique.
+**Interprétation** : les ventes ont augmenté de 20 %.
 :::
 
-## 4. Le cycle de vie d'un projet d'analyse de données
+::: {.callout-warning title="Remarques"}
+- Toujours préciser la période de référence (valeur initiale) et la période finale.
+- Une variation de +100 % signifie un doublement ; une variation de −50 % signifie une division par deux.
+:::
+
+:::
+
+### Résumer une variable numérique
+
+Lorsqu’on dispose d’une variable quantitative, on a besoin d’indicateurs qui résument sa **tendance centrale** (où se situent les valeurs) et sa **dispersion** (à quel point elles sont dispersées).
+
+#### Définitions et formules
+
+| Indicateur                     | Définition / formule                                                  | Question à laquelle il répond                             |
+|:-------------------------------|:----------------------------------------------------------------------|:----------------------------------------------------------|
+| **Moyenne** ($\bar{x}$)        | $\displaystyle \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$               | Quel serait le partage équitable du total ?               |
+| **Médiane** ($Me$)             | Valeur qui partage la série ordonnée en deux groupes de même effectif | Quelle valeur est au milieu des observations ?            |
+| **Minimum / Maximum**          | Plus petite et plus grande valeur observée                            | Quelles sont les extrêmes ?                               |
+| **Premier quartile** ($Q_1$)   | Médiane de la moitié inférieure de la série                           | Où se situent les 25 % les plus faibles ?                 |
+| **Troisième quartile** ($Q_3$) | Médiane de la moitié supérieure de la série                           | Où se situent les 75 % les plus faibles ?                 |
+| **Écart interquartile** (IQR)  | $IQR = Q_3 - Q_1$                                                     | Quelle est la largeur de la moitié centrale des données ? |
+| **Écart-type** ($s$)           | $\displaystyle s = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^2}$ | Les valeurs sont-elles proches de la moyenne ?            |
+
+::: {.callout-tip title="Calcul de la médiane et des quartiles"}
+
+**1. Médiane**
+On note 
+
+$$x_1, x_2, \ldots, x_n$$ 
+
+les observations d'une variable quantitative et on note 
+
+$$x_{(1)} \leq x_{(2)} \leq \ldots \leq x_{(n)}$$ 
+
+la série ordonnée.
+
+- Si $n$ est **impair** :  
+  $$
+  Me = x_{\left(\frac{n+1}{2}\right)}
+  $$
+
+- Si $n$ est **pair** :  
+  $$
+  Me = \frac{x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}}{2}
+  $$
+
+**2. Quartiles $Q_1$ et $Q_3$** (méthode de Tukey)
+
+1. On calcule d’abord la **médiane** de toute la série.
+2. On forme la **moitié inférieure** = toutes les observations **strictement inférieures** à la médiane.
+3. On forme la **moitié supérieure** = toutes les observations **strictement supérieures** à la médiane.
+4. $Q_1$ = médiane de la moitié inférieure.  
+5. $Q_3$ = médiane de la moitié supérieure.
+
+:::
+
+::: {.callout-important title="Pourquoi moyenne et médiane ensemble ?"}
+
+- La moyenne est sensible aux valeurs extrêmes (outliers). Une seule commande très élevée peut la tirer fortement vers le haut.  
+- La médiane, elle, est robuste : elle ne change pas (ou peu) si l’on modifie les valeurs extrêmes.  
+- C’est pourquoi on présente presque toujours les deux indicateurs.
+:::
+
+::: {.callout-note title="Exemple 1"}
+Montants de 9 commandes (en MAD) :  
+`420, 95, 250, 110, 130, 160, 190, 80, 45`
+
+**1. Série ordonnée**  
+$$
+x_{(1)}=45,\ x_{(2)}=80,\ x_{(3)}=95,\ x_{(4)}=110,\ x_{(5)}=130,\ 
+x_{(6)}=160,\ x_{(7)}=190,\ x_{(8)}=250,\ x_{(9)}=420
+$$
+
+**2. Effectif** : $n = 9$
+
+**3. Minimum et maximum**  
+- $\min = 45$ MAD  
+- $\max = 420$ MAD
+
+**4. Moyenne**  
+$$
+\bar{x} = \frac{45+80+95+110+130+160+190+250+420}{9} = \frac{1480}{9} \approx 164{,}44\,\text{MAD}
+$$
+
+**5. Médiane** ($n$ impair)  
+$$
+Me = x_{\left(\frac{9+1}{2}\right)} = x_{(5)} = 130\,\text{MAD}
+$$
+
+**6. Quartiles **  
+
+- Moitié inférieure (valeurs < 130) : $45,\ 80,\ 95,\ 110$  
+  → $Q_1$ = médiane de ces 4 valeurs = $\dfrac{80 + 95}{2} = 87{,}5$ MAD
+
+- Moitié supérieure (valeurs > 130) : $160,\ 190,\ 250,\ 420$  
+  → $Q_3$ = médiane de ces 4 valeurs = $\dfrac{190 + 250}{2} = 220$ MAD
+
+**7. Écart interquartile**  
+$$
+IQR = Q_3 - Q_1 = 220 - 87{,}5 = 132{,}5\,\text{MAD}
+$$
+
+**Interprétation**  
+- La moyenne (≈ 164 MAD) est tirée vers le haut par la commande de 420 MAD.  
+- La médiane (130 MAD) est plus représentative du « client typique ».  
+- 50 % des commandes se situent entre 87,5 et 220 MAD (IQR = 132,5 MAD).
+:::
+
+::: {.callout-note title="Exemple 2"}
+Montants de 10 commandes (en MAD) :  
+`30, 55, 90, 70, 150, 125, 105, 180, 220, 380`
+
+**1. Série ordonnée**  
+$$
+x_{(1)}=30,\ x_{(2)}=55,\ x_{(3)}=70,\ x_{(4)}=90,\ x_{(5)}=105,\ 
+x_{(6)}=125,\ x_{(7)}=150,\ x_{(8)}=180,\ x_{(9)}=220,\ x_{(10)}=380
+$$
+
+**2. Effectif** : $n = 10$
+
+**3. Minimum et maximum**  
+- $\min = 30$ MAD  
+- $\max = 380$ MAD
+
+**4. Moyenne**  
+$$
+\bar{x} = \frac{30+55+70+90+105+125+150+180+220+380}{10} = 140{,}5\,\text{MAD}
+$$
+
+**5. Médiane** ($n$ pair)  
+$$
+Me = \frac{x_{(5)} + x_{(6)}}{2} = \frac{105 + 125}{2} = 115\,\text{MAD}
+$$
+
+**6. Quartiles **  
+
+- Moitié inférieure (valeurs < 115) : $30,\ 55,\ 70,\ 90,\ 105$  
+  → $Q_1$ = médiane de ces 5 valeurs = $70$ MAD
+
+- Moitié supérieure (valeurs > 115) : $125,\ 150,\ 180,\ 220,\ 380$  
+  → $Q_3$ = médiane de ces 5 valeurs = $180$ MAD
+
+**7. Écart interquartile**  
+$$
+IQR = Q_3 - Q_1 = 180 - 70 = 110\,\text{MAD}
+$$
+
+**Interprétation**  
+- La moyenne (140,5 MAD) est influencée par la commande de 380 MAD.  
+- La médiane (115 MAD) reflète mieux le centre de la distribution.  
+- La moitié centrale des commandes se situe entre 70 et 180 MAD (IQR = 110 MAD).
+:::
+
+::: {.callout-tip title="Calcul avec python (bibliothèque pandas)"}
+
+```{python}
+#| eval: false
+resume = df["montant"].describe()
+print(resume[["count", "mean", "50%", "min", "max", "25%", "75%"]])
+```
+:::
+
+La méthode `describe()` fournit :
+
+- `count` : effectif
+- `mean` : moyenne
+- `50%` : médiane
+- `min` / `max` : extrêmes
+- `25%` / `75%` : quartiles $Q_1$ et $Q_3$
+
+Elle ne remplace pas l’interprétation : un indicateur doit toujours être accompagné de son **unité**, de sa **période** et de la **population** étudiée.
+
+::: {.callout-warning title="Un indicateur n’est pas une conclusion"}
+Une moyenne de 250 MAD ne dit pas si les commandes sont toutes proches de 250 MAD ou si quelques très grosses commandes compensent beaucoup de petites commandes.  
+Pour comprendre la forme de la distribution, on complète toujours la moyenne par la médiane, les quartiles (ou l’IQR) et, idéalement, un graphique (histogramme, boîte à moustaches…).
+:::
+
+::: {.callout-tip title="Bonnes pratiques"}
+- Toujours indiquer l’unité (MAD, kg, jours…).
+- Préciser la période et le périmètre (tous les clients, un segment, une région…).
+- Présenter moyenne **et** médiane lorsque la distribution est asymétrique.
+- Utiliser l’IQR plutôt que l’écart-type si l’on suspecte des valeurs extrêmes.
+:::
+
+## 3. Cycle de vie et mise en pratique avec Python
+
+### Le cycle de vie d'un projet d'analyse de données
 
 Un projet d'analyse de données suit une succession d'étapes, rarement linéaire, que l'on peut résumer ainsi :
 
@@ -131,7 +320,7 @@ Un projet d'analyse de données suit une succession d'étapes, rarement linéair
 
 1. **Cadrage** : formuler clairement la question métier à laquelle l'analyse doit répondre.
 2. **Collecte** : rassembler les données nécessaires (bases de données, fichiers, API, web scraping...).
-3. **Nettoyage** : traiter les valeurs manquantes, les valeurs aberrantes, les doublons et les incohérences — l'étape la plus chronophage en pratique.
+3. **Nettoyage** : traiter les valeurs manquantes, les valeurs aberrantes, les doublons et les incohérences. C'est l'étape la plus chronophage en pratique.
 4. **Transformation** : encoder, normaliser, recalculer certaines variables pour les rendre exploitables.
 5. **Exploration (EDA)** : décrire statistiquement les données, en dégager des tendances, des corrélations, des anomalies.
 6. **Visualisation et communication** : représenter graphiquement les résultats et les traduire en recommandations compréhensibles par un public non technique.
@@ -142,9 +331,9 @@ Ce découpage est proche du cadre **OSEMN** (*Obtain, Scrub, Explore, Model, iNt
 
 Comme pour tout cycle de projet, ces étapes sont **itératives** : une exploration révélant un problème de qualité de données ramène généralement à l'étape de nettoyage, et une visualisation peu convaincante amène souvent à revisiter l'exploration.
 
-## 5. Écosystème d'outils Python pour l'analyse de données
+### Écosystème d'outils Python pour l'analyse de données
 
-### 5.1. Bibliothèques cœur
+#### Bibliothèques cœur
 
 Comme pour le Machine Learning, Python s'impose comme langage principal pour l'analyse de données, grâce à la richesse de son écosystème scientifique et à la lisibilité de sa syntaxe.
 
@@ -157,28 +346,137 @@ Comme pour le Machine Learning, Python s'impose comme langage principal pour l'a
 
 : Bibliothèques Python cœur de ce cours {#tbl-bibliotheques-eda}
 
-### 5.2. Environnements de travail
+#### Environnements de travail
 
-Comme dans le reste de la formation, nous privilégions les **notebooks Jupyter** (JupyterLab, Google Colab) pour l'exploration interactive et la visualisation immédiate cellule par cellule, et **Visual Studio Code** pour consolider un script d'analyse reproductible destiné à être réexécuté ou partagé.
+Comme dans le reste de la formation, nous privilégions les **notebooks Jupyter** (JupyterLab, Google Colab) pour l'exploration interactive et la visualisation immédiate cellule par cellule, et **Visual Studio Code** si l'etudiant voulais utiliser des fichier python ou ouvrir jupyter noebook dans cet environnement.
 
-### 5.3. Gestion de projet avec `uv`
+#### Gestion de projet avec `uv` {#sec-uv}
 
-Comme pour les autres modules de la formation, les projets de ce cours sont organisés avec [`uv`](https://docs.astral.sh/uv/), qui centralise la gestion de l'environnement virtuel, des dépendances (`pyproject.toml`, `uv.lock`) et de l'exécution des scripts et notebooks. Se référer au module précédent pour le détail de son fonctionnement.
+Un projet de *Machine Learning* ne dépend pas uniquement du code que nous écrivons. Il repose également sur un **environnement logiciel** : une version de Python, un ensemble de bibliothèques, des versions compatibles de ces bibliothèques et différents outils nécessaires à l'exécution du projet.
 
-### 5.4. Tendances récentes de l'écosystème
+La gestion de cet environnement est importante dès qu'un projet doit être **reproduit, partagé, maintenu ou déployé**. Deux utilisateurs disposant du même code peuvent, par exemple, rencontrer des problèmes différents si leurs versions de Python ou de certaines dépendances ne sont pas les mêmes. La gestion des dépendances constitue ainsi une composante essentielle de la reproductibilité et de la maintenance d'un projet.
+
+Dans ce cours, nous présenterons d'abord l'approche classique de l'écosystème Python, puis nous adopterons `uv` comme outil de gestion de nos projets.
+
+##### L'approche classique : Python, `venv` et `pip`
+
+L'écosystème Python fournit déjà les outils nécessaires pour créer un environnement isolé et installer les bibliothèques d'un projet. Le module [`venv`](https://docs.python.org/3/library/venv.html) est l'outil standard de Python pour créer des environnements virtuels. Ceux-ci permettent d'isoler les dépendances d'un projet de celles installées dans les autres projets ou dans l'installation générale de Python.
+
+L'installation des bibliothèques s'effectue généralement avec [`pip`](https://pip.pypa.io/), l'installateur de paquets Python. Les bibliothèques sont notamment disponibles sur [`PyPI`](https://pypi.org/), le Python Package Index.
+
+Une configuration classique peut donc être représentée de manière simplifiée par :
+
+```bash
+python -m venv .venv
+```
+
+puis, dans l'environnement virtuel :
+
+```bash
+python -m pip install numpy pandas scikit-learn
+```
+
+Les dépendances peuvent ensuite être consignées dans un fichier `requirements.txt`, par exemple :
+
+```text
+numpy
+pandas
+scikit-learn
+```
+
+Cette approche est parfaitement valable et reste largement utilisée. Le [Python Packaging User Guide](https://packaging.python.org/) présente d'ailleurs cette organisation ainsi que les pratiques modernes de gestion et de distribution des projets Python.
+
+Elle présente cependant une certaine fragmentation : la création de l'environnement, la gestion des dépendances et leur installation sont assurées par des mécanismes distincts. Pour des projets plus structurés, il devient également utile de disposer d'une déclaration centralisée des dépendances et d'un mécanisme de verrouillage permettant de conserver une résolution précise de l'environnement.
+
+##### Vers une gestion moderne du projet avec `pyproject.toml`
+
+Les projets Python modernes utilisent notamment le fichier [`pyproject.toml`](https://packaging.python.org/en/latest/specifications/pyproject-toml/). Ce fichier permet de centraliser différentes informations relatives au projet, notamment ses métadonnées et ses dépendances.
+
+Il constitue aujourd'hui un élément central de l'écosystème de *packaging* Python et est utilisé par de nombreux outils modernes.
+
+Dans ce cours, nous allons nous appuyer sur [`uv`](https://docs.astral.sh/uv/), développé par Astral, pour gérer nos projets Python.
+
+##### Pourquoi `uv` ?
+
+`uv` est un gestionnaire de projets et de paquets Python qui regroupe dans un même outil plusieurs opérations auparavant réalisées avec différents outils. Il permet notamment de gérer les projets Python, les environnements virtuels, les versions de Python, les dépendances et leur résolution, ainsi que l'exécution des commandes dans l'environnement du projet.
+
+La documentation officielle de [`uv` présente](https://docs.astral.sh/uv/getting-started/features/) notamment les fonctions suivantes :
+
+* création d'un projet avec `uv init` ;
+* ajout et suppression de dépendances ;
+* gestion de l'environnement virtuel du projet ;
+* synchronisation des dépendances ;
+* création et mise à jour du fichier de verrouillage ;
+* exécution de commandes dans l'environnement du projet ;
+* gestion de projets plus complexes au moyen de *workspaces*.
+
+L'intérêt de `uv` dans notre cours est donc moins de remplacer une commande particulière que de fournir une **organisation cohérente de l'ensemble du projet Python**.
+
+##### `pyproject.toml`, `uv.lock` et `.venv`
+
+Avec `uv`, trois éléments sont particulièrement importants.
+
+Le fichier `pyproject.toml` décrit le projet et ses besoins, notamment les dépendances et la version de Python requise.
+
+Le fichier `uv.lock` enregistre la résolution précise des dépendances du projet. Contrairement au fichier `pyproject.toml`, qui exprime les besoins du projet de manière générale, le fichier de verrouillage conserve les versions effectivement résolues. Il peut ainsi être versionné avec le projet afin de faciliter la reconstruction d'un environnement cohérent sur différentes machines. La documentation officielle de [`uv` décrit précisément le rôle de `uv.lock`](https://docs.astral.sh/uv/concepts/projects/layout/).
+
+Enfin, `uv` utilise un environnement virtuel associé au projet, généralement situé dans `.venv`.
+
+On peut donc représenter schématiquement l'organisation d'un projet ainsi :
+
+```text
+projet/
+├── .venv/
+├── pyproject.toml
+├── uv.lock
+└── ...
+```
+
+Le principe peut être résumé ainsi :
+
+> **`pyproject.toml` décrit les besoins du projet ; `uv.lock` conserve leur résolution précise ; `.venv` contient l'environnement dans lequel le projet est exécuté.**
+
+La synchronisation entre ces éléments est prise en charge par `uv`. La documentation officielle explique notamment que les opérations telles que [`uv sync` et `uv run`](https://docs.astral.sh/uv/concepts/projects/sync/) peuvent mettre à jour l'environnement à partir du fichier de verrouillage.
+
+##### Pourquoi `uv` plutôt qu'Anaconda ou Conda ?
+
+Il existe d'autres solutions parfaitement valables pour gérer les environnements Python. L'une des plus connues est l'écosystème [Conda](https://docs.conda.io/), qui permet notamment de créer, gérer, partager et supprimer des environnements contenant différentes versions de Python et de paquets.
+
+Notre choix de `uv` dans ce cours ne signifie donc pas que Conda ou [Anaconda](https://www.anaconda.com/) sont inadaptés. Il s'agit d'un **choix pédagogique et technique** correspondant à l'organisation que nous souhaitons adopter.
+
+Nous retenons `uv` principalement pour les raisons suivantes :
+
+1. **Une approche directement centrée sur les projets Python.**
+   `uv` s'intègre naturellement aux mécanismes modernes du *packaging* Python, notamment `pyproject.toml` et l'écosystème PyPI.
+
+2. **Une gestion unifiée du projet.**
+   Un même outil permet de gérer l'environnement, les dépendances, leur résolution, le verrouillage et l'exécution du projet.
+
+3. **Une structure explicite et versionnable.**
+   L'association de `pyproject.toml` et `uv.lock` fournit une description claire du projet et de son environnement de dépendances.
+
+4. **Une bonne adéquation avec les projets du cours.**
+   Les projets étudiés utiliseront principalement des bibliothèques de l'écosystème Python, telles que `numpy`, `pandas`, `matplotlib` et `scikit-learn`, ainsi que les outils Jupyter. `uv` fournit une organisation cohérente pour leur gestion dans un projet Python local.
+
+5. **Une continuité entre expérimentation et développement.**
+   Les étudiants pourront commencer par explorer les données et les modèles dans des notebooks, puis retrouver le même environnement de projet lorsqu'ils passeront à une organisation plus structurée du code Python.
+
+Le choix de `uv` répond donc avant tout aux besoins de ce cours : disposer d'un environnement Python **isolé, explicite, reproductible et facile à partager**, tout en introduisant progressivement les pratiques modernes de gestion de projet.
+
+#### Tendances récentes de l'écosystème
 
 ::: {.callout-important title="Zoom sur les tendances actuelles"}
 L'écosystème de l'analyse de données évolue rapidement. Sans remplacer les outils historiques présentés ci-dessus, plusieurs bibliothèques récentes gagnent en popularité et méritent d'être connues :
 
 - **[`Polars`](https://pola.rs)** : une alternative à `pandas`, écrite en Rust, offrant des performances nettement supérieures sur de gros volumes de données grâce à l'exécution parallèle et à l'évaluation paresseuse (*lazy evaluation*).
 - **[`DuckDB`](https://duckdb.org)** : un moteur de base de données analytique embarqué, permettant d'exécuter des requêtes SQL directement sur des fichiers CSV ou Parquet, sans serveur, avec des performances proches d'un entrepôt de données.
-- **Outils de profilage automatique** (`ydata-profiling`, `Sweetviz`) : génèrent en une commande un rapport exploratoire complet d'un jeu de données (statistiques, distributions, corrélations, valeurs manquantes) — voir le chapitre sur l'exploration des données.
-- **Assistants d'analyse par IA générative** : des outils permettant d'interroger un `DataFrame` en langage naturel commencent à s'intégrer aux environnements de data analysis, sans se substituer à une compréhension rigoureuse des données par l'analyste.
+- **Outils de profilage automatique** (`ydata-profiling`, `Sweetviz`) : génèrent en une commande un rapport exploratoire complet d'un jeu de données (statistiques, distributions, corrélations, valeurs manquantes).^[voir le chapitre sur l'exploration des données.]
+- **Assistants d'analyse par IA générative** : des outils permettant d'interroger un `DataFrame` en langage naturel commencent à s'intégrer aux environnements de data analysis, sans se substituer à une compréhension rigoureuse des données par l'analyste (l'humain!!).
 
 Ces outils ne sont pas obligatoires dans ce cours, mais seront mentionnés ponctuellement à titre de complément, car ils représentent une évolution significative des pratiques professionnelles actuelles.
 :::
 
-## 6. Les métiers de la donnée
+#### Les métiers de la donnée
 
 | Métier | Mission principale | Compétences clés |
 |:---|:---|:---|
@@ -190,7 +488,7 @@ Ces outils ne sont pas obligatoires dans ce cours, mais seront mentionnés ponct
 : Les principaux métiers autour de la donnée {#tbl-metiers-donnee}
 
 Ce cours prépare avant tout au cœur du métier de **Data Analyst**, tout en posant des bases indispensables aux trois autres profils.
-
+:::{.content-visible when-profile="teacher"}
 ::: {.callout-note title="Auto-évaluation" collapse="true"}
 Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
 
@@ -198,6 +496,7 @@ Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui »
 - [ ] Je peux citer et illustrer les quatre types d'analyse de données.
 - [ ] Je peux énumérer, dans l'ordre, les étapes du cycle de vie d'un projet d'analyse de données.
 - [ ] Je connais au moins deux outils récents qui complètent `pandas` et `matplotlib`.
+:::
 :::
 
 ## Exercices
@@ -210,11 +509,14 @@ b. Une analyse diagnostique s'appuie généralement sur une analyse descriptive 
 c. Le Machine Learning est un prérequis indispensable pour produire une analyse descriptive.
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-1"}
 a. **Faux.** La BI répond surtout à « que s'est-il passé, et où en sommes-nous ? » (analyse descriptive) ; c'est l'analyse diagnostique qui répond au « pourquoi ».
 b. **Vrai.** On ne peut expliquer une variation (diagnostic) sans l'avoir d'abord constatée et quantifiée (description).
 c. **Faux.** L'analyse descriptive repose sur des statistiques et des visualisations ; aucun modèle prédictif n'est nécessaire.
 :::
+:::
+
 
 ::: {#exr-intro-ad-2}
 ### Classer les questions
@@ -226,10 +528,12 @@ b. Pourquoi le taux d'abandon de panier a-t-il augmenté en juillet ?
 c. Quelle campagne publicitaire faut-il privilégier pour la rentrée ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-2"}
 a. **Descriptive** — simple constat chiffré.
 b. **Diagnostique** — recherche d'une cause à une variation observée.
 c. **Prescriptive** — recommandation d'action.
+:::
 :::
 
 ::: {#exr-intro-ad-3}
@@ -241,9 +545,11 @@ a. Quelles étapes du cycle de vie présenté en @fig-cycle-vie-analyse cette as
 b. À quel(s) type(s) d'analyse (@tbl-types-analyse) ce projet correspond-il ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-3"}
 a. Cadrage de la question (comparer trois villes) → collecte des données de collecte de déchets → nettoyage (unités, doublons, données manquantes par ville/mois) → exploration statistique → visualisation comparative dans le temps et par ville.
 b. **Descriptive** (évolution des volumes) puis **diagnostique** (recherche des facteurs expliquant les écarts entre villes).
+:::
 :::
 
 ::: {#exr-intro-ad-4}
@@ -256,10 +562,12 @@ b. Quel indicateur décrit le mieux une commande « typique » ? Pourquoi ?
 c. Quel est l'effectif et la fréquence des commandes d'au moins 100 MAD ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-4"}
 a. La moyenne vaut $(80+100+100+120+600)/5=200$ MAD. La médiane est la troisième valeur triée : **100 MAD**.
 b. La médiane est plus représentative : la commande de 600 MAD tire fortement la moyenne vers le haut.
 c. Quatre commandes sur cinq sont d'au moins 100 MAD : effectif **4**, fréquence **80 %**.
+:::
 :::
 
 ::: {#exr-intro-ad-5}
@@ -272,10 +580,12 @@ b. Calculez la variation en pourcentage entre mai et juin.
 c. La baisse de mai à juin annule-t-elle entièrement la hausse précédente ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-5"}
 a. $(2400-2000)/2000 \times 100 = 20\%$.
 b. $(2280-2400)/2400 \times 100 = -5\%$.
 c. Non. Le niveau de juin reste supérieur à avril : $(2280-2000)/2000 \times 100 = 14\%$ environ.
+:::
 :::
 
 ::: {#exr-intro-ad-6}
@@ -289,8 +599,10 @@ c. Quelle est la largeur de la moitié centrale des durées de livraison ?
 d. Combien de commandes ont été enregistrées ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-6"}
 a. **Fréquence** ; b. **médiane** ; c. **IQR** ; d. **effectif**.
+:::
 :::
 
 ::: {#exr-intro-ad-7}
@@ -299,8 +611,10 @@ a. **Fréquence** ; b. **médiane** ; c. **IQR** ; d. **effectif**.
 Classez les variables suivantes en qualitative, quantitative ou temporelle : `quartier`, `nombre_de_produits`, `date_commande`, `satisfaction` codée « faible / moyenne / élevée ».
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-7"}
 `quartier` est **qualitative nominale** ; `nombre_de_produits` est **quantitative discrète** ; `date_commande` est **temporelle** ; `satisfaction` est **qualitative ordinale**, car ses catégories possèdent un ordre.
+:::
 :::
 
 ::: {#exr-intro-ad-8}
@@ -313,8 +627,10 @@ b. Quelle comparaison simple peut aider pour la seconde ?
 c. Pourquoi faut-il éviter de conclure à une cause avant d'avoir comparé les données ?
 :::
 
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-8"}
 a. Une analyse **descriptive** : comparer les ventes d'août à celles d'une période de référence.
 b. Comparer les ventes par région et par mois, avec des effectifs, des totaux ou des moyennes.
 c. Une baisse peut coïncider avec plusieurs facteurs ; une comparaison permet d'abord de vérifier si le phénomène est général ou localisé. Elle ne prouve pas à elle seule une causalité.
+:::
 :::

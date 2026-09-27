@@ -1,6 +1,9 @@
 project:
   type: book
   output-dir: docs
+
+profile:
+  default: student
 lang: fr
 number-sections: false
 language:

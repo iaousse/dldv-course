@@ -596,25 +596,6 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
 <li>Que confirme la valeur positive et élevée de l’asymétrie ?</li>
 </ol>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-eda-1">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-eda-1" class="quarto-xref">Exercice&nbsp;<span>1</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>Un écart important entre une moyenne nettement supérieure à la médiane suggère la présence de quelques revenus très élevés qui tirent la moyenne vers le haut, sans être représentatifs de la majorité des observations.</li>
-<li>Une asymétrie positive et élevée confirme une distribution étalée vers la droite (une « longue traîne » de hauts revenus), cohérente avec l’écart observé entre moyenne et médiane.</li>
-</ol>
-</div>
-</div>
-</div>
 <div id="exr-eda-2" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 2 (Choisir le bon coefficient de corrélation)</strong></span> Pour chacune des situations suivantes, indiquez s’il est préférable d’utiliser Pearson ou Spearman :</p>
 <ol type="a">
@@ -622,48 +603,9 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
 <li>La relation entre la taille et le poids d’un ensemble d’individus adultes, approximativement linéaire.</li>
 </ol>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-eda-2">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-eda-2" class="quarto-xref">Exercice&nbsp;<span>2</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><strong>Spearman</strong>, car la relation est monotone (croissante) sans être nécessairement linéaire ; Spearman capte ce type de relation même s’il n’est pas de forme parfaitement linéaire.</li>
-<li><strong>Pearson</strong>, adapté à une relation linéaire entre deux variables numériques.</li>
-</ol>
-</div>
-</div>
-</div>
 <div id="exr-eda-3" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 3 (Construire un plan d’exploration)</strong></span> On dispose d’un jeu de données de transactions d’un site e-commerce marocain, avec les colonnes suivantes : <code>date_commande</code>, <code>categorie_produit</code>, <code>prix</code>, <code>region_client</code>, <code>moyen_paiement</code>.</p>
 <p>Proposez, pour ce jeu de données, un exemple concret d’analyse univariée, un exemple d’analyse bivariée et un exemple d’analyse multivariée, en vous appuyant sur ces colonnes.</p>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-eda-3">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-eda-3" class="quarto-xref">Exercice&nbsp;<span>3</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li><strong>Univariée</strong> : distribution du <code>prix</code> des commandes (moyenne, médiane, dispersion).</li>
-<li><strong>Bivariée</strong> : prix moyen selon la <code>categorie_produit</code> (via <code>groupby</code>).</li>
-<li><strong>Multivariée</strong> : prix moyen croisé par <code>region_client</code> <strong>et</strong> <code>moyen_paiement</code> (via un tableau croisé dynamique), permettant de voir si certaines régions privilégient certains moyens de paiement pour des achats plus ou moins coûteux.</li>
-</ul>
-</div>
-</div>
 </div>
 <div id="exr-eda-4" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 4 (Calculer des indicateurs simples)</strong></span> Les durées de livraison, en jours, sont : 2, 3, 3, 4, 8.</p>
@@ -673,26 +615,6 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
 <li>Quelle question supplémentaire poseriez-vous avant de conclure que le service est lent ?</li>
 </ol>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-eda-4">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-eda-4" class="quarto-xref">Exercice&nbsp;<span>4</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>Moyenne <span class="math inline">\(=(2+3+3+4+8)/5=\textbf{4}\)</span> jours ; médiane = <strong>3 jours</strong> ; étendue <span class="math inline">\(=8-2=\textbf{6}\)</span> jours.</li>
-<li>La <strong>médiane</strong>.</li>
-<li>Il faut connaître le nombre total de livraisons, la période, la région et la proportion de livraisons de 8 jours : une seule valeur extrême ne suffit pas.</li>
-</ol>
-</div>
-</div>
-</div>
 <div id="exr-eda-5" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5 (Lire une dispersion)</strong></span> Deux classes ont la même moyenne à un examen : 12/20. La classe A a un écart-type de 1,5 et la classe B un écart-type de 4.</p>
 <ol type="a">
@@ -700,26 +622,6 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
 <li>Que signifie l’écart-type plus élevé de la classe B ?</li>
 <li>Peut-on dire que les étudiants de B ont de moins bonnes notes ?</li>
 </ol>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-eda-5">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-eda-5" class="quarto-xref">Exercice&nbsp;<span>5</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>La classe <strong>A</strong> est plus homogène.</li>
-<li>Les notes de B sont plus éloignées de leur moyenne : les niveaux sont davantage dispersés.</li>
-<li>Non. Les deux moyennes sont identiques ; B est seulement plus hétérogène.</li>
-</ol>
-</div>
-</div>
 </div>
 <div id="exr-eda-6" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 6 (Choisir le bon graphique)</strong></span> Associez chaque besoin à un graphique : histogramme, courbe, barres, boîte à moustaches ou nuage de points.</p>
@@ -730,24 +632,6 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
 <li>Étudier le lien entre surface et prix d’un logement.</li>
 </ol>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-eda-6">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-eda-6" class="quarto-xref">Exercice&nbsp;<span>6</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><strong>Barres</strong> ; b. <strong>Courbe</strong> ; c.&nbsp;<strong>Boîte à moustaches</strong> ; d.&nbsp;<strong>Nuage de points</strong>. Un histogramme serait adapté pour la répartition d’une seule variable numérique.</li>
-</ol>
-</div>
-</div>
-</div>
 <div id="exr-eda-7" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 7 (Corrélation et causalité)</strong></span> Dans une ville, le nombre de glaces vendues et le nombre de baignades augmentent tous les deux en été.</p>
 <ol type="a">
@@ -755,26 +639,6 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
 <li>Pourquoi ne peut-on pas conclure que les glaces provoquent les baignades ?</li>
 <li>Quelle variable cachée peut expliquer les deux évolutions ?</li>
 </ol>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-eda-7">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-eda-7" class="quarto-xref">Exercice&nbsp;<span>7</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>Une corrélation positive.</li>
-<li>Une corrélation décrit une association, pas une cause.</li>
-<li>La <strong>température</strong> ou la saison : le beau temps favorise à la fois l’achat de glaces et les baignades.</li>
-</ol>
-</div>
-</div>
 </div>
 <div id="exr-eda-8" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 8 (Interpréter un tableau agrégé)</strong></span> Un tableau par région présente les résultats suivants :</p>
@@ -809,26 +673,6 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
 <li>Pourquoi faut-il également regarder le nombre de commandes ?</li>
 <li>Calculez le montant total estimé pour chaque région et identifiez la région au total le plus élevé.</li>
 </ol>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-eda-8">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-eda-8" class="quarto-xref">Exercice&nbsp;<span>8</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>Le <strong>Centre</strong> (350 MAD).</li>
-<li>Sa moyenne repose sur seulement 20 commandes ; elle est donc moins représentative d’un volume important que celle d’une région avec beaucoup de commandes.</li>
-<li>Nord : <span class="math inline">\(100\times180=\textbf{18\,000}\)</span> MAD ; Centre : <span class="math inline">\(20\times350=\textbf{7\,000}\)</span> MAD ; Sud : <span class="math inline">\(80\times200=\textbf{16\,000}\)</span> MAD. Le total le plus élevé est celui du <strong>Nord</strong>.</li>
-</ol>
-</div>
-</div>
 </div>
 
 

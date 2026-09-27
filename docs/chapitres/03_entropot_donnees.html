@@ -500,80 +500,14 @@ annee</code></pre>
 <li>Calculer la médiane des délais de livraison de l’année.</li>
 </ol>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-dwh-1">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-dwh-1" class="quarto-xref">Exercice&nbsp;<span>1</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li><strong>OLTP</strong> ; b. <strong>OLAP</strong> ; c.&nbsp;<strong>OLTP</strong> ; d.&nbsp;<strong>OLAP</strong>.</li>
-</ol>
-</div>
-</div>
-</div>
 <div id="exr-dwh-2" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 2 (Identifier le grain)</strong></span> Une table <code>fact_ventes</code> contient une ligne par produit présent dans une commande. Formulez le grain avec une phrase et expliquez pourquoi une commande de trois produits peut produire trois lignes.</p>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-dwh-2">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-dwh-2" class="quarto-xref">Exercice&nbsp;<span>2</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Le grain est : <strong>une ligne représente un produit d’une commande</strong>. Une commande contenant trois produits possède donc trois lignes de détail, même si elle n’a qu’un seul numéro de commande.</p>
-</div>
-</div>
 </div>
 <div id="exr-dwh-3" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 3 (Faits ou dimensions)</strong></span> Classez les éléments suivants : <code>montant_net</code>, <code>categorie</code>, <code>annee</code>, <code>quantite</code>, <code>ville_client</code>, <code>prix_unitaire</code>.</p>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-dwh-3">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-dwh-3" class="quarto-xref">Exercice&nbsp;<span>3</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Faits ou mesures : <code>montant_net</code>, <code>quantite</code>, <code>prix_unitaire</code>. Dimensions ou attributs de dimensions : <code>categorie</code>, <code>annee</code>, <code>ville_client</code>.</p>
-</div>
-</div>
-</div>
 <div id="exr-dwh-4" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 4 (Calculer une mesure)</strong></span> Une ligne indique 3 articles à 120 MAD chacun et une remise de 40 MAD. Calculez le montant net. Une deuxième ligne indique 2 articles à 80 MAD sans remise. Quel est le montant total des deux lignes ?</p>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-dwh-4">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-dwh-4" class="quarto-xref">Exercice&nbsp;<span>4</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Première ligne : <span class="math inline">\(3\times120-40=\textbf{320}\)</span> MAD. Deuxième ligne : <span class="math inline">\(2\times80=\textbf{160}\)</span> MAD. Total : <span class="math inline">\(320+160=\textbf{480}\)</span> MAD.</p>
-</div>
-</div>
 </div>
 <div id="exr-dwh-5" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 5 (Mesure additive ou non ?)</strong></span> Indiquez si l’on peut additionner directement la mesure sur les périodes suivantes :</p>
@@ -583,48 +517,8 @@ annee</code></pre>
 <li>Un taux de conversion en pourcentage.</li>
 </ol>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-dwh-5">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-dwh-5" class="quarto-xref">Exercice&nbsp;<span>5</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>Le montant de ventes est <strong>additif</strong>.</li>
-<li>Le stock de fin de journée est <strong>semi-additif</strong> : on peut comparer ou prendre le dernier stock, mais le sommer sur les jours n’a généralement pas de sens.</li>
-<li>Un taux est <strong>non additif</strong> : il faut recalculer le taux à partir des numérateurs et dénominateurs.</li>
-</ol>
-</div>
-</div>
-</div>
 <div id="exr-dwh-6" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 6 (Comprendre ETL)</strong></span> Remettez dans l’ordre : charger les données préparées, extraire un fichier CSV, convertir les dates et contrôler les prix négatifs.</p>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-dwh-6">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-dwh-6" class="quarto-xref">Exercice&nbsp;<span>6</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="1">
-<li>Extraire le fichier CSV.</li>
-<li>Convertir les dates et contrôler les prix négatifs.</li>
-<li>Charger les données préparées.</li>
-</ol>
-</div>
-</div>
 </div>
 <div id="exr-dwh-7" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 7 (Moyenne globale)</strong></span> La région A compte 10 commandes de 100 MAD en moyenne. La région B compte 2 commandes de 300 MAD en moyenne.</p>
@@ -634,51 +528,12 @@ annee</code></pre>
 <li>Pourquoi la moyenne des deux moyennes, 200 MAD, est-elle incorrecte ?</li>
 </ol>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-dwh-7">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-dwh-7" class="quarto-xref">Exercice&nbsp;<span>7</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>A : <span class="math inline">\(10\times100=\textbf{1\,000}\)</span> MAD ; B : <span class="math inline">\(2\times300=\textbf{600}\)</span> MAD.</li>
-<li>Moyenne globale : <span class="math inline">\((1000+600)/(10+2)=1600/12=\textbf{133,33}\)</span> MAD environ.</li>
-<li>Les régions n’ont pas le même nombre de commandes ; la moyenne de 200 MAD donne le même poids aux deux groupes.</li>
-</ol>
-</div>
-</div>
-</div>
 <div id="exr-dwh-8" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 8 (Qualité et sécurité)</strong></span> Proposez une règle de qualité et une mesure de protection pour chacune des situations :</p>
 <ol type="a">
 <li>La colonne <code>prix</code> contient parfois des valeurs négatives.</li>
 <li>Un tableau de bord doit être partagé avec des responsables régionaux.</li>
 </ol>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Solution de l'exercice @exr-dwh-8">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution de l’exercice <a href="#exr-dwh-8" class="quarto-xref">Exercice&nbsp;<span>8</span></a>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>Règle : <code>prix &gt;= 0</code>, avec rejet ou examen des exceptions.</li>
-<li>Protection : filtrer les données selon la région de l’utilisateur et ne partager que les colonnes nécessaires ; les noms ou coordonnées personnelles peuvent être masqués.</li>
-</ol>
-</div>
-</div>
 </div>
 
 

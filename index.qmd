@@ -16,8 +16,6 @@ number-sections: false
 \vfill
 {\Huge\bfseries Analyse et visualisation de données\par}
 \vspace{1cm}
-{\large De la donnée brute au tableau de bord\par}
-\vspace{0.5cm}
 {\Large IAOUSSE M'barek\par}
 \vspace{0.5cm}
 {\large 2026\par}
