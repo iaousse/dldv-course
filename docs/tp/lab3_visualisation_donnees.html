@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 3 : Visualiser les données 311 – Analyse et visualisation de données</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../tp/lab4_entropot_donnees_powerbi.html" rel="next">
+<link href="../tp/lab2_eda_pretraitement_donnees.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tp/lab3_visualisation_donnees.html"><span class="chapter-title">Lab 3 : Visualiser les données 311</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title"><span class="chapter-title">Lab 3 : Visualiser les données 311</span></h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Analyse et visualisation de données</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Recherche"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">index.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../preface.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Préface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/00_introduction_analyse_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’analyse de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/module_collecte_pretraitement_commun.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Collecte, Nettoyage et Préparation des Données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/02_exploration_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploration des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/03_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualisation des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/04_entropot_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’entrepôt de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/05_powerbi-taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Business Intelligence avec Power BI et Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab0_environement_python.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab1_collect_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 : Collecte de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab2_eda_pretraitement_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 : EDA et prétraitement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab3_visualisation_donnees.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Lab 3 : Visualiser les données 311</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab4_entropot_donnees_powerbi.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 : Entrepôt de données et dashboard avancé avec Power BI</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab5_entropot_donnees_taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 : Entrepôt de données et dashboard avancé avec Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Dans ce chapitre</h2>
+   
+  <ul>
+  <li><a href="#le-fichier-de-départ" id="toc-le-fichier-de-départ" class="nav-link active" data-scroll-target="#le-fichier-de-départ">1. Le fichier de départ</a></li>
+  <li><a href="#installer-et-préparer" id="toc-installer-et-préparer" class="nav-link" data-scroll-target="#installer-et-préparer">2. Installer et préparer</a></li>
+  <li><a href="#distribution-à-quoi-ressemble-le-délai-de-traitement" id="toc-distribution-à-quoi-ressemble-le-délai-de-traitement" class="nav-link" data-scroll-target="#distribution-à-quoi-ressemble-le-délai-de-traitement">3. Distribution : à quoi ressemble le délai de traitement ?</a></li>
+  <li><a href="#comparaison-quels-types-de-demandes-dominent" id="toc-comparaison-quels-types-de-demandes-dominent" class="nav-link" data-scroll-target="#comparaison-quels-types-de-demandes-dominent">4. Comparaison : quels types de demandes dominent ?</a>
+  <ul class="collapse">
+  <li><a href="#contre-exemple-volontaire-le-camembert" id="toc-contre-exemple-volontaire-le-camembert" class="nav-link" data-scroll-target="#contre-exemple-volontaire-le-camembert">4.1. Contre-exemple volontaire : le camembert</a></li>
+  </ul></li>
+  <li><a href="#relation-le-délai-dépend-il-du-moment-de-la-journée" id="toc-relation-le-délai-dépend-il-du-moment-de-la-journée" class="nav-link" data-scroll-target="#relation-le-délai-dépend-il-du-moment-de-la-journée">5. Relation : le délai dépend-il du moment de la journée ?</a></li>
+  <li><a href="#évolution-comment-le-volume-de-demandes-varie-t-il-dans-le-temps" id="toc-évolution-comment-le-volume-de-demandes-varie-t-il-dans-le-temps" class="nav-link" data-scroll-target="#évolution-comment-le-volume-de-demandes-varie-t-il-dans-le-temps">6. Évolution : comment le volume de demandes varie-t-il dans le temps ?</a></li>
+  <li><a href="#composition-et-multivarié-délai-par-arrondissement-et-par-canal" id="toc-composition-et-multivarié-délai-par-arrondissement-et-par-canal" class="nav-link" data-scroll-target="#composition-et-multivarié-délai-par-arrondissement-et-par-canal">7. Composition et multivarié : délai par arrondissement et par canal</a></li>
+  <li><a href="#un-premier-graphique-interactif" id="toc-un-premier-graphique-interactif" class="nav-link" data-scroll-target="#un-premier-graphique-interactif">8. Un premier graphique interactif</a></li>
+  <li><a href="#construire-une-figure-de-communication-complète" id="toc-construire-une-figure-de-communication-complète" class="nav-link" data-scroll-target="#construire-une-figure-de-communication-complète">9. Construire une figure de communication complète</a></li>
+  <li><a href="#lab-sheet-travail-demandé" id="toc-lab-sheet-travail-demandé" class="nav-link" data-scroll-target="#lab-sheet-travail-demandé">10. Lab Sheet — Travail demandé</a>
+  <ul class="collapse">
+  <li><a href="#partie-a-choisir-avant-de-coder" id="toc-partie-a-choisir-avant-de-coder" class="nav-link" data-scroll-target="#partie-a-choisir-avant-de-coder">Partie A — Choisir avant de coder</a></li>
+  <li><a href="#partie-b-graphiques-essentiels" id="toc-partie-b-graphiques-essentiels" class="nav-link" data-scroll-target="#partie-b-graphiques-essentiels">Partie B — Graphiques essentiels</a></li>
+  <li><a href="#partie-c-critique-et-correction" id="toc-partie-c-critique-et-correction" class="nav-link" data-scroll-target="#partie-c-critique-et-correction">Partie C — Critique et correction</a></li>
+  <li><a href="#partie-d-interactivité" id="toc-partie-d-interactivité" class="nav-link" data-scroll-target="#partie-d-interactivité">Partie D — Interactivité</a></li>
+  <li><a href="#partie-e-communication" id="toc-partie-e-communication" class="nav-link" data-scroll-target="#partie-e-communication">Partie E — Communication</a></li>
+  </ul></li>
+  <li><a href="#livrables" id="toc-livrables" class="nav-link" data-scroll-target="#livrables">11. Livrables</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div class="callout callout-style-default callout-tip callout-titled" title="Objectifs du Lab">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Objectifs du Lab
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>À la fin de ce Lab, l’étudiant sera capable de :</p>
+<ul>
+<li><strong>Choisir</strong> un type de graphique adapté à une question de distribution, de comparaison, de relation, d’évolution ou de composition ;</li>
+<li><strong>Construire</strong> les graphiques essentiels avec <code>matplotlib</code> et <code>seaborn</code> à partir d’une table déjà nettoyée ;</li>
+<li><strong>Repérer et corriger</strong> un graphique trompeur (axe tronqué, camembert surchargé, échelle mal choisie) ;</li>
+<li><strong>Produire</strong> un premier graphique interactif avec <code>Plotly</code> ;</li>
+<li><strong>Concevoir</strong> une figure de communication complète : titre-message, annotation, source, palette accessible ;</li>
+<li><strong>Organiser</strong> un petit portfolio de graphiques reproductible, prêt à être présenté à un public non technique.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Idée centrale">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Idée centrale
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le Lab 2 a produit une table propre. Ce Lab ne rajoute aucune nouvelle donnée : il transforme cette table en une série de graphiques qui <strong>répondent chacun à une question précise</strong>, en respectant les principes vus au chapitre sur la visualisation des données. Un graphique qui ne répond à aucune question n’a pas sa place dans ce Lab.</p>
+</div>
+</div>
+<section id="le-fichier-de-départ" class="level2">
+<h2 class="anchored" data-anchor-id="le-fichier-de-départ">1. Le fichier de départ</h2>
+<p>Utilisez <code>data/processed/nyc311_janvier_clean.csv</code>, produit au Lab 2. Si vous ne l’avez pas, reprenez <code>data/raw/nyc311_janvier.csv</code> et appliquez au minimum la conversion des dates et le calcul de <code>processing_hours</code> (voir Lab 2, sections 4 et 5).</p>
+<p>Rappel des colonnes disponibles :</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Colonne</th>
+<th style="text-align: left;">Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>unique_key</code></td>
+<td style="text-align: left;">Identifiant de la demande</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>created_date</code>, <code>closed_date</code></td>
+<td style="text-align: left;">Dates de création et de clôture</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>agency</code></td>
+<td style="text-align: left;">Agence responsable</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>complaint_type</code></td>
+<td style="text-align: left;">Type de problème déclaré</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>borough_normalized</code></td>
+<td style="text-align: left;">Arrondissement, libellé normalisé</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>open_data_channel_type</code></td>
+<td style="text-align: left;">Canal de transmission</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>status</code></td>
+<td style="text-align: left;">Statut de la demande</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>processing_hours</code></td>
+<td style="text-align: left;">Délai de traitement, en heures</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>created_weekday</code>, <code>created_hour</code></td>
+<td style="text-align: left;">Jour de la semaine et heure de création</td>
+</tr>
+</tbody>
+</table>
+<p>La question de communication de ce Lab est directement héritée du Lab 1 :</p>
+<blockquote class="blockquote">
+<p>Quels types de demandes sont les plus fréquents, et quels facteurs semblent associés à un délai de traitement plus long ?</p>
+</blockquote>
+<p>Le Lab 2 a permis d’explorer cette question avec des chiffres. Ce Lab la traduit en <strong>graphiques présentables</strong>.</p>
+</section>
+<section id="installer-et-préparer" class="level2">
+<h2 class="anchored" data-anchor-id="installer-et-préparer">2. Installer et préparer</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add matplotlib seaborn plotly</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>PROCESSED_PATH <span class="op">=</span> Path(<span class="st">"../data/processed/nyc311_janvier_clean.csv"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> Path(<span class="st">"../outputs"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(PROCESSED_PATH, parse_dates<span class="op">=</span>[<span class="st">"created_date"</span>, <span class="st">"closed_date"</span>])</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>df.shape</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Les dates du fichier sont exprimées en heure locale de New York (voir le Lab 2). Pour les graphiques de délai, ne gardez que les demandes clôturées avec un délai valide : une demande encore ouverte n’a pas encore de durée complète observable.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_delais <span class="op">=</span> df.loc[</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"processing_hours"</span>].notna()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> (df[<span class="st">"processing_hours"</span>] <span class="op">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>].copy()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Demandes dans le fichier : </span><span class="sc">{</span>df[<span class="st">'unique_key'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Demandes avec délai valide : </span><span class="sc">{</span>df_delais[<span class="st">'unique_key'</span>]<span class="sc">.</span>nunique()<span class="sc">:,}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Adoptez dès maintenant une palette accessible pour l’ensemble du Lab, conformément aux bonnes pratiques du chapitre 3 :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sns.set_palette(<span class="st">"colorblind"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="Un dossier, un graphique, un nom explicite">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Un dossier, un graphique, un nom explicite
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Enregistrez chaque figure dans <code>outputs/</code> avec un nom qui décrit son contenu, par exemple <code>lab3_histogramme_delai.png</code>, plutôt que <code>figure1.png</code>. Vous devrez retrouver rapidement quel fichier correspond à quelle question.</p>
+</div>
+</div>
+</section>
+<section id="distribution-à-quoi-ressemble-le-délai-de-traitement" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-à-quoi-ressemble-le-délai-de-traitement">3. Distribution : à quoi ressemble le délai de traitement ?</h2>
+<p>Reprenez la variable <code>processing_hours</code> déjà calculée au Lab 2 et construisez un histogramme <strong>et</strong> une boîte à moustaches, côte à côte, comme vu au chapitre 3 (§4.1 et §4.6) :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df_delais, x<span class="op">=</span><span class="st">"processing_hours"</span>, bins<span class="op">=</span><span class="dv">50</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlim(<span class="dv">0</span>, df_delais[<span class="st">"processing_hours"</span>].quantile(<span class="fl">0.99</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Distribution du délai de traitement (99e percentile)"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"Délai (heures)"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df_delais, x<span class="op">=</span><span class="st">"processing_hours"</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Délai de traitement — valeurs extrêmes visibles"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Délai (heures)"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_distribution_delai.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Question de vérification">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Question de vérification
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pourquoi l’histogramme est-il limité au 99ᵉ percentile alors que la boîte à moustaches montre toute la variable ? Rédigez une phrase de légende qui explique cette différence à un lecteur non technique.</p>
+</div>
+</div>
+</section>
+<section id="comparaison-quels-types-de-demandes-dominent" class="level2">
+<h2 class="anchored" data-anchor-id="comparaison-quels-types-de-demandes-dominent">4. Comparaison : quels types de demandes dominent ?</h2>
+<p>Construisez un diagramme en barres <strong>horizontales et triées</strong>, conformément à la bonne pratique du §4.2 :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>top_types <span class="op">=</span> df[<span class="st">"complaint_type"</span>].value_counts().head(<span class="dv">12</span>).sort_values()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>sns.barplot(x<span class="op">=</span>top_types.values, y<span class="op">=</span>top_types.index, ax<span class="op">=</span>ax, orient<span class="op">=</span><span class="st">"h"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Les 12 types de demandes les plus fréquents — janvier"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Nombre de demandes"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">""</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_top_types_barres.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="contre-exemple-volontaire-le-camembert" class="level3">
+<h3 class="anchored" data-anchor-id="contre-exemple-volontaire-le-camembert">4.1. Contre-exemple volontaire : le camembert</h3>
+<p>Construisez maintenant, à titre pédagogique, un camembert des 8 arrondissements/catégories les plus fréquents :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>parts <span class="op">=</span> df[<span class="st">"complaint_type"</span>].value_counts().head(<span class="dv">8</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.pie(parts.values, labels<span class="op">=</span>parts.index, autopct<span class="op">=</span><span class="st">"%1.0f</span><span class="sc">%%</span><span class="st">"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Répartition des 8 types de demandes les plus fréquents"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_camembert_a_critiquer.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled" title="À faire">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>À faire
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Comparez ce camembert au diagramme en barres de la section 4. Lequel des deux permet de répondre le plus vite à la question « quel est le troisième type de demande le plus fréquent, et de combien dépasse-t-il le quatrième ? ». Notez votre réponse : elle servira dans le Lab Sheet.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="relation-le-délai-dépend-il-du-moment-de-la-journée" class="level2">
+<h2 class="anchored" data-anchor-id="relation-le-délai-dépend-il-du-moment-de-la-journée">5. Relation : le délai dépend-il du moment de la journée ?</h2>
+<p>Construisez un nuage de points reliant l’heure de création et le délai de traitement, en limitant l’axe des délais pour rester lisible :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>echantillon <span class="op">=</span> df_delais.sample(n<span class="op">=</span><span class="bu">min</span>(<span class="dv">5000</span>, <span class="bu">len</span>(df_delais)), random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>echantillon,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"created_hour"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"processing_hours"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.3</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    ax<span class="op">=</span>ax,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, df_delais[<span class="st">"processing_hours"</span>].quantile(<span class="fl">0.95</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Délai de traitement selon l'heure de création de la demande"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Heure de création"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Délai (heures)"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_nuage_heure_delai.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="Pourquoi échantillonner ?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Pourquoi échantillonner ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un nuage de points de plusieurs centaines de milliers de points devient illisible (une bouillie de couleur) et lent à afficher. L’échantillonnage (<code>sample</code>) et la transparence (<code>alpha</code>) sont deux réponses complémentaires à ce problème — retenez les deux.</p>
+</div>
+</div>
+<p>Complétez par une matrice de corrélation entre les variables numériques disponibles, sous forme de heatmap (§4.7) :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>numeriques <span class="op">=</span> df_delais[[<span class="st">"processing_hours"</span>, <span class="st">"created_hour"</span>]].corr()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">3</span>))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>sns.heatmap(numeriques, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">"coolwarm"</span>, center<span class="op">=</span><span class="dv">0</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Corrélation entre l'heure de création et le délai"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_heatmap_correlation.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="évolution-comment-le-volume-de-demandes-varie-t-il-dans-le-temps" class="level2">
+<h2 class="anchored" data-anchor-id="évolution-comment-le-volume-de-demandes-varie-t-il-dans-le-temps">6. Évolution : comment le volume de demandes varie-t-il dans le temps ?</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>volume_quotidien <span class="op">=</span> (</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    df.set_index(<span class="st">"created_date"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    .resample(<span class="st">"D"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    .size()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    .rename(<span class="st">"nombre_demandes"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>ax.plot(volume_quotidien.index, volume_quotidien.values, marker<span class="op">=</span><span class="st">"o"</span>, markersize<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Nombre de demandes créées par jour — janvier"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Date"</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Nombre de demandes"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_evolution_quotidienne.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Rappel du chapitre 3">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Rappel du chapitre 3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une courbe suppose un ordre naturel entre les points : ici, le temps. Ne l’utilisez jamais pour relier des catégories comme les types de demandes ou les arrondissements.</p>
+</div>
+</div>
+</section>
+<section id="composition-et-multivarié-délai-par-arrondissement-et-par-canal" class="level2">
+<h2 class="anchored" data-anchor-id="composition-et-multivarié-délai-par-arrondissement-et-par-canal">7. Composition et multivarié : délai par arrondissement et par canal</h2>
+<p>Une boîte à moustaches par arrondissement, pour comparer des <strong>distributions</strong> plutôt que de simples moyennes :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">5</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sns.boxplot(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>df_delais,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"borough_normalized"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"processing_hours"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    ax<span class="op">=</span>ax,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, df_delais[<span class="st">"processing_hours"</span>].quantile(<span class="fl">0.95</span>))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Délai de traitement par arrondissement"</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">""</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Délai (heures)"</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_boxplot_arrondissement.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Puis une heatmap croisant arrondissement et canal de transmission, à partir d’un tableau croisé (vu au chapitre 2) :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tableau <span class="op">=</span> pd.crosstab(df[<span class="st">"borough_normalized"</span>], df[<span class="st">"open_data_channel_type"</span>], normalize<span class="op">=</span><span class="st">"index"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>sns.heatmap(tableau, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">".0%"</span>, cmap<span class="op">=</span><span class="st">"Blues"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Répartition des canaux de transmission par arrondissement"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_heatmap_canal_arrondissement.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="un-premier-graphique-interactif" class="level2">
+<h2 class="anchored" data-anchor-id="un-premier-graphique-interactif">8. Un premier graphique interactif</h2>
+<p>Reproduisez le nuage de points de la section 5 avec <code>Plotly</code>, pour découvrir l’infobulle interactive présentée au chapitre 3 (§5.3) :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    echantillon,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"created_hour"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"processing_hours"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"borough_normalized"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    hover_data<span class="op">=</span>[<span class="st">"complaint_type"</span>, <span class="st">"status"</span>],</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Délai de traitement selon l'heure de création (interactif)"</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">"created_hour"</span>: <span class="st">"Heure de création"</span>, <span class="st">"processing_hours"</span>: <span class="st">"Délai (heures)"</span>},</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>fig.write_html(<span class="bu">str</span>(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_scatter_interactif.html"</span>))</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ouvrez le fichier <code>.html</code> obtenu dans un navigateur : vous pouvez zoomer, filtrer par arrondissement en cliquant sur la légende, et lire le détail d’un point au survol. Aucune de ces actions n’est possible avec la version <code>matplotlib</code>.</p>
+</div>
+</div>
+</section>
+<section id="construire-une-figure-de-communication-complète" class="level2">
+<h2 class="anchored" data-anchor-id="construire-une-figure-de-communication-complète">9. Construire une figure de communication complète</h2>
+<p>Choisissez <strong>un seul</strong> graphique parmi ceux produits aux sections 3 à 7 — celui qui, selon vous, porte le message le plus utile — et transformez-le en véritable figure de communication, en appliquant l’anatomie d’un bon graphique (chapitre 3, §6.1) :</p>
+<ol type="1">
+<li>Un <strong>titre-message</strong> (pas un titre-thème) : reformulez le titre pour qu’il énonce une conclusion.</li>
+<li>Une <strong>annotation</strong> directe sur le point ou la barre la plus importante (<code>ax.annotate(...)</code>).</li>
+<li>Une <strong>mention de la source et de la période</strong> en petit texte sous le graphique.</li>
+<li>Une <strong>palette accessible</strong> (déjà appliquée via <code>sns.set_palette("colorblind")</code>).</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">5</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sns.barplot(x<span class="op">=</span>top_types.values, y<span class="op">=</span>top_types.index, ax<span class="op">=</span>ax)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Les demandes de bruit dominent largement le service 311 en janvier"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Nombre de demandes"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">""</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Type le plus fréquent"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(top_types.values[<span class="op">-</span><span class="dv">1</span>], <span class="bu">len</span>(top_types) <span class="op">-</span> <span class="dv">1</span>),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    xytext<span class="op">=</span>(top_types.values[<span class="op">-</span><span class="dv">1</span>] <span class="op">*</span> <span class="fl">0.6</span>, <span class="bu">len</span>(top_types) <span class="op">-</span> <span class="dv">3</span>),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="fl">0.01</span>, <span class="op">-</span><span class="fl">0.02</span>, <span class="st">"Source : NYC 311 Service Requests — janvier 2025"</span>, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>plt.savefig(OUTPUT_DIR <span class="op">/</span> <span class="st">"lab3_figure_communication.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Adaptez évidemment le titre, l’annotation et les valeurs à <strong>votre</strong> graphique et à <strong>vos</strong> résultats : cette figure doit être unique à votre analyse, pas un simple copier-coller.</p>
+</section>
+<section id="lab-sheet-travail-demandé" class="level2">
+<h2 class="anchored" data-anchor-id="lab-sheet-travail-demandé">10. Lab Sheet — Travail demandé</h2>
+<section id="partie-a-choisir-avant-de-coder" class="level3">
+<h3 class="anchored" data-anchor-id="partie-a-choisir-avant-de-coder">Partie A — Choisir avant de coder</h3>
+<ol type="1">
+<li>Pour chacune des cinq familles de questions du chapitre 3 (distribution, comparaison, relation, évolution, composition), indiquez la variable ou la paire de variables de ce jeu de données que vous allez représenter, <strong>avant</strong> d’écrire le code.</li>
+</ol>
+</section>
+<section id="partie-b-graphiques-essentiels" class="level3">
+<h3 class="anchored" data-anchor-id="partie-b-graphiques-essentiels">Partie B — Graphiques essentiels</h3>
+<ol start="2" type="1">
+<li>Produisez l’histogramme et la boîte à moustaches du délai de traitement (section 3).</li>
+<li>Produisez le diagramme en barres des 12 types de demandes les plus fréquents (section 4).</li>
+<li>Produisez le camembert des 8 mêmes catégories et rédigez, en trois phrases maximum, pourquoi le diagramme en barres est ici préférable.</li>
+<li>Produisez le nuage de points heure de création / délai, avec échantillonnage et transparence (section 5).</li>
+<li>Produisez la heatmap de corrélation (section 5).</li>
+<li>Produisez la courbe d’évolution quotidienne du volume de demandes (section 6).</li>
+<li>Produisez la boîte à moustaches par arrondissement et la heatmap arrondissement/canal (section 7).</li>
+</ol>
+</section>
+<section id="partie-c-critique-et-correction" class="level3">
+<h3 class="anchored" data-anchor-id="partie-c-critique-et-correction">Partie C — Critique et correction</h3>
+<ol start="9" type="1">
+<li>Sur l’un de vos propres graphiques, tronquez volontairement l’axe des ordonnées d’un diagramme en barres et comparez les deux versions côte à côte. Expliquez en deux phrases l’effet produit.</li>
+<li>Identifiez, parmi les huit graphiques produits, celui qui serait le plus à risque d’être mal interprété par un lecteur pressé, et proposez une correction (titre, annotation, ou axe).</li>
+</ol>
+</section>
+<section id="partie-d-interactivité" class="level3">
+<h3 class="anchored" data-anchor-id="partie-d-interactivité">Partie D — Interactivité</h3>
+<ol start="11" type="1">
+<li>Produisez le graphique interactif <code>Plotly</code> de la section 8.</li>
+<li>Citez une situation, dans votre futur projet de fin de module, où un graphique interactif apporterait une réelle valeur par rapport à une image statique — et une situation où il n’en apporterait aucune.</li>
+</ol>
+</section>
+<section id="partie-e-communication" class="level3">
+<h3 class="anchored" data-anchor-id="partie-e-communication">Partie E — Communication</h3>
+<ol start="13" type="1">
+<li>Produisez la figure de communication complète de la section 9 (titre-message, annotation, source).</li>
+<li>Rédigez, pour cette figure uniquement, une légende de 3 à 4 phrases destinée à un lecteur qui ne verra que le graphique et sa légende, sans lire le reste du rapport.</li>
+<li>Constituez un court portfolio (un fichier Markdown ou un notebook) rassemblant vos huit graphiques, chacun accompagné d’un titre, d’une phrase de lecture et de la question à laquelle il répond.</li>
+</ol>
+</section>
+</section>
+<section id="livrables" class="level2">
+<h2 class="anchored" data-anchor-id="livrables">11. Livrables</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Checklist finale">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Checklist finale
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li><label><input type="checkbox">Chaque graphique répond à une question identifiée à l’avance.</label></li>
+<li><label><input type="checkbox">Aucune courbe ne relie des catégories sans ordre naturel.</label></li>
+<li><label><input type="checkbox">Le camembert produit est accompagné d’une critique argumentée.</label></li>
+<li><label><input type="checkbox">Les axes, unités et périodes sont indiqués sur chaque figure.</label></li>
+<li><label><input type="checkbox">Le graphique interactif s’ouvre correctement dans un navigateur.</label></li>
+<li><label><input type="checkbox">La figure de communication comporte un titre-message et une source.</label></li>
+<li><label><input type="checkbox">Les fichiers sont nommés clairement dans <code>outputs/</code>.</label></li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copié");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copié");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../tp/lab2_eda_pretraitement_donnees.html" class="pagination-link" aria-label="Lab 2 : EDA et prétraitement">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Lab 2 : EDA et prétraitement</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../tp/lab4_entropot_donnees_powerbi.html" class="pagination-link" aria-label="Lab 4 : Entrepôt de données et dashboard avancé avec Power BI">
+        <span class="nav-page-text"><span class="chapter-title">Lab 4 : Entrepôt de données et dashboard avancé avec Power BI</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

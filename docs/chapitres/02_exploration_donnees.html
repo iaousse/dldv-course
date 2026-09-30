@@ -71,8 +71,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapitres/03_entropot_donnees.html" rel="next">
-<link href="../chapitres/01_preparation_donnees.html" rel="prev">
+<link href="../chapitres/03_visualisation_donnees.html" rel="next">
+<link href="../chapitres/module_collecte_pretraitement_commun.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -218,7 +218,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapitres/01_preparation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Préparation des données</span></a>
+  <a href="../chapitres/module_collecte_pretraitement_commun.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Collecte, Nettoyage et Préparation des Données</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -228,17 +228,52 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapitres/03_entropot_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’entrepôt de données</span></a>
+  <a href="../chapitres/03_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualisation des données</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapitres/04_powerbi-taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Business Intelligence avec Power BI et Taipy</span></a>
+  <a href="../chapitres/04_entropot_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’entrepôt de données</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapitres/05_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Cas pratique complet : analyser les ventes d’une petite chaîne de magasins</span></a>
+  <a href="../chapitres/05_powerbi-taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Business Intelligence avec Power BI et Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab0_environement_python.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab1_collect_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 : Collecte de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab2_eda_pretraitement_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 : EDA et prétraitement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab3_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 : Visualiser les données 311</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab4_entropot_donnees_powerbi.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 : Entrepôt de données et dashboard avancé avec Power BI</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab5_entropot_donnees_taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 : Entrepôt de données et dashboard avancé avec Taipy</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -257,21 +292,44 @@ window.Quarto = {
     <h2 id="toc-title">Dans ce chapitre</h2>
    
   <ul>
-  <li><a href="#statistiques-descriptives" id="toc-statistiques-descriptives" class="nav-link active" data-scroll-target="#statistiques-descriptives">1. Statistiques descriptives</a>
+  <li><a href="#structurer-lexploration-univariée-bivariée-multivariée" id="toc-structurer-lexploration-univariée-bivariée-multivariée" class="nav-link active" data-scroll-target="#structurer-lexploration-univariée-bivariée-multivariée">1. Structurer l’exploration : univariée, bivariée, multivariée</a>
   <ul class="collapse">
-  <li><a href="#tendance-centrale" id="toc-tendance-centrale" class="nav-link" data-scroll-target="#tendance-centrale">1.1. Tendance centrale</a></li>
-  <li><a href="#dispersion" id="toc-dispersion" class="nav-link" data-scroll-target="#dispersion">1.2. Dispersion</a></li>
-  <li><a href="#forme-de-la-distribution" id="toc-forme-de-la-distribution" class="nav-link" data-scroll-target="#forme-de-la-distribution">1.3. Forme de la distribution</a></li>
+  <li><a href="#quel-outil-pour-quelle-paire-de-variables" id="toc-quel-outil-pour-quelle-paire-de-variables" class="nav-link" data-scroll-target="#quel-outil-pour-quelle-paire-de-variables">1.1. Quel outil pour quelle paire de variables ?</a></li>
   </ul></li>
-  <li><a href="#analyse-univariée-bivariée-et-multivariée" id="toc-analyse-univariée-bivariée-et-multivariée" class="nav-link" data-scroll-target="#analyse-univariée-bivariée-et-multivariée">2. Analyse univariée, bivariée et multivariée</a></li>
-  <li><a href="#corrélations-et-associations" id="toc-corrélations-et-associations" class="nav-link" data-scroll-target="#corrélations-et-associations">3. Corrélations et associations</a>
+  <li><a href="#relation-entre-deux-variables-quantitatives-la-corrélation" id="toc-relation-entre-deux-variables-quantitatives-la-corrélation" class="nav-link" data-scroll-target="#relation-entre-deux-variables-quantitatives-la-corrélation">2. Relation entre deux variables quantitatives : la corrélation</a>
   <ul class="collapse">
-  <li><a href="#variables-numériques-pearson-et-spearman" id="toc-variables-numériques-pearson-et-spearman" class="nav-link" data-scroll-target="#variables-numériques-pearson-et-spearman">3.1. Variables numériques : Pearson et Spearman</a></li>
-  <li><a href="#variables-catégorielles-tableaux-croisés-et-v-de-cramér" id="toc-variables-catégorielles-tableaux-croisés-et-v-de-cramér" class="nav-link" data-scroll-target="#variables-catégorielles-tableaux-croisés-et-v-de-cramér">3.2. Variables catégorielles : tableaux croisés et V de Cramér</a></li>
+  <li><a href="#de-la-covariance-au-coefficient-de-corrélation" id="toc-de-la-covariance-au-coefficient-de-corrélation" class="nav-link" data-scroll-target="#de-la-covariance-au-coefficient-de-corrélation">2.1. De la covariance au coefficient de corrélation</a></li>
+  <li><a href="#ce-que-r-ne-voit-jamais-la-galerie-des-cas-particuliers" id="toc-ce-que-r-ne-voit-jamais-la-galerie-des-cas-particuliers" class="nav-link" data-scroll-target="#ce-que-r-ne-voit-jamais-la-galerie-des-cas-particuliers">2.2. Ce que <span class="math inline">\(r\)</span> ne voit jamais : la galerie des cas particuliers</a></li>
+  <li><a href="#matrice-de-corrélation" id="toc-matrice-de-corrélation" class="nav-link" data-scroll-target="#matrice-de-corrélation">2.3. Matrice de corrélation</a></li>
+  <li><a href="#le-quartet-danscombe" id="toc-le-quartet-danscombe" class="nav-link" data-scroll-target="#le-quartet-danscombe">2.4. Le quartet d’Anscombe</a></li>
+  <li><a href="#pearson-ou-spearman" id="toc-pearson-ou-spearman" class="nav-link" data-scroll-target="#pearson-ou-spearman">2.5. Pearson ou Spearman ?</a></li>
   </ul></li>
-  <li><a href="#agrégation-groupby-et-tableaux-croisés-dynamiques" id="toc-agrégation-groupby-et-tableaux-croisés-dynamiques" class="nav-link" data-scroll-target="#agrégation-groupby-et-tableaux-croisés-dynamiques">4. Agrégation : <code>groupby</code> et tableaux croisés dynamiques</a></li>
-  <li><a href="#choisir-une-visualisation-simple" id="toc-choisir-une-visualisation-simple" class="nav-link" data-scroll-target="#choisir-une-visualisation-simple">5. Choisir une visualisation simple</a></li>
-  <li><a href="#profilage-automatique-des-données" id="toc-profilage-automatique-des-données" class="nav-link" data-scroll-target="#profilage-automatique-des-données">6. Profilage automatique des données</a></li>
+  <li><a href="#comparer-une-variable-quantitative-entre-groupes" id="toc-comparer-une-variable-quantitative-entre-groupes" class="nav-link" data-scroll-target="#comparer-une-variable-quantitative-entre-groupes">3. Comparer une variable quantitative entre groupes</a>
+  <ul class="collapse">
+  <li><a href="#statistiques-par-groupe" id="toc-statistiques-par-groupe" class="nav-link" data-scroll-target="#statistiques-par-groupe">3.1. Statistiques par groupe</a></li>
+  <li><a href="#décomposer-la-variance-lidée-de-lanova" id="toc-décomposer-la-variance-lidée-de-lanova" class="nav-link" data-scroll-target="#décomposer-la-variance-lidée-de-lanova">3.2. Décomposer la variance : l’idée de l’ANOVA</a></li>
+  <li><a href="#interpréter-le-test-et-vérifier-ses-conditions" id="toc-interpréter-le-test-et-vérifier-ses-conditions" class="nav-link" data-scroll-target="#interpréter-le-test-et-vérifier-ses-conditions">3.3. Interpréter le test et vérifier ses conditions</a></li>
+  </ul></li>
+  <li><a href="#relation-entre-deux-variables-qualitatives" id="toc-relation-entre-deux-variables-qualitatives" class="nav-link" data-scroll-target="#relation-entre-deux-variables-qualitatives">4. Relation entre deux variables qualitatives</a>
+  <ul class="collapse">
+  <li><a href="#le-tableau-croisé-observé-contre-théorique" id="toc-le-tableau-croisé-observé-contre-théorique" class="nav-link" data-scroll-target="#le-tableau-croisé-observé-contre-théorique">4.1. Le tableau croisé, observé contre théorique</a></li>
+  <li><a href="#le-v-de-cramér-une-taille-deffet" id="toc-le-v-de-cramér-une-taille-deffet" class="nav-link" data-scroll-target="#le-v-de-cramér-une-taille-deffet">4.2. Le V de Cramér : une taille d’effet</a></li>
+  </ul></li>
+  <li><a href="#pièges-de-lanalyse-bivariée-et-multivariée" id="toc-pièges-de-lanalyse-bivariée-et-multivariée" class="nav-link" data-scroll-target="#pièges-de-lanalyse-bivariée-et-multivariée">5. Pièges de l’analyse bivariée et multivariée</a>
+  <ul class="collapse">
+  <li><a href="#le-paradoxe-de-simpson" id="toc-le-paradoxe-de-simpson" class="nav-link" data-scroll-target="#le-paradoxe-de-simpson">5.1. Le paradoxe de Simpson</a></li>
+  <li><a href="#corrélation-nest-pas-causalité" id="toc-corrélation-nest-pas-causalité" class="nav-link" data-scroll-target="#corrélation-nest-pas-causalité">5.2. Corrélation n’est pas causalité</a></li>
+  <li><a href="#un-point-invisible-seul-flagrant-à-deux" id="toc-un-point-invisible-seul-flagrant-à-deux" class="nav-link" data-scroll-target="#un-point-invisible-seul-flagrant-à-deux">5.3. Un point invisible seul, flagrant à deux</a></li>
+  <li><a href="#le-piège-des-tests-multiples" id="toc-le-piège-des-tests-multiples" class="nav-link" data-scroll-target="#le-piège-des-tests-multiples">5.4. Le piège des tests multiples</a></li>
+  </ul></li>
+  <li><a href="#distributions-asymétriques-la-transformation-logarithmique" id="toc-distributions-asymétriques-la-transformation-logarithmique" class="nav-link" data-scroll-target="#distributions-asymétriques-la-transformation-logarithmique">6. Distributions asymétriques : la transformation logarithmique</a></li>
+  <li><a href="#résumer-par-groupe-groupby-et-tableaux-croisés-dynamiques" id="toc-résumer-par-groupe-groupby-et-tableaux-croisés-dynamiques" class="nav-link" data-scroll-target="#résumer-par-groupe-groupby-et-tableaux-croisés-dynamiques">7. Résumer par groupe : <code>groupby</code> et tableaux croisés dynamiques</a>
+  <ul class="collapse">
+  <li><a href="#le-principe-split-apply-combine" id="toc-le-principe-split-apply-combine" class="nav-link" data-scroll-target="#le-principe-split-apply-combine">7.1. Le principe <em>split-apply-combine</em></a></li>
+  <li><a href="#le-tableau-croisé-dynamique-pivot_table" id="toc-le-tableau-croisé-dynamique-pivot_table" class="nav-link" data-scroll-target="#le-tableau-croisé-dynamique-pivot_table">7.2. Le tableau croisé dynamique (<code>pivot_table</code>)</a></li>
+  </ul></li>
+  <li><a href="#explorer-une-série-temporelle" id="toc-explorer-une-série-temporelle" class="nav-link" data-scroll-target="#explorer-une-série-temporelle">8. Explorer une série temporelle</a></li>
+  <li><a href="#automatiser-un-premier-diagnostic-le-profilage-de-données" id="toc-automatiser-un-premier-diagnostic-le-profilage-de-données" class="nav-link" data-scroll-target="#automatiser-un-premier-diagnostic-le-profilage-de-données">9. Automatiser un premier diagnostic : le profilage de données</a></li>
   <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices">Exercices</a></li>
   </ul>
 </nav>
@@ -295,25 +353,86 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>À la fin de ce chapitre, l’étudiant sera capable de :</p>
 <ul>
-<li><strong>Calculer et interpréter</strong> les principales statistiques descriptives (tendance centrale, dispersion, forme) ;</li>
-<li><strong>Distinguer</strong> l’analyse univariée, bivariée et multivariée ;</li>
-<li><strong>Mesurer</strong> une corrélation ou une association entre deux variables et en connaître les limites ;</li>
-<li><strong>Construire</strong> des tableaux d’agrégation (<code>groupby</code>, tableaux croisés dynamiques) pour résumer un jeu de données ;</li>
-<li><strong>Utiliser</strong> un outil de profilage automatique pour accélérer une première exploration.</li>
+<li><strong>Structurer</strong> une exploration en trois temps — univarié, bivarié, multivarié — et choisir le bon outil selon les types de variables en présence ;</li>
+<li><strong>Mesurer</strong> et <strong>interpréter</strong> une relation entre deux variables quantitatives (covariance, corrélation de Pearson et de Spearman) ;</li>
+<li><strong>Comparer</strong> une variable quantitative entre plusieurs groupes (analyse de variance, <span class="math inline">\(\eta^2\)</span>) et <strong>tester</strong> l’association entre deux variables qualitatives (<span class="math inline">\(\chi^2\)</span>, V de Cramér) ;</li>
+<li><strong>Reconnaître</strong> les pièges classiques de l’analyse bivariée : le quartet d’Anscombe, le paradoxe de Simpson, la confusion entre corrélation et causalité, les tests multiples ;</li>
+<li><strong>Transformer</strong> une variable très asymétrique (transformation logarithmique) et <strong>diagnostiquer</strong> sa distribution ;</li>
+<li><strong>Résumer</strong> un jeu de données par groupe avec <code>groupby</code> et des tableaux croisés dynamiques (<code>pivot_table</code>) ;</li>
+<li><strong>Explorer</strong> une série temporelle : tendance, saisonnalité, variation ;</li>
+<li><strong>Situer</strong> l’apport d’un outil de profilage automatique (<code>ydata-profiling</code>, <code>sweetviz</code>).</li>
 </ul>
 </div>
 </div>
-<p>L’<strong>analyse exploratoire de données</strong> (<em>Exploratory Data Analysis</em>, EDA), popularisée par le statisticien John Tukey, consiste à examiner un jeu de données déjà nettoyé afin d’en dégager les tendances principales, les relations entre variables et les éventuelles anomalies restantes — avant toute conclusion définitive ou toute visualisation destinée à un public externe.</p>
-<section id="statistiques-descriptives" class="level2">
-<h2 class="anchored" data-anchor-id="statistiques-descriptives">1. Statistiques descriptives</h2>
-<section id="tendance-centrale" class="level3">
-<h3 class="anchored" data-anchor-id="tendance-centrale">1.1. Tendance centrale</h3>
-<div id="tbl-tendance-centrale" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tendance-centrale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Indicateurs de tendance centrale
+<div class="callout callout-style-default callout-note callout-titled" title="Ce que ce chapitre suppose déjà acquis">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Ce que ce chapitre suppose déjà acquis
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le chapitre d’introduction vous a donné le vocabulaire de base pour décrire <strong>une variable prise isolément</strong> : types de variables, effectif, fréquence, variation relative, moyenne, médiane, quartiles, écart-type. Le chapitre suivant vous a montré comment obtenir un jeu de données <strong>propre</strong>. Ce chapitre part de ces deux acquis pour aller plus loin : il s’intéresse aux <strong>relations entre variables</strong>, sur un jeu de données déjà nettoyé — exactement l’étape « Exploration » du cycle de vie présenté en introduction.</p>
+</div>
+</div>
+<section id="structurer-lexploration-univariée-bivariée-multivariée" class="level2">
+<h2 class="anchored" data-anchor-id="structurer-lexploration-univariée-bivariée-multivariée">1. Structurer l’exploration : univariée, bivariée, multivariée</h2>
+<div id="fig-demarche-entonnoir" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-demarche-entonnoir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_demarche_entonnoir.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-demarche-entonnoir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: La démarche d’exploration en entonnoir : du général au particulier
 </figcaption>
-<div aria-describedby="tbl-tendance-centrale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figure>
+</div>
+<p>Une exploration désordonnée — un graphique après l’autre, sans plan — fait perdre du temps et laisse souvent passer l’essentiel. Il est plus efficace de progresser en entonnoir, comme le montre la <a href="#fig-demarche-entonnoir" class="quarto-xref">Figure&nbsp;<span>1</span></a> :</p>
+<ol type="1">
+<li><strong>Premier regard</strong> : dimensions du tableau, types de colonnes, valeurs manquantes — un rappel de l’audit déjà pratiqué au chapitre précédent.</li>
+<li><strong>Analyse univariée</strong> : que vaut chaque variable prise seule ? (chapitre d’introduction, §3).</li>
+<li><strong>Analyse bivariée</strong> : deux variables évoluent-elles ensemble ? C’est le cœur de ce chapitre.</li>
+<li><strong>Analyse multivariée</strong> : une troisième variable change-t-elle la lecture d’une relation à deux variables ?</li>
+<li><strong>Hypothèses et suites</strong> : que retenir, que vérifier plus formellement, que documenter ?</li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled" title="Univarié, bivarié, multivarié : une question de nombre de variables">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Univarié, bivarié, multivarié : une question de nombre de variables
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Univariée</strong> : une seule variable à la fois (ex. la distribution des prix).</li>
+<li><strong>Bivariée</strong> : deux variables croisées (ex. le prix <em>selon</em> la surface).</li>
+<li><strong>Multivariée</strong> : trois variables ou plus étudiées conjointement (ex. le prix selon la surface, <em>en distinguant</em> les quartiers).</li>
+</ul>
+</div>
+</div>
+<section id="quel-outil-pour-quelle-paire-de-variables" class="level3">
+<h3 class="anchored" data-anchor-id="quel-outil-pour-quelle-paire-de-variables">1.1. Quel outil pour quelle paire de variables ?</h3>
+<p>Le choix de l’outil statistique dépend directement des <strong>types</strong> des deux variables étudiées — la typologie posée en introduction (qualitative/quantitative) refait surface ici, appliquée cette fois à une <strong>paire</strong> de variables.</p>
+<div id="fig-types-analyse-choix" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-types-analyse-choix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_types_analyse_choix.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-types-analyse-choix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Quel outil pour quelle paire de variables ?
+</figcaption>
+</figure>
+</div>
+<div id="tbl-choix-outil-bivarie" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-choix-outil-bivarie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Choisir un outil d’analyse bivariée selon les types de variables
+</figcaption>
+<div aria-describedby="tbl-choix-outil-bivarie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -322,304 +441,736 @@ Table&nbsp;1: Indicateurs de tendance centrale
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Indicateur</th>
-<th style="text-align: left;">Définition</th>
-<th style="text-align: left;">Sensibilité aux valeurs extrêmes</th>
+<th style="text-align: left;">Paire de variables</th>
+<th style="text-align: left;">Question typique</th>
+<th style="text-align: left;">Outils présentés dans ce chapitre</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Moyenne</strong></td>
-<td style="text-align: left;">Somme des valeurs divisée par leur nombre</td>
+<td style="text-align: left;">Quantitative × Quantitative</td>
+<td style="text-align: left;">Le prix augmente-t-il avec la surface ?</td>
+<td style="text-align: left;">Nuage de points, covariance, corrélation de Pearson/Spearman (§2)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Quantitative × Qualitative</td>
+<td style="text-align: left;">Le prix diffère-t-il selon le quartier ?</td>
+<td style="text-align: left;">Statistiques par groupe, analyse de variance, <span class="math inline">\(\eta^2\)</span> (§3)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Qualitative × Qualitative</td>
+<td style="text-align: left;">Le type de bien est-il lié à la présence d’un ascenseur ?</td>
+<td style="text-align: left;">Tableau croisé, <span class="math inline">\(\chi^2\)</span>, V de Cramér (§4)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+</section>
+<section id="relation-entre-deux-variables-quantitatives-la-corrélation" class="level2">
+<h2 class="anchored" data-anchor-id="relation-entre-deux-variables-quantitatives-la-corrélation">2. Relation entre deux variables quantitatives : la corrélation</h2>
+<section id="de-la-covariance-au-coefficient-de-corrélation" class="level3">
+<h3 class="anchored" data-anchor-id="de-la-covariance-au-coefficient-de-corrélation">2.1. De la covariance au coefficient de corrélation</h3>
+<p>La <strong>covariance</strong> mesure si deux variables varient dans le même sens :</p>
+<p><span class="math display">\[
+\operatorname{Cov}(X, Y) = \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})
+\]</span></p>
+<ul>
+<li>Positive : quand <span class="math inline">\(x\)</span> augmente, <span class="math inline">\(y\)</span> a tendance à augmenter aussi.</li>
+<li>Négative : quand <span class="math inline">\(x\)</span> augmente, <span class="math inline">\(y\)</span> a tendance à diminuer.</li>
+<li>Proche de zéro : pas de tendance linéaire claire.</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled" title="La covariance dépend des unités">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>La covariance dépend des unités
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La covariance entre une surface en <span class="math inline">\(m^2\)</span> et un prix en MAD n’est pas comparable à la covariance entre une surface en <span class="math inline">\(\text{pieds}^2\)</span> et un prix en euros : elle change avec les unités choisies. C’est pour cela qu’on lui préfère presque toujours une version <strong>normalisée</strong>, sans unité : le coefficient de corrélation.</p>
+</div>
+</div>
+<p>Le <strong>coefficient de corrélation de Pearson</strong> divise la covariance par le produit des écarts-types, ce qui le rend indépendant des unités et toujours compris entre <span class="math inline">\(-1\)</span> et <span class="math inline">\(1\)</span> :</p>
+<p><span id="eq-pearson"><span class="math display">\[
+r = \frac{\operatorname{Cov}(X, Y)}{s_X \, s_Y}
+= \frac{\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}
+       {\displaystyle\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_i - \bar{y})^2}}
+\tag{1}\]</span></span></p>
+<div id="tbl-pearson-reperes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pearson-reperes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Repères pour interpréter un coefficient de Pearson
+</figcaption>
+<div aria-describedby="tbl-pearson-reperes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Valeur de <span class="math inline">\(r\)</span></th>
+<th style="text-align: left;">Interprétation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(r = 1\)</span></td>
+<td style="text-align: left;">Relation linéaire positive parfaite</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(r \approx 0{,}7\)</span> à <span class="math inline">\(0{,}9\)</span></td>
+<td style="text-align: left;">Relation linéaire positive forte</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(r \approx 0\)</span></td>
+<td style="text-align: left;">Pas de relation <strong>linéaire</strong> détectable</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(r \approx -0{,}7\)</span> à <span class="math inline">\(-0{,}9\)</span></td>
+<td style="text-align: left;">Relation linéaire négative forte</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(r = -1\)</span></td>
+<td style="text-align: left;">Relation linéaire négative parfaite</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> df[<span class="st">"surface"</span>].corr(df[<span class="st">"prix"</span>])          <span class="co"># Pearson, par défaut</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>matrice <span class="op">=</span> df[[<span class="st">"surface"</span>, <span class="st">"prix"</span>, <span class="st">"nombre_pieces"</span>, <span class="st">"age_bien"</span>]].corr()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ce-que-r-ne-voit-jamais-la-galerie-des-cas-particuliers" class="level3">
+<h3 class="anchored" data-anchor-id="ce-que-r-ne-voit-jamais-la-galerie-des-cas-particuliers">2.2. Ce que <span class="math inline">\(r\)</span> ne voit jamais : la galerie des cas particuliers</h3>
+<div id="fig-correlation-galerie" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-correlation-galerie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_correlation_galerie.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-correlation-galerie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: <span class="math inline">\(r\)</span> mesure une chose précise — et rate tout le reste
+</figcaption>
+</figure>
+</div>
+<p>La <a href="#fig-correlation-galerie" class="quarto-xref">Figure&nbsp;<span>3</span></a> affiche huit nuages de points très différents. Les trois premiers illustrent une échelle de relations linéaires (<span class="math inline">\(r\)</span> de fort à nul) — c’est le cas pour lequel <span class="math inline">\(r\)</span> a été conçu. Les trois panneaux encadrés en rouge sont plus instructifs : une <strong>parabole</strong>, un <strong>cercle</strong> et une <strong>sinusoïde</strong> peuvent chacun cacher une relation parfaitement déterministe — connaître <span class="math inline">\(x\)</span> suffirait à connaître <span class="math inline">\(y\)</span> exactement — tout en affichant un <span class="math inline">\(r\)</span> proche de zéro.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="À retenir">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>À retenir
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le coefficient de Pearson ne mesure qu’une chose : à quel point le nuage de points se rapproche d’une <strong>droite</strong>. Une relation forte mais non linéaire (courbe, cyclique, en U) peut très bien produire un <span class="math inline">\(r\)</span> proche de zéro. <strong>Toujours regarder le nuage de points avant de se fier au chiffre.</strong></p>
+</div>
+</div>
+</section>
+<section id="matrice-de-corrélation" class="level3">
+<h3 class="anchored" data-anchor-id="matrice-de-corrélation">2.3. Matrice de corrélation</h3>
+<p>Pour explorer simultanément les relations entre plusieurs variables numériques, on affiche la matrice de corrélation sous forme de <em>heatmap</em> :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>matrice <span class="op">=</span> df[[<span class="st">"prix"</span>, <span class="st">"surface"</span>, <span class="st">"nombre_pieces"</span>, <span class="st">"age_bien"</span>, <span class="st">"etage"</span>]].corr()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>sns.heatmap(matrice, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">".2f"</span>, cmap<span class="op">=</span><span class="st">"RdBu_r"</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Matrice de corrélation"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-correlation-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-correlation-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_correlation_heatmap.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-correlation-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Matrice de corrélation (Pearson) — jeu de données immobilier
+</figcaption>
+</figure>
+</div>
+<p>La diagonale vaut toujours 1 (une variable est parfaitement corrélée à elle-même) ; la matrice est symétrique, ce qui justifie de n’afficher que la moitié inférieure comme sur la <a href="#fig-correlation-heatmap" class="quarto-xref">Figure&nbsp;<span>4</span></a>.</p>
+</section>
+<section id="le-quartet-danscombe" class="level3">
+<h3 class="anchored" data-anchor-id="le-quartet-danscombe">2.4. Le quartet d’Anscombe</h3>
+<p>Quatre jeux de données peuvent avoir exactement la <strong>même</strong> moyenne, la <strong>même</strong> variance et le <strong>même</strong> <span class="math inline">\(r\)</span>, tout en étant radicalement différents une fois représentés graphiquement.</p>
+<div id="fig-anscombe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/anscombe.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Le quartet d’Anscombe (1973) : mêmes statistiques, quatre réalités
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="La leçon du quartet d'Anscombe">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>La leçon du quartet d’Anscombe
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le panneau I montre une véritable relation linéaire ; le panneau II, une relation courbe que <span class="math inline">\(r\)</span> interprète (à tort) comme « linéaire modérée » ; le panneau III, une relation linéaire quasi parfaite perturbée par un seul point ; le panneau IV, une absence totale de relation, sinon pour un unique point extrême qui, à lui seul, crée artificiellement toute la corrélation mesurée. <strong>Aucune statistique résumée, aussi complète soit-elle, ne remplace un graphique.</strong></p>
+</div>
+</div>
+</section>
+<section id="pearson-ou-spearman" class="level3">
+<h3 class="anchored" data-anchor-id="pearson-ou-spearman">2.5. Pearson ou Spearman ?</h3>
+<p>Le coefficient de <strong>Spearman</strong> (<span class="math inline">\(\rho\)</span>, <em>rho</em>) applique la formule de Pearson non pas aux valeurs brutes, mais à leurs <strong>rangs</strong>. Il mesure une relation <strong>monotone</strong> (qui va toujours dans le même sens), pas nécessairement linéaire, et se révèle bien plus robuste aux valeurs extrêmes.</p>
+<div id="fig-pearson-spearman" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pearson-spearman-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_pearson_spearman.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pearson-spearman-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Pearson vs Spearman : relation monotone non linéaire, principe des rangs, sensibilité aux valeurs atypiques
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>r_pearson, _ <span class="op">=</span> stats.pearsonr(df[<span class="st">"surface"</span>], df[<span class="st">"prix"</span>])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>r_spearman, _ <span class="op">=</span> stats.spearmanr(df[<span class="st">"surface"</span>], df[<span class="st">"prix"</span>])</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tbl-pearson-spearman" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pearson-spearman-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Quand préférer Spearman à Pearson
+</figcaption>
+<div aria-describedby="tbl-pearson-spearman-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Critère</th>
+<th style="text-align: left;">Pearson</th>
+<th style="text-align: left;">Spearman</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Type de relation détectée</td>
+<td style="text-align: left;">Linéaire</td>
+<td style="text-align: left;">Monotone (croissante ou décroissante, pas forcément en ligne droite)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sensibilité aux valeurs extrêmes</td>
 <td style="text-align: left;">Élevée</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Médiane</strong></td>
-<td style="text-align: left;">Valeur qui sépare la distribution en deux moitiés égales</td>
-<td style="text-align: left;">Faible</td>
+<td style="text-align: left;">Faible (les rangs limitent l’effet d’un point isolé)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Mode</strong></td>
-<td style="text-align: left;">Valeur la plus fréquente</td>
-<td style="text-align: left;">Faible (mais peu informatif pour une variable continue)</td>
+<td style="text-align: left;">Nature des données</td>
+<td style="text-align: left;">Quantitatives</td>
+<td style="text-align: left;">Quantitatives ou ordinales</td>
 </tr>
 </tbody>
 </table>
 </div>
 </figure>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"prix"</span>].mean()</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"prix"</span>].median()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"quartier"</span>].mode()[<span class="dv">0</span>]</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Moyenne ou médiane ?">
+<div class="callout callout-style-default callout-tip callout-titled" title="Règle pratique">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Avertissement</span>Moyenne ou médiane ?
+<span class="screen-reader-only">Astuce</span>Règle pratique
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Sur une distribution fortement asymétrique — typiquement les salaires ou les prix de l’immobilier — la moyenne peut être fortement tirée vers le haut par quelques valeurs extrêmes. La <strong>médiane</strong> donne alors une image plus représentative de la « valeur typique ».</p>
+<p>En cas de doute, ou en présence de valeurs extrêmes visibles sur le nuage de points, calculez les deux : un écart important entre <span class="math inline">\(r\)</span> de Pearson et <span class="math inline">\(\rho\)</span> de Spearman est lui-même une information — il signale une relation probablement non linéaire ou fortement influencée par quelques points.</p>
 </div>
 </div>
 </section>
-<section id="dispersion" class="level3">
-<h3 class="anchored" data-anchor-id="dispersion">1.2. Dispersion</h3>
-<ul>
-<li>l’<strong>écart-type</strong> (<span class="math inline">\(\sigma\)</span>) et la <strong>variance</strong> (<span class="math inline">\(\sigma^2\)</span>) mesurent l’écart moyen à la moyenne ;</li>
-<li>l’<strong>écart interquartile</strong> (<span class="math inline">\(IQR = Q_3 - Q_1\)</span>), déjà rencontré au chapitre précédent, mesure la dispersion de la moitié centrale des données, de façon robuste aux valeurs extrêmes ;</li>
-<li>l’<strong>étendue</strong> (maximum − minimum) donne une idée rapide, mais très sensible aux valeurs aberrantes.</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"prix"</span>].std()</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"prix"</span>].var()</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"prix"</span>].quantile([<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>])</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Pour un petit tableau, on peut calculer les indicateurs à la main. Pour les valeurs <span class="math inline">\(2, 4, 4, 6, 9\)</span>, la moyenne est <span class="math inline">\(25/5=5\)</span> et la médiane est <span class="math inline">\(4\)</span>. L’étendue vaut <span class="math inline">\(9-2=7\)</span>. Les quartiles dépendent de la convention de calcul utilisée par l’outil ; dans un cours débutant, l’important est de préciser la convention et de comparer les résultats avec la même méthode.</p>
-<p>L’écart-type est exprimé dans la même unité que la variable, contrairement à la variance. Il est utile pour décrire la dispersion, mais il est sensible aux valeurs extrêmes. L’IQR est souvent plus facile à interpréter pour une distribution asymétrique. Le <strong>coefficient de variation</strong>, défini par <span class="math inline">\(\sigma/\bar{x}\)</span> lorsque la moyenne est positive et non nulle, permet parfois de comparer la dispersion relative de variables ayant des échelles différentes ; il est présenté ici comme un repère et non comme un indicateur obligatoire.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Priorité pour débuter">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Priorité pour débuter
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Les indicateurs indispensables sont l’effectif, la moyenne, la médiane, le minimum, le maximum, les quartiles et l’écart-type ou l’IQR. L’asymétrie, l’aplatissement et le coefficient de variation sont des compléments : il suffit d’en comprendre l’idée et de savoir quand demander une explication supplémentaire.</p>
-</div>
-</div>
 </section>
-<section id="forme-de-la-distribution" class="level3">
-<h3 class="anchored" data-anchor-id="forme-de-la-distribution">1.3. Forme de la distribution</h3>
-<p>Deux indicateurs complètent la description d’une distribution :</p>
-<ul>
-<li>l’<strong>asymétrie</strong> (<em>skewness</em>) : une valeur positive indique une distribution étalée vers la droite (queue de valeurs élevées), une valeur négative vers la gauche ;</li>
-<li>l’<strong>aplatissement</strong> (<em>kurtosis</em>) : indique si la distribution comporte davantage de valeurs extrêmes qu’une distribution normale.</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"prix"</span>].skew()</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"prix"</span>].kurt()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<p>La méthode <code>describe()</code> de <code>pandas</code> regroupe l’essentiel de ces indicateurs en une seule commande :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.describe()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="comparer-une-variable-quantitative-entre-groupes" class="level2">
+<h2 class="anchored" data-anchor-id="comparer-une-variable-quantitative-entre-groupes">3. Comparer une variable quantitative entre groupes</h2>
+<p>Lorsque la seconde variable est <strong>qualitative</strong> (ex. le quartier) plutôt que quantitative, la question change de nature : il ne s’agit plus de mesurer une corrélation, mais de comparer la distribution d’une variable numérique <strong>entre plusieurs groupes</strong>.</p>
+<section id="statistiques-par-groupe" class="level3">
+<h3 class="anchored" data-anchor-id="statistiques-par-groupe">3.1. Statistiques par groupe</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">"quartier"</span>)[<span class="st">"prix_m2"</span>].agg([<span class="st">"count"</span>, <span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"std"</span>])</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Un premier réflexe — déjà pratiqué en introduction — consiste à comparer moyennes et médianes par groupe. Mais une différence de moyennes observée sur l’échantillon reflète-t-elle une <strong>vraie</strong> différence entre groupes, ou peut-elle s’expliquer par le simple hasard de l’échantillonnage ? L’<strong>analyse de variance</strong> formalise cette question.</p>
 </section>
-</section>
-<section id="analyse-univariée-bivariée-et-multivariée" class="level2">
-<h2 class="anchored" data-anchor-id="analyse-univariée-bivariée-et-multivariée">2. Analyse univariée, bivariée et multivariée</h2>
-<div id="tbl-niveaux-analyse" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-niveaux-analyse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
+<section id="décomposer-la-variance-lidée-de-lanova" class="level3">
+<h3 class="anchored" data-anchor-id="décomposer-la-variance-lidée-de-lanova">3.2. Décomposer la variance : l’idée de l’ANOVA</h3>
+<p>L’idée de l’analyse de variance (ANOVA) est de décomposer la variabilité totale d’une variable en deux parts : celle qui s’explique par la différence <strong>entre</strong> les groupes, et celle qui reste <strong>à l’intérieur</strong> de chaque groupe.</p>
+<p><span class="math display">\[
+\underbrace{\sum_{i}(y_i - \bar y)^2}_{SST\ (\text{variabilité totale})}
+=
+\underbrace{\sum_{g} n_g(\bar y_g - \bar y)^2}_{SSB\ (\text{inter-groupes})}
++
+\underbrace{\sum_{g}\sum_{i \in g}(y_i - \bar y_g)^2}_{SSW\ (\text{intra-groupe})}
+\]</span></p>
+<p>où <span class="math inline">\(\bar y\)</span> est la moyenne générale, <span class="math inline">\(\bar y_g\)</span> la moyenne du groupe <span class="math inline">\(g\)</span>, et <span class="math inline">\(n_g\)</span> son effectif.</p>
+<p>Le <strong>rapport de corrélation</strong> <span class="math inline">\(\eta^2\)</span> (<em>eta carré</em>) résume cette décomposition en un seul indicateur, entre 0 et 1 :</p>
+<p><span id="eq-eta2"><span class="math display">\[
+\eta^2 = \frac{SSB}{SST}
+\tag{2}\]</span></span></p>
+<p><span class="math inline">\(\eta^2\)</span> s’interprète comme la <strong>proportion de la variance totale expliquée par l’appartenance au groupe</strong> — un rôle proche de celui du <span class="math inline">\(R^2\)</span> que vous retrouverez dans un contexte de modélisation.</p>
+<div id="fig-anova-variance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-anova-variance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_anova_variance.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anova-variance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Comparer des groupes : décomposition de la variance et <span class="math inline">\(\eta^2\)</span>
 </figcaption>
-<div aria-describedby="tbl-niveaux-analyse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Niveau d’analyse</th>
-<th style="text-align: left;">Nombre de variables étudiées simultanément</th>
-<th style="text-align: left;">Exemple</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>Univariée</strong></td>
-<td style="text-align: left;">Une seule</td>
-<td style="text-align: left;">Distribution des prix de vente</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Bivariée</strong></td>
-<td style="text-align: left;">Deux</td>
-<td style="text-align: left;">Relation entre surface et prix</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Multivariée</strong></td>
-<td style="text-align: left;">Trois ou plus</td>
-<td style="text-align: left;">Relation entre surface, quartier et prix</td>
-</tr>
-</tbody>
-</table>
-</div>
 </figure>
 </div>
-<p>L’<strong>analyse univariée</strong> décrit une variable isolément (statistiques descriptives, distribution). L’<strong>analyse bivariée</strong> cherche une relation entre deux variables — par exemple à l’aide d’un tableau croisé pour deux variables catégorielles, ou d’un coefficient de corrélation pour deux variables numériques. L’<strong>analyse multivariée</strong> étend cette logique à plusieurs variables simultanément, souvent à l’aide de tableaux d’agrégation ou de visualisations combinant plusieurs dimensions (couleur, taille, facettes), présentées au chapitre suivant.</p>
+<p>Sur la <a href="#fig-anova-variance" class="quarto-xref">Figure&nbsp;<span>7</span></a>, le trait épais de chaque groupe représente sa moyenne ; la dispersion verticale des points autour de ce trait illustre la variabilité intra-groupe (<span class="math inline">\(SSW\)</span>), tandis que l’écart entre chaque moyenne de groupe et la moyenne générale (ligne pointillée) illustre la variabilité inter-groupes (<span class="math inline">\(SSB\)</span>).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.formula.api <span class="im">import</span> ols</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>modele <span class="op">=</span> ols(<span class="st">"prix_m2 ~ C(ville)"</span>, data<span class="op">=</span>df).fit()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>table_anova <span class="op">=</span> sm.stats.anova_lm(modele, typ<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(table_anova)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ssb <span class="op">=</span> table_anova.loc[<span class="st">"C(ville)"</span>, <span class="st">"sum_sq"</span>]</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>sst <span class="op">=</span> ssb <span class="op">+</span> table_anova.loc[<span class="st">"Residual"</span>, <span class="st">"sum_sq"</span>]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>eta2 <span class="op">=</span> ssb <span class="op">/</span> sst</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="Repères pour interpréter $\eta^2$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Repères pour interpréter <span class="math inline">\(\eta^2\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Des seuils indicatifs, proposés par Cohen (1988) : <span class="math inline">\(\eta^2 \approx 0{,}01\)</span> = effet faible, <span class="math inline">\(\approx 0{,}06\)</span> = effet moyen, <span class="math inline">\(\approx 0{,}14\)</span> = effet fort. Ces repères doivent toujours être pondérés par le contexte métier — un effet « faible » au sens statistique peut rester important en pratique.</p>
+</div>
+</div>
 </section>
-<section id="corrélations-et-associations" class="level2">
-<h2 class="anchored" data-anchor-id="corrélations-et-associations">3. Corrélations et associations</h2>
-<section id="variables-numériques-pearson-et-spearman" class="level3">
-<h3 class="anchored" data-anchor-id="variables-numériques-pearson-et-spearman">3.1. Variables numériques : Pearson et Spearman</h3>
+<section id="interpréter-le-test-et-vérifier-ses-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="interpréter-le-test-et-vérifier-ses-conditions">3.3. Interpréter le test et vérifier ses conditions</h3>
+<p>L’ANOVA à un facteur compare les moyennes de (k) groupes indépendants. Elle teste les hypothèses suivantes :</p>
+<p><span class="math display">\[
+H_0 : \mu_1 = \mu_2 = \cdots = \mu_k
+\qquad\text{contre}\qquad
+H_1 : \text{au moins deux moyennes de groupe sont différentes}.
+\]</span></p>
+<p>L’hypothèse alternative ne signifie pas que toutes les moyennes sont différentes : le test indique seulement qu’au moins une différence existe, sans dire immédiatement entre quels groupes.</p>
+<p>À partir des sommes de carrés déjà définies, la statistique de test est :</p>
+<p><span class="math display">\[
+F_{\text{obs}} =
+\frac{SSB/(k-1)}{SSW/(N-k)},
+\]</span></p>
+<p>où (SSB) mesure la variabilité entre les groupes, (SSW) la variabilité à l’intérieur des groupes, (k) est le nombre de groupes et (N) le nombre total d’observations utilisées. Sous (H_0), et si les conditions du modèle sont satisfaites, cette statistique suit une loi de Fisher à (k-1) et (N-k) degrés de liberté. Une valeur de (F_{}) élevée signifie que l’écart entre les moyennes de groupe est grand par rapport à la dispersion observée à l’intérieur des groupes.</p>
+<p>Le tableau produit par <code>anova_lm</code> affiche la statistique (F) dans la colonne <code>F</code> et la p-valeur dans <code>PR(&gt;F)</code>. La p-valeur est, <strong>en supposant (H_0) vraie et les conditions du test satisfaites</strong>, la probabilité d’obtenir une statistique (F) au moins aussi grande que celle observée. Elle n’est <strong>pas</strong> la probabilité que (H_0) soit vraie.</p>
+<p>On fixe avant l’analyse un seuil (), souvent 0,05 pour un exercice introductif :</p>
 <ul>
-<li>le <strong>coefficient de corrélation de Pearson</strong> (<span class="math inline">\(r\)</span>, entre −1 et 1) mesure l’intensité d’une relation <strong>linéaire</strong> entre deux variables numériques ;</li>
-<li>le <strong>coefficient de corrélation de Spearman</strong> mesure une relation <strong>monotone</strong> (pas nécessairement linéaire), en travaillant sur les rangs des valeurs plutôt que sur les valeurs elles-mêmes — plus robuste aux valeurs aberrantes.</li>
+<li>si (p &lt; ), on rejette (H_0) : les données fournissent un indice statistique qu’au moins une moyenne diffère ;</li>
+<li>si (p ), on ne rejette pas (H_0) : les données ne suffisent pas à établir une différence de moyennes. Cela ne prouve pas que les moyennes sont identiques.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">"surface"</span>, <span class="st">"prix"</span>]].corr(method<span class="op">=</span><span class="st">"pearson"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">"surface"</span>, <span class="st">"prix"</span>]].corr(method<span class="op">=</span><span class="st">"spearman"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Corrélation n'est pas causalité">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Avertissement</span>Corrélation n’est pas causalité
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Une corrélation élevée entre deux variables ne signifie pas que l’une provoque l’autre : elle peut résulter d’une <strong>variable cachée</strong> commune, ou d’une pure coïncidence statistique. Un exemple classique est la corrélation observée entre les ventes de glaces et le nombre de noyades : les deux augmentent en été, sans lien de cause à effet direct entre elles.</p>
-</div>
-</div>
+<p>La p-valeur ne mesure ni l’importance pratique de la différence ni sa taille. Il faut la lire avec les moyennes par groupe, leurs effectifs, un intervalle d’incertitude si disponible et la taille d’effet (^2) présentée plus haut. Un résultat statistiquement significatif peut correspondre à un effet très faible ; un résultat non significatif peut aussi manquer de puissance lorsque les groupes sont petits.</p>
+<section id="conditions-à-examiner" class="level4">
+<h4 class="anchored" data-anchor-id="conditions-à-examiner">Conditions à examiner</h4>
+<ol type="1">
+<li><strong>Indépendance des observations.</strong> Chaque observation doit contribuer à un seul groupe et ne pas être une répétition dépendante d’une autre observation. Cette condition se justifie d’abord par la façon dont les données ont été collectées ; un graphique ou un test ne peut pas la garantir. Pour des mesures répétées sur les mêmes personnes, l’ANOVA à un facteur ordinaire n’est pas le bon modèle.</li>
+<li><strong>Résidus approximativement normaux dans chaque groupe.</strong> On examine les résidus du modèle, surtout lorsque les effectifs sont petits. Une légère déviation est souvent moins problématique avec des groupes assez grands et équilibrés, mais une forte asymétrie ou quelques valeurs extrêmes peuvent rendre la comparaison des moyennes fragile.</li>
+<li><strong>Variances comparables entre groupes (homoscédasticité).</strong> L’ANOVA classique suppose que la dispersion est similaire dans les groupes. Des tailles de groupe très inégales combinées à des variances très différentes sont particulièrement préoccupantes.</li>
+<li><strong>Variable étudiée quantitative et groupes pertinents.</strong> Les observations doivent mesurer la même grandeur et utiliser la même unité ; les catégories comparées doivent correspondre à la question posée.</li>
+</ol>
 </section>
-<section id="variables-catégorielles-tableaux-croisés-et-v-de-cramér" class="level3">
-<h3 class="anchored" data-anchor-id="variables-catégorielles-tableaux-croisés-et-v-de-cramér">3.2. Variables catégorielles : tableaux croisés et V de Cramér</h3>
-<p>Pour deux variables catégorielles, on utilise un <strong>tableau croisé</strong> (<em>crosstab</em>), éventuellement complété par le <strong>V de Cramér</strong>, qui résume en un seul indicateur (entre 0 et 1) l’intensité de l’association :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tableau_croise <span class="op">=</span> pd.crosstab(df[<span class="st">"quartier"</span>], df[<span class="st">"type_bien"</span>])</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="contrôles-pratiques-avec-python" class="level4">
+<h4 class="anchored" data-anchor-id="contrôles-pratiques-avec-python">Contrôles pratiques avec Python</h4>
+<p>Le graphique Q-Q des résidus sert à examiner leur forme. Le test de Levene évalue si les variances des groupes sont compatibles entre elles ; avec <code>center="median"</code>, il est moins sensible à une distribution non normale qu’une version centrée sur la moyenne.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>df_anova <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">"prix_m2"</span>, <span class="st">"ville"</span>])</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>groupes_par_ville <span class="op">=</span> <span class="bu">list</span>(df_anova.groupby(<span class="st">"ville"</span>, observed<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>groupes <span class="op">=</span> [</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    groupe[<span class="st">"prix_m2"</span>].to_numpy()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, groupe <span class="kw">in</span> groupes_par_ville</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>effectifs <span class="op">=</span> df_anova.groupby(<span class="st">"ville"</span>, observed<span class="op">=</span><span class="va">True</span>)[<span class="st">"prix_m2"</span>].count()</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Effectifs par ville :"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(effectifs)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">len</span>(groupes_par_ville),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    figsize<span class="op">=</span>(<span class="dv">5</span> <span class="op">*</span> <span class="bu">len</span>(groupes_par_ville), <span class="dv">4</span>),</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    squeeze<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ville, groupe), ax <span class="kw">in</span> <span class="bu">zip</span>(groupes_par_ville, axes.ravel()):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    stats.probplot(modele.resid.loc[groupe.index], dist<span class="op">=</span><span class="st">"norm"</span>, plot<span class="op">=</span>ax)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"Résidus — </span><span class="sc">{</span>ville<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>stat_levene, p_levene <span class="op">=</span> stats.levene(<span class="op">*</span>groupes, center<span class="op">=</span><span class="st">"median"</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test de Levene : statistique=</span><span class="sc">{</span>stat_levene<span class="sc">:.3f}</span><span class="ss">, p-valeur=</span><span class="sc">{</span>p_levene<span class="sc">:.4g}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le Q-Q plot s’interprète visuellement : des points globalement proches de la droite sont compatibles avec une normalité approximative ; des courbures marquées ou des points extrêmes appellent à la prudence. Pour Levene, une p-valeur inférieure à () signale des éléments contre l’égalité des variances. Une p-valeur supérieure ou égale à () ne prouve pas que les variances sont égales : on vérifie aussi leur taille et les effectifs par groupe.</p>
 </section>
-</section>
-<section id="agrégation-groupby-et-tableaux-croisés-dynamiques" class="level2">
-<h2 class="anchored" data-anchor-id="agrégation-groupby-et-tableaux-croisés-dynamiques">4. Agrégation : <code>groupby</code> et tableaux croisés dynamiques</h2>
-<p>L’outil central de l’exploration multivariée avec <code>pandas</code> est la méthode <code>groupby()</code>, qui permet de calculer un indicateur pour chaque sous-groupe d’une variable catégorielle :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">"quartier"</span>)[<span class="st">"prix"</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<section id="que-faire-si-une-condition-est-mal-respectée" class="level4">
+<h4 class="anchored" data-anchor-id="que-faire-si-une-condition-est-mal-respectée">Que faire si une condition est mal respectée ?</h4>
+<ul>
+<li>Si les variances sont nettement différentes, utiliser l’ANOVA de Welch, qui ne suppose pas leur égalité :</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.oneway <span class="im">import</span> anova_oneway</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df.groupby([<span class="st">"quartier"</span>, <span class="st">"type_bien"</span>]).agg(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    prix_moyen<span class="op">=</span>(<span class="st">"prix"</span>, <span class="st">"mean"</span>),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    nombre_biens<span class="op">=</span>(<span class="st">"prix"</span>, <span class="st">"count"</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Le <strong>tableau croisé dynamique</strong> (<em>pivot table</em>) offre une présentation plus lisible lorsque l’on croise deux dimensions catégorielles avec une mesure numérique :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pd.pivot_table(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">"prix"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">"quartier"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span><span class="st">"type_bien"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    aggfunc<span class="op">=</span><span class="st">"mean"</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Ces deux outils constituent la base de la quasi-totalité des tableaux de bord et des rapports produits par un Data Analyst.</p>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>resultat_welch <span class="op">=</span> anova_oneway(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>df_anova[<span class="st">"prix_m2"</span>],</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    groups<span class="op">=</span>df_anova[<span class="st">"ville"</span>],</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    use_var<span class="op">=</span><span class="st">"unequal"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resultat_welch)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Si la variable est très asymétrique, contient des valeurs extrêmes influentes ou si les petits groupes rendent l’hypothèse de normalité peu crédible, examiner les données et envisager un test de Kruskal-Wallis :</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>stat_kruskal, p_kruskal <span class="op">=</span> stats.kruskal(<span class="op">*</span>groupes)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Kruskal-Wallis : statistique=</span><span class="sc">{</span>stat_kruskal<span class="sc">:.3f}</span><span class="ss">, p-valeur=</span><span class="sc">{</span>p_kruskal<span class="sc">:.4g}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Kruskal-Wallis est un test fondé sur les rangs : il ne teste pas directement l’égalité des moyennes et ne doit pas être décrit automatiquement comme un « test des médianes », sauf hypothèses supplémentaires sur la forme des distributions.</p>
+<p>Enfin, si le test global indique une différence, il faut réaliser une comparaison post-hoc pour savoir quels groupes diffèrent, en corrigeant les comparaisons multiples. Pour une ANOVA classique lorsque l’hypothèse de variances égales est raisonnable, le test de Tukey compare les paires de groupes tout en contrôlant le risque d’erreur familial :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.multicomp <span class="im">import</span> pairwise_tukeyhsd</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>comparaisons <span class="op">=</span> pairwise_tukeyhsd(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    endog<span class="op">=</span>df_anova[<span class="st">"prix_m2"</span>],</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    groups<span class="op">=</span>df_anova[<span class="st">"ville"</span>],</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(comparaisons)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Après l’ANOVA de Welch, choisir une comparaison post-hoc compatible avec des variances inégales (par exemple Games-Howell). Après Kruskal-Wallis, utiliser une comparaison fondée sur les rangs et corriger les p-valeurs des comparaisons multiples. Il ne faut pas appliquer automatiquement Tukey après n’importe quel test global.</p>
+<p>Une ANOVA ou un test post-hoc décrit une association entre groupe et mesure dans les données analysées ; il ne démontre pas, à lui seul, que l’appartenance au groupe cause la différence observée.</p>
 </section>
-<section id="choisir-une-visualisation-simple" class="level2">
-<h2 class="anchored" data-anchor-id="choisir-une-visualisation-simple">5. Choisir une visualisation simple</h2>
-<p>Les statistiques répondent à des questions numériques ; les graphiques rendent les formes et les comparaisons plus faciles à voir. Pour débuter, on peut retenir les associations suivantes :</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Question</th>
-<th style="text-align: left;">Graphique conseillé</th>
-<th style="text-align: left;">Ce que l’on observe</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Quelle est la répartition d’une variable numérique ?</td>
-<td style="text-align: left;">Histogramme</td>
-<td style="text-align: left;">Forme, concentration et asymétrie</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Y a-t-il des valeurs atypiques ?</td>
-<td style="text-align: left;">Boîte à moustaches</td>
-<td style="text-align: left;">Médiane, quartiles et valeurs éloignées</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Comment une valeur évolue-t-elle dans le temps ?</td>
-<td style="text-align: left;">Courbe</td>
-<td style="text-align: left;">Tendance, saisonnalité et ruptures</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Comment comparer des catégories ?</td>
-<td style="text-align: left;">Barres</td>
-<td style="text-align: left;">Effectifs, sommes ou moyennes par catégorie</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Deux variables numériques évoluent-elles ensemble ?</td>
-<td style="text-align: left;">Nuage de points</td>
-<td style="text-align: left;">Relation, groupes et valeurs atypiques</td>
-</tr>
-</tbody>
-</table>
-<p>Un graphique ne doit pas seulement être « joli ». Son titre doit préciser la mesure, l’unité et la période ; ses axes doivent être lisibles ; la source et les filtres importants doivent être connus. Pour comparer des catégories, l’effectif et la moyenne ne racontent pas la même histoire : une catégorie peut avoir une moyenne élevée avec très peu d’observations.</p>
 </section>
-<section id="profilage-automatique-des-données" class="level2">
-<h2 class="anchored" data-anchor-id="profilage-automatique-des-données">6. Profilage automatique des données</h2>
-<p>Sur un nouveau jeu de données, il est souvent utile d’obtenir rapidement une vue d’ensemble avant de se lancer dans une exploration manuelle détaillée.</p>
-<div class="callout callout-style-default callout-important callout-titled" title="Zoom sur les tendances : rapports d'exploration automatisés">
+</section>
+<section id="relation-entre-deux-variables-qualitatives" class="level2">
+<h2 class="anchored" data-anchor-id="relation-entre-deux-variables-qualitatives">4. Relation entre deux variables qualitatives</h2>
+<section id="le-tableau-croisé-observé-contre-théorique" class="level3">
+<h3 class="anchored" data-anchor-id="le-tableau-croisé-observé-contre-théorique">4.1. Le tableau croisé, observé contre théorique</h3>
+<p>Le <strong>tableau croisé</strong> (déjà rencontré au chapitre précédent) croise les effectifs de deux variables qualitatives. Pour savoir si les deux variables sont réellement <strong>liées</strong>, on le compare à un tableau <strong>théorique</strong>, celui que l’on obtiendrait si les deux variables étaient parfaitement indépendantes.</p>
+<div id="fig-crosstab" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-crosstab-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_crosstab_profiles.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-crosstab-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Type de bien × ascenseur : effectifs observés, théoriques, et résidus
+</figcaption>
+</figure>
+</div>
+<p>L’effectif théorique d’une cellule se calcule ainsi :</p>
+<p><span class="math display">\[
+E_{ij} = \frac{(\text{total de la ligne } i) \times (\text{total de la colonne } j)}{\text{effectif total}}
+\]</span></p>
+<p>Le test du <strong><span class="math inline">\(\chi^2\)</span> d’indépendance</strong> additionne, sur toutes les cellules, l’écart relatif entre observé et théorique :</p>
+<p><span class="math display">\[
+\chi^2 = \sum_{i,j} \frac{(O_{ij} - E_{ij})^2}{E_{ij}}
+\]</span></p>
+<p>Plus les effectifs observés s’écartent des effectifs théoriques, plus <span class="math inline">\(\chi^2\)</span> est grand — signe d’une association entre les deux variables. Le troisième panneau de la <a href="#fig-crosstab" class="quarto-xref">Figure&nbsp;<span>8</span></a> affiche les <strong>résidus standardisés</strong> <span class="math inline">\(\dfrac{O_{ij}-E_{ij}}{\sqrt{E_{ij}}}\)</span> : ils indiquent, cellule par cellule, où se concentre l’écart à l’indépendance.</p>
+</section>
+<section id="le-v-de-cramér-une-taille-deffet" class="level3">
+<h3 class="anchored" data-anchor-id="le-v-de-cramér-une-taille-deffet">4.2. Le V de Cramér : une taille d’effet</h3>
+<p>Comme le <span class="math inline">\(\chi^2\)</span> augmente mécaniquement avec la taille de l’échantillon, il ne mesure pas à lui seul la <strong>force</strong> de l’association. Le <strong>V de Cramér</strong> normalise le <span class="math inline">\(\chi^2\)</span> entre 0 (aucune association) et 1 (association parfaite) :</p>
+<p><span class="math display">\[
+V = \sqrt{\frac{\chi^2}{n \times (\min(r, c) - 1)}}
+\]</span></p>
+<p>où <span class="math inline">\(n\)</span> est l’effectif total, <span class="math inline">\(r\)</span> le nombre de lignes et <span class="math inline">\(c\)</span> le nombre de colonnes du tableau croisé.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2_contingency</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>tableau <span class="op">=</span> pd.crosstab(df[<span class="st">"type_bien"</span>], df[<span class="st">"ascenseur"</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>chi2, p_valeur, ddl, theorique <span class="op">=</span> chi2_contingency(tableau)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> tableau.values.<span class="bu">sum</span>()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>v_cramer <span class="op">=</span> (chi2 <span class="op">/</span> (n <span class="op">*</span> (<span class="bu">min</span>(tableau.shape) <span class="op">-</span> <span class="dv">1</span>))) <span class="op">**</span> <span class="fl">0.5</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="Repères pour interpréter le V de Cramér">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Zoom sur les tendances : rapports d’exploration automatisés
+<span class="screen-reader-only">Note</span>Repères pour interpréter le V de Cramér
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Des bibliothèques comme <strong><a href="https://github.com/ydataai/ydata-profiling"><code>ydata-profiling</code></a></strong> (anciennement <code>pandas-profiling</code>) ou <strong><a href="https://github.com/fbdesignpro/sweetviz"><code>Sweetviz</code></a></strong> génèrent, en une seule instruction, un rapport HTML complet : statistiques descriptives par variable, distributions, valeurs manquantes, corrélations entre variables, alertes de qualité (variables constantes, fortement corrélées, etc.).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ydata_profiling <span class="im">import</span> ProfileReport</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>profil <span class="op">=</span> ProfileReport(df, title<span class="op">=</span><span class="st">"Exploration du jeu de données"</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>profil.to_file(<span class="st">"rapport_exploration.html"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Ces outils ne remplacent pas le raisonnement de l’analyste — ils accélèrent la première prise de contact avec un jeu de données et aident à repérer rapidement les points nécessitant une attention particulière, avant une exploration ciblée avec les techniques présentées dans ce chapitre.</p>
+<p><span class="math inline">\(V \approx 0{,}1\)</span> = association faible, <span class="math inline">\(\approx 0{,}3\)</span> = modérée, <span class="math inline">\(\approx 0{,}5\)</span> et plus = forte. Sur la <a href="#fig-crosstab" class="quarto-xref">Figure&nbsp;<span>8</span></a>, un V proche de 0,4 confirme visuellement ce que les résidus suggéraient déjà : le type de bien et la présence d’un ascenseur ne sont pas indépendants.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="pièges-de-lanalyse-bivariée-et-multivariée" class="level2">
+<h2 class="anchored" data-anchor-id="pièges-de-lanalyse-bivariée-et-multivariée">5. Pièges de l’analyse bivariée et multivariée</h2>
+<p>Les outils précédents sont puissants, mais chacun peut induire en erreur s’il est utilisé sans esprit critique. Cette section rassemble quatre pièges classiques.</p>
+<section id="le-paradoxe-de-simpson" class="level3">
+<h3 class="anchored" data-anchor-id="le-paradoxe-de-simpson">5.1. Le paradoxe de Simpson</h3>
+<p>Une relation peut s’<strong>inverser</strong> selon que l’on regarde les données globalement ou séparément par sous-groupe.</p>
+<div id="fig-simpson" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-simpson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_simpson.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simpson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Le paradoxe de Simpson : la tendance globale peut inverser celle des sous-groupes
+</figcaption>
+</figure>
+</div>
+<p>Sur la <a href="#fig-simpson" class="quarto-xref">Figure&nbsp;<span>9</span></a>, la tendance globale (à gauche) suggère qu’un bien avec plus d’équipements se vend <strong>moins cher</strong> — une conclusion absurde en apparence. En réalité, chaque ville (à droite) affiche une relation <strong>positive</strong> entre équipements et prix ; c’est seulement parce que les villes les moins chères concentrent les biens les mieux équipés que la tendance globale s’inverse. La variable <code>ville</code> est ici une <strong>variable confondante</strong> : elle influence à la fois le nombre d’équipements et le prix.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="À retenir">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>À retenir
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Avant de conclure sur une relation entre deux variables, demandez-vous toujours s’il existe une <strong>troisième variable</strong>, non prise en compte, susceptible d’expliquer — ou d’inverser — la relation observée. C’est précisément le rôle de l’analyse <strong>multivariée</strong>.</p>
+</div>
+</div>
+</section>
+<section id="corrélation-nest-pas-causalité" class="level3">
+<h3 class="anchored" data-anchor-id="corrélation-nest-pas-causalité">5.2. Corrélation n’est pas causalité</h3>
+<div id="fig-confusion-causalite" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-confusion-causalite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_confusion_causalite.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-confusion-causalite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Corrélation n’est pas causalité : le cas d’une variable confondante
+</figcaption>
+</figure>
+</div>
+<p>L’exemple classique : les ventes de glaces et la fréquentation des piscines sont fortement corrélées, sans qu’aucune ne cause l’autre — les deux sont conjointement causées par la température (<a href="#fig-confusion-causalite" class="quarto-xref">Figure&nbsp;<span>10</span></a>). Établir un lien de causalité nécessite un dispositif que la seule observation ne fournit pas : une expérience randomisée (test A/B), ou des méthodes statistiques spécifiques dédiées à l’inférence causale, hors du cadre de ce cours.</p>
+</section>
+<section id="un-point-invisible-seul-flagrant-à-deux" class="level3">
+<h3 class="anchored" data-anchor-id="un-point-invisible-seul-flagrant-à-deux">5.3. Un point invisible seul, flagrant à deux</h3>
+<p>Une observation peut sembler parfaitement normale sur <strong>chacune</strong> des deux variables prises séparément, tout en étant nettement atypique une fois les deux considérées <strong>ensemble</strong>.</p>
+<div id="fig-atypique-bivarie" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-atypique-bivarie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_atypique_bivarie.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-atypique-bivarie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Un point normal sur chaque axe, mais atypique en combinaison
+</figcaption>
+</figure>
+</div>
+<p>Sur la <a href="#fig-atypique-bivarie" class="quarto-xref">Figure&nbsp;<span>11</span></a>, le point rouge se situe dans la plage normale de <span class="math inline">\(x\)</span> et dans la plage normale de <span class="math inline">\(y\)</span> (histogrammes du haut et de droite), mais s’écarte nettement du nuage principal, car la combinaison des deux valeurs rompt la relation habituelle entre <span class="math inline">\(x\)</span> et <span class="math inline">\(y\)</span>. Une détection d’outliers univariée (chapitre précédent, méthode de l’IQR) ne le repérerait jamais.</p>
+</section>
+<section id="le-piège-des-tests-multiples" class="level3">
+<h3 class="anchored" data-anchor-id="le-piège-des-tests-multiples">5.4. Le piège des tests multiples</h3>
+<p>Plus on teste de relations entre variables, plus on a de chances d’en trouver une « significative » par pur hasard.</p>
+<div id="fig-tests-multiples" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tests-multiples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_tests_multiples.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tests-multiples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Plus on cherche, plus on trouve — du hasard
+</figcaption>
+</figure>
+</div>
+<p>Avec un seuil habituel de 5 % de risque d’erreur par test, la probabilité d’obtenir <strong>au moins une</strong> fausse alerte parmi <span class="math inline">\(m\)</span> relations testées vaut approximativement <span class="math inline">\(1 - 0{,}95^m\)</span> — déjà 64 % pour seulement 20 tests indépendants. Le panneau de droite de la <a href="#fig-tests-multiples" class="quarto-xref">Figure&nbsp;<span>12</span></a> le démontre sur des données <strong>entièrement aléatoires</strong> : parmi 20 variables de pur bruit, plusieurs paires affichent une corrélation dépassant le seuil de significativité, sans qu’aucune relation réelle n’existe.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="À retenir">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>À retenir
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Explorer un grand nombre de relations avant de choisir de ne commenter que les plus « intéressantes » (<em>data dredging</em>, ou pêche aux corrélations) fabrique artificiellement des résultats. Une relation repérée par exploration doit toujours être formulée comme une <strong>hypothèse à vérifier</strong>, plutôt que comme une conclusion déjà établie.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="distributions-asymétriques-la-transformation-logarithmique" class="level2">
+<h2 class="anchored" data-anchor-id="distributions-asymétriques-la-transformation-logarithmique">6. Distributions asymétriques : la transformation logarithmique</h2>
+<p>De nombreuses variables économiques (prix, revenus, population) présentent une distribution fortement asymétrique à droite : la majorité des observations sont regroupées sur de faibles valeurs, avec une longue traîne de valeurs élevées.</p>
+<div id="fig-transformation-log" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-transformation-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_transformation_log.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-transformation-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Prix brut, log(prix), et diagramme quantile-quantile
+</figcaption>
+</figure>
+</div>
+<p>La <strong>transformation logarithmique</strong> <span class="math inline">\(x \mapsto \ln(x)\)</span> compresse les grandes valeurs et étale les petites, ce qui rapproche souvent la distribution d’une forme symétrique — visible sur la <a href="#fig-transformation-log" class="quarto-xref">Figure&nbsp;<span>13</span></a>, où l’asymétrie passe de 2,36 (prix brut) à une valeur beaucoup plus proche de zéro (log du prix).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"log_prix"</span>] <span class="op">=</span> np.log(df[<span class="st">"prix"</span>])</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le troisième panneau de la <a href="#fig-transformation-log" class="quarto-xref">Figure&nbsp;<span>13</span></a> est un <strong>diagramme quantile-quantile</strong> (QQ-plot) : il compare les quantiles observés de <code>log_prix</code> aux quantiles théoriques d’une loi normale. Plus les points suivent la droite rouge, plus la distribution se rapproche d’une loi normale.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Quand transformer ?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Quand transformer ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La transformation logarithmique est utile pour mieux visualiser une distribution étalée, faciliter la lecture de certains graphiques (chapitre suivant), ou satisfaire une hypothèse de normalité requise par certaines méthodes statistiques. Elle ne s’applique qu’à des valeurs <strong>strictement positives</strong> ; en présence de zéros, on utilise parfois <span class="math inline">\(\ln(x+1)\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="résumer-par-groupe-groupby-et-tableaux-croisés-dynamiques" class="level2">
+<h2 class="anchored" data-anchor-id="résumer-par-groupe-groupby-et-tableaux-croisés-dynamiques">7. Résumer par groupe : <code>groupby</code> et tableaux croisés dynamiques</h2>
+<section id="le-principe-split-apply-combine" class="level3">
+<h3 class="anchored" data-anchor-id="le-principe-split-apply-combine">7.1. Le principe <em>split-apply-combine</em></h3>
+<p><code>groupby</code> répond à un très grand nombre de questions d’analyse en trois étapes systématiques : <strong>découper</strong> le tableau selon une ou plusieurs variables, <strong>appliquer</strong> une fonction (moyenne, somme, effectif…) à chaque sous-tableau, puis <strong>recombiner</strong> les résultats en un tableau de synthèse.</p>
+<div id="fig-groupby-schema" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-groupby-schema-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_groupby_schema.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-groupby-schema-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: groupby : découper, appliquer, recombiner
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>synthese <span class="op">=</span> (</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    df.groupby(<span class="st">"quartier"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        effectif<span class="op">=</span>(<span class="st">"prix"</span>, <span class="st">"count"</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        prix_moyen<span class="op">=</span>(<span class="st">"prix"</span>, <span class="st">"mean"</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        prix_median<span class="op">=</span>(<span class="st">"prix"</span>, <span class="st">"median"</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        surface_moyenne<span class="op">=</span>(<span class="st">"surface"</span>, <span class="st">"mean"</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"prix_moyen"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Toujours accompagner un agrégat de son effectif">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Toujours accompagner un agrégat de son effectif
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une moyenne calculée sur 3 observations n’a pas la même fiabilité qu’une moyenne calculée sur 3 000. La colonne <code>effectif</code> (via <code>count</code>) doit systématiquement accompagner toute statistique agrégée — c’est elle qui permet au lecteur de juger si une moyenne mérite d’être prise au sérieux.</p>
+</div>
+</div>
+</section>
+<section id="le-tableau-croisé-dynamique-pivot_table" class="level3">
+<h3 class="anchored" data-anchor-id="le-tableau-croisé-dynamique-pivot_table">7.2. Le tableau croisé dynamique (<code>pivot_table</code>)</h3>
+<p>Lorsque l’on souhaite croiser <strong>deux</strong> variables catégorielles pour résumer une troisième variable numérique, <code>pivot_table</code> construit directement le tableau à deux dimensions :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pivot <span class="op">=</span> pd.pivot_table(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    df, values<span class="op">=</span><span class="st">"prix_m2"</span>, index<span class="op">=</span><span class="st">"quartier"</span>, columns<span class="op">=</span><span class="st">"type_bien"</span>, aggfunc<span class="op">=</span><span class="st">"median"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-pivot-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pivot-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_pivot_heatmap.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pivot-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: <code>pivot_table</code> : prix au m² médian, quartier × type de bien
+</figcaption>
+</figure>
+</div>
+<p>Représenté sous forme de <em>heatmap</em> (<a href="#fig-pivot-heatmap" class="quarto-xref">Figure&nbsp;<span>15</span></a> — la même géométrie qu’au chapitre suivant, consacré à la visualisation), un tel tableau croisé dynamique révèle en un coup d’œil les combinaisons quartier/type de bien les plus chères, sans avoir à lire un tableau de chiffres ligne par ligne.</p>
+</section>
+</section>
+<section id="explorer-une-série-temporelle" class="level2">
+<h2 class="anchored" data-anchor-id="explorer-une-série-temporelle">8. Explorer une série temporelle</h2>
+<p>Lorsque les observations sont datées, l’exploration gagne à mobiliser des outils spécifiques à la dimension temporelle, au-delà du simple calcul de variation relative déjà vu en introduction.</p>
+<div id="fig-temporel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-temporel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/eda_temporel.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-temporel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Série brute, variation annuelle, profil saisonnier, décomposition
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mensuel <span class="op">=</span> df.set_index(<span class="st">"date_annonce"</span>).resample(<span class="st">"MS"</span>).size()   <span class="co"># effectif par mois</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>moyenne_mobile <span class="op">=</span> mensuel.rolling(window<span class="op">=</span><span class="dv">3</span>, center<span class="op">=</span><span class="va">True</span>).mean()  <span class="co"># lisse le bruit</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>variation_annuelle <span class="op">=</span> mensuel.pct_change(periods<span class="op">=</span><span class="dv">12</span>) <span class="op">*</span> <span class="dv">100</span>        <span class="co"># comparaison à 12 mois d'écart</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>profil_saisonnier <span class="op">=</span> mensuel.groupby(mensuel.index.month).mean()  <span class="co"># moyenne par mois calendaire</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>La <strong>moyenne mobile</strong> (panneau supérieur gauche de la <a href="#fig-temporel" class="quarto-xref">Figure&nbsp;<span>16</span></a>) lisse les fluctuations de court terme pour révéler la tendance de fond. La <strong>décomposition saisonnière</strong>, disponible dans <code>statsmodels</code>, va plus loin en séparant explicitement une série <span class="math inline">\(y_t\)</span> en trois composantes :</p>
+<p><span class="math display">\[
+y_t = T_t + S_t + R_t
+\]</span></p>
+<p>où <span class="math inline">\(T_t\)</span> est la tendance de long terme, <span class="math inline">\(S_t\)</span> la saisonnalité (un motif qui se répète, ici chaque année) et <span class="math inline">\(R_t\)</span> le résidu, c’est-à-dire tout ce que la tendance et la saisonnalité n’expliquent pas.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>decomposition <span class="op">=</span> seasonal_decompose(mensuel, model<span class="op">=</span><span class="st">"additive"</span>, period<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>decomposition.trend</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>decomposition.seasonal</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>decomposition.resid</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Un pic n'a pas de cause évidente">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Un pic n’a pas de cause évidente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un pic ou un creux ponctuel dans une série temporelle peut correspondre à un événement réel, à une erreur de collecte, ou à un changement dans le système qui produit la donnée. Comme au chapitre précédent (<a href="#fig-crosstab" class="quarto-xref">Figure&nbsp;<span>8</span></a> et §5), ne l’expliquez jamais sans une source complémentaire pour l’étayer.</p>
+</div>
+</div>
+</section>
+<section id="automatiser-un-premier-diagnostic-le-profilage-de-données" class="level2">
+<h2 class="anchored" data-anchor-id="automatiser-un-premier-diagnostic-le-profilage-de-données">9. Automatiser un premier diagnostic : le profilage de données</h2>
+<p>Toutes les statistiques univariées et bivariées présentées dans ce chapitre et le précédent peuvent être produites en une seule commande grâce à des bibliothèques de <strong>profilage automatique</strong> :</p>
+<ul>
+<li><strong><a href="https://docs.profiling.ydata.ai/"><code>ydata-profiling</code></a></strong> (anciennement <code>pandas-profiling</code>) génère un rapport HTML complet : distributions, valeurs manquantes, corrélations, alertes de qualité ;</li>
+<li><strong><a href="https://github.com/fbdesignpro/sweetviz"><code>sweetviz</code></a></strong> produit un rapport similaire, avec un accent sur la comparaison entre deux jeux de données (par exemple, train et test).</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ydata_profiling <span class="im">import</span> ProfileReport</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>rapport <span class="op">=</span> ProfileReport(df, title<span class="op">=</span><span class="st">"Rapport d'exploration — annonces immobilières"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>rapport.to_file(<span class="st">"rapport_exploration.html"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Un point de départ, jamais un point d'arrivée">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Un point de départ, jamais un point d’arrivée
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un rapport automatique est un excellent point de départ pour une première prise de contact avec un nouveau jeu de données : il détecte rapidement des problèmes évidents (fort taux de valeurs manquantes, corrélations élevées, colonnes constantes). Il ne remplace en rien le raisonnement mené dans ce chapitre : il ne connaît ni votre question métier, ni le sens réel de vos variables, ni les pièges comme le paradoxe de Simpson.</p>
 </div>
 </div>
 </section>
 <section id="exercices" class="level2">
 <h2 class="anchored" data-anchor-id="exercices">Exercices</h2>
 <div id="exr-eda-1" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 1 (Interpréter des statistiques descriptives)</strong></span> Pour une variable <code>revenu_mensuel</code> (en MAD), on obtient : moyenne = 8 500, médiane = 6 200, écart-type = 5 400, asymétrie (<em>skewness</em>) = 2,3.</p>
+<p><span class="theorem-title"><strong>Exercice 1 (Choisir le bon coefficient de corrélation)</strong></span> Pour chacune des situations suivantes, indiquez si vous calculeriez plutôt un coefficient de Pearson ou de Spearman.</p>
 <ol type="a">
-<li>Que suggère l’écart important entre la moyenne et la médiane ?</li>
-<li>Que confirme la valeur positive et élevée de l’asymétrie ?</li>
+<li>Le lien entre la taille d’un logement et son prix, sur un jeu de données sans valeur extrême.</li>
+<li>Le lien entre l’ancienneté d’un employé (en rangs de séniorité) et sa satisfaction (échelle de 1 à 5).</li>
+<li>Le lien entre le revenu d’un ménage et ses dépenses, sur un échantillon comportant deux ménages extrêmement riches.</li>
 </ol>
 </div>
 <div id="exr-eda-2" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 2 (Choisir le bon coefficient de corrélation)</strong></span> Pour chacune des situations suivantes, indiquez s’il est préférable d’utiliser Pearson ou Spearman :</p>
+<p><span class="theorem-title"><strong>Exercice 2 (Corrélation et causalité)</strong></span> Un journal affirme : « Les villes qui comptent le plus de pharmacies ont aussi le plus de cas de maladies — les pharmacies rendraient-elles malade ? »</p>
 <ol type="a">
-<li>La relation entre l’ancienneté d’un employé (en années) et son salaire, globalement croissante mais pas forcément linéaire.</li>
-<li>La relation entre la taille et le poids d’un ensemble d’individus adultes, approximativement linéaire.</li>
+<li>Cette conclusion est-elle valide ?</li>
+<li>Proposez une variable confondante plausible.</li>
 </ol>
 </div>
 <div id="exr-eda-3" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 3 (Construire un plan d’exploration)</strong></span> On dispose d’un jeu de données de transactions d’un site e-commerce marocain, avec les colonnes suivantes : <code>date_commande</code>, <code>categorie_produit</code>, <code>prix</code>, <code>region_client</code>, <code>moyen_paiement</code>.</p>
-<p>Proposez, pour ce jeu de données, un exemple concret d’analyse univariée, un exemple d’analyse bivariée et un exemple d’analyse multivariée, en vous appuyant sur ces colonnes.</p>
+<p><span class="theorem-title"><strong>Exercice 3 (Construire un plan d’exploration)</strong></span> Vous disposez d’un jeu de données de commandes en ligne avec les colonnes : <code>montant</code> (quantitative), <code>region</code> (qualitative), <code>moyen_paiement</code> (qualitative), <code>date</code> (temporelle), <code>age_client</code> (quantitative).</p>
+<ol type="a">
+<li>Proposez une question univariée, une question bivariée et une question multivariée que l’on pourrait explorer avec ce jeu de données.</li>
+<li>Pour votre question bivariée, précisez l’outil que vous utiliseriez (<a href="#tbl-choix-outil-bivarie" class="quarto-xref">Table&nbsp;<span>1</span></a>).</li>
+</ol>
 </div>
 <div id="exr-eda-4" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 4 (Calculer des indicateurs simples)</strong></span> Les durées de livraison, en jours, sont : 2, 3, 3, 4, 8.</p>
-<ol type="a">
-<li>Calculez la moyenne, la médiane et l’étendue.</li>
-<li>Quel indicateur est le moins influencé par la durée de 8 jours ?</li>
-<li>Quelle question supplémentaire poseriez-vous avant de conclure que le service est lent ?</li>
-</ol>
-</div>
-<div id="exr-eda-5" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 5 (Lire une dispersion)</strong></span> Deux classes ont la même moyenne à un examen : 12/20. La classe A a un écart-type de 1,5 et la classe B un écart-type de 4.</p>
-<ol type="a">
-<li>Quelle classe est la plus homogène ?</li>
-<li>Que signifie l’écart-type plus élevé de la classe B ?</li>
-<li>Peut-on dire que les étudiants de B ont de moins bonnes notes ?</li>
-</ol>
-</div>
-<div id="exr-eda-6" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 6 (Choisir le bon graphique)</strong></span> Associez chaque besoin à un graphique : histogramme, courbe, barres, boîte à moustaches ou nuage de points.</p>
-<ol type="a">
-<li>Comparer le chiffre d’affaires de quatre régions.</li>
-<li>Observer le nombre de commandes chaque mois.</li>
-<li>Repérer des valeurs extrêmes dans les salaires.</li>
-<li>Étudier le lien entre surface et prix d’un logement.</li>
-</ol>
-</div>
-<div id="exr-eda-7" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 7 (Corrélation et causalité)</strong></span> Dans une ville, le nombre de glaces vendues et le nombre de baignades augmentent tous les deux en été.</p>
-<ol type="a">
-<li>Quelle relation statistique peut-on observer ?</li>
-<li>Pourquoi ne peut-on pas conclure que les glaces provoquent les baignades ?</li>
-<li>Quelle variable cachée peut expliquer les deux évolutions ?</li>
-</ol>
-</div>
-<div id="exr-eda-8" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 8 (Interpréter un tableau agrégé)</strong></span> Un tableau par région présente les résultats suivants :</p>
+<p><span class="theorem-title"><strong>Exercice 4 (Interpréter un tableau agrégé)</strong></span> Le tableau suivant croise région et nombre moyen de commandes :</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -631,25 +1182,66 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Nord</td>
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">180</td>
+<td style="text-align: right;">1 240</td>
+<td style="text-align: right;">410</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Centre</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">350</td>
+<td style="text-align: left;">Sud</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">1 850</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Sud</td>
-<td style="text-align: right;">80</td>
-<td style="text-align: right;">200</td>
+<td style="text-align: left;">Est</td>
+<td style="text-align: right;">690</td>
+<td style="text-align: right;">395</td>
 </tr>
 </tbody>
 </table>
 <ol type="a">
-<li>Quelle région a le montant moyen le plus élevé ?</li>
-<li>Pourquoi faut-il également regarder le nombre de commandes ?</li>
-<li>Calculez le montant total estimé pour chaque région et identifiez la région au total le plus élevé.</li>
+<li>Pourquoi faut-il se méfier du montant moyen de la région Sud ?</li>
+<li>Quelle information supplémentaire demanderiez-vous avant toute conclusion ?</li>
+</ol>
+</div>
+<div id="exr-eda-5" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 5 (Lire une décomposition de variance)</strong></span> Pour une variable <code>note_satisfaction</code> comparée entre trois agences, on obtient <span class="math inline">\(SST = 420\)</span>, <span class="math inline">\(SSB = 92\)</span>.</p>
+<ol type="a">
+<li>Calculez <span class="math inline">\(SSW\)</span>.</li>
+<li>Calculez <span class="math inline">\(\eta^2\)</span> et interprétez-le à l’aide des repères du §3.2.</li>
+</ol>
+</div>
+<div id="exr-eda-6" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6 (Association entre deux variables qualitatives)</strong></span> Un tableau croisé entre <code>canal_publicitaire</code> (3 catégories) et <code>a_achete</code> (oui/non) donne <span class="math inline">\(\chi^2 = 18{,}4\)</span> sur un échantillon de <span class="math inline">\(n=400\)</span>.</p>
+<ol type="a">
+<li>Calculez le V de Cramér (le tableau a 3 lignes et 2 colonnes).</li>
+<li>L’association vous semble-t-elle faible, modérée ou forte (repères du §4.2) ?</li>
+</ol>
+</div>
+<div id="exr-eda-7" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 7 (Simpson en pratique)</strong></span> Une entreprise observe que le taux de satisfaction global de son service client a <strong>baissé</strong> cette année, alors que chacune de ses trois équipes affiche individuellement une <strong>hausse</strong> de satisfaction.</p>
+<ol type="a">
+<li>Ce résultat est-il contradictoire ?</li>
+<li>Quelle variable faudrait-il examiner pour l’expliquer ?</li>
+</ol>
+</div>
+<div id="exr-eda-8" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 8 (Transformation logarithmique)</strong></span> Une variable <code>capital_social</code> d’entreprises varie de 10 000 MAD à 50 000 000 MAD, avec une asymétrie de 4,8.</p>
+<ol type="a">
+<li>Recommanderiez-vous une transformation logarithmique ? Pourquoi ?</li>
+<li>Un histogramme de <code>log(capital_social)</code> serait-il plus facile à lire qu’un histogramme de <code>capital_social</code> ? Justifiez à l’aide de la <a href="#fig-transformation-log" class="quarto-xref">Figure&nbsp;<span>13</span></a>.</li>
+</ol>
+</div>
+<div id="exr-eda-9" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 9 (<code>groupby</code> et <code>pivot_table</code>)</strong></span> Vous disposez d’un jeu de données <code>ventes</code> avec les colonnes <code>region</code>, <code>canal</code> (magasin/en ligne) et <code>montant</code>.</p>
+<ol type="a">
+<li>Écrivez l’instruction <code>groupby</code> qui calcule le montant moyen et l’effectif par région.</li>
+<li>Écrivez l’instruction <code>pivot_table</code> qui croise région et canal pour afficher le montant total.</li>
+</ol>
+</div>
+<div id="exr-eda-10" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 10 (Lire une série temporelle décomposée)</strong></span> Une décomposition additive d’une série de ventes mensuelles donne, pour le mois de décembre : tendance <span class="math inline">\(T = 1200\)</span>, saisonnalité <span class="math inline">\(S = +350\)</span>, résidu <span class="math inline">\(R = -40\)</span>.</p>
+<ol type="a">
+<li>Calculez la valeur observée <span class="math inline">\(y\)</span> pour ce mois.</li>
+<li>Que signifie une saisonnalité positive de 350 pour décembre ?</li>
 </ol>
 </div>
 
@@ -1059,13 +1651,13 @@ Table&nbsp;2: Les trois niveaux de l’analyse exploratoire
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../chapitres/01_preparation_donnees.html" class="pagination-link" aria-label="Préparation des données">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Préparation des données</span></span>
+      <a href="../chapitres/module_collecte_pretraitement_commun.html" class="pagination-link" aria-label="Collecte, Nettoyage et Préparation des Données">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Collecte, Nettoyage et Préparation des Données</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapitres/03_entropot_donnees.html" class="pagination-link" aria-label="Introduction à l'entrepôt de données">
-        <span class="nav-page-text"><span class="chapter-title">Introduction à l’entrepôt de données</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapitres/03_visualisation_donnees.html" class="pagination-link" aria-label="Visualisation des données">
+        <span class="nav-page-text"><span class="chapter-title">Visualisation des données</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

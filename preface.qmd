@@ -20,11 +20,11 @@ number-sections: false
 %{\usekomafont{chapter}\strut Préface\par}
 ```
 
-Le présent manuel est le support de cours officiel de l'élément **Analyse et Visualisation des Données**, dispensé dans le cadre d'une formation en Développement d'Applications et Intelligence Artificielle.
+Le présent manuel est le support de cours officiel de l'élément **Analyse et visualisation des données**, dispensé dans le cadre de la formation `Développement d'Applications et Intelligence Artificielle` (DBT-DAIA) en temps aménagé.
 
-La communauté étudiante visée par ce module provient de parcours techniques variés (DUT, BTS, DTS ou diplômes équivalents), ayant déjà acquis un bagage de base en programmation Python. La familiarité préalable avec la Data Science, l'analyse de données ou le Machine Learning n'est pas un prérequis : ce manuel se concentre volontairement sur ce qui précède et accompagne la modélisation — comprendre, préparer, explorer et représenter une donnée — sans aborder les algorithmes d'apprentissage automatique, qui font l'objet d'un module distinct.
+La communauté étudiante visée par ce module provient de parcours techniques variés (DUT, BTS, DTS ou diplômes équivalents), ayant déjà acquis un bagage de base en programmation Python. La familiarité préalable avec la Data Science, l'analyse de données ou le Machine Learning n'est pas un prérequis : ce manuel se concentre sur ce qui précède et accompagne la modélisation (comprendre, préparer, explorer et représenter une donnée) sans aborder les algorithmes d'apprentissage automatique, qui font l'objet de l'élément [**Machine Learning**](https://iaousse.github.io/ml-course/).
 
-Ce manuel vise à outiller les étudiants d'une **démarche méthodique** face à un jeu de données : savoir le questionner avant de le modéliser, savoir le nettoyer avant de l'analyser, et savoir le représenter avant de le communiquer. Il introduit progressivement les statistiques descriptives nécessaires, l'écosystème Python (`pandas`, `numpy`, `matplotlib`, `seaborn`), les principes d'un entrepôt de données, puis la construction d'une solution de Business Intelligence avec Power BI et Taipy. Un cas pratique final relie ces notions dans un même projet.
+Ce manuel vise à outiller les étudiants d'une **démarche méthodique** face à un jeu de données : savoir le questionner avant de le modéliser, savoir le nettoyer avant de l'analyser, et savoir le représenter avant de le communiquer. Il introduit progressivement les notions de statistique nécessaires, l'écosystème Python (`pandas`, `numpy`, `matplotlib`, `seaborn`), les principes d'un entrepôt de données, puis la construction d'une solution de Business Intelligence avec Power BI et Taipy.
 
 ```{=latex}
 \subsection*{Prérequis}

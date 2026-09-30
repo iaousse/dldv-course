@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Visualisation des données – Analyse et visualisation de données</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapitres/04_entropot_donnees.html" rel="next">
+<link href="../chapitres/02_exploration_donnees.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapitres/03_visualisation_donnees.html"><span class="chapter-title">Visualisation des données</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title"><span class="chapter-title">Visualisation des données</span></h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Analyse et visualisation de données</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Recherche"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">index.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../preface.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Préface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/00_introduction_analyse_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’analyse de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/module_collecte_pretraitement_commun.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Collecte, Nettoyage et Préparation des Données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/02_exploration_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploration des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/03_visualisation_donnees.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Visualisation des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/04_entropot_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’entrepôt de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/05_powerbi-taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Business Intelligence avec Power BI et Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab0_environement_python.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab1_collect_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 : Collecte de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab2_eda_pretraitement_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 : EDA et prétraitement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab3_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 : Visualiser les données 311</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab4_entropot_donnees_powerbi.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 : Entrepôt de données et dashboard avancé avec Power BI</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab5_entropot_donnees_taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 : Entrepôt de données et dashboard avancé avec Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Dans ce chapitre</h2>
+   
+  <ul>
+  <li><a href="#pourquoi-visualiser-des-données" id="toc-pourquoi-visualiser-des-données" class="nav-link active" data-scroll-target="#pourquoi-visualiser-des-données">1. Pourquoi visualiser des données ?</a>
+  <ul class="collapse">
+  <li><a href="#ce-que-les-statistiques-seules-ne-montrent-pas" id="toc-ce-que-les-statistiques-seules-ne-montrent-pas" class="nav-link" data-scroll-target="#ce-que-les-statistiques-seules-ne-montrent-pas">1.1. Ce que les statistiques seules ne montrent pas</a></li>
+  <li><a href="#le-rôle-de-la-visualisation-dans-le-cycle-dun-projet" id="toc-le-rôle-de-la-visualisation-dans-le-cycle-dun-projet" class="nav-link" data-scroll-target="#le-rôle-de-la-visualisation-dans-le-cycle-dun-projet">1.2. Le rôle de la visualisation dans le cycle d’un projet</a></li>
+  </ul></li>
+  <li><a href="#la-grammaire-des-graphiques" id="toc-la-grammaire-des-graphiques" class="nav-link" data-scroll-target="#la-grammaire-des-graphiques">2. La grammaire des graphiques</a>
+  <ul class="collapse">
+  <li><a href="#anatomie-dune-figure-matplotlib" id="toc-anatomie-dune-figure-matplotlib" class="nav-link" data-scroll-target="#anatomie-dune-figure-matplotlib">2.1. Anatomie d’une figure <code>matplotlib</code></a></li>
+  <li><a href="#toutes-les-variables-visuelles-ne-se-valent-pas" id="toc-toutes-les-variables-visuelles-ne-se-valent-pas" class="nav-link" data-scroll-target="#toutes-les-variables-visuelles-ne-se-valent-pas">2.2. Toutes les variables visuelles ne se valent pas</a></li>
+  </ul></li>
+  <li><a href="#choisir-le-bon-graphique-selon-la-question-posée" id="toc-choisir-le-bon-graphique-selon-la-question-posée" class="nav-link" data-scroll-target="#choisir-le-bon-graphique-selon-la-question-posée">3. Choisir le bon graphique selon la question posée</a></li>
+  <li><a href="#les-distributions-histogramme-densité-boîte-à-moustaches" id="toc-les-distributions-histogramme-densité-boîte-à-moustaches" class="nav-link" data-scroll-target="#les-distributions-histogramme-densité-boîte-à-moustaches">4. Les distributions : histogramme, densité, boîte à moustaches</a>
+  <ul class="collapse">
+  <li><a href="#lhistogramme" id="toc-lhistogramme" class="nav-link" data-scroll-target="#lhistogramme">4.1. L’histogramme</a></li>
+  <li><a href="#histogramme-et-diagramme-en-barres-deux-graphiques-que-lon-confond-trop-souvent" id="toc-histogramme-et-diagramme-en-barres-deux-graphiques-que-lon-confond-trop-souvent" class="nav-link" data-scroll-target="#histogramme-et-diagramme-en-barres-deux-graphiques-que-lon-confond-trop-souvent">4.2. Histogramme et diagramme en barres : deux graphiques que l’on confond trop souvent</a></li>
+  <li><a href="#le-choix-du-nombre-de-classes" id="toc-le-choix-du-nombre-de-classes" class="nav-link" data-scroll-target="#le-choix-du-nombre-de-classes">4.3. Le choix du nombre de classes</a></li>
+  <li><a href="#classes-de-largeurs-inégales-effectif-ou-densité" id="toc-classes-de-largeurs-inégales-effectif-ou-densité" class="nav-link" data-scroll-target="#classes-de-largeurs-inégales-effectif-ou-densité">4.4. Classes de largeurs inégales : effectif ou densité ?</a></li>
+  <li><a href="#lestimation-de-densité-par-noyau-kde" id="toc-lestimation-de-densité-par-noyau-kde" class="nav-link" data-scroll-target="#lestimation-de-densité-par-noyau-kde">4.5. L’estimation de densité par noyau (KDE)</a></li>
+  <li><a href="#la-fonction-de-répartition-empirique-ecdf" id="toc-la-fonction-de-répartition-empirique-ecdf" class="nav-link" data-scroll-target="#la-fonction-de-répartition-empirique-ecdf">4.6. La fonction de répartition empirique (ECDF)</a></li>
+  <li><a href="#la-boîte-à-moustaches-boxplot" id="toc-la-boîte-à-moustaches-boxplot" class="nav-link" data-scroll-target="#la-boîte-à-moustaches-boxplot">4.7. La boîte à moustaches (<em>boxplot</em>)</a></li>
+  <li><a href="#une-même-distribution-six-représentations" id="toc-une-même-distribution-six-représentations" class="nav-link" data-scroll-target="#une-même-distribution-six-représentations">4.8. Une même distribution, six représentations</a></li>
+  <li><a href="#le-diagramme-quantile-quantile-qq-plot" id="toc-le-diagramme-quantile-quantile-qq-plot" class="nav-link" data-scroll-target="#le-diagramme-quantile-quantile-qq-plot">4.9. Le diagramme quantile-quantile (QQ-plot)</a></li>
+  </ul></li>
+  <li><a href="#comparaisons-le-diagramme-en-barres-et-ses-variantes" id="toc-comparaisons-le-diagramme-en-barres-et-ses-variantes" class="nav-link" data-scroll-target="#comparaisons-le-diagramme-en-barres-et-ses-variantes">5. Comparaisons : le diagramme en barres et ses variantes</a>
+  <ul class="collapse">
+  <li><a href="#le-diagramme-en-barres" id="toc-le-diagramme-en-barres" class="nav-link" data-scroll-target="#le-diagramme-en-barres">5.1. Le diagramme en barres</a></li>
+  <li><a href="#six-variantes-du-diagramme-en-barres" id="toc-six-variantes-du-diagramme-en-barres" class="nav-link" data-scroll-target="#six-variantes-du-diagramme-en-barres">5.2. Six variantes du diagramme en barres</a></li>
+  <li><a href="#lollipop-et-dot-plot-des-barres-allégées" id="toc-lollipop-et-dot-plot-des-barres-allégées" class="nav-link" data-scroll-target="#lollipop-et-dot-plot-des-barres-allégées">5.3. Lollipop et <em>dot plot</em> : des barres allégées</a></li>
+  </ul></li>
+  <li><a href="#sec-camembert" id="toc-sec-camembert" class="nav-link" data-scroll-target="#sec-camembert">6. Le diagramme circulaire (camembert) — et ses limites</a>
+  <ul class="collapse">
+  <li><a href="#camembert-contre-barres-triées-une-comparaison-directe" id="toc-camembert-contre-barres-triées-une-comparaison-directe" class="nav-link" data-scroll-target="#camembert-contre-barres-triées-une-comparaison-directe">6.1. Camembert contre barres triées : une comparaison directe</a></li>
+  <li><a href="#quand-un-camembert-reste-défendable" id="toc-quand-un-camembert-reste-défendable" class="nav-link" data-scroll-target="#quand-un-camembert-reste-défendable">6.2. Quand un camembert reste défendable</a></li>
+  </ul></li>
+  <li><a href="#relations-entre-variables-nuage-de-points-et-heatmap" id="toc-relations-entre-variables-nuage-de-points-et-heatmap" class="nav-link" data-scroll-target="#relations-entre-variables-nuage-de-points-et-heatmap">7. Relations entre variables : nuage de points et <em>heatmap</em></a>
+  <ul class="collapse">
+  <li><a href="#le-nuage-de-points-scatter-plot" id="toc-le-nuage-de-points-scatter-plot" class="nav-link" data-scroll-target="#le-nuage-de-points-scatter-plot">7.1. Le nuage de points (<em>scatter plot</em>)</a></li>
+  <li><a href="#au-delà-de-deux-dimensions-mapper-des-variables-supplémentaires" id="toc-au-delà-de-deux-dimensions-mapper-des-variables-supplémentaires" class="nav-link" data-scroll-target="#au-delà-de-deux-dimensions-mapper-des-variables-supplémentaires">7.2. Au-delà de deux dimensions : mapper des variables supplémentaires</a></li>
+  <li><a href="#le-problème-de-la-surimpression-overplotting" id="toc-le-problème-de-la-surimpression-overplotting" class="nav-link" data-scroll-target="#le-problème-de-la-surimpression-overplotting">7.3. Le problème de la surimpression (<em>overplotting</em>)</a></li>
+  <li><a href="#la-heatmap-carte-de-chaleur" id="toc-la-heatmap-carte-de-chaleur" class="nav-link" data-scroll-target="#la-heatmap-carte-de-chaleur">7.4. La <em>heatmap</em> (carte de chaleur)</a></li>
+  </ul></li>
+  <li><a href="#évolution-courbes-et-variantes-temporelles" id="toc-évolution-courbes-et-variantes-temporelles" class="nav-link" data-scroll-target="#évolution-courbes-et-variantes-temporelles">8. Évolution : courbes et variantes temporelles</a>
+  <ul class="collapse">
+  <li><a href="#la-courbe-line-chart" id="toc-la-courbe-line-chart" class="nav-link" data-scroll-target="#la-courbe-line-chart">8.1. La courbe (<em>line chart</em>)</a></li>
+  <li><a href="#visualiser-une-courbe-décomposée" id="toc-visualiser-une-courbe-décomposée" class="nav-link" data-scroll-target="#visualiser-une-courbe-décomposée">8.2. Visualiser une courbe décomposée</a></li>
+  <li><a href="#aire-empilée-et-streamgraph" id="toc-aire-empilée-et-streamgraph" class="nav-link" data-scroll-target="#aire-empilée-et-streamgraph">8.3. Aire empilée et <em>streamgraph</em></a></li>
+  <li><a href="#le-slopegraph-et-le-nuage-de-points-connecté" id="toc-le-slopegraph-et-le-nuage-de-points-connecté" class="nav-link" data-scroll-target="#le-slopegraph-et-le-nuage-de-points-connecté">8.4. Le <em>slopegraph</em> et le nuage de points connecté</a></li>
+  </ul></li>
+  <li><a href="#cartographie-représenter-une-dimension-géographique" id="toc-cartographie-représenter-une-dimension-géographique" class="nav-link" data-scroll-target="#cartographie-représenter-une-dimension-géographique">9. Cartographie : représenter une dimension géographique</a>
+  <ul class="collapse">
+  <li><a href="#la-carte-choroplèthe" id="toc-la-carte-choroplèthe" class="nav-link" data-scroll-target="#la-carte-choroplèthe">9.1. La carte choroplèthe</a></li>
+  <li><a href="#le-piège-classique-la-surface-nest-pas-limportance" id="toc-le-piège-classique-la-surface-nest-pas-limportance" class="nav-link" data-scroll-target="#le-piège-classique-la-surface-nest-pas-limportance">9.2. Le piège classique : la surface n’est pas l’importance</a></li>
+  <li><a href="#la-carte-de-points-géolocalisés" id="toc-la-carte-de-points-géolocalisés" class="nav-link" data-scroll-target="#la-carte-de-points-géolocalisés">9.3. La carte de points géolocalisés</a></li>
+  <li><a href="#le-cartogramme" id="toc-le-cartogramme" class="nav-link" data-scroll-target="#le-cartogramme">9.4. Le cartogramme</a></li>
+  <li><a href="#un-mot-sur-les-projections" id="toc-un-mot-sur-les-projections" class="nav-link" data-scroll-target="#un-mot-sur-les-projections">9.5. Un mot sur les projections</a></li>
+  </ul></li>
+  <li><a href="#graphiques-avancés-à-réserver-aux-cas-qui-le-justifient" id="toc-graphiques-avancés-à-réserver-aux-cas-qui-le-justifient" class="nav-link" data-scroll-target="#graphiques-avancés-à-réserver-aux-cas-qui-le-justifient">10. Graphiques avancés — à réserver aux cas qui le justifient</a>
+  <ul class="collapse">
+  <li><a href="#petits-multiples-facettes" id="toc-petits-multiples-facettes" class="nav-link" data-scroll-target="#petits-multiples-facettes">10.1. Petits multiples (facettes)</a></li>
+  <li><a href="#radar-et-coordonnées-parallèles" id="toc-radar-et-coordonnées-parallèles" class="nav-link" data-scroll-target="#radar-et-coordonnées-parallèles">10.2. Radar et coordonnées parallèles</a></li>
+  <li><a href="#représenter-un-réseau" id="toc-représenter-un-réseau" class="nav-link" data-scroll-target="#représenter-un-réseau">10.3. Représenter un réseau</a></li>
+  <li><a href="#le-diagramme-de-gantt" id="toc-le-diagramme-de-gantt" class="nav-link" data-scroll-target="#le-diagramme-de-gantt">10.4. Le diagramme de Gantt</a></li>
+  <li><a href="#treemap-et-waffle-chart-dautres-façons-de-montrer-une-composition" id="toc-treemap-et-waffle-chart-dautres-façons-de-montrer-une-composition" class="nav-link" data-scroll-target="#treemap-et-waffle-chart-dautres-façons-de-montrer-une-composition">10.5. Treemap et <em>waffle chart</em> : d’autres façons de montrer une composition</a></li>
+  <li><a href="#éléments-de-tableau-de-bord-cartes-indicateurs-et-jauges" id="toc-éléments-de-tableau-de-bord-cartes-indicateurs-et-jauges" class="nav-link" data-scroll-target="#éléments-de-tableau-de-bord-cartes-indicateurs-et-jauges">10.6. Éléments de tableau de bord : cartes indicateurs et jauges</a></li>
+  </ul></li>
+  <li><a href="#bibliothèques-python-pour-la-visualisation" id="toc-bibliothèques-python-pour-la-visualisation" class="nav-link" data-scroll-target="#bibliothèques-python-pour-la-visualisation">11. Bibliothèques Python pour la visualisation</a>
+  <ul class="collapse">
+  <li><a href="#matplotlib-la-bibliothèque-de-référence" id="toc-matplotlib-la-bibliothèque-de-référence" class="nav-link" data-scroll-target="#matplotlib-la-bibliothèque-de-référence">11.1. <code>matplotlib</code> : la bibliothèque de référence</a></li>
+  <li><a href="#seaborn-la-visualisation-statistique-simplifiée" id="toc-seaborn-la-visualisation-statistique-simplifiée" class="nav-link" data-scroll-target="#seaborn-la-visualisation-statistique-simplifiée">11.2. <code>seaborn</code> : la visualisation statistique simplifiée</a></li>
+  <li><a href="#geopandas-pour-la-cartographie" id="toc-geopandas-pour-la-cartographie" class="nav-link" data-scroll-target="#geopandas-pour-la-cartographie">11.3. <code>geopandas</code> : pour la cartographie</a></li>
+  <li><a href="#vers-linteractivité" id="toc-vers-linteractivité" class="nav-link" data-scroll-target="#vers-linteractivité">11.4. Vers l’interactivité</a></li>
+  </ul></li>
+  <li><a href="#communiquer-les-résultats-et-rendre-les-graphiques-accessibles" id="toc-communiquer-les-résultats-et-rendre-les-graphiques-accessibles" class="nav-link" data-scroll-target="#communiquer-les-résultats-et-rendre-les-graphiques-accessibles">12. Communiquer les résultats et rendre les graphiques accessibles</a>
+  <ul class="collapse">
+  <li><a href="#partir-du-public-et-de-la-décision" id="toc-partir-du-public-et-de-la-décision" class="nav-link" data-scroll-target="#partir-du-public-et-de-la-décision">12.1. Partir du public et de la décision</a></li>
+  <li><a href="#construire-un-message-honnête-et-lisible" id="toc-construire-un-message-honnête-et-lisible" class="nav-link" data-scroll-target="#construire-un-message-honnête-et-lisible">12.2. Construire un message honnête et lisible</a></li>
+  <li><a href="#accessibilité-ne-pas-transmettre-linformation-par-la-couleur-seule" id="toc-accessibilité-ne-pas-transmettre-linformation-par-la-couleur-seule" class="nav-link" data-scroll-target="#accessibilité-ne-pas-transmettre-linformation-par-la-couleur-seule">12.3. Accessibilité : ne pas transmettre l’information par la couleur seule</a></li>
+  <li><a href="#vérification-avant-diffusion" id="toc-vérification-avant-diffusion" class="nav-link" data-scroll-target="#vérification-avant-diffusion">12.5. Vérification avant diffusion</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div class="callout callout-style-default callout-tip callout-titled" title="Objectifs du chapitre">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Objectifs du chapitre
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>À la fin de ce chapitre, l’étudiant sera capable de :</p>
+<ul>
+<li><strong>Expliquer</strong> pourquoi la visualisation est indispensable, même après une exploration statistique complète ;</li>
+<li><strong>Décomposer</strong> n’importe quel graphique selon la grammaire des graphiques, et <strong>hiérarchiser</strong> les variables visuelles (position, longueur, angle, aire, couleur) selon leur précision de lecture ;</li>
+<li><strong>Choisir</strong> le graphique adapté à une question donnée (distribution, comparaison, relation, évolution, composition) et <strong>distinguer sans confusion possible</strong> un histogramme d’un diagramme en barres ;</li>
+<li><strong>Construire</strong>, avec <code>matplotlib</code> et <code>seaborn</code>, l’ensemble des graphiques essentiels : histogramme, densité, boîte à moustaches et violon, barres (simples, groupées, empilées), camembert, nuage de points, courbe, <em>heatmap</em> ;</li>
+<li><strong>Représenter</strong> des données géographiques : carte choroplèthe, carte de points, cartogramme, et connaître les pièges spécifiques à la cartographie ;</li>
+<li><strong>Mobiliser</strong> des graphiques plus avancés lorsqu’ils sont réellement justifiés : petits multiples, coordonnées parallèles, réseaux, Gantt, tableaux de bord ;</li>
+<li><strong>Distinguer</strong> une bibliothèque de visualisation statique d’une bibliothèque interactive, et savoir quand recourir à chacune ;</li>
+<li><strong>Identifier</strong> les pièges les plus courants d’un graphique trompeur et <strong>appliquer</strong> les principes de base du <em>data storytelling</em> et de l’accessibilité.</li>
+</ul>
+</div>
+</div>
+<p>Les chapitres précédents ont permis de préparer un jeu de données puis de l’explorer statistiquement. La <strong>visualisation des données</strong> (<em>data visualization</em>) en constitue le prolongement naturel : elle traduit ces résultats sous une forme que l’œil humain interprète beaucoup plus vite qu’un tableau de chiffres, et qu’un public non technique peut comprendre en quelques secondes.</p>
+<section id="pourquoi-visualiser-des-données" class="level2">
+<h2 class="anchored" data-anchor-id="pourquoi-visualiser-des-données">1. Pourquoi visualiser des données ?</h2>
+<section id="ce-que-les-statistiques-seules-ne-montrent-pas" class="level3">
+<h3 class="anchored" data-anchor-id="ce-que-les-statistiques-seules-ne-montrent-pas">1.1. Ce que les statistiques seules ne montrent pas</h3>
+<p>Deux jeux de données peuvent partager exactement les mêmes statistiques descriptives — moyenne, variance, corrélation — tout en ayant des formes radicalement différentes. C’est ce qu’illustre le célèbre <strong>quartet d’Anscombe</strong> (1973), déjà présenté au chapitre précédent (<a href="02_exploration_donnees.html#fig-anscombe" class="quarto-xref">Figure&nbsp;<span>5</span></a>) : quatre jeux de données de onze points chacun, ayant tous la même moyenne, la même variance et le même coefficient de corrélation de Pearson (<span class="math inline">\(r \approx 0{,}82\)</span>), mais dont les nuages de points révèlent des situations totalement distinctes.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="La leçon du quartet d'Anscombe">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>La leçon du quartet d’Anscombe
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Aucune statistique résumée, aussi complète soit-elle, ne remplace un graphique. C’est pourquoi l’exploration statistique (chapitre précédent) et la visualisation (ce chapitre) doivent toujours être menées ensemble, et non l’une après l’autre.</p>
+</div>
+</div>
+</section>
+<section id="le-rôle-de-la-visualisation-dans-le-cycle-dun-projet" class="level3">
+<h3 class="anchored" data-anchor-id="le-rôle-de-la-visualisation-dans-le-cycle-dun-projet">1.2. Le rôle de la visualisation dans le cycle d’un projet</h3>
+<p>La visualisation intervient à deux moments distincts d’un projet d’analyse de données :</p>
+<ul>
+<li>pendant l’<strong>exploration</strong>, comme outil de travail personnel de l’analyste, pour repérer rapidement une distribution, une anomalie ou une relation ;</li>
+<li>au moment de la <strong>communication</strong>, comme outil destiné à un public (décideur, client, grand public), pour transmettre un message clair et argumenté.</li>
+</ul>
+<p>Ces deux usages appellent des exigences différentes : un graphique d’exploration peut rester brut et rapide à produire, tandis qu’un graphique de communication doit être soigné, annoté et pensé pour son destinataire — nous y reviendrons en fin de chapitre (§9).</p>
+</section>
+</section>
+<section id="la-grammaire-des-graphiques" class="level2">
+<h2 class="anchored" data-anchor-id="la-grammaire-des-graphiques">2. La grammaire des graphiques</h2>
+<p>Un graphique statistique, quel que soit son type, se construit à partir des mêmes briques élémentaires. Cette idée, formalisée par Leland Wilkinson sous le nom de <strong>grammaire des graphiques</strong> (<em>grammar of graphics</em>), popularisée ensuite par <code>ggplot2</code> en R, permet de décrire n’importe quel graphique comme la combinaison de quelques éléments simples.</p>
+<div id="fig-grammaire" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grammaire-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_grammaire_graphiques.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grammaire-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Un graphique = une composition de couches indépendantes
+</figcaption>
+</figure>
+</div>
+<div id="tbl-grammaire-graphiques" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-grammaire-graphiques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Les composantes de la grammaire des graphiques
+</figcaption>
+<div aria-describedby="tbl-grammaire-graphiques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Élément</th>
+<th style="text-align: left;">Rôle</th>
+<th style="text-align: left;">Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Données</strong></td>
+<td style="text-align: left;">Le jeu de données représenté</td>
+<td style="text-align: left;">Le tableau des ventes mensuelles</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Mapping (<em>aesthetics</em>)</strong></td>
+<td style="text-align: left;">L’association entre une variable et un attribut visuel</td>
+<td style="text-align: left;"><code>mois</code> → axe des x, <code>ventes</code> → axe des y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Géométrie</strong></td>
+<td style="text-align: left;">La forme visuelle utilisée pour représenter chaque observation</td>
+<td style="text-align: left;">Points, barres, lignes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Échelle</strong></td>
+<td style="text-align: left;">La façon dont les valeurs sont converties en position, taille ou couleur</td>
+<td style="text-align: left;">Échelle linéaire, logarithmique, catégorielle</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Facette</strong></td>
+<td style="text-align: left;">Le découpage du graphique en sous-graphiques répétés</td>
+<td style="text-align: left;">Un graphique par région</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Coordonnées &amp; thème</strong></td>
+<td style="text-align: left;">Le système de repères et l’habillage visuel</td>
+<td style="text-align: left;">Cartésien, polaire ; polices, grille, couleurs</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Repère">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Repère
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>En Python, <code>seaborn</code> et la bibliothèque <code>plotnine</code> (portage de <code>ggplot2</code>) implémentent explicitement cette grammaire. <code>matplotlib</code>, plus bas niveau, ne l’impose pas mais permet de construire n’importe laquelle de ces briques manuellement.</p>
+</div>
+</div>
+</div>
+<p>Comprendre cette grammaire aide à répondre à la question centrale de ce chapitre : <strong>quelle géométrie choisir pour quelle question ?</strong></p>
+<section id="anatomie-dune-figure-matplotlib" class="level3">
+<h3 class="anchored" data-anchor-id="anatomie-dune-figure-matplotlib">2.1. Anatomie d’une figure <code>matplotlib</code></h3>
+<p>Avant de construire le moindre graphique, il faut connaître le vocabulaire de <code>matplotlib</code>, car il conditionne toutes les commandes du chapitre.</p>
+<div id="fig-matplotlib-anatomie" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matplotlib-anatomie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_matplotlib_anatomie.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matplotlib-anatomie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Anatomie d’une figure matplotlib
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))   <span class="co"># fig = le conteneur ; ax = la zone de tracé</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ax.plot(x, y)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Titre"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Axe des x"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Axe des y"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"figure.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-important callout-titled" title="`fig` et `ax` : ne pas confondre">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span><code>fig</code> et <code>ax</code> : ne pas confondre
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <strong>figure</strong> (<code>fig</code>) est le conteneur global — elle peut contenir plusieurs graphiques. Les <strong>axes</strong> (<code>ax</code>) désignent chaque zone de tracé individuelle, avec son propre titre, ses propres axes x/y et sa propre légende. Cette distinction devient indispensable dès qu’on assemble plusieurs graphiques dans une même figure (<code>plt.subplots(nrows=2, ncols=2)</code>), comme nous le ferons à plusieurs reprises dans ce chapitre.</p>
+</div>
+</div>
+</section>
+<section id="toutes-les-variables-visuelles-ne-se-valent-pas" class="level3">
+<h3 class="anchored" data-anchor-id="toutes-les-variables-visuelles-ne-se-valent-pas">2.2. Toutes les variables visuelles ne se valent pas</h3>
+<p>Un même nombre peut être encodé visuellement de multiples façons — une position, une longueur, un angle, une aire, une couleur. Ces encodages ne sont pas équivalents : l’œil humain les compare avec des précisions très différentes, un résultat établi par les travaux de William Cleveland et Robert McGill (1984).</p>
+<div id="fig-variables-visuelles" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-variables-visuelles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_variables_visuelles.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-variables-visuelles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Toutes les variables visuelles ne se valent pas
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Hiérarchie de précision (Cleveland &amp; McGill)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Hiérarchie de précision (Cleveland &amp; McGill)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Du plus précis au moins précis pour comparer des valeurs : <strong>position sur une échelle commune</strong> &gt; position sur des échelles non alignées &gt; <strong>longueur</strong> &gt; angle/pente &gt; <strong>aire</strong> &gt; volume &gt; <strong>couleur</strong> (teinte, saturation). Cette hiérarchie, illustrée par la <a href="#fig-variables-visuelles" class="quarto-xref">Figure&nbsp;<span>3</span></a>, explique à elle seule pourquoi le diagramme en barres (fondé sur la longueur) surpasse presque toujours le camembert (fondé sur l’angle) pour une tâche de comparaison — nous y reviendrons en détail au §4.3.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="choisir-le-bon-graphique-selon-la-question-posée" class="level2">
+<h2 class="anchored" data-anchor-id="choisir-le-bon-graphique-selon-la-question-posée">3. Choisir le bon graphique selon la question posée</h2>
+<p>Avant d’écrire la moindre ligne de code, il faut se demander quelle <strong>question</strong> le graphique doit permettre de répondre. Cinq grandes familles de questions couvrent l’essentiel des besoins d’un Data Analyst :</p>
+<div id="tbl-familles-questions" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-familles-questions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Cinq familles de questions et leurs graphiques adaptés
+</figcaption>
+<div aria-describedby="tbl-familles-questions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Type de question</th>
+<th style="text-align: left;">Exemple de question</th>
+<th style="text-align: left;">Graphiques adaptés</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Distribution</strong></td>
+<td style="text-align: left;">Comment se répartissent les valeurs d’une variable ?</td>
+<td style="text-align: left;">Histogramme, densité, boîte à moustaches, violon</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Comparaison</strong></td>
+<td style="text-align: left;">Comment se comparent plusieurs catégories ?</td>
+<td style="text-align: left;">Diagramme en barres, lollipop</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Relation</strong></td>
+<td style="text-align: left;">Deux variables évoluent-elles ensemble ?</td>
+<td style="text-align: left;">Nuage de points, <em>heatmap</em> de corrélation</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Évolution</strong></td>
+<td style="text-align: left;">Comment une valeur change-t-elle dans le temps ?</td>
+<td style="text-align: left;">Courbe, aire empilée</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Composition</strong></td>
+<td style="text-align: left;">Quelle est la part de chaque catégorie dans un total ?</td>
+<td style="text-align: left;">Barres empilées à 100 %, camembert (avec prudence), treemap</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Un graphique ne doit répondre qu'à une seule question à la fois">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Un graphique ne doit répondre qu’à une seule question à la fois
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un graphique qui tente de répondre simultanément à une question de distribution, de comparaison et d’évolution devient généralement illisible. Mieux vaut produire plusieurs graphiques simples qu’un seul graphique surchargé.</p>
+</div>
+</div>
+</section>
+<section id="les-distributions-histogramme-densité-boîte-à-moustaches" class="level2">
+<h2 class="anchored" data-anchor-id="les-distributions-histogramme-densité-boîte-à-moustaches">4. Les distributions : histogramme, densité, boîte à moustaches</h2>
+<section id="lhistogramme" class="level3">
+<h3 class="anchored" data-anchor-id="lhistogramme">4.1. L’histogramme</h3>
+<p>L’<strong>histogramme</strong> répartit une variable numérique <strong>continue</strong> en intervalles contigus (<em>bins</em>) et affiche le nombre d’observations dans chacun. C’est le graphique de référence pour observer la <strong>forme</strong> d’une distribution (symétrique, asymétrique, bimodale).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"prix"</span>, bins<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distribution des prix de vente"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Prix (MAD)"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Nombre de biens"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="histogramme-et-diagramme-en-barres-deux-graphiques-que-lon-confond-trop-souvent" class="level3">
+<h3 class="anchored" data-anchor-id="histogramme-et-diagramme-en-barres-deux-graphiques-que-lon-confond-trop-souvent">4.2. Histogramme et diagramme en barres : deux graphiques que l’on confond trop souvent</h3>
+<p>Un histogramme et un diagramme en barres se <em>ressemblent</em> — tous deux affichent des rectangles verticaux — mais ils répondent à des questions fondamentalement différentes et ne doivent <strong>jamais</strong> être confondus, ni dans leur lecture, ni dans leur construction.</p>
+<div id="fig-histogramme-vs-barres" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histogramme-vs-barres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_histogramme_vs_barres.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histogramme-vs-barres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Deux graphiques à barres, deux natures de variables
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="La différence essentielle">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>La différence essentielle
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="tbl-histogramme-barres" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-histogramme-barres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Histogramme contre diagramme en barres
+</figcaption>
+<div aria-describedby="tbl-histogramme-barres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Histogramme</th>
+<th style="text-align: left;">Diagramme en barres</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Variable représentée</td>
+<td style="text-align: left;"><strong>Quantitative continue</strong>, découpée en classes</td>
+<td style="text-align: left;"><strong>Qualitative</strong>, catégories déjà distinctes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Axe des x</td>
+<td style="text-align: left;">Numérique et continu</td>
+<td style="text-align: left;">Catégoriel, sans valeur intermédiaire</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Espace entre les barres</td>
+<td style="text-align: left;"><strong>Aucun</strong> — les classes sont contiguës</td>
+<td style="text-align: left;"><strong>Un espace visible</strong> entre chaque catégorie</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ordre des barres</td>
+<td style="text-align: left;">Imposé par l’axe numérique</td>
+<td style="text-align: left;">Libre — on peut trier par valeur</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ce que mesure la hauteur</td>
+<td style="text-align: left;">Effectif (ou densité) d’une <strong>classe de valeurs</strong></td>
+<td style="text-align: left;">Effectif (ou une autre mesure) d’une <strong>catégorie</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Sur la <a href="#fig-histogramme-vs-barres" class="quarto-xref">Figure&nbsp;<span>4</span></a>, l’absence d’espace entre les barres de l’histogramme (à gauche) signale visuellement que la classe « 35-40 ans » se termine exactement là où commence la classe « 40-45 ans » : il s’agit d’un découpage continu d’une seule variable. À l’inverse, l’espace entre chaque barre du diagramme (à droite) signale que « Casablanca » et « Marrakech » sont des catégories indépendantes, sans continuité entre elles — les réordonner ne change le sens d’aucune donnée.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># HISTOGRAMME : variable numérique continue, bins contigus</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"age_bien"</span>, bins<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># DIAGRAMME EN BARRES : variable catégorielle, barres espacées</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>effectifs <span class="op">=</span> df[<span class="st">"ville"</span>].value_counts()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>sns.barplot(x<span class="op">=</span>effectifs.index, y<span class="op">=</span>effectifs.values)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="le-choix-du-nombre-de-classes" class="level3">
+<h3 class="anchored" data-anchor-id="le-choix-du-nombre-de-classes">4.3. Le choix du nombre de classes</h3>
+<p>Le nombre d’intervalles (<code>bins</code>) change radicalement la lecture d’un histogramme, pour un même échantillon.</p>
+<div id="fig-histogramme-bins" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histogramme-bins-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_histogramme_bins.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histogramme-bins-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Le même échantillon, six histogrammes différents
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Trop peu, trop, ou juste assez de classes">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Trop peu, trop, ou juste assez de classes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Trop peu d’intervalles (en haut à gauche de la <a href="#fig-histogramme-bins" class="quarto-xref">Figure&nbsp;<span>5</span></a>) masquent la forme réelle de la distribution ; trop d’intervalles (en bas à droite) font apparaître du bruit statistique sans signification. Plusieurs règles empiriques proposent un nombre de classes raisonnable à partir de la taille de l’échantillon <span class="math inline">\(n\)</span> :</p>
+<ul>
+<li><strong>règle de Sturges</strong> : <span class="math inline">\(k = \lceil \log_2(n) + 1 \rceil\)</span>, adaptée aux distributions proches de la loi normale ;</li>
+<li><strong>règle de Scott</strong> : largeur de classe <span class="math inline">\(h = 3{,}49\, s\, n^{-1/3}\)</span>, où <span class="math inline">\(s\)</span> est l’écart-type ;</li>
+<li><strong>règle de Freedman-Diaconis</strong> : largeur de classe <span class="math inline">\(h = 2\, IQR\, n^{-1/3}\)</span>, plus robuste aux valeurs extrêmes car fondée sur l’IQR plutôt que sur l’écart-type.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"prix"</span>, bins<span class="op">=</span><span class="st">"sturges"</span>)   <span class="co"># ou "scott", "fd" (Freedman-Diaconis)</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ces règles donnent un <strong>point de départ raisonnable</strong> ; il reste toujours utile de tester plusieurs valeurs de <code>bins</code> avant de retenir un graphique définitif.</p>
+</div>
+</div>
+</section>
+<section id="classes-de-largeurs-inégales-effectif-ou-densité" class="level3">
+<h3 class="anchored" data-anchor-id="classes-de-largeurs-inégales-effectif-ou-densité">4.4. Classes de largeurs inégales : effectif ou densité ?</h3>
+<p>Lorsque les classes d’un histogramme n’ont pas toutes la même largeur (par exemple des tranches de revenus définies par des seuils métier), afficher l’<strong>effectif</strong> en hauteur devient trompeur.</p>
+<div id="fig-histogramme-densite" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histogramme-densite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_histogramme_densite.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histogramme-densite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Hauteur = effectif (trompeur) contre hauteur = densité (fidèle)
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="La bonne pratique : afficher une densité">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>La bonne pratique : afficher une densité
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La hauteur d’une classe doit représenter sa <strong>densité</strong>, définie par <span class="math display">\[
+\text{densité} = \frac{\text{effectif de la classe}}{n \times \text{largeur de la classe}},
+\]</span> de sorte que ce soit <strong>l’aire</strong> de chaque rectangle — et non sa seule hauteur — qui représente fidèlement la fréquence de la classe (<a href="#fig-histogramme-densite" class="quarto-xref">Figure&nbsp;<span>6</span></a>, panneau de droite). <code>seaborn</code> applique cette correction automatiquement si l’argument <code>stat="density"</code> est précisé :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"revenu_mensuel"</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">4000</span>, <span class="dv">6000</span>, <span class="dv">8000</span>, <span class="dv">10000</span>, <span class="dv">15000</span>, <span class="dv">25000</span>, <span class="dv">60000</span>], stat<span class="op">=</span><span class="st">"density"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="lestimation-de-densité-par-noyau-kde" class="level3">
+<h3 class="anchored" data-anchor-id="lestimation-de-densité-par-noyau-kde">4.5. L’estimation de densité par noyau (KDE)</h3>
+<p>Plutôt que de découper une variable en classes discrètes, l’<strong>estimation de densité par noyau</strong> (<em>Kernel Density Estimation</em>, KDE) trace une courbe lisse en superposant une petite « cloche » (le noyau) sur chaque observation, puis en les additionnant.</p>
+<div id="fig-kde" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_kde_bandwidth.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: KDE : somme de petites cloches, effet du paramètre de lissage h
+</figcaption>
+</figure>
+</div>
+<p>La formule générale d’un estimateur à noyau gaussien s’écrit :</p>
+<p><span class="math display">\[
+\hat f_h(x) = \frac{1}{nh}\sum_{i=1}^{n} K\!\left(\frac{x - x_i}{h}\right)
+\]</span></p>
+<p>où <span class="math inline">\(K\)</span> est une fonction noyau (souvent gaussienne) et <span class="math inline">\(h\)</span> la <strong>largeur de bande</strong> (<em>bandwidth</em>), qui contrôle le lissage : trop petite, la courbe devient bruitée et reproduit chaque observation individuellement (panneau de droite de la <a href="#fig-kde" class="quarto-xref">Figure&nbsp;<span>7</span></a>, courbe rouge) ; trop grande, elle masque une éventuelle bimodalité (courbe verte).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"prix_m2"</span>, fill<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"prix_m2"</span>, bw_adjust<span class="op">=</span><span class="fl">0.3</span>)   <span class="co"># lissage plus fin</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="la-fonction-de-répartition-empirique-ecdf" class="level3">
+<h3 class="anchored" data-anchor-id="la-fonction-de-répartition-empirique-ecdf">4.6. La fonction de répartition empirique (ECDF)</h3>
+<p>L’<strong>ECDF</strong> (<em>Empirical Cumulative Distribution Function</em>) affiche, pour chaque valeur <span class="math inline">\(x\)</span>, la proportion d’observations inférieures ou égales à <span class="math inline">\(x\)</span>. Contrairement à l’histogramme, elle ne nécessite <strong>aucun choix de classes</strong>, et permet de lire directement médiane et quartiles sur le graphique.</p>
+<div id="fig-ecdf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ecdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_ecdf.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ecdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Fonction de répartition empirique : lecture des quantiles, comparaison entre groupes
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sns.ecdfplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"prix"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sns.ecdfplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"prix"</span>, hue<span class="op">=</span><span class="st">"type_bien"</span>)   <span class="co"># comparer plusieurs groupes sans choisir de classes</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Quand préférer l'ECDF ?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Quand préférer l’ECDF ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>L’ECDF est particulièrement utile pour <strong>comparer plusieurs groupes</strong> (panneau droit de la <a href="#fig-ecdf" class="quarto-xref">Figure&nbsp;<span>8</span></a>) : contrairement à des histogrammes superposés, les courbes ECDF restent lisibles même avec de nombreux groupes, et ne dépendent d’aucun choix de nombre de classes.</p>
+</div>
+</div>
+</section>
+<section id="la-boîte-à-moustaches-boxplot" class="level3">
+<h3 class="anchored" data-anchor-id="la-boîte-à-moustaches-boxplot">4.7. La boîte à moustaches (<em>boxplot</em>)</h3>
+<p>La <strong>boîte à moustaches</strong>, déjà mentionnée au chapitre 1 (chapitre commun) pour la détection des valeurs aberrantes, résume une distribution en cinq repères construits à partir des quartiles.</p>
+<div id="fig-boxplot-anatomie" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxplot-anatomie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_boxplot_anatomie.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-anatomie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Anatomie d’une boîte à moustaches
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"quartier"</span>, y<span class="op">=</span><span class="st">"prix"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-important callout-titled" title="Lire une boîte à moustaches">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Lire une boîte à moustaches
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>la <strong>boîte</strong> s’étend de <span class="math inline">\(Q_1\)</span> à <span class="math inline">\(Q_3\)</span> (50 % des observations) ;</li>
+<li>le <strong>trait central</strong> marque la médiane ;</li>
+<li>les <strong>moustaches</strong> s’étendent jusqu’à la valeur la plus extrême encore <strong>à l’intérieur</strong> de <span class="math inline">\([\,Q_1-1{,}5\,IQR,\ Q_3+1{,}5\,IQR\,]\)</span> (chapitre commun, §3.2) ;</li>
+<li>les <strong>points isolés</strong> au-delà des moustaches sont des valeurs potentiellement atypiques.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Ce qu'une boîte à moustaches ne montre jamais">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Ce qu’une boîte à moustaches ne montre jamais
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une boîte à moustaches ne révèle <strong>pas</strong> si une distribution est bimodale : deux groupes de valeurs distincts peuvent produire une boîte parfaitement banale, l’information étant résumée par des quantiles qui ne « voient » pas les creux entre les modes. C’est précisément ce que montre la section suivante.</p>
+</div>
+</div>
+</section>
+<section id="une-même-distribution-six-représentations" class="level3">
+<h3 class="anchored" data-anchor-id="une-même-distribution-six-représentations">4.8. Une même distribution, six représentations</h3>
+<p>Le choix entre histogramme, densité, boîte à moustaches ou violon n’est jamais neutre : chacun révèle — ou cache — des aspects différents de la même distribution.</p>
+<div id="fig-distribution-famille" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-distribution-famille-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_distribution_famille.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-distribution-famille-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Une distribution bimodale vue par six représentations
+</figcaption>
+</figure>
+</div>
+<p>Sur la <a href="#fig-distribution-famille" class="quarto-xref">Figure&nbsp;<span>10</span></a>, une distribution comportant deux « bosses » distinctes (par exemple, deux quartiers aux prix très différents mélangés dans une même variable) est clairement visible sur l’histogramme, le violon, le KDE et le <em>strip plot</em> (chaque observation individuelle) — mais <strong>invisible</strong> sur la simple boîte à moustaches, qui ne renvoie qu’une boîte centrale d’apparence banale.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sns.violinplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"prix_m2"</span>, inner<span class="op">=</span><span class="st">"quartile"</span>)   <span class="co"># combine boîte et densité</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sns.stripplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"prix_m2"</span>, alpha<span class="op">=</span><span class="fl">.5</span>, jitter<span class="op">=</span><span class="fl">.3</span>)  <span class="co"># chaque observation individuelle</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le dernier panneau, appelé <em>raincloud plot</em> (« nuage de pluie »), combine délibérément un demi-violon, une boîte à moustaches et un nuage de points individuels : il cumule les avantages des trois représentations, au prix d’une construction plus élaborée.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Règle pratique">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Règle pratique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En exploration personnelle, préférez systématiquement un histogramme ou un KDE à une simple boîte à moustaches dès que vous soupçonnez une distribution complexe. Réservez la boîte à moustaches à la <strong>comparaison rapide</strong> de plusieurs groupes (§4.7), où sa compacité devient un avantage plutôt qu’une limite.</p>
+</div>
+</div>
+</section>
+<section id="le-diagramme-quantile-quantile-qq-plot" class="level3">
+<h3 class="anchored" data-anchor-id="le-diagramme-quantile-quantile-qq-plot">4.9. Le diagramme quantile-quantile (QQ-plot)</h3>
+<p>Pour vérifier si une variable suit approximativement une loi normale — une hypothèse requise par certaines méthodes statistiques —, le diagramme quantile-quantile compare ses quantiles observés aux quantiles théoriques d’une loi normale.</p>
+<div id="fig-qqplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qqplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_qqplot.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qqplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Trois signatures caractéristiques sur un diagramme quantile-quantile
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>stats.probplot(df[<span class="st">"log_prix"</span>], dist<span class="op">=</span><span class="st">"norm"</span>, plot<span class="op">=</span>plt.gca())</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Comme le montre la <a href="#fig-qqplot" class="quarto-xref">Figure&nbsp;<span>11</span></a>, des points parfaitement alignés sur la droite rouge indiquent une distribution proche de la normale ; une courbe convexe signale une asymétrie ; une forme en S signale des « queues » plus épaisses que la loi normale (davantage de valeurs extrêmes).</p>
+</section>
+</section>
+<section id="comparaisons-le-diagramme-en-barres-et-ses-variantes" class="level2">
+<h2 class="anchored" data-anchor-id="comparaisons-le-diagramme-en-barres-et-ses-variantes">5. Comparaisons : le diagramme en barres et ses variantes</h2>
+<section id="le-diagramme-en-barres" class="level3">
+<h3 class="anchored" data-anchor-id="le-diagramme-en-barres">5.1. Le diagramme en barres</h3>
+<p>Le <strong>diagramme en barres</strong> compare un indicateur (effectif, somme, moyenne…) entre plusieurs catégories. C’est le graphique le plus fiable pour une <strong>comparaison</strong>, car — la <a href="#fig-variables-visuelles" class="quarto-xref">Figure&nbsp;<span>3</span></a> le rappelle — l’œil humain estime beaucoup mieux des longueurs alignées sur une base commune que des surfaces ou des angles.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ventes_par_region <span class="op">=</span> df.groupby(<span class="st">"region"</span>)[<span class="st">"montant"</span>].<span class="bu">sum</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>sns.barplot(x<span class="op">=</span>ventes_par_region.index, y<span class="op">=</span>ventes_par_region.values)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Chiffre d'affaires total par région — 2025"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Chiffre d'affaires (MAD)"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">""</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Bonne pratique">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Bonne pratique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Trier les barres par ordre décroissant de valeur (plutôt que par ordre alphabétique) facilite immédiatement la lecture des catégories les plus importantes.</p>
+</div>
+</div>
+</section>
+<section id="six-variantes-du-diagramme-en-barres" class="level3">
+<h3 class="anchored" data-anchor-id="six-variantes-du-diagramme-en-barres">5.2. Six variantes du diagramme en barres</h3>
+<div id="fig-barres-variantes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-barres-variantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_barres_variantes.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-barres-variantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Six variantes du diagramme en barres
+</figcaption>
+</figure>
+</div>
+<div id="tbl-barres-variantes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-barres-variantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Variantes du diagramme en barres
+</figcaption>
+<div aria-describedby="tbl-barres-variantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variante</th>
+<th style="text-align: left;">Usage</th>
+<th style="text-align: left;">Fonction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Vertical</td>
+<td style="text-align: left;">Peu de catégories, libellés courts</td>
+<td style="text-align: left;"><code>sns.barplot(x=..., y=...)</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Horizontal, trié</strong></td>
+<td style="text-align: left;">Libellés longs ou nombreux — la variante à privilégier par défaut</td>
+<td style="text-align: left;"><code>sns.barplot(y=..., x=...)</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Groupé</td>
+<td style="text-align: left;">Comparer une sous-catégorie supplémentaire</td>
+<td style="text-align: left;"><code>df.plot(kind="bar")</code> sur un tableau croisé</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Empilé</td>
+<td style="text-align: left;">Total <strong>et</strong> composition en une seule barre</td>
+<td style="text-align: left;"><code>.plot(kind="bar", stacked=True)</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Empilé à 100 %</td>
+<td style="text-align: left;">Comparer des <strong>parts</strong> plutôt que des valeurs absolues</td>
+<td style="text-align: left;">Diviser chaque barre par son total avant de tracer</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Avec intervalle de confiance</td>
+<td style="text-align: left;">Signaler l’incertitude d’une moyenne estimée</td>
+<td style="text-align: left;"><code>plt.bar(..., yerr=...)</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tableau <span class="op">=</span> pd.crosstab(df[<span class="st">"ville"</span>], df[<span class="st">"type_bien"</span>])</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>tableau.plot(kind<span class="op">=</span><span class="st">"bar"</span>, stacked<span class="op">=</span><span class="va">True</span>)                       <span class="co"># empilé</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>(tableau.div(tableau.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), axis<span class="op">=</span><span class="dv">0</span>) <span class="op">*</span> <span class="dv">100</span>).plot(kind<span class="op">=</span><span class="st">"bar"</span>, stacked<span class="op">=</span><span class="va">True</span>)  <span class="co"># empilé à 100 %</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lollipop-et-dot-plot-des-barres-allégées" class="level3">
+<h3 class="anchored" data-anchor-id="lollipop-et-dot-plot-des-barres-allégées">5.3. Lollipop et <em>dot plot</em> : des barres allégées</h3>
+<p>Lorsque les barres sont très longues et peu informatives (l’œil ne regarde en réalité que leur extrémité), deux variantes réduisent l’encre du graphique sans perdre en précision de lecture.</p>
+<div id="fig-lollipop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lollipop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_lollipop_dot.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lollipop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Lollipop, dot plot de Cleveland et diagramme en haltère
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> df.groupby(<span class="st">"quartier"</span>)[<span class="st">"prix_m2"</span>].median().sort_values()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.hlines(r.index, <span class="dv">0</span>, r.values, color<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>plt.plot(r.values, r.index, <span class="st">"o"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le <strong>diagramme en haltère</strong> (<em>dumbbell chart</em>, panneau de droite) est particulièrement adapté pour comparer une même catégorie à <strong>deux moments</strong> ou selon <strong>deux conditions</strong> — ici, l’évolution du prix médian par quartier entre deux années.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Le *dot plot* de Cleveland autorise un axe non nul">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Le <em>dot plot</em> de Cleveland autorise un axe non nul
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Contrairement à un diagramme en barres classique (§6.2), un <em>dot plot</em> peut légitimement démarrer son axe ailleurs qu’à zéro : la position du point, et non la longueur d’une barre, porte l’information — aucune barre tronquée ne vient exagérer visuellement les écarts.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-camembert" class="level2">
+<h2 class="anchored" data-anchor-id="sec-camembert">6. Le diagramme circulaire (camembert) — et ses limites</h2>
+<p>Le <strong>camembert</strong> (<em>pie chart</em>) représente la part de chaque catégorie dans un total, sous forme d’angles.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>parts <span class="op">=</span> df[<span class="st">"categorie_produit"</span>].value_counts()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.pie(parts.values, labels<span class="op">=</span>parts.index, autopct<span class="op">=</span><span class="st">"%1.0f</span><span class="sc">%%</span><span class="st">"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Répartition des ventes par catégorie de produit"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="camembert-contre-barres-triées-une-comparaison-directe" class="level3">
+<h3 class="anchored" data-anchor-id="camembert-contre-barres-triées-une-comparaison-directe">6.1. Camembert contre barres triées : une comparaison directe</h3>
+<div id="fig-camembert-vs-barres" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-camembert-vs-barres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_camembert_vs_barres.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-camembert-vs-barres-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Camembert, barres triées, et donut à deux catégories
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Zoom sur les tendances : pourquoi éviter le camembert">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Zoom sur les tendances : pourquoi éviter le camembert
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le camembert est l’un des graphiques les plus critiqués par la communauté de la visualisation de données, pour la raison énoncée dès le §2.2 : l’œil humain compare beaucoup moins bien des <strong>angles</strong> ou des <strong>surfaces</strong> que des <strong>longueurs alignées</strong>. Essayez, sur le panneau de gauche de la <a href="#fig-camembert-vs-barres" class="quarto-xref">Figure&nbsp;<span>14</span></a>, de répondre rapidement à la question « quelle est la 2ᵉ catégorie la plus vendue, et de combien dépasse-t-elle la 3ᵉ ? » — puis comparez avec la même question posée sur le panneau central.</p>
+<p>Dès que l’on dépasse 4 ou 5 catégories, ou que deux parts sont proches en taille, un camembert devient difficile à lire correctement. Dans la quasi-totalité des cas, un <strong>diagramme en barres trié</strong> transmet la même information plus clairement.</p>
+</div>
+</div>
+</section>
+<section id="quand-un-camembert-reste-défendable" class="level3">
+<h3 class="anchored" data-anchor-id="quand-un-camembert-reste-défendable">6.2. Quand un camembert reste défendable</h3>
+<p>Le camembert reste acceptable dans un cas précis, illustré par le panneau de droite de la <a href="#fig-camembert-vs-barres" class="quarto-xref">Figure&nbsp;<span>14</span></a> : une composition très simple, <strong>deux à trois catégories</strong>, avec des écarts marqués — par exemple pour illustrer une proportion unique (« 70 % oui / 30 % non »). Sa variante en <strong>donut</strong> (anneau) est parfois préférée pour cet usage, car le centre vide permet d’y afficher directement le chiffre clé.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.pie([<span class="dv">70</span>, <span class="dv">30</span>], labels<span class="op">=</span>[<span class="st">"Oui"</span>, <span class="st">"Non"</span>], autopct<span class="op">=</span><span class="st">"%1.0f</span><span class="sc">%%</span><span class="st">"</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        wedgeprops<span class="op">=</span><span class="bu">dict</span>(width<span class="op">=</span><span class="fl">0.4</span>))   <span class="co"># width &lt; 1 transforme le camembert en donut</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="relations-entre-variables-nuage-de-points-et-heatmap" class="level2">
+<h2 class="anchored" data-anchor-id="relations-entre-variables-nuage-de-points-et-heatmap">7. Relations entre variables : nuage de points et <em>heatmap</em></h2>
+<section id="le-nuage-de-points-scatter-plot" class="level3">
+<h3 class="anchored" data-anchor-id="le-nuage-de-points-scatter-plot">7.1. Le nuage de points (<em>scatter plot</em>)</h3>
+<p>Le <strong>nuage de points</strong> affiche chaque observation comme un point positionné selon deux variables numériques. C’est le graphique de référence pour étudier une <strong>relation</strong> entre deux variables, en complément direct des coefficients de corrélation vus au chapitre précédent.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"surface"</span>, y<span class="op">=</span><span class="st">"prix"</span>, hue<span class="op">=</span><span class="st">"quartier"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Prix en fonction de la surface, par quartier"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Surface (m²)"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Prix (MAD)"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="au-delà-de-deux-dimensions-mapper-des-variables-supplémentaires" class="level3">
+<h3 class="anchored" data-anchor-id="au-delà-de-deux-dimensions-mapper-des-variables-supplémentaires">7.2. Au-delà de deux dimensions : mapper des variables supplémentaires</h3>
+<p>Un nuage de points peut encoder simultanément jusqu’à quatre variables, en combinant position, couleur et taille — une application directe de la grammaire des graphiques (§2).</p>
+<div id="fig-scatter-mappings" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-mappings-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_scatter_mappings.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-mappings-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Le nuage de points peut coder jusqu’à quatre variables à la fois
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"surface"</span>, y<span class="op">=</span><span class="st">"prix"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    hue<span class="op">=</span><span class="st">"nombre_pieces"</span>,      <span class="co"># 3ᵉ variable : couleur</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    size<span class="op">=</span><span class="st">"age_bien"</span>,          <span class="co"># 4ᵉ variable : taille des points</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="Le *bubble chart*">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Le <em>bubble chart</em>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une variante à la <strong>taille des points</strong> proportionnelle à une troisième variable numérique (plutôt qu’à une couleur catégorielle) est parfois appelée <em>bubble chart</em>.</p>
+</div>
+</div>
+</section>
+<section id="le-problème-de-la-surimpression-overplotting" class="level3">
+<h3 class="anchored" data-anchor-id="le-problème-de-la-surimpression-overplotting">7.3. Le problème de la surimpression (<em>overplotting</em>)</h3>
+<p>Avec plusieurs milliers de points, un nuage de points devient une « bouillie » de couleur où la densité réelle des observations disparaît sous les superpositions.</p>
+<div id="fig-overplotting" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-overplotting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_overplotting.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-overplotting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Le problème de la surimpression et ses remèdes
+</figcaption>
+</figure>
+</div>
+<div id="tbl-overplotting" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-overplotting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Remèdes à la surimpression
+</figcaption>
+<div aria-describedby="tbl-overplotting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Remède</th>
+<th style="text-align: left;">Principe</th>
+<th style="text-align: left;">Code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Transparence</td>
+<td style="text-align: left;">Chaque point devient semi-transparent ; les zones denses apparaissent plus foncées</td>
+<td style="text-align: left;"><code>alpha=0.05</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Échantillonnage</td>
+<td style="text-align: left;">N’afficher qu’un sous-ensemble aléatoire des observations</td>
+<td style="text-align: left;"><code>df.sample(n=500, random_state=42)</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Hexbin</em></td>
+<td style="text-align: left;">Découper le plan en hexagones et colorer selon le nombre de points par cellule</td>
+<td style="text-align: left;"><code>plt.hexbin(x, y, gridsize=30)</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="la-heatmap-carte-de-chaleur" class="level3">
+<h3 class="anchored" data-anchor-id="la-heatmap-carte-de-chaleur">7.4. La <em>heatmap</em> (carte de chaleur)</h3>
+<p>La <strong>heatmap</strong> représente une matrice de valeurs à l’aide d’une échelle de couleurs. Son usage le plus fréquent en analyse de données est la visualisation d’une <strong>matrice de corrélation</strong> (chapitre précédent, <a href="02_exploration_donnees.html#fig-correlation-heatmap" class="quarto-xref">Figure&nbsp;<span>4</span></a>) ou d’un <strong>tableau croisé dynamique</strong> (chapitre précédent, <a href="02_exploration_donnees.html#fig-pivot-heatmap" class="quarto-xref">Figure&nbsp;<span>15</span></a>) entre plusieurs variables.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>matrice_correlation <span class="op">=</span> df[[<span class="st">"surface"</span>, <span class="st">"prix"</span>, <span class="st">"nombre_pieces"</span>, <span class="st">"age_bien"</span>]].corr()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(matrice_correlation, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">"coolwarm"</span>, center<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Matrice de corrélation"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Une heatmap peut également représenter une activité dans le temps (par exemple le nombre de commandes par jour de la semaine et par heure), auquel cas on parle parfois de <em>calendar heatmap</em>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Récapitulatif des graphiques essentiels">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Récapitulatif des graphiques essentiels
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="tbl-recap-graphiques" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-recap-graphiques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Synthèse des graphiques essentiels
+</figcaption>
+<div aria-describedby="tbl-recap-graphiques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Graphique</th>
+<th style="text-align: left;">Question</th>
+<th style="text-align: left;">Type(s) de variable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Histogramme / KDE / ECDF</td>
+<td style="text-align: left;">Distribution</td>
+<td style="text-align: left;">1 quantitative</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Barres / lollipop</td>
+<td style="text-align: left;">Comparaison</td>
+<td style="text-align: left;">1 qualitative + 1 quantitative</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Camembert / donut</td>
+<td style="text-align: left;">Composition (avec prudence)</td>
+<td style="text-align: left;">1 qualitative</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nuage de points</td>
+<td style="text-align: left;">Relation</td>
+<td style="text-align: left;">2 quantitatives (+ 1-2 en couleur/taille)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Courbe</td>
+<td style="text-align: left;">Évolution</td>
+<td style="text-align: left;">1 temporelle + 1 quantitative</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Boîte à moustaches / violon</td>
+<td style="text-align: left;">Distribution par catégorie</td>
+<td style="text-align: left;">1 qualitative + 1 quantitative</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Heatmap</td>
+<td style="text-align: left;">Relation entre plusieurs variables</td>
+<td style="text-align: left;">Plusieurs quantitatives, ou 2 qualitatives (tableau croisé)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="évolution-courbes-et-variantes-temporelles" class="level2">
+<h2 class="anchored" data-anchor-id="évolution-courbes-et-variantes-temporelles">8. Évolution : courbes et variantes temporelles</h2>
+<section id="la-courbe-line-chart" class="level3">
+<h3 class="anchored" data-anchor-id="la-courbe-line-chart">8.1. La courbe (<em>line chart</em>)</h3>
+<p>La <strong>courbe</strong> relie des points ordonnés dans le temps. C’est le graphique de référence pour une <strong>évolution</strong>, une tendance ou une saisonnalité.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ventes_mensuelles <span class="op">=</span> df.groupby(<span class="st">"mois"</span>)[<span class="st">"montant"</span>].<span class="bu">sum</span>()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plt.plot(ventes_mensuelles.index, ventes_mensuelles.values, marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Évolution mensuelle du chiffre d'affaires — 2025"</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Mois"</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Chiffre d'affaires (MAD)"</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Ne jamais relier des catégories sans ordre naturel">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Ne jamais relier des catégories sans ordre naturel
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une courbe suppose un ordre implicite entre les points (le temps, le plus souvent). Relier par une ligne des catégories sans ordre — des villes, des produits — suggère une progression qui n’existe pas et induit le lecteur en erreur.</p>
+</div>
+</div>
+</section>
+<section id="visualiser-une-courbe-décomposée" class="level3">
+<h3 class="anchored" data-anchor-id="visualiser-une-courbe-décomposée">8.2. Visualiser une courbe décomposée</h3>
+<p>Le chapitre précédent (§8) a montré comment <strong>calculer</strong> la décomposition d’une série temporelle en tendance, saisonnalité et résidu. Voici comment la <strong>lire</strong> sous forme de graphique superposé :</p>
+<div id="fig-courbe-composants" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-courbe-composants-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_courbe_composants.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-courbe-composants-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: Décomposer une courbe : tendance, saisonnalité, résidu
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(serie.index, serie.values)<span class="op">;</span> axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Observée"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(decomposition.trend)<span class="op">;</span> axes[<span class="dv">1</span>].set_ylabel(<span class="st">"Tendance"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].plot(decomposition.seasonal)<span class="op">;</span> axes[<span class="dv">2</span>].set_ylabel(<span class="st">"Saisonnalité"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].plot(decomposition.resid)<span class="op">;</span> axes[<span class="dv">3</span>].set_ylabel(<span class="st">"Résidu"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Empiler les quatre panneaux sur un même axe des x (temps partagé, <code>sharex=True</code>) permet de vérifier visuellement que la somme des trois composantes du bas reconstitue bien la série observée du haut.</p>
+</section>
+<section id="aire-empilée-et-streamgraph" class="level3">
+<h3 class="anchored" data-anchor-id="aire-empilée-et-streamgraph">8.3. Aire empilée et <em>streamgraph</em></h3>
+<p>Lorsqu’il faut représenter à la fois un <strong>volume total</strong> dans le temps et sa <strong>composition</strong>, l’aire empilée prolonge naturellement la courbe simple.</p>
+<div id="fig-aire-streamgraph" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-aire-streamgraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_aire_streamgraph.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-aire-streamgraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18: Aire empilée et streamgraph
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plt.stackplot(mois, tableau.T, labels<span class="op">=</span>tableau.columns)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le <strong>streamgraph</strong> (panneau de droite) centre les aires empilées autour d’une ligne médiane plutôt qu’une base à zéro, ce qui produit des formes plus organiques et évite qu’une catégorie placée tout en bas de la pile paraisse visuellement écrasée.</p>
+</section>
+<section id="le-slopegraph-et-le-nuage-de-points-connecté" class="level3">
+<h3 class="anchored" data-anchor-id="le-slopegraph-et-le-nuage-de-points-connecté">8.4. Le <em>slopegraph</em> et le nuage de points connecté</h3>
+<p>Pour comparer un petit nombre de séries à <strong>deux instants précis</strong> (plutôt qu’une évolution continue), le <em>slopegraph</em> offre une alternative très lisible à la courbe classique.</p>
+<div id="fig-slope-connected" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-slope-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_slope_connected.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-slope-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19: Slopegraph et nuage de points connecté
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ville <span class="kw">in</span> prix_2023.index:</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [prix_2023[ville], prix_2024[ville]], marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="st">"2023"</span>, <span class="st">"2024"</span>])</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le <strong>nuage de points connecté</strong> (<em>connected scatterplot</em>, panneau de droite) relie dans l’ordre chronologique des points positionnés selon deux variables numériques — ici, le volume mensuel d’annonces et le prix médian — révélant la <strong>trajectoire</strong> conjointe des deux variables plutôt que leur seule évolution séparée.</p>
+</section>
+</section>
+<section id="cartographie-représenter-une-dimension-géographique" class="level2">
+<h2 class="anchored" data-anchor-id="cartographie-représenter-une-dimension-géographique">9. Cartographie : représenter une dimension géographique</h2>
+<p>Lorsqu’une variable est associée à un territoire (un pays, une région, une ville), la représenter sur une carte exploite une capacité de lecture spatiale qu’aucun graphique classique ne peut offrir. Python manipule les données géographiques via <code>geopandas</code>, qui étend <code>pandas</code> avec une colonne spéciale <code>geometry</code> contenant les contours (points, lignes ou polygones).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>regions <span class="op">=</span> gpd.read_file(<span class="st">"regions_maroc.geojson"</span>)   <span class="co"># un GeoDataFrame, comme un DataFrame + geometry</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>regions.plot()                                        <span class="co"># tracé minimal</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="la-carte-choroplèthe" class="level3">
+<h3 class="anchored" data-anchor-id="la-carte-choroplèthe">9.1. La carte choroplèthe</h3>
+<p>La <strong>carte choroplèthe</strong> colore chaque zone géographique (région, pays, quartier) selon la valeur d’un indicateur — c’est l’équivalent cartographique d’une <em>heatmap</em>.</p>
+<div id="fig-choroplethe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-choroplethe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/carto_choroplethe.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-choroplethe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20: Choroplèthe : un indicateur, une couleur par région
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>regions.plot(column<span class="op">=</span><span class="st">"depense_moyenne"</span>, cmap<span class="op">=</span><span class="st">"YlGnBu"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>             edgecolor<span class="op">=</span><span class="st">"white"</span>, legend<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>ax.set_axis_off()</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Dépense en ligne moyenne par région"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="le-piège-classique-la-surface-nest-pas-limportance" class="level3">
+<h3 class="anchored" data-anchor-id="le-piège-classique-la-surface-nest-pas-limportance">9.2. Le piège classique : la surface n’est pas l’importance</h3>
+<p>Une carte choroplèthe encode une valeur par une <strong>couleur</strong>, mais chaque zone occupe aussi une <strong>surface</strong> très inégale — un immense territoire faiblement peuplé attire visuellement l’œil bien plus qu’une petite région densément peuplée, même si cette dernière pèse davantage dans l’indicateur étudié.</p>
+<div id="fig-piege-surface" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-piege-surface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/carto_piege_surface.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-piege-surface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21: Le piège classique de la carte choroplèthe
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="À retenir">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>À retenir
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ce piège n’est qu’un cas particulier du principe posé au §2.2 (<a href="#fig-variables-visuelles" class="quarto-xref">Figure&nbsp;<span>3</span></a>) : la <strong>surface</strong> est un encodage visuel peu précis. Deux solutions courantes : représenter l’indicateur avec des <strong>symboles proportionnels</strong> plutôt qu’un remplissage de zone (panneau de droite de la <a href="#fig-piege-surface" class="quarto-xref">Figure&nbsp;<span>21</span></a>, §9.3), ou déformer délibérément la carte selon la valeur étudiée (le <strong>cartogramme</strong>, §9.4).</p>
+</div>
+</div>
+</section>
+<section id="la-carte-de-points-géolocalisés" class="level3">
+<h3 class="anchored" data-anchor-id="la-carte-de-points-géolocalisés">9.3. La carte de points géolocalisés</h3>
+<p>Lorsque les données correspondent à des points précis (villes, magasins, capteurs) plutôt qu’à des zones, la carte de points, éventuellement combinée à une taille et une couleur proportionnelles à un indicateur, évite justement le piège de la surface.</p>
+<div id="fig-carto-points" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-carto-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/carto_points.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-carto-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;22: Carte de points : villes principales, taille = population
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>regions.plot(color<span class="op">=</span><span class="st">"#F4F6F8"</span>, edgecolor<span class="op">=</span><span class="st">"#CCCCCC"</span>, ax<span class="op">=</span>ax)      <span class="co"># fond de carte</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>ax.scatter(villes[<span class="st">"lon"</span>], villes[<span class="st">"lat"</span>], s<span class="op">=</span>villes[<span class="st">"population"</span>] <span class="op">*</span> <span class="dv">100</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>           c<span class="op">=</span>villes[<span class="st">"population"</span>], cmap<span class="op">=</span><span class="st">"plasma"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="le-cartogramme" class="level3">
+<h3 class="anchored" data-anchor-id="le-cartogramme">9.4. Le cartogramme</h3>
+<p>Un <strong>cartogramme</strong> pousse la logique du symbole proportionnel plus loin : il déforme la carte elle-même — ou la remplace par des formes simples (cercles, carrés) — dont la <strong>taille</strong>, et non plus la position géographique exacte, représente la valeur étudiée.</p>
+<div id="fig-cartogramme" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cartogramme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/carto_cartogramme.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cartogramme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;23: Cartogramme : la taille remplace la géographie
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Quand utiliser un cartogramme ?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Quand utiliser un cartogramme ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le cartogramme est particulièrement efficace pour des indicateurs de <strong>population</strong> ou d’<strong>activité économique</strong>, où la forme géographique réelle importe moins que la comparaison des valeurs. Il perd en revanche la capacité à situer précisément un lieu sur une carte — un compromis à peser selon l’objectif du graphique.</p>
+</div>
+</div>
+</section>
+<section id="un-mot-sur-les-projections" class="level3">
+<h3 class="anchored" data-anchor-id="un-mot-sur-les-projections">9.5. Un mot sur les projections</h3>
+<p>La Terre est une sphère ; un écran est plat. Toute carte implique donc une <strong>projection</strong>, qui déforme inévitablement soit les surfaces, soit les angles, soit les distances.</p>
+<div id="fig-projections" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-projections-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/carto_projections.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-projections-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24: Le choix d’une projection déforme différemment le territoire
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>regions.crs                        <span class="co"># système de coordonnées actuel (souvent EPSG:4326 — longitude/latitude)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>regions_web <span class="op">=</span> regions.to_crs(<span class="st">"EPSG:3857"</span>)   <span class="co"># projection Web Mercator, usuelle sur le web</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled" title="Repère">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Repère
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le choix de la projection compte surtout pour des cartes à grande échelle (un continent, le monde) ou des calculs de surfaces/distances précis ; pour une carte régionale ou nationale comme celles de ce chapitre, l’effet reste modeste. Retenez simplement qu’une carte n’est jamais une représentation neutre du territoire, mais toujours le produit d’un choix de projection.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="graphiques-avancés-à-réserver-aux-cas-qui-le-justifient" class="level2">
+<h2 class="anchored" data-anchor-id="graphiques-avancés-à-réserver-aux-cas-qui-le-justifient">10. Graphiques avancés — à réserver aux cas qui le justifient</h2>
+<p>Les graphiques suivants sortent de la boîte à outils essentielle (§4 à §9). Ils apportent une réelle valeur ajoutée dans des situations précises, mais leur usage abusif nuit presque toujours à la lisibilité : à manier avec discernement.</p>
+<section id="petits-multiples-facettes" class="level3">
+<h3 class="anchored" data-anchor-id="petits-multiples-facettes">10.1. Petits multiples (facettes)</h3>
+<p>Plutôt que de surcharger un seul graphique avec de nombreuses catégories, les <strong>petits multiples</strong> répètent le même graphique simple, une fois par catégorie — une application directe de la facette, cinquième composante de la grammaire des graphiques (§2).</p>
+<div id="fig-facettes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-facettes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_facettes.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-facettes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;25: Petits multiples : un panneau par quartier
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.FacetGrid(df, col<span class="op">=</span><span class="st">"quartier"</span>, col_wrap<span class="op">=</span><span class="dv">3</span>, height<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>g.map_dataframe(sns.scatterplot, x<span class="op">=</span><span class="st">"surface"</span>, y<span class="op">=</span><span class="st">"prix_m2"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Pourquoi ça fonctionne bien">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Pourquoi ça fonctionne bien
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les petits multiples exploitent une capacité de comparaison très naturelle chez l’humain (repérer un panneau qui « sort du lot » parmi des panneaux similaires), tout en évitant la surimpression (§7.3) qu’un unique graphique combinant toutes les catégories en couleur produirait.</p>
+</div>
+</div>
+</section>
+<section id="radar-et-coordonnées-parallèles" class="level3">
+<h3 class="anchored" data-anchor-id="radar-et-coordonnées-parallèles">10.2. Radar et coordonnées parallèles</h3>
+<p>Pour comparer plusieurs <strong>profils</strong> décrits chacun par plusieurs variables numériques (par exemple, quatre quartiers décrits par leur prix, leur surface, leur âge et leur nombre de pièces médians), deux graphiques permettent une lecture simultanée de toutes les dimensions.</p>
+<div id="fig-radar-parallel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-radar-parallel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_radar_parallel.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-radar-parallel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26: Radar et coordonnées parallèles : deux façons de comparer des profils multivariés
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Radar (diagramme polaire)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.subplot(projection<span class="op">=</span><span class="st">"polar"</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>ax.plot(angles, valeurs_normalisees)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>ax.fill(angles, valeurs_normalisees, alpha<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Coordonnées parallèles</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pandas.plotting <span class="im">import</span> parallel_coordinates</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>parallel_coordinates(tableau_normalise, class_column<span class="op">=</span><span class="st">"quartier"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Une lecture à manier avec prudence">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Une lecture à manier avec prudence
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le radar encode les valeurs par une <strong>position sur des axes radiaux</strong>, ce qui reste, selon la hiérarchie du §2.2, moins précis qu’une position sur des axes alignés. Les <strong>coordonnées parallèles</strong>, illustrées à droite de la <a href="#fig-radar-parallel" class="quarto-xref">Figure&nbsp;<span>26</span></a>, communiquent en général la même information plus fidèlement dès que le nombre de variables dépasse 4 ou 5 — et se lisent naturellement de gauche à droite, sans déformation angulaire. Les deux graphiques exigent, avant tout tracé, une <strong>normalisation préalable</strong> des variables (chapitre commun, §5), faute de quoi une variable à grande échelle écraserait visuellement les autres.</p>
+</div>
+</div>
+</section>
+<section id="représenter-un-réseau" class="level3">
+<h3 class="anchored" data-anchor-id="représenter-un-réseau">10.3. Représenter un réseau</h3>
+<p>Lorsque les données décrivent des <strong>relations</strong> entre entités (des agences qui traitent conjointement un même dossier, des pages web qui se citent, des comptes qui échangent), un graphe de réseau représente chaque entité comme un nœud et chaque relation comme une arête.</p>
+<div id="fig-reseau" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-reseau-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_reseau.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reseau-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27: Graphe de réseau : agences citées ensemble dans une même demande
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> nx.Graph()</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>G.add_edges_from(paires_agences, weight<span class="op">=</span>...)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> nx.spring_layout(G)   <span class="co"># positionne les nœuds pour minimiser les croisements d'arêtes</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>nx.draw(G, pos, with_labels<span class="op">=</span><span class="va">True</span>, node_size<span class="op">=</span>tailles, width<span class="op">=</span>epaisseurs)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sur la <a href="#fig-reseau" class="quarto-xref">Figure&nbsp;<span>27</span></a>, la <strong>taille</strong> de chaque nœud encode son degré d’implication global (le nombre de co-occurrences pondérées), et l’<strong>épaisseur</strong> de chaque arête encode la force du lien entre deux agences précises — deux mappings supplémentaires, dans le droit fil de la grammaire des graphiques.</p>
+</section>
+<section id="le-diagramme-de-gantt" class="level3">
+<h3 class="anchored" data-anchor-id="le-diagramme-de-gantt">10.4. Le diagramme de Gantt</h3>
+<p>Pour planifier ou présenter les étapes d’un projet dans le temps, le <strong>diagramme de Gantt</strong> représente chaque tâche comme une barre horizontale, positionnée selon sa date de début et sa durée.</p>
+<div id="fig-gantt" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gantt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_gantt.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gantt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;28: Diagramme de Gantt : planning d’un projet d’analyse
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (tache, debut, fin) <span class="kw">in</span> <span class="bu">enumerate</span>(taches):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    plt.barh(tache, (fin <span class="op">-</span> debut).days, left<span class="op">=</span>debut)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plt.axvline(pd.Timestamp.today(), color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)   <span class="co"># repère "aujourd'hui"</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="treemap-et-waffle-chart-dautres-façons-de-montrer-une-composition" class="level3">
+<h3 class="anchored" data-anchor-id="treemap-et-waffle-chart-dautres-façons-de-montrer-une-composition">10.5. Treemap et <em>waffle chart</em> : d’autres façons de montrer une composition</h3>
+<p>Au-delà des barres empilées à 100 % (§5.2) et du camembert (§6), deux graphiques représentent une composition par des <strong>surfaces</strong> plutôt que par des angles ou des longueurs.</p>
+<div id="fig-treemap-waffle" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-treemap-waffle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_treemap_waffle.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-treemap-waffle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29: Treemap et waffle chart
+</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> squarify</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>squarify.plot(sizes<span class="op">=</span>valeurs, label<span class="op">=</span>categories, pad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le <strong>treemap</strong> (à gauche) découpe un rectangle en zones proportionnelles à chaque catégorie — utile pour une composition à deux niveaux hiérarchiques (ex. quartier puis type de bien). Le <strong>waffle chart</strong> (à droite), une grille de petits carrés où chaque carré représente 1 % du total, offre une alternative au camembert qui reste fondée sur le comptage d’unités discrètes plutôt que sur un angle — plus proche, dans la hiérarchie du §2.2, d’un encodage par position que par angle.</p>
+</section>
+<section id="éléments-de-tableau-de-bord-cartes-indicateurs-et-jauges" class="level3">
+<h3 class="anchored" data-anchor-id="éléments-de-tableau-de-bord-cartes-indicateurs-et-jauges">10.6. Éléments de tableau de bord : cartes indicateurs et jauges</h3>
+<p>Un tableau de bord (approfondi dans un cours dédié à la Business Intelligence) combine souvent plusieurs graphiques de ce chapitre avec des éléments plus synthétiques, pensés pour une lecture en quelques secondes.</p>
+<div id="fig-kpi-cards" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kpi-cards-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_kpi_cards.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kpi-cards-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;30: Cartes indicateurs (KPI cards) et jauge
+</figcaption>
+</figure>
+</div>
+<div id="fig-jauge" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-jauge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_jauge.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-jauge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;31: Jauge (gauge chart)
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="KPI card et jauge : deux briques complémentaires">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>KPI card et jauge : deux briques complémentaires
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <strong>carte indicateur</strong> (<em>KPI card</em>) affiche une valeur unique, sa tendance et une flèche de variation — le résumé le plus condensé possible d’un indicateur. La <strong>jauge</strong> (<a href="#fig-jauge" class="quarto-xref">Figure&nbsp;<span>31</span></a>) positionne une valeur unique sur une échelle bornée, souvent divisée en zones de couleur (ex. rouge/orange/vert), pour signaler immédiatement si un indicateur se situe dans une zone satisfaisante. Ces deux éléments ne remplacent jamais un graphique détaillé : ils orientent le regard avant d’inviter, si nécessaire, à consulter un graphique plus complet.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="bibliothèques-python-pour-la-visualisation" class="level2">
+<h2 class="anchored" data-anchor-id="bibliothèques-python-pour-la-visualisation">11. Bibliothèques Python pour la visualisation</h2>
+<section id="matplotlib-la-bibliothèque-de-référence" class="level3">
+<h3 class="anchored" data-anchor-id="matplotlib-la-bibliothèque-de-référence">11.1. <code>matplotlib</code> : la bibliothèque de référence</h3>
+<p><code>matplotlib</code> est la bibliothèque de visualisation historique de Python. Bas niveau et hautement personnalisable, elle repose sur les objets <code>fig</code>/<code>ax</code> présentés au §2.1 :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ax.plot(ventes_mensuelles.index, ventes_mensuelles.values)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Évolution du chiffre d'affaires"</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Mois"</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Chiffre d'affaires (MAD)"</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"evolution_ca.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cette approche orientée objet (<code>fig</code>, <code>ax</code>) est particulièrement utile pour construire des figures composées de plusieurs sous-graphiques (<code>plt.subplots(nrows=2, ncols=2)</code>), comme la plupart des figures de ce chapitre.</p>
+</section>
+<section id="seaborn-la-visualisation-statistique-simplifiée" class="level3">
+<h3 class="anchored" data-anchor-id="seaborn-la-visualisation-statistique-simplifiée">11.2. <code>seaborn</code> : la visualisation statistique simplifiée</h3>
+<p><code>seaborn</code> s’appuie sur <code>matplotlib</code> mais propose une interface de plus haut niveau, pensée directement pour des <code>DataFrame</code> <code>pandas</code> et pour les besoins statistiques courants (distributions, relations entre catégories, matrices de corrélation). C’est la bibliothèque à privilégier pour l’exploration rapide présentée dans ce chapitre, tandis que <code>matplotlib</code> reste utile pour un contrôle fin de la mise en forme finale.</p>
+</section>
+<section id="geopandas-pour-la-cartographie" class="level3">
+<h3 class="anchored" data-anchor-id="geopandas-pour-la-cartographie">11.3. <code>geopandas</code> : pour la cartographie</h3>
+<p>Comme introduit au §9, <code>geopandas</code> étend <code>pandas</code> d’une colonne <code>geometry</code> et s’appuie sur <code>shapely</code> (géométrie) et <code>pyproj</code> (projections). Il s’intègre naturellement à <code>matplotlib</code> (<code>.plot()</code>) pour produire des cartes statiques.</p>
+</section>
+<section id="vers-linteractivité" class="level3">
+<h3 class="anchored" data-anchor-id="vers-linteractivité">11.4. Vers l’interactivité</h3>
+<div id="fig-interactif" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interactif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/viz_interactif_apercu.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interactif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;32: Ce qu’ajoute un graphique interactif
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Zoom sur les tendances : la visualisation interactive">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Zoom sur les tendances : la visualisation interactive
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>matplotlib</code> et <code>seaborn</code> produisent des images <strong>statiques</strong>. Pour un public qui consulte un graphique dans un navigateur, plusieurs bibliothèques Python permettent de produire des graphiques <strong>interactifs</strong> (zoom, infobulles au survol, filtres dynamiques) — résumés par la <a href="#fig-interactif" class="quarto-xref">Figure&nbsp;<span>32</span></a> :</p>
+<ul>
+<li><strong><a href="https://plotly.com/python/"><code>Plotly</code></a></strong> : très populaire, produit des graphiques interactifs exportables en HTML autonome, avec une syntaxe proche de <code>seaborn</code> via son module <code>plotly.express</code> ;</li>
+<li><strong><a href="https://altair-viz.github.io/"><code>Altair</code></a></strong> : implémente directement la grammaire des graphiques (via la spécification <code>Vega-Lite</code>), avec une syntaxe déclarative concise ;</li>
+<li><strong><a href="https://bokeh.org/"><code>Bokeh</code></a></strong> : orienté vers les tableaux de bord interactifs et les grands volumes de données.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(df, x<span class="op">=</span><span class="st">"surface"</span>, y<span class="op">=</span><span class="st">"prix"</span>, color<span class="op">=</span><span class="st">"quartier"</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                  hover_data<span class="op">=</span>[<span class="st">"type_bien"</span>], title<span class="op">=</span><span class="st">"Prix en fonction de la surface"</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ces bibliothèques ne remplacent pas <code>matplotlib</code>/<code>seaborn</code> pour l’exploration rapide ou pour un rapport imprimé, mais deviennent précieuses dès que le graphique est destiné à être consulté à l’écran par plusieurs personnes, ou intégré à un tableau de bord — sujet approfondi au chapitre consacré à la Business Intelligence avec Power BI et Taipy.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="communiquer-les-résultats-et-rendre-les-graphiques-accessibles" class="level2">
+<h2 class="anchored" data-anchor-id="communiquer-les-résultats-et-rendre-les-graphiques-accessibles">12. Communiquer les résultats et rendre les graphiques accessibles</h2>
+<p>Un graphique de communication n’est pas seulement un graphique techniquement correct. Il doit aider un public déterminé à comprendre un résultat sans lui demander de deviner la question, la période ou la signification des couleurs. Le <em>data storytelling</em> consiste à organiser les données et les annotations autour d’un message vérifiable, et non à décorer un graphique ou à lui faire dire davantage que les données ne permettent.</p>
+<section id="partir-du-public-et-de-la-décision" class="level3">
+<h3 class="anchored" data-anchor-id="partir-du-public-et-de-la-décision">12.1. Partir du public et de la décision</h3>
+<p>Avant de choisir un graphique, répondre à quatre questions :</p>
+<ol type="1">
+<li><strong>À qui s’adresse-t-il ?</strong> Un analyste peut lire une matrice détaillée ; un responsable peut avoir besoin de quelques indicateurs et d’une explication immédiate.</li>
+<li><strong>Quelle question le lecteur doit-il pouvoir résoudre ?</strong> Par exemple : « Quel type de demande est le plus fréquent en janvier ? »</li>
+<li><strong>Quelle action ou conclusion le résultat peut-il éclairer ?</strong> Préciser si le graphique décrit un constat, suggère une hypothèse ou soutient une décision.</li>
+<li><strong>Quelles sont les limites des données ?</strong> Indiquer la population, la période, la source, les exclusions et les valeurs manquantes qui affectent la lecture.</li>
+</ol>
+<p>Un graphique ne doit pas accumuler plusieurs messages concurrents. Si la comparaison, l’évolution et la distribution sont toutes importantes, plusieurs graphiques simples avec des titres cohérents sont souvent plus efficaces qu’une figure surchargée.</p>
+</section>
+<section id="construire-un-message-honnête-et-lisible" class="level3">
+<h3 class="anchored" data-anchor-id="construire-un-message-honnête-et-lisible">12.2. Construire un message honnête et lisible</h3>
+<section id="un-titre-qui-exprime-le-constat" class="level4">
+<h4 class="anchored" data-anchor-id="un-titre-qui-exprime-le-constat">Un titre qui exprime le constat</h4>
+<p>Un titre-thème nomme le sujet (« Demandes 311 par type »). Un titre-message annonce le constat que les données permettent de vérifier (« Le bruit est le type de demande le plus fréquent en janvier »). Le titre-message doit rester proportionné aux preuves : remplacer « cause », « provoque » ou « explique » par « est associé à » lorsque l’analyse n’établit pas de causalité.</p>
+<p>Un sous-titre ou une annotation peut préciser la période, la population ou le chiffre important. Éviter les titres qui présentent une interprétation comme un fait si l’échantillon est limité ou si les données ne couvrent qu’un sous-groupe.</p>
+</section>
+<section id="donner-le-contexte-nécessaire" class="level4">
+<h4 class="anchored" data-anchor-id="donner-le-contexte-nécessaire">Donner le contexte nécessaire</h4>
+<p>Un graphique de communication doit permettre de savoir :</p>
+<ul>
+<li>ce que représentent les axes, avec leur unité ;</li>
+<li>quelle période et quelle population sont incluses ;</li>
+<li>le dénominateur d’un taux ou d’un pourcentage ;</li>
+<li>la source et, si nécessaire, la date d’extraction ou de mise à jour ;</li>
+<li>si une échelle est logarithmique, si un axe est tronqué ou si des valeurs ont été regroupées ;</li>
+<li>combien d’observations sont concernées, surtout lorsque l’effectif est faible.</li>
+</ul>
+<p>Les valeurs manquantes ou exclusions susceptibles de changer la conclusion doivent être signalées. Par exemple, une distribution de délais calculée uniquement sur les demandes clôturées ne décrit pas les demandes encore ouvertes. Une moyenne sans effectif peut masquer un groupe très petit et instable.</p>
+</section>
+<section id="choisir-une-forme-adaptée-et-préserver-léchelle" class="level4">
+<h4 class="anchored" data-anchor-id="choisir-une-forme-adaptée-et-préserver-léchelle">Choisir une forme adaptée et préserver l’échelle</h4>
+<p>Choisir le graphique selon la question, comme dans les sections précédentes : barres pour comparer des catégories, courbe pour une évolution ordonnée dans le temps, histogramme ou boîte à moustaches pour examiner une distribution, nuage de points pour une relation entre mesures. Trier les catégories lorsque cela facilite la comparaison.</p>
+<p>Pour un diagramme en barres, faire partir l’axe des valeurs de zéro : sinon, la longueur des barres exagère les différences. Une autre représentation, comme un graphique de points, peut utiliser un axe resserré si ce choix est indiqué clairement et ne transforme pas visuellement une petite différence en écart spectaculaire. Ne jamais cacher une partie des observations sans le dire ; si l’affichage est limité à un quantile, l’indiquer dans le titre ou la légende et conserver les données complètes dans les calculs.</p>
+</section>
+<section id="utiliser-couleur-et-annotations-avec-retenue" class="level4">
+<h4 class="anchored" data-anchor-id="utiliser-couleur-et-annotations-avec-retenue">Utiliser couleur et annotations avec retenue</h4>
+<p>La couleur doit avoir une fonction : distinguer des catégories, signaler une série ou attirer l’attention sur un résultat. Garder une palette limitée et réutiliser les mêmes couleurs pour la même catégorie dans l’ensemble du rapport. Une annotation directe sur la barre ou le point important est souvent plus facile à lire qu’une légende éloignée. Toute annotation doit cependant rester vérifiable à partir des données.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Valeurs illustratives : les remplacer par les résultats réellement calculés.</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> [<span class="st">"Autres"</span>, <span class="st">"Eau"</span>, <span class="st">"Bruit"</span>]</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>valeurs <span class="op">=</span> [<span class="dv">200</span>, <span class="dv">420</span>, <span class="dv">820</span>]</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>barres <span class="op">=</span> ax.barh(categories, valeurs, color<span class="op">=</span><span class="st">"#0072B2"</span>)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>ax.bar_label(barres, padding<span class="op">=</span><span class="dv">4</span>, fmt<span class="op">=</span><span class="st">"%.0f"</span>)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="bu">max</span>(valeurs) <span class="op">*</span> <span class="fl">1.18</span>)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Nombre de demandes"</span>)</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">""</span>)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"En janvier 2025, le bruit est le premier motif de demande"</span>)</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>ax.grid(axis<span class="op">=</span><span class="st">"x"</span>, color<span class="op">=</span><span class="st">"#D9D9D9"</span>, linewidth<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>ax.set_axisbelow(<span class="va">True</span>)</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>fig.text(</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.01</span>,</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.01</span>,</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Source : NYC 311 — janvier 2025. Valeurs illustratives à remplacer."</span>,</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#404040"</span>,</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>fig.tight_layout(rect<span class="op">=</span>(<span class="dv">0</span>, <span class="fl">0.06</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Dans cet exemple, la comparaison ne dépend pas de couleurs différentes : chaque valeur est directement inscrite sur sa barre, l’axe commence à zéro et la période ainsi que la source sont précisées. Dans un rapport réel, remplacer les valeurs illustratives, vérifier le titre à partir des résultats et annoter les limites propres au jeu de données.</p>
+</section>
+</section>
+<section id="accessibilité-ne-pas-transmettre-linformation-par-la-couleur-seule" class="level3">
+<h3 class="anchored" data-anchor-id="accessibilité-ne-pas-transmettre-linformation-par-la-couleur-seule">12.3. Accessibilité : ne pas transmettre l’information par la couleur seule</h3>
+<p>Certains lecteurs distinguent moins facilement certaines couleurs ; d’autres impriment le document en niveaux de gris ou consultent une figure avec un écran de qualité réduite. L’information essentielle doit donc rester compréhensible sans identifier une couleur particulière.</p>
+<p>Bonnes pratiques :</p>
+<ul>
+<li>éviter de distinguer deux catégories uniquement par rouge et vert ; employer aussi des libellés, des motifs, des formes ou des traits différents ;</li>
+<li>choisir des palettes lisibles par les personnes daltoniennes, par exemple la palette <code>colorblind</code> de Seaborn, et vérifier le contraste du texte avec son fond ;</li>
+<li>pour une heatmap, choisir une palette séquentielle pour des valeurs allant de faible à forte, et une palette divergente avec un centre explicite pour des valeurs positives et négatives ; conserver une barre de couleur étiquetée ;</li>
+<li>ne pas coder simultanément de nombreuses catégories avec des couleurs proches ; regrouper ou séparer les catégories lorsque la légende devient difficile à suivre ;</li>
+<li>utiliser une taille de texte lisible, des marqueurs assez grands et des traits suffisamment épais ; éviter les libellés inclinés ou superposés quand une disposition horizontale ou une figure plus grande résout le problème ;</li>
+<li>ne pas utiliser une couleur seule pour indiquer une alerte : ajouter un mot, une forme ou un symbole ayant aussi un sens explicite.</li>
+</ul>
+<p>Remplacer le chemin et les valeurs par ceux du graphique effectivement publié. Éviter de répéter mot pour mot la légende : décrire plutôt la comparaison, la tendance ou le point important. Pour le PDF imprimé, le texte alternatif n’étant pas toujours perceptible dans la page, accompagner le graphique d’une phrase de lecture ou d’un tableau lorsque l’information ne doit pas être perdue.</p>
+</section>
+<section id="vérification-avant-diffusion" class="level3">
+<h3 class="anchored" data-anchor-id="vérification-avant-diffusion">12.5. Vérification avant diffusion</h3>
+<p>Avant de publier une figure, vérifier les points suivants :</p>
+<ul class="task-list">
+<li><label><input type="checkbox">Le graphique répond à une question définie et son titre annonce un constat fidèle.</label></li>
+<li><label><input type="checkbox">Les unités, la période, la population et le dénominateur sont compréhensibles.</label></li>
+<li><label><input type="checkbox">L’échelle ne grossit pas artificiellement l’effet présenté ; tout axe tronqué ou transformation est signalé.</label></li>
+<li><label><input type="checkbox">La source, les filtres importants et les limites pertinentes sont indiqués.</label></li>
+<li><label><input type="checkbox">Les couleurs ne sont pas le seul moyen de distinguer les groupes.</label></li>
+<li><label><input type="checkbox">Les textes, marqueurs, légendes et annotations restent lisibles dans la page HTML et après impression.</label></li>
+<li><label><input type="checkbox">Un lecteur qui ne voit pas l’image dispose d’une description textuelle et, si nécessaire, d’un tableau.</label></li>
+<li><label><input type="checkbox">Les chiffres et annotations ont été vérifiés à partir des données, et la conclusion ne prétend pas démontrer une causalité non étudiée.</label></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copié");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copié");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapitres/02_exploration_donnees.html" class="pagination-link" aria-label="Exploration des données">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Exploration des données</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapitres/04_entropot_donnees.html" class="pagination-link" aria-label="Introduction à l'entrepôt de données">
+        <span class="nav-page-text"><span class="chapter-title">Introduction à l’entrepôt de données</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

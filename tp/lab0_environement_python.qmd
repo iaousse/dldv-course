@@ -1,0 +1,444 @@
+# Lab 0 : Environnement Python et statistique descriptive
+
+::: {.callout-tip title="Objectifs du Lab"}
+À la fin de ce Lab, l'étudiant sera capable de :
+
+- **Créer** un projet Python reproductible avec `uv` et JupyterLab ;
+- **Charger** un jeu de données réel et volumineux avec `pandas` ;
+- **Identifier** les types de variables et les premières erreurs de qualité ;
+- **Calculer** des effectifs, fréquences, taux de croissance, moyenne, médiane, quartiles, quantiles, variance et écart-type ;
+- **Interpréter** les indicateurs avec leur unité, leur période et leur population ;
+- **Produire** quelques graphiques simples pour vérifier les résultats numériques.
+:::
+
+::: {.callout-note title="Positionnement"}
+Ce Lab ne demande ni Machine Learning ni formule compliquée. Le but est de prendre de bons réflexes avec Python et `pandas` : observer les données avant de les modifier, calculer des indicateurs adaptés à la question et expliquer ce qu'ils signifient.
+:::
+
+## 1. Contexte et données
+
+Nous utiliserons le jeu de données **NYC Flights 2013**, qui contient environ 336 000 vols au départ de New York en 2013 et plusieurs types de variables :
+
+- numériques : retards, durée de vol, distance ;
+- catégorielles : compagnie, aéroport de départ, destination ;
+- temporelles ou dérivées du temps : mois, jour, heure ;
+- identifiants : numéro de vol et numéro d'avion ;
+- valeurs manquantes : certaines heures d'arrivée ou durées ne sont pas renseignées.
+
+Le jeu de données est distribué dans le dépôt public `Rdatasets`, à partir du paquet `nycflights13` :
+
+<https://raw.githubusercontent.com/Rdatasets/nycflights13/master/csv/flights.csv>
+
+La source originale est décrite dans le projet `nycflights13` :
+<https://github.com/tidyverse/nycflights13>.
+
+::: {.callout-warning title="Données réelles, résultats à vérifier"}
+Le fichier est public et adapté à l'apprentissage, mais il ne représente pas tous les vols américains ni tous les aéroports. Les conclusions du Lab portent uniquement sur les vols présents dans ce fichier et sur l'année 2013.
+:::
+
+## 2. Préparer l'environnement
+
+### 2.1. Créer le projet
+
+Dans un terminal :
+
+```bash
+mkdir cours-analyse-donnees
+cd cours-analyse-donnees
+uv init --python 3.12
+uv add pandas numpy matplotlib seaborn jupyter ipykernel
+uv lock
+```
+
+La structure attendue est :
+
+```text
+cours-analyse-donnees/
+├── pyproject.toml
+├── uv.lock
+├── data/
+│   ├── raw/
+│   └── processed/
+├── notebooks/
+└── outputs/
+```
+
+```bash
+mkdir -p data/raw data/processed notebooks outputs
+uv run jupyter lab
+```
+
+Sous Windows, la commande de création des dossiers peut être exécutée séparément dans l'explorateur ou avec PowerShell. L'essentiel est de conserver la même organisation.
+
+### 2.2. Vérifier les bibliothèques
+
+Créez une première cellule dans un notebook :
+
+```python
+import sys
+import numpy as np
+import pandas as pd
+import matplotlib
+import seaborn as sns
+
+print("Python      :", sys.version.split()[0])
+print("NumPy       :", np.__version__)
+print("pandas      :", pd.__version__)
+print("Matplotlib  :", matplotlib.__version__)
+print("Seaborn     :", sns.__version__)
+```
+
+Si une bibliothèque manque, installez-la avec `uv add nom-de-la-bibliotheque`, puis redémarrez le noyau du notebook.
+
+## 3. Télécharger et inspecter les données
+
+### 3.1. Télécharger une copie locale
+
+Ne faites pas dépendre tout le Lab d'une nouvelle requête Internet à chaque exécution. Téléchargez une copie brute et conservez-la.
+
+```python
+from pathlib import Path
+import pandas as pd
+
+URL = (
+    "https://raw.githubusercontent.com/Rdatasets/nycflights13/"
+    "master/csv/flights.csv"
+)
+
+RAW_DIR = Path("../data/raw")  # à adapter si le notebook est ailleurs
+RAW_DIR.mkdir(parents=True, exist_ok=True)
+
+flights = pd.read_csv(URL)
+flights.to_csv(RAW_DIR / "flights_2013.csv", index=False)
+```
+
+Si le téléchargement a déjà été effectué :
+
+```python
+flights = pd.read_csv("../data/raw/flights_2013.csv")
+```
+
+Vérifiez le chemin à partir du dossier depuis lequel Jupyter exécute le notebook :
+
+```python
+from pathlib import Path
+print(Path.cwd())
+```
+
+### 3.2. Les premiers réflexes
+
+```python
+flights.head()
+flights.tail()
+flights.shape
+flights.columns.tolist()
+flights.info()
+```
+
+`shape` renvoie le nombre de lignes et de colonnes. `info()` indique les types détectés et le nombre de valeurs non manquantes. Ne commencez pas par modifier les données : commencez par les décrire.
+
+### 3.3. Distinguer les types de données
+
+```python
+flights.dtypes
+
+numeriques = flights.select_dtypes(include="number").columns.tolist()
+textuelles = flights.select_dtypes(include="object").columns.tolist()
+
+print("Variables numériques :", numeriques)
+print("Variables textuelles :", textuelles)
+```
+
+Dans une analyse, un numéro de vol est numériquement stocké mais n'est pas forcément une grandeur à additionner. Le type Python et le rôle statistique d'une variable ne sont donc pas exactement la même chose.
+
+## 4. Fréquences et répartitions
+
+### 4.1. Effectif et fréquence
+
+Commençons par les aéroports de départ :
+
+```python
+effectifs_origine = flights["origin"].value_counts()
+frequences_origine = flights["origin"].value_counts(normalize=True) * 100
+
+repartition_origine = pd.DataFrame({
+    "effectif": effectifs_origine,
+    "frequence_pct": frequences_origine.round(2),
+})
+repartition_origine
+```
+
+L'**effectif** est un nombre de lignes. La **fréquence** est une proportion, souvent présentée en pourcentage :
+
+$$
+\text{fréquence en \%}
+=\frac{\text{effectif de la catégorie}}{\text{effectif total}}\times100.
+$$
+
+La somme des fréquences est proche de 100 %. De petits écarts peuvent venir de l'arrondi.
+
+### 4.2. Fréquences croisées
+
+Pour comparer l'origine et la compagnie :
+
+```python
+table_compagnie_origine = pd.crosstab(
+    flights["carrier"],
+    flights["origin"],
+    normalize="index",
+) * 100
+
+table_compagnie_origine.round(1)
+```
+
+`normalize="index"` calcule la composition de chaque compagnie. Si l'on souhaite plutôt connaître la composition de chaque aéroport, on utilise `normalize="columns"`.
+
+### 4.3. Fréquence d'une condition
+
+La proportion de vols retardés au départ de plus de 15 minutes se calcule ainsi :
+
+```python
+retards = flights["dep_delay"].dropna()
+taux_retard_15 = (retards > 15).mean() * 100
+print(f"{taux_retard_15:.2f} %")
+```
+
+Dans pandas, une comparaison produit des valeurs `True` et `False`, assimilées à 1 et 0 dans une moyenne. Cette technique est utile, mais il faut annoncer le dénominateur : ici, les vols dont le retard au départ est connu.
+
+## 5. Moyenne, médiane et quantiles
+
+### 5.1. Tendance centrale
+
+Pour les retards au départ :
+
+```python
+dep_delay = flights["dep_delay"].dropna()
+
+moyenne = dep_delay.mean()
+mediane = dep_delay.median()
+mode = dep_delay.mode()
+
+print("Moyenne :", moyenne)
+print("Médiane :", mediane)
+print("Mode(s) :", mode.head())
+```
+
+- La **moyenne** est la somme divisée par le nombre de valeurs.
+- La **médiane** est la valeur qui sépare les données triées en deux groupes.
+- Le **mode** est la valeur la plus fréquente ; il est parfois peu intéressant pour une mesure continue comme un retard.
+
+Une moyenne supérieure à la médiane indique souvent une queue de valeurs élevées, mais il faut regarder la distribution avant d'affirmer qu'il existe des valeurs aberrantes.
+
+### 5.2. Quartiles et quantiles
+
+```python
+quartiles = dep_delay.quantile([0.25, 0.50, 0.75])
+deciles = dep_delay.quantile([0.10, 0.90])
+
+print(quartiles)
+print(deciles)
+```
+
+Le quantile $p$ est une valeur en dessous de laquelle se trouvent environ $p\times100$ % des observations :
+
+- $Q_1$ ou quantile 0,25 : environ 25 % des valeurs sont inférieures ou égales ;
+- médiane ou quantile 0,50 : environ 50 % ;
+- $Q_3$ ou quantile 0,75 : environ 75 %.
+
+L'écart interquartile est :
+
+$$
+IQR=Q_3-Q_1.
+$$
+
+Il décrit la largeur de la moitié centrale des données et résiste mieux aux valeurs extrêmes que l'étendue.
+
+### 5.3. Tableau descriptif
+
+```python
+resume = flights[[
+    "dep_delay",
+    "arr_delay",
+    "air_time",
+    "distance",
+]].describe().T
+
+resume
+```
+
+La colonne `50%` de `describe()` correspond à la médiane. Le tableau doit être lu avec l'unité : minutes pour les retards et la durée, miles pour la distance.
+
+## 6. Variance et écart-type
+
+### 6.1. Définitions utiles
+
+La variance mesure la dispersion autour de la moyenne. L'écart-type est sa racine carrée :
+
+$$
+\operatorname{Var}(X)
+=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2,
+\qquad
+\sigma=\sqrt{\operatorname{Var}(X)}.
+$$
+
+Dans un échantillon, on utilise souvent $n-1$ au dénominateur pour estimer la variance d'une population plus large. `pandas` utilise par défaut `ddof=1` :
+
+```python
+variance_echantillon = dep_delay.var()
+ecart_type_echantillon = dep_delay.std()
+
+variance_population = dep_delay.var(ddof=0)
+ecart_type_population = dep_delay.std(ddof=0)
+```
+
+Pour ce Lab, retenez surtout deux règles :
+
+1. l'écart-type est exprimé dans la même unité que la variable ;
+2. il est sensible aux grandes valeurs, donc on le complète souvent par la médiane et l'IQR.
+
+Un écart-type de 20 minutes ne signifie pas que tous les retards valent moyenne ± 20. Il indique une dispersion globale, pas une limite stricte.
+
+### 6.2. Comparer deux groupes
+
+```python
+resume_origine = (
+    flights.groupby("origin")["dep_delay"]
+    .agg(
+        effectif="count",
+        moyenne="mean",
+        mediane="median",
+        q1=lambda s: s.quantile(0.25),
+        q3=lambda s: s.quantile(0.75),
+        ecart_type="std",
+    )
+    .round(2)
+)
+
+resume_origine
+```
+
+Ne comparez jamais deux moyennes sans regarder les effectifs et la médiane. Un groupe très petit peut présenter une moyenne instable.
+
+## 7. Taux de croissance
+
+Pour suivre une évolution mensuelle, on calcule d'abord une mesure par mois :
+
+```python
+volumes_mensuels = flights.groupby("month").size()
+
+taux_croissance = volumes_mensuels.pct_change() * 100
+
+evolution_mensuelle = pd.DataFrame({
+    "vols": volumes_mensuels,
+    "taux_croissance_pct": taux_croissance.round(2),
+})
+
+evolution_mensuelle
+```
+
+Le taux de croissance entre une période initiale et une période finale est :
+
+$$
+\text{croissance en \%}
+=\frac{\text{valeur finale}-\text{valeur initiale}}
+{\text{valeur initiale}}\times100.
+$$
+
+Le premier mois n'a pas de période précédente dans le tableau : son taux est donc `NaN`. Une baisse est un taux négatif. Une croissance de 10 % suivie d'une baisse de 10 % ne ramène pas exactement à la valeur de départ, car les dénominateurs sont différents.
+
+## 8. Visualiser pour vérifier
+
+### 8.1. Distribution des retards
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+sns.histplot(dep_delay.clip(-30, 180), bins=40, ax=axes[0])
+axes[0].set_title("Distribution des retards au départ")
+axes[0].set_xlabel("Retard (minutes)")
+
+sns.boxplot(x=dep_delay, ax=axes[1])
+axes[1].set_title("Boîte à moustaches des retards")
+axes[1].set_xlabel("Retard (minutes)")
+
+fig.tight_layout()
+fig.savefig("../outputs/lab0_distribution_retards.png", dpi=150)
+```
+
+Le `clip` limite uniquement l'affichage aux valeurs comprises entre -30 et 180 minutes ; il ne modifie pas la série utilisée pour les calculs précédents. Cette distinction doit être écrite dans le notebook.
+
+### 8.2. Interpréter sans exagérer
+
+Une bonne interprétation contient :
+
+1. l'indicateur et sa valeur ;
+2. l'unité et la population ;
+3. une comparaison éventuelle ;
+4. une limite ou une question à approfondir.
+
+Exemple de forme attendue :
+
+> Pour les vols dont le retard au départ est connu, la médiane est de __ minutes et la moyenne de __ minutes. La moyenne est plus élevée, ce qui suggère quelques retards importants. Il faut vérifier la distribution par compagnie et par mois avant d'attribuer cette différence à une cause.
+
+## 9. Lab Sheet — Travail demandé
+
+::: {.callout-important title="Consigne générale"}
+Travaillez dans `notebooks/lab0_statistique_descriptive.ipynb`. Chaque réponse doit être accompagnée du code qui permet de la retrouver. Les résultats numériques peuvent varier si vous modifiez le filtre ou si le fichier téléchargé n'est pas exactement la même version : indiquez toujours votre source et votre filtre.
+:::
+
+### Partie A — Environnement et prise en main
+
+1. Affichez les versions de Python, NumPy, pandas, Matplotlib et Seaborn.
+2. Montrez l'organisation du projet et expliquez le rôle de `pyproject.toml`, `uv.lock`, `data/raw/` et `outputs/`.
+3. Téléchargez le fichier et indiquez son nombre de lignes et de colonnes.
+4. Listez les colonnes et classez-les en variables numériques, catégorielles, temporelles ou identifiants.
+
+### Partie B — Fréquences et types
+
+5. Calculez l'effectif et la fréquence des vols par aéroport de départ.
+6. Calculez la fréquence des vols par compagnie, puis affichez uniquement les cinq compagnies les plus fréquentes.
+7. Construisez un tableau croisé compagnie/aéroport. Comparez les fréquences par ligne et par colonne.
+8. Calculez le taux de vols dont `dep_delay > 15`. Indiquez précisément le dénominateur utilisé.
+
+### Partie C — Statistiques descriptives
+
+9. Pour `dep_delay`, calculez la moyenne, la médiane et le mode. Comparez moyenne et médiane en une phrase.
+10. Calculez $Q_1$, la médiane, $Q_3$, le 10e et le 90e quantile.
+11. Calculez l'IQR, la variance et l'écart-type avec `ddof=1`. Donnez les unités de chaque résultat.
+12. Recalculez variance et écart-type avec `ddof=0`. Expliquez brièvement pourquoi les résultats sont différents.
+13. Répétez les indicateurs par aéroport de départ et comparez les trois groupes sans désigner un « meilleur » aéroport sans justification.
+
+### Partie D — Évolution et visualisation
+
+14. Calculez le nombre de vols par mois et le taux de croissance mensuel.
+15. Produisez un graphique de l'évolution mensuelle du nombre de vols.
+16. Produisez un histogramme et une boîte à moustaches des retards.
+17. Écrivez un paragraphe de conclusion avec trois chiffres, deux interprétations et une limite.
+
+### Partie E — Question d'analyse
+
+18. La question « quelle compagnie est la plus ponctuelle ? » est-elle suffisamment précise ? Reformulez-la en indiquant la mesure, le seuil, la période et le dénominateur.
+19. Proposez deux indicateurs complémentaires qui éviteraient de se limiter à la moyenne.
+20. Expliquez pourquoi une corrélation éventuelle entre distance et retard ne prouverait pas qu'une variable cause l'autre.
+
+## 10. Livrables
+
+### Livrables
+
+- `notebooks/lab0_statistique_descriptive.ipynb` ;
+- `data/raw/flights_2013.csv` ou un fichier `README` indiquant comment le télécharger ;
+- au moins deux graphiques dans `outputs/` ;
+- un court paragraphe d'interprétation pour les parties B, C et D ;
+- `pyproject.toml` et `uv.lock`.
+
+::: {.callout-note title="Checklist finale"}
+- [ ] Le notebook s'exécute du début à la fin après redémarrage du noyau.
+- [ ] Les données brutes ne sont pas écrasées.
+- [ ] Chaque taux possède un dénominateur explicite.
+- [ ] Chaque statistique possède une unité et une population.
+- [ ] La moyenne et la médiane sont interprétées ensemble.
+- [ ] Les résultats sont accompagnés de graphiques lisibles.
+:::

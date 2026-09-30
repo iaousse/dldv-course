@@ -1,0 +1,510 @@
+# Lab 5 : Entrepôt de données et dashboard avancé avec Taipy
+
+::: {.callout-tip title="Objectifs du Lab"}
+À la fin de ce Lab, l'étudiant sera capable de :
+
+- **Réutiliser** les mêmes définitions métier que dans le rapport Power BI ;
+- **Préparer** des agrégats adaptés à une application web légère ;
+- **Construire** une interface interactive avec Taipy ;
+- **Ajouter** des filtres, KPI, tableaux et graphiques synchronisés ;
+- **Comparer** une plateforme BI et une application Python sur des critères concrets ;
+- **Déployer** une application Taipy sur une plateforme gratuite de type Hugging Face Spaces ;
+- **Documenter** les limites, la sécurité et le coût réel d'un déploiement gratuit.
+:::
+
+::: {.callout-important title="Même projet, architecture différente"}
+Le Lab 4 plaçait le modèle et les mesures dans Power BI. Ici, la source et la question restent les mêmes, mais la préparation et l'interface sont écrites en Python. Le chiffre d'affaires n'est pas remplacé par un autre calcul : les définitions doivent rester identiques entre les deux solutions.
+:::
+
+## 1. Power BI ou Taipy ?
+
+### 1.1. Comparaison par besoin
+
+| Besoin | Power BI | Taipy |
+|:---|:---|:---|
+| Connecter rapidement de nombreuses sources | Très adapté | Nécessite du code ou des connecteurs Python |
+| Transformer les données | Power Query | pandas, SQL, DuckDB, fonctions Python |
+| Définir les KPI | DAX et modèle sémantique | Fonctions Python testables |
+| Créer rapidement des rapports métier | Très adapté | Possible, mais demande de construire l'interface |
+| Intégrer l'analyse à une application | Limité selon l'architecture | Très adapté |
+| Contrôler le code et l'interface | Moins central | Central |
+| Déployer gratuitement | Dépend du compte et de l'organisation | Possible avec une plateforme gratuite, sous limites |
+| Données massives | Modèle, agrégations, Import/DirectQuery | Pré-agrégation nécessaire sur une petite instance |
+
+Power BI est une plateforme de BI prête à l'emploi. Taipy est une brique de développement qui permet de construire une application de données. Comparer les deux ne revient pas à chercher un gagnant : il faut relier le choix à l'équipe, au public, aux données et au mode de maintenance.
+
+### 1.2. Ce que l'on garde identique
+
+Les deux Labs doivent utiliser :
+
+- la même source NYC 311 ;
+- la même période ;
+- le même grain de la donnée source ;
+- les mêmes définitions de `Demandes`, `Taux de clôture`, `Délai médian` et `Délai P90` ;
+- les mêmes règles pour les dates manquantes et les délais négatifs.
+
+Si Power BI affiche 1 000 demandes et Taipy 980, il faut chercher la différence de filtre, de dédoublonnage ou de définition avant de comparer les graphiques.
+
+## 2. Adapter une donnée massive à une application
+
+Une application gratuite ne doit pas charger plusieurs millions de lignes à chaque ouverture. Le traitement lourd est exécuté **hors ligne** :
+
+```text
+NYC 311 massif
+      ↓ une seule fois
+nettoyage et calcul des délais
+      ↓
+agrégats mensuels, borough, type et canal
+      ↓
+fichiers Parquet compacts
+      ↓ à chaque interaction
+filtre Taipy + graphique + tableau
+```
+
+Cette architecture sépare :
+
+- le pipeline de préparation, qui peut utiliser une machine plus puissante ;
+- l'application, qui sert des résultats déjà préparés.
+
+### 2.1. Fichiers produits
+
+```text
+taipy-nyc311/
+├── app.py
+├── prepare_data.py
+├── requirements.txt
+├── Dockerfile
+├── README.md
+└── data/
+    └── processed/
+        ├── monthly_summary.parquet
+        ├── borough_summary.parquet
+        ├── type_summary.parquet
+        └── channel_summary.parquet
+```
+
+La version complète ajoutera aussi `monthly_borough_summary.parquet` et `monthly_borough_type_summary.parquet` pour rendre les filtres mensuels réellement interactifs.
+
+N'envoyez pas automatiquement le CSV brut massif dans un dépôt public. L'application finale doit contenir les agrégats strictement nécessaires à ses pages.
+
+## 3. Préparer les agrégats avec Python
+
+### 3.1. Installer les dépendances
+
+```bash
+uv init --python 3.11
+uv add pandas pyarrow taipy
+mkdir -p data/processed
+```
+
+Pour le développement, vous pouvez utiliser un fichier annuel ou mensuel déjà collecté au Lab 4 :
+
+```python
+# prepare_data.py
+from pathlib import Path
+import pandas as pd
+
+SOURCE = Path("data/raw/nyc311_2024.csv")
+OUT = Path("data/processed")
+OUT.mkdir(parents=True, exist_ok=True)
+
+USECOLS = [
+    "unique_key",
+    "created_date",
+    "closed_date",
+    "complaint_type",
+    "agency",
+    "borough",
+    "open_data_channel_type",
+    "status",
+]
+
+df = pd.read_csv(SOURCE, usecols=USECOLS)
+
+NYC_TZ = "America/New_York"
+
+for column in ("created_date", "closed_date"):
+    dates = pd.to_datetime(df[column], errors="coerce")
+    if dates.dt.tz is None:
+        dates = dates.dt.tz_localize(
+            NYC_TZ,
+            ambiguous="NaT",
+            nonexistent="NaT",
+        )
+    else:
+        dates = dates.dt.tz_convert(NYC_TZ)
+    df[column] = dates
+
+df = df.dropna(subset=["unique_key", "created_date"])
+df = df.drop_duplicates(subset=["unique_key"])
+df["is_closed"] = df["closed_date"].notna()
+df["processing_hours"] = (
+    df["closed_date"] - df["created_date"]
+).dt.total_seconds() / 3600
+df.loc[df["processing_hours"] < 0, "processing_hours"] = pd.NA
+df["month"] = df["created_date"].dt.strftime("%Y-%m")
+
+df["borough"] = df["borough"].fillna("Non renseigné")
+df["complaint_type"] = df["complaint_type"].fillna("Non renseigné")
+df["open_data_channel_type"] = df[
+    "open_data_channel_type"
+].fillna("Non renseigné")
+
+def summarise(grouped):
+    result = grouped.agg(
+        Demandes=("unique_key", "nunique"),
+        Demandes_cloturees=("is_closed", "sum"),
+        Delai_median_heures=("processing_hours", "median"),
+        Delai_moyen_heures=("processing_hours", "mean"),
+    ).reset_index()
+    result["Taux_cloture"] = (
+        result["Demandes_cloturees"] / result["Demandes"]
+    )
+    return result
+
+monthly = summarise(df.groupby("month"))
+borough = summarise(df.groupby("borough"))
+types = summarise(df.groupby("complaint_type")).sort_values(
+    "Demandes", ascending=False
+)
+channels = summarise(df.groupby("open_data_channel_type"))
+monthly_borough = summarise(df.groupby(["month", "borough"]))
+monthly_type = summarise(df.groupby(["month", "complaint_type"]))
+monthly_borough_type = summarise(
+    df.groupby(["month", "borough", "complaint_type"])
+)
+
+monthly.to_parquet(OUT / "monthly_summary.parquet", index=False)
+borough.to_parquet(OUT / "borough_summary.parquet", index=False)
+types.head(50).to_parquet(OUT / "type_summary.parquet", index=False)
+channels.to_parquet(OUT / "channel_summary.parquet", index=False)
+monthly_borough.to_parquet(
+    OUT / "monthly_borough_summary.parquet",
+    index=False,
+)
+monthly_type.to_parquet(
+    OUT / "monthly_type_summary.parquet",
+    index=False,
+)
+monthly_borough_type.to_parquet(
+    OUT / "monthly_borough_type_summary.parquet",
+    index=False,
+)
+```
+
+Cette version utilise une ligne par `unique_key`. Si le fichier source contient plusieurs versions d'une même demande, il faut documenter pourquoi l'on conserve la première, la dernière ou une ligne dédoublonnée.
+
+### 3.2. Contrôler les agrégats
+
+```python
+assert monthly["Demandes"].sum() == df["unique_key"].nunique()
+assert borough["Demandes"].sum() == df["unique_key"].nunique()
+assert monthly["Taux_cloture"].between(0, 1).all()
+assert (monthly["Demandes"] >= 0).all()
+```
+
+Les contrôles ne prouvent pas que l'analyse est parfaite, mais ils détectent des erreurs évidentes avant publication.
+
+## 4. Construire l'application Taipy
+
+### 4.1. Charger les données
+
+```python
+# app.py
+from pathlib import Path
+import pandas as pd
+from taipy.gui import Gui
+
+DATA_DIR = Path("data/processed")
+monthly = pd.read_parquet(DATA_DIR / "monthly_summary.parquet")
+borough = pd.read_parquet(DATA_DIR / "borough_summary.parquet")
+types = pd.read_parquet(DATA_DIR / "type_summary.parquet")
+monthly_borough = pd.read_parquet(
+    DATA_DIR / "monthly_borough_summary.parquet"
+)
+monthly_borough_type = pd.read_parquet(
+    DATA_DIR / "monthly_borough_type_summary.parquet"
+)
+```
+
+### 4.2. Préparer l'état de l'interface
+
+Taipy met à jour une interface à partir de variables Python. Nous commençons par une vue générale :
+
+```python
+selected_borough = "Tous"
+selected_type = "Tous"
+selected_view = monthly.copy()
+
+total_requests = int(monthly["Demandes"].sum())
+total_closed = int(monthly["Demandes_cloturees"].sum())
+closure_rate = total_closed / total_requests if total_requests else 0
+median_delay = float(monthly["Delai_median_heures"].median())
+
+borough_options = ["Tous"] + sorted(
+    borough["borough"].dropna().unique().tolist()
+)
+type_options = ["Tous"] + types["complaint_type"].head(20).tolist()
+```
+
+Dans cette première version, les KPI sont calculés sur les agrégats. Pour un filtre par borough réellement dynamique, il faut disposer d'un agrégat contenant la combinaison `month × borough` plutôt que deux tables séparées. Préparez donc aussi :
+
+Cette étape est importante : la bonne interface dépend de la bonne granularité de l'agrégat. Les agrégats `month × borough` et `month × borough × complaint_type` sont préparés dans `prepare_data.py`, puis simplement lus par l'application.
+
+### 4.3. Fonction de filtrage
+
+```python
+def make_view(borough_value, type_value):
+    view = monthly_borough_type.copy()
+
+    if borough_value != "Tous":
+        view = view[view["borough"] == borough_value]
+
+    if type_value != "Tous":
+        view = view[view["complaint_type"] == type_value]
+
+    return (
+        view.groupby("month", as_index=False)
+        .agg(
+            Demandes=("Demandes", "sum"),
+            Demandes_cloturees=("Demandes_cloturees", "sum"),
+            Delai_median_heures=("Delai_median_heures", "median"),
+        )
+        .sort_values("month")
+    )
+
+selected_view = make_view(selected_borough, selected_type)
+```
+
+Ne prétendez pas filtrer par type avec une table qui ne possède pas la dimension type. Cette vérification de granularité est une compétence essentielle du data analyst.
+
+### 4.4. Construire la page
+
+Taipy utilise une syntaxe Markdown enrichie. Le contrôle `selector` permet de choisir une valeur, `table` affiche un DataFrame et `chart` représente des colonnes :
+
+```python
+page = """
+# Suivi des demandes NYC 311
+
+Période préparée : 2024
+
+**Arrondissement**
+<|{selected_borough}|selector|lov={borough_options}|dropdown|>
+
+**Type de demande**
+<|{selected_type}|selector|lov={type_options}|dropdown|>
+
+## Vue mensuelle
+
+<|{selected_view}|chart|x=month|y=Demandes|>
+
+<|{selected_view}|table|>
+"""
+```
+
+La syntaxe exacte de certains contrôles peut évoluer selon la version de Taipy. Vérifiez la documentation de la version installée si un contrôle ne s'affiche pas.
+
+### 4.5. Réagir aux filtres
+
+```python
+def on_change(state, var_name, value):
+    if var_name in {"selected_borough", "selected_type"}:
+        state.selected_view = make_view(
+            state.selected_borough,
+            state.selected_type,
+        )
+```
+
+Pour une application plus avancée, centralisez les calculs dans des fonctions et évitez de modifier des variables globales directement. L'état de l'interface doit rester compréhensible.
+
+### 4.6. Lancer l'application
+
+```python
+if __name__ == "__main__":
+    Gui(page=page).run(
+        title="NYC 311 BI avec Taipy",
+        host="0.0.0.0",
+        port=7860,
+        use_reloader=False,
+    )
+```
+
+En local :
+
+```bash
+uv run python app.py
+```
+
+Ouvrez l'adresse affichée par Taipy et testez plusieurs filtres. Le port `7860` est utilisé pour faciliter le déploiement sur Hugging Face Spaces.
+
+## 5. Rendre l'application aussi riche que le rapport Power BI
+
+L'application finale doit comporter au moins trois vues :
+
+### Vue 1 — Pilotage
+
+- KPI demandes totales ;
+- taux de clôture ;
+- délai médian ;
+- délai P90 ;
+- courbe mensuelle ;
+- filtre borough.
+
+### Vue 2 — Types de demandes
+
+- top 20 des types ;
+- barres du volume ;
+- tableau volume, taux de clôture, médiane et P90 ;
+- filtre de période ;
+- message lorsqu'un type est sélectionné.
+
+### Vue 3 — Comparaison géographique
+
+- classement des boroughs ;
+- volume et délai médian ;
+- graphique de composition des canaux ;
+- tableau détaillé ;
+- avertissement lorsque l'effectif est faible.
+
+Taipy permet de construire une interface sur mesure, mais il faut coder la navigation et la logique que Power BI offre déjà en partie. Cette liberté est un avantage lorsque l'application doit s'intégrer à un workflow métier ; elle représente aussi un coût de maintenance.
+
+## 6. Vérifier la cohérence avec Power BI
+
+Choisissez trois filtres identiques dans les deux solutions :
+
+1. toute la période ;
+2. un borough ;
+3. un type de demande fréquent.
+
+Comparez :
+
+| Indicateur | Power BI | Taipy | Différence |
+|:---|---:|---:|---:|
+| Demandes | | | |
+| Demandes clôturées | | | |
+| Taux de clôture | | | |
+| Médiane du délai | | | |
+
+Si une différence existe, examinez dans cet ordre :
+
+- période et fuseau horaire ;
+- doublons ;
+- valeurs sans date ;
+- définition d'une demande clôturée ;
+- agrégat utilisé par Taipy ;
+- format et arrondi.
+
+Ne corrigez pas une différence en forçant un nombre dans l'interface. Corrigez la transformation ou expliquez la différence.
+
+## 7. Déploiement gratuit avec Hugging Face Spaces
+
+Hugging Face Spaces propose un environnement gratuit à ressources limitées, adapté à une démonstration pédagogique. Les règles de disponibilité et les limites peuvent évoluer ; vérifiez-les au moment du déploiement.
+Si aucun hébergement gratuit adapté n'est disponible, réalisez et documentez une démonstration locale de l'application avec les mêmes fichiers d'agrégats.
+
+### 7.1. Préparer les fichiers
+
+`requirements.txt` :
+
+```text
+taipy
+pandas
+pyarrow
+```
+
+`Dockerfile` :
+
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app.py .
+COPY data/processed ./data/processed
+
+EXPOSE 7860
+
+CMD ["python", "app.py"]
+```
+
+Le dossier du dépôt doit contenir :
+
+```text
+app.py
+requirements.txt
+Dockerfile
+data/processed/*.parquet
+```
+
+N'incluez pas le CSV massif, les identifiants privés ou les fichiers temporaires.
+
+### 7.2. Créer et lancer le Space
+
+1. Créez un compte Hugging Face si nécessaire.
+2. Choisissez **New Space**.
+3. Sélectionnez le SDK **Docker** et une machine CPU gratuite.
+4. Rendez le Space public uniquement avec des données et du code que vous pouvez publier.
+5. Ajoutez les fichiers du projet.
+6. Attendez le build de l'image.
+7. Consultez les logs si l'application ne démarre pas.
+8. Vérifiez que Taipy écoute bien sur `0.0.0.0:7860`.
+
+Le premier démarrage peut prendre du temps. Une instance gratuite peut s'endormir lorsqu'elle n'est pas utilisée ; le premier accès suivant peut donc être plus lent. La plateforme n'est pas un environnement de production garanti.
+
+### 7.3. Autres options
+
+Vous pouvez comparer avec une autre plateforme gratuite acceptant un conteneur Python, par exemple un service de déploiement disposant d'un plan gratuit. Vérifiez toujours :
+
+- la commande de démarrage ;
+- le port exposé ;
+- la mise en veille ;
+- la limite de mémoire ;
+- la visibilité des fichiers ;
+- les conditions du plan gratuit.
+
+## 8. Sécurité et maintenance
+
+Même pour une démonstration :
+
+- ne mettez jamais de clé API dans `app.py` ou Git ;
+- ne téléchargez pas les données massives à chaque requête utilisateur ;
+- validez les valeurs des filtres ;
+- affichez la date de préparation des agrégats ;
+- documentez la source et la licence ;
+- ne publiez pas de données personnelles ;
+- prévoyez un message si un fichier Parquet est absent ou vide.
+
+Une application publique doit aussi résister à une entrée inattendue. Les filtres doivent choisir parmi des valeurs connues, et les agrégats doivent être contrôlés avant mise en ligne.
+
+## 9. Travail demandé
+
+1. Reprenez la même question BI, période et source que le Lab 4.
+2. Écrivez le pipeline Python qui produit au moins quatre agrégats Parquet.
+3. Ajoutez les contrôles de qualité et conservez les résultats dans un journal.
+4. Construisez une application Taipy avec trois vues.
+5. Ajoutez au moins deux filtres synchronisés.
+6. Affichez quatre KPI et au moins trois graphiques.
+7. Ajoutez une table détaillée indiquant effectif, médiane et P90.
+8. Comparez cinq chiffres avec Power BI.
+9. Expliquez une différence éventuelle entre les deux solutions.
+10. Ajoutez un message sur la date de préparation et la période.
+11. Conteneurisez l'application avec `Dockerfile`.
+12. Déployez-la sur Hugging Face Spaces ou une plateforme gratuite équivalente.
+13. Testez le lien public depuis un autre navigateur.
+14. Rédigez les limites du déploiement gratuit.
+15. En cinq à dix lignes, recommandez Power BI, Taipy ou une combinaison des deux pour ce projet.
+
+## 10. Livrables
+
+::: {.callout-note title="Checklist finale"}
+- [ ] L'application démarre avec `uv run python app.py`.
+- [ ] Les données massives ont été préparées hors ligne.
+- [ ] Les agrégats sont contrôlés avant affichage.
+- [ ] Les KPI Taipy et Power BI utilisent les mêmes définitions.
+- [ ] Les filtres ne prétendent pas agir sur une granularité absente.
+- [ ] Le conteneur écoute sur le port attendu.
+- [ ] Le déploiement ne contient aucun secret.
+- [ ] La page publique indique la source, la période et les limites.
+:::

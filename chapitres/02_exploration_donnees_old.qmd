@@ -1,0 +1,528 @@
+# Exploration des données
+
+::: {.callout-tip title="Objectifs du chapitre"}
+À la fin de ce chapitre, l'étudiant sera capable de :
+
+- **Distinguer** une observation d'une variable, et reconnaître le type d'une variable (qualitative, quantitative, temporelle) ;
+- **Calculer et interpréter** les indicateurs de base : effectif, fréquence, variation relative ;
+- **Calculer et interpréter** les principales statistiques descriptives d'une variable numérique (tendance centrale, dispersion, forme) ;
+- **Distinguer** l'analyse univariée, bivariée et multivariée ;
+- **Mesurer** une corrélation ou une association entre deux variables et en connaître les limites ;
+- **Construire** des tableaux d'agrégation (`groupby`, tableaux croisés dynamiques) pour résumer un jeu de données ;
+- **Utiliser** un outil de profilage automatique pour accélérer une première exploration.
+:::
+
+L'**analyse exploratoire de données** (*Exploratory Data Analysis*, EDA), popularisée par le statisticien John Tukey, consiste à examiner un jeu de données déjà nettoyé afin d'en dégager les tendances principales, les relations entre variables et les éventuelles anomalies restantes — avant toute conclusion définitive ou toute visualisation destinée à un public externe. Ce chapitre correspond à l'étape 5 du cycle de vie présenté au premier chapitre (@fig-cycle-vie-analyse).
+
+## 1. Observations, variables et types de données
+
+Avant de calculer le moindre indicateur, il faut savoir **nommer ce que l'on manipule**.
+
+::: {.callout-tip}
+## Observation et variable
+
+Une **observation** est une ligne du tableau de données (par exemple une commande, un client, une transaction). Une **variable** est une colonne (par exemple le montant d'une commande, la ville d'un client).
+:::
+
+Une variable peut être de trois natures, ce qui conditionne directement les indicateurs et les graphiques que l'on pourra lui appliquer :
+
+| Type de variable | Sous-type | Définition | Exemple |
+|:---|:---|:---|:---|
+| **Qualitative** (catégorielle) | Nominale | Catégories sans ordre naturel | Ville, moyen de paiement, quartier |
+| | Ordinale | Catégories avec un ordre naturel | Satisfaction (faible / moyenne / élevée) |
+| **Quantitative** (numérique) | Discrète | Nombre entier, dénombrable | Nombre de produits, nombre d'enfants |
+| | Continue | Nombre pouvant prendre toute valeur dans un intervalle | Prix, poids, durée |
+| **Temporelle** | — | Date ou période, que l'on peut ordonner et découper | Date de commande, mois, trimestre |
+
+: Types et sous-types de variables {#tbl-types-variables}
+
+::: {.callout-warning title="Pourquoi cette distinction est essentielle"}
+Calculer une **moyenne** sur un code postal ou sur un identifiant client n'a aucun sens, même si ces valeurs sont numériques : ce sont en réalité des variables qualitatives. À l'inverse, une variable qualitative ordinale (comme un niveau de satisfaction) peut parfois être résumée par une médiane, mais jamais par une moyenne arithmétique classique. Le type de variable détermine les indicateurs et les graphiques valides — ce lien sera repris au chapitre suivant, consacré à la visualisation.
+:::
+
+Avec `pandas`, on identifie rapidement le type déclaré de chaque colonne, à ne pas confondre avec le type *statistique* défini ci-dessus :
+
+```python
+df.dtypes
+df.info()
+```
+
+## 2. Décrire une variable qualitative : effectif et fréquence
+
+::: {.callout-tip title="Effectif et fréquence"}
+L'**effectif** d'une catégorie est le nombre d'observations qui appartiennent à cette catégorie. La **fréquence** (ou proportion) est la part que représente cet effectif dans l'ensemble des observations.
+
+$$
+\text{fréquence} = \frac{\text{effectif de la catégorie}}{\text{effectif total}}
+$$
+
+On l'exprime souvent en pourcentage en multipliant par 100.
+
+::: {.callout-note title="Exemple — Effectif et fréquence"}
+Sur 120 commandes, 30 proviennent de Casablanca :
+
+$$
+\text{fréquence} = \frac{30}{120} = 0{,}25 = 25\,\%.
+$$
+
+**Interprétation** : une commande sur quatre est passée à Casablanca.
+:::
+:::
+
+Avec `pandas`, `value_counts()` calcule directement les effectifs (et, avec `normalize=True`, les fréquences) de chaque catégorie :
+
+```python
+df["ville"].value_counts()                    # effectifs par catégorie
+df["ville"].value_counts(normalize=True) * 100 # fréquences en %
+```
+
+::: {.callout-note title="Priorité pour débuter"}
+Pour une variable qualitative, l'effectif et la fréquence de chaque catégorie constituent presque toujours le point de départ de l'exploration, avant tout graphique.
+:::
+
+## 3. Comparer deux périodes : la variation relative
+
+::: {.callout-tip title="Variation relative (ou taux de variation)"}
+Pour comparer une même grandeur entre deux périodes (ou deux situations), on calcule la **variation relative** :
+
+$$
+\text{variation en \%} =
+\frac{\text{valeur finale} - \text{valeur initiale}}
+{\text{valeur initiale}} \times 100.
+$$
+
+- Un résultat positif indique une hausse.
+- Un résultat négatif indique une baisse.
+
+::: {.callout-note title="Exemple — Variation relative"}
+Le chiffre d'affaires d'un produit passe de 200 MAD à 240 MAD :
+
+$$
+\frac{240 - 200}{200} \times 100 = 20\,\%.
+$$
+
+**Interprétation** : les ventes ont augmenté de 20 %.
+:::
+
+::: {.callout-warning title="Remarques"}
+- Toujours préciser la période de référence (valeur initiale) et la période finale.
+- Une variation de +100 % signifie un doublement ; une variation de −50 % signifie une division par deux.
+- Une hausse de 20 % suivie d'une baisse de 20 % ne ramène **pas** à la valeur de départ : les deux variations ne s'appliquent pas à la même base.
+:::
+:::
+
+Sur une série ordonnée dans le temps, `pandas` calcule automatiquement la variation relative d'une période à l'autre avec `pct_change()` :
+
+```python
+df_mensuel["ventes"].pct_change() * 100   # variation en % par rapport au mois précédent
+```
+
+## 4. Résumer une variable quantitative : statistiques descriptives
+
+Lorsqu'on dispose d'une variable quantitative, on a besoin d'indicateurs qui résument sa **tendance centrale** (où se situent les valeurs) et sa **dispersion** (à quel point elles sont dispersées), puis, plus finement, sa **forme**.
+
+### 4.1. Tendance centrale
+
+| Indicateur | Définition / formule | Sensibilité aux valeurs extrêmes |
+|:---|:---|:---|
+| **Moyenne** ($\bar{x}$) | $\displaystyle \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$ | Élevée |
+| **Médiane** ($Me$) | Valeur qui partage la série ordonnée en deux groupes de même effectif | Faible |
+| **Mode** | Valeur (ou catégorie) la plus fréquente | Faible, mais peu informatif pour une variable continue |
+
+: Indicateurs de tendance centrale {#tbl-tendance-centrale}
+
+::: {.callout-tip title="Calcul de la médiane"}
+On note $x_1, x_2, \ldots, x_n$ les observations d'une variable quantitative et $x_{(1)} \leq x_{(2)} \leq \ldots \leq x_{(n)}$ la série ordonnée.
+
+- Si $n$ est **impair** : $\displaystyle Me = x_{\left(\frac{n+1}{2}\right)}$
+- Si $n$ est **pair** : $\displaystyle Me = \frac{x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}}{2}$
+:::
+
+```python
+df["prix"].mean()
+df["prix"].median()
+df["quartier"].mode()[0]
+```
+
+::: {.callout-warning title="Moyenne ou médiane ?"}
+Sur une distribution fortement asymétrique — typiquement les salaires ou les prix de l'immobilier — la moyenne peut être fortement tirée vers le haut par quelques valeurs extrêmes. La **médiane** donne alors une image plus représentative de la « valeur typique ».
+:::
+
+### 4.2. Dispersion
+
+- l'**écart-type** ($s$) et la **variance** ($s^2$) mesurent l'écart moyen à la moyenne : $\displaystyle s = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^2}$ ;
+- l'**écart interquartile** ($IQR = Q_3 - Q_1$) mesure la dispersion de la moitié centrale des données, de façon robuste aux valeurs extrêmes — déjà rencontré au chapitre précédent pour la détection des valeurs aberrantes ;
+- l'**étendue** (maximum − minimum) donne une idée rapide, mais très sensible aux valeurs aberrantes.
+
+::: {.callout-tip title="Calcul des quartiles (méthode de Tukey)"}
+1. On calcule d'abord la **médiane** de toute la série.
+2. On forme la **moitié inférieure** = toutes les observations **strictement inférieures** à la médiane.
+3. On forme la **moitié supérieure** = toutes les observations **strictement supérieures** à la médiane.
+4. $Q_1$ = médiane de la moitié inférieure.
+5. $Q_3$ = médiane de la moitié supérieure.
+:::
+
+```python
+df["prix"].std()
+df["prix"].var()
+df["prix"].quantile([0.25, 0.5, 0.75])
+```
+
+::: {.callout-note title="Exemple détaillé — commandes"}
+Montants de 9 commandes (en MAD) : `420, 95, 250, 110, 130, 160, 190, 80, 45`
+
+**1. Série ordonnée**
+$$
+x_{(1)}=45,\ x_{(2)}=80,\ x_{(3)}=95,\ x_{(4)}=110,\ x_{(5)}=130,\
+x_{(6)}=160,\ x_{(7)}=190,\ x_{(8)}=250,\ x_{(9)}=420
+$$
+
+**2. Effectif** : $n = 9$ · **Minimum** : 45 MAD · **Maximum** : 420 MAD
+
+**3. Moyenne**
+$$
+\bar{x} = \frac{45+80+95+110+130+160+190+250+420}{9} = \frac{1480}{9} \approx 164{,}44\,\text{MAD}
+$$
+
+**4. Médiane** ($n$ impair)
+$$
+Me = x_{\left(\frac{9+1}{2}\right)} = x_{(5)} = 130\,\text{MAD}
+$$
+
+**5. Quartiles**
+
+- Moitié inférieure (valeurs < 130) : $45,\ 80,\ 95,\ 110$ → $Q_1$ = médiane de ces 4 valeurs = $\dfrac{80 + 95}{2} = 87{,}5$ MAD
+- Moitié supérieure (valeurs > 130) : $160,\ 190,\ 250,\ 420$ → $Q_3$ = médiane de ces 4 valeurs = $\dfrac{190 + 250}{2} = 220$ MAD
+
+**6. Écart interquartile**
+$$
+IQR = Q_3 - Q_1 = 220 - 87{,}5 = 132{,}5\,\text{MAD}
+$$
+
+**Interprétation** : la moyenne (≈ 164 MAD) est tirée vers le haut par la commande de 420 MAD ; la médiane (130 MAD) est plus représentative du « client typique » ; 50 % des commandes se situent entre 87,5 et 220 MAD.
+:::
+
+Le **coefficient de variation**, défini par $s/\bar{x}$ lorsque la moyenne est positive et non nulle, permet parfois de comparer la dispersion relative de variables ayant des échelles différentes ; il est présenté ici comme un repère, non comme un indicateur obligatoire.
+
+### 4.3. Forme de la distribution
+
+Deux indicateurs complètent la description d'une distribution :
+
+- l'**asymétrie** (*skewness*) : une valeur positive indique une distribution étalée vers la droite (queue de valeurs élevées), une valeur négative vers la gauche ;
+- l'**aplatissement** (*kurtosis*) : indique si la distribution comporte davantage de valeurs extrêmes qu'une distribution normale.
+
+```python
+df["prix"].skew()
+df["prix"].kurt()
+```
+
+::: {.callout-note title="Priorité pour débuter"}
+Les indicateurs indispensables sont l'effectif, la moyenne, la médiane, le minimum, le maximum, les quartiles et l'écart-type ou l'IQR. L'asymétrie, l'aplatissement et le coefficient de variation sont des compléments : il suffit d'en comprendre l'idée et de savoir quand demander une explication supplémentaire.
+:::
+
+### 4.4. Tout en une seule commande
+
+La méthode `describe()` de `pandas` regroupe l'essentiel de ces indicateurs :
+
+```python
+df.describe()
+```
+
+Elle fournit `count` (effectif), `mean` (moyenne), `50%` (médiane), `min`/`max` (extrêmes) et `25%`/`75%` (quartiles $Q_1$ et $Q_3$). Elle ne remplace pas l'interprétation : un indicateur doit toujours être accompagné de son **unité**, de sa **période** et de la **population** étudiée.
+
+::: {.callout-warning title="Un indicateur n'est pas une conclusion"}
+Une moyenne de 250 MAD ne dit pas si les commandes sont toutes proches de 250 MAD ou si quelques très grosses commandes compensent beaucoup de petites commandes. Pour comprendre la forme de la distribution, on complète toujours la moyenne par la médiane, les quartiles (ou l'IQR) et, idéalement, un graphique — histogramme ou boîte à moustaches, présentés au chapitre suivant.
+:::
+
+::: {.callout-tip title="Bonnes pratiques"}
+- Toujours indiquer l'unité (MAD, kg, jours...).
+- Préciser la période et le périmètre (tous les clients, un segment, une région...).
+- Présenter moyenne **et** médiane lorsque la distribution est asymétrique.
+- Utiliser l'IQR plutôt que l'écart-type si l'on suspecte des valeurs extrêmes.
+:::
+
+## 5. Analyse univariée, bivariée et multivariée
+
+| Niveau d'analyse | Nombre de variables étudiées simultanément | Exemple |
+|:---|:---|:---|
+| **Univariée** | Une seule | Distribution des prix de vente |
+| **Bivariée** | Deux | Relation entre surface et prix |
+| **Multivariée** | Trois ou plus | Relation entre surface, quartier et prix |
+
+: Les trois niveaux de l'analyse exploratoire {#tbl-niveaux-analyse}
+
+L'**analyse univariée** décrit une variable isolément (effectif, fréquence, statistiques descriptives, distribution — tout ce que nous venons de voir). L'**analyse bivariée** cherche une relation entre deux variables — par exemple à l'aide d'un tableau croisé pour deux variables catégorielles, ou d'un coefficient de corrélation pour deux variables numériques. L'**analyse multivariée** étend cette logique à plusieurs variables simultanément, souvent à l'aide de tableaux d'agrégation ou de visualisations combinant plusieurs dimensions (couleur, taille, facettes), présentées au chapitre suivant.
+
+## 6. Corrélations et associations
+
+### 6.1. Variables numériques : Pearson et Spearman
+
+- le **coefficient de corrélation de Pearson** ($r$, entre −1 et 1) mesure l'intensité d'une relation **linéaire** entre deux variables numériques ;
+- le **coefficient de corrélation de Spearman** mesure une relation **monotone** (pas nécessairement linéaire), en travaillant sur les rangs des valeurs plutôt que sur les valeurs elles-mêmes — plus robuste aux valeurs aberrantes.
+
+```python
+df[["surface", "prix"]].corr(method="pearson")
+df[["surface", "prix"]].corr(method="spearman")
+```
+
+::: {.callout-warning title="Corrélation n'est pas causalité"}
+Une corrélation élevée entre deux variables ne signifie pas que l'une provoque l'autre : elle peut résulter d'une **variable cachée** commune, ou d'une pure coïncidence statistique. Un exemple classique est la corrélation observée entre les ventes de glaces et le nombre de noyades : les deux augmentent en été, sans lien de cause à effet direct entre elles.
+:::
+
+### 6.2. Variables catégorielles : tableaux croisés et V de Cramér
+
+Pour deux variables catégorielles, on utilise un **tableau croisé** (*crosstab*), éventuellement complété par le **V de Cramér**, qui résume en un seul indicateur (entre 0 et 1) l'intensité de l'association :
+
+```python
+tableau_croise = pd.crosstab(df["quartier"], df["type_bien"])
+```
+
+## 7. Agrégation : `groupby` et tableaux croisés dynamiques
+
+L'outil central de l'exploration multivariée avec `pandas` est la méthode `groupby()`, qui permet de calculer un indicateur pour chaque sous-groupe d'une variable catégorielle :
+
+```python
+df.groupby("quartier")["prix"].mean().sort_values(ascending=False)
+
+df.groupby(["quartier", "type_bien"]).agg(
+    prix_moyen=("prix", "mean"),
+    nombre_biens=("prix", "count")
+)
+```
+
+Le **tableau croisé dynamique** (*pivot table*) offre une présentation plus lisible lorsque l'on croise deux dimensions catégorielles avec une mesure numérique :
+
+```python
+pd.pivot_table(
+    df,
+    values="prix",
+    index="quartier",
+    columns="type_bien",
+    aggfunc="mean"
+)
+```
+
+Ces deux outils constituent la base de la quasi-totalité des tableaux de bord et des rapports produits par un Data Analyst — et la matière première de la plupart des graphiques présentés au chapitre suivant.
+
+## 8. Profilage automatique des données
+
+Sur un nouveau jeu de données, il est souvent utile d'obtenir rapidement une vue d'ensemble avant de se lancer dans une exploration manuelle détaillée.
+
+::: {.callout-important title="Zoom sur les tendances : rapports d'exploration automatisés"}
+Des bibliothèques comme **[`ydata-profiling`](https://github.com/ydataai/ydata-profiling)** (anciennement `pandas-profiling`) ou **[`Sweetviz`](https://github.com/fbdesignpro/sweetviz)** génèrent, en une seule instruction, un rapport HTML complet : statistiques descriptives par variable, distributions, valeurs manquantes, corrélations entre variables, alertes de qualité (variables constantes, fortement corrélées, etc.).
+
+```python
+from ydata_profiling import ProfileReport
+
+profil = ProfileReport(df, title="Exploration du jeu de données")
+profil.to_file("rapport_exploration.html")
+```
+
+Ces outils ne remplacent pas le raisonnement de l'analyste — ils accélèrent la première prise de contact avec un jeu de données et aident à repérer rapidement les points nécessitant une attention particulière, avant une exploration ciblée avec les techniques présentées dans ce chapitre.
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-note title="Auto-évaluation" collapse="true"}
+Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
+
+- [ ] Je sais reconnaître le type d'une variable (qualitative nominale/ordinale, quantitative discrète/continue, temporelle).
+- [ ] Je sais calculer un effectif, une fréquence et une variation relative.
+- [ ] Je sais expliquer pourquoi la médiane est parfois préférable à la moyenne.
+- [ ] Je sais distinguer une analyse univariée, bivariée et multivariée avec un exemple pour chacune.
+- [ ] Je sais expliquer pourquoi une forte corrélation n'implique pas une relation de cause à effet.
+- [ ] Je sais construire un tableau croisé dynamique avec `pandas`.
+:::
+:::
+
+## Exercices
+
+::: {#exr-eda-1}
+### Reconnaître le type de variable
+
+Classez les variables suivantes en qualitative (nominale ou ordinale), quantitative (discrète ou continue) ou temporelle : `quartier`, `nombre_de_produits`, `date_commande`, `satisfaction` codée « faible / moyenne / élevée ».
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-1"}
+`quartier` est **qualitative nominale** ; `nombre_de_produits` est **quantitative discrète** ; `date_commande` est **temporelle** ; `satisfaction` est **qualitative ordinale**, car ses catégories possèdent un ordre.
+:::
+:::
+
+::: {#exr-eda-2}
+### Moyenne, médiane et fréquence
+
+Les montants de cinq commandes sont : 80, 100, 100, 120 et 600 MAD.
+
+a. Calculez la moyenne et la médiane.
+b. Quel indicateur décrit le mieux une commande « typique » ? Pourquoi ?
+c. Quel est l'effectif et la fréquence des commandes d'au moins 100 MAD ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-2"}
+a. La moyenne vaut $(80+100+100+120+600)/5=200$ MAD. La médiane est la troisième valeur triée : **100 MAD**.
+b. La médiane est plus représentative : la commande de 600 MAD tire fortement la moyenne vers le haut.
+c. Quatre commandes sur cinq sont d'au moins 100 MAD : effectif **4**, fréquence **80 %**.
+:::
+:::
+
+::: {#exr-eda-3}
+### Lire une variation
+
+Le nombre de visiteurs d'un site passe de 2 000 en avril à 2 400 en mai, puis à 2 280 en juin.
+
+a. Calculez la variation en pourcentage entre avril et mai.
+b. Calculez la variation en pourcentage entre mai et juin.
+c. La baisse de mai à juin annule-t-elle entièrement la hausse précédente ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-3"}
+a. $(2400-2000)/2000 \times 100 = 20\%$.
+b. $(2280-2400)/2400 \times 100 = -5\%$.
+c. Non. Le niveau de juin reste supérieur à avril : $(2280-2000)/2000 \times 100 = 14\%$ environ.
+:::
+:::
+
+::: {#exr-eda-4}
+### Identifier les indicateurs utiles
+
+Pour chacune des questions, choisissez l'indicateur le plus directement utile : effectif, fréquence, moyenne, médiane, minimum/maximum ou IQR.
+
+a. Quelle part des clients utilise le paiement par carte ?
+b. Quel est le montant central des salaires ?
+c. Quelle est la largeur de la moitié centrale des durées de livraison ?
+d. Combien de commandes ont été enregistrées ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-4"}
+a. **Fréquence** ; b. **médiane** ; c. **IQR** ; d. **effectif**.
+:::
+:::
+
+::: {#exr-eda-5}
+### Interpréter des statistiques descriptives
+
+Pour une variable `revenu_mensuel` (en MAD), on obtient : moyenne = 8 500, médiane = 6 200, écart-type = 5 400, asymétrie (*skewness*) = 2,3.
+
+a. Que suggère l'écart important entre la moyenne et la médiane ?
+b. Que confirme la valeur positive et élevée de l'asymétrie ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-5"}
+a. Un écart important entre une moyenne nettement supérieure à la médiane suggère la présence de quelques revenus très élevés qui tirent la moyenne vers le haut, sans être représentatifs de la majorité des observations.
+b. Une asymétrie positive et élevée confirme une distribution étalée vers la droite (une « longue traîne » de hauts revenus), cohérente avec l'écart observé entre moyenne et médiane.
+:::
+:::
+
+::: {#exr-eda-6}
+### Lire une dispersion
+
+Deux classes ont la même moyenne à un examen : 12/20. La classe A a un écart-type de 1,5 et la classe B un écart-type de 4.
+
+a. Quelle classe est la plus homogène ?
+b. Que signifie l'écart-type plus élevé de la classe B ?
+c. Peut-on dire que les étudiants de B ont de moins bonnes notes ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-6"}
+a. La classe **A** est plus homogène.
+b. Les notes de B sont plus éloignées de leur moyenne : les niveaux sont davantage dispersés.
+c. Non. Les deux moyennes sont identiques ; B est seulement plus hétérogène.
+:::
+:::
+
+::: {#exr-eda-7}
+### Choisir le bon coefficient de corrélation
+
+Pour chacune des situations suivantes, indiquez s'il est préférable d'utiliser Pearson ou Spearman :
+
+a. La relation entre l'ancienneté d'un employé (en années) et son salaire, globalement croissante mais pas forcément linéaire.
+b. La relation entre la taille et le poids d'un ensemble d'individus adultes, approximativement linéaire.
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-7"}
+a. **Spearman**, car la relation est monotone (croissante) sans être nécessairement linéaire ; Spearman capte ce type de relation même s'il n'est pas de forme parfaitement linéaire.
+b. **Pearson**, adapté à une relation linéaire entre deux variables numériques.
+:::
+:::
+
+::: {#exr-eda-8}
+### Corrélation et causalité
+
+Dans une ville, le nombre de glaces vendues et le nombre de baignades augmentent tous les deux en été.
+
+a. Quelle relation statistique peut-on observer ?
+b. Pourquoi ne peut-on pas conclure que les glaces provoquent les baignades ?
+c. Quelle variable cachée peut expliquer les deux évolutions ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-8"}
+a. Une corrélation positive.
+b. Une corrélation décrit une association, pas une cause.
+c. La **température** ou la saison : le beau temps favorise à la fois l'achat de glaces et les baignades.
+:::
+:::
+
+::: {#exr-eda-9}
+### Construire un plan d'exploration
+
+On dispose d'un jeu de données de transactions d'un site e-commerce marocain, avec les colonnes suivantes : `date_commande`, `categorie_produit`, `prix`, `region_client`, `moyen_paiement`.
+
+Proposez, pour ce jeu de données, un exemple concret d'analyse univariée, un exemple d'analyse bivariée et un exemple d'analyse multivariée, en vous appuyant sur ces colonnes.
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-9"}
+- **Univariée** : distribution du `prix` des commandes (moyenne, médiane, dispersion).
+- **Bivariée** : prix moyen selon la `categorie_produit` (via `groupby`).
+- **Multivariée** : prix moyen croisé par `region_client` **et** `moyen_paiement` (via un tableau croisé dynamique), permettant de voir si certaines régions privilégient certains moyens de paiement pour des achats plus ou moins coûteux.
+:::
+:::
+
+::: {#exr-eda-10}
+### Interpréter un tableau agrégé
+
+Un tableau par région présente les résultats suivants :
+
+| Région | Nombre de commandes | Montant moyen (MAD) |
+|:---|---:|---:|
+| Nord | 100 | 180 |
+| Centre | 20 | 350 |
+| Sud | 80 | 200 |
+
+a. Quelle région a le montant moyen le plus élevé ?
+b. Pourquoi faut-il également regarder le nombre de commandes ?
+c. Calculez le montant total estimé pour chaque région et identifiez la région au total le plus élevé.
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-10"}
+a. Le **Centre** (350 MAD).
+b. Sa moyenne repose sur seulement 20 commandes ; elle est donc moins représentative d'un volume important que celle d'une région avec beaucoup de commandes.
+c. Nord : $100\times180=\textbf{18\,000}$ MAD ; Centre : $20\times350=\textbf{7\,000}$ MAD ; Sud : $80\times200=\textbf{16\,000}$ MAD. Le total le plus élevé est celui du **Nord**.
+:::
+:::
+
+::: {#exr-eda-11}
+### Calculer des indicateurs simples
+
+Les durées de livraison, en jours, sont : 2, 3, 3, 4, 8.
+
+a. Calculez la moyenne, la médiane et l'étendue.
+b. Quel indicateur est le moins influencé par la durée de 8 jours ?
+c. Quelle question supplémentaire poseriez-vous avant de conclure que le service est lent ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-eda-11"}
+a. Moyenne $=(2+3+3+4+8)/5=\textbf{4}$ jours ; médiane = **3 jours** ; étendue $=8-2=\textbf{6}$ jours.
+b. La **médiane**.
+c. Il faut connaître le nombre total de livraisons, la période, la région et la proportion de livraisons de 8 jours : une seule valeur extrême ne suffit pas.
+:::
+:::

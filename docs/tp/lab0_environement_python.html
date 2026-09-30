@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 0 : Environnement Python et statistique descriptive – Analyse et visualisation de données</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../tp/lab1_collect_donnees.html" rel="next">
+<link href="../chapitres/06_cas_pratique.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tp/lab0_environement_python.html"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Analyse et visualisation de données</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Recherche"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">index.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../preface.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Préface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/00_introduction_analyse_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’analyse de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/module_collecte_pretraitement_commun.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Collecte, Nettoyage et Préparation des Données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/02_exploration_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploration des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/03_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualisation des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/04_entropot_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’entrepôt de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/05_powerbi-taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Business Intelligence avec Power BI et Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab0_environement_python.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab1_collect_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 : Collecte de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab2_eda_pretraitement_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 : EDA et prétraitement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab3_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 : Visualiser les données 311</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab4_entropot_donnees_powerbi.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 : Entrepôt de données et dashboard avancé avec Power BI</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab5_entropot_donnees_taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 : Entrepôt de données et dashboard avancé avec Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Dans ce chapitre</h2>
+   
+  <ul>
+  <li><a href="#contexte-et-données" id="toc-contexte-et-données" class="nav-link active" data-scroll-target="#contexte-et-données">1. Contexte et données</a></li>
+  <li><a href="#préparer-lenvironnement" id="toc-préparer-lenvironnement" class="nav-link" data-scroll-target="#préparer-lenvironnement">2. Préparer l’environnement</a>
+  <ul class="collapse">
+  <li><a href="#créer-le-projet" id="toc-créer-le-projet" class="nav-link" data-scroll-target="#créer-le-projet">2.1. Créer le projet</a></li>
+  <li><a href="#vérifier-les-bibliothèques" id="toc-vérifier-les-bibliothèques" class="nav-link" data-scroll-target="#vérifier-les-bibliothèques">2.2. Vérifier les bibliothèques</a></li>
+  </ul></li>
+  <li><a href="#télécharger-et-inspecter-les-données" id="toc-télécharger-et-inspecter-les-données" class="nav-link" data-scroll-target="#télécharger-et-inspecter-les-données">3. Télécharger et inspecter les données</a>
+  <ul class="collapse">
+  <li><a href="#télécharger-une-copie-locale" id="toc-télécharger-une-copie-locale" class="nav-link" data-scroll-target="#télécharger-une-copie-locale">3.1. Télécharger une copie locale</a></li>
+  <li><a href="#les-premiers-réflexes" id="toc-les-premiers-réflexes" class="nav-link" data-scroll-target="#les-premiers-réflexes">3.2. Les premiers réflexes</a></li>
+  <li><a href="#distinguer-les-types-de-données" id="toc-distinguer-les-types-de-données" class="nav-link" data-scroll-target="#distinguer-les-types-de-données">3.3. Distinguer les types de données</a></li>
+  </ul></li>
+  <li><a href="#fréquences-et-répartitions" id="toc-fréquences-et-répartitions" class="nav-link" data-scroll-target="#fréquences-et-répartitions">4. Fréquences et répartitions</a>
+  <ul class="collapse">
+  <li><a href="#effectif-et-fréquence" id="toc-effectif-et-fréquence" class="nav-link" data-scroll-target="#effectif-et-fréquence">4.1. Effectif et fréquence</a></li>
+  <li><a href="#fréquences-croisées" id="toc-fréquences-croisées" class="nav-link" data-scroll-target="#fréquences-croisées">4.2. Fréquences croisées</a></li>
+  <li><a href="#fréquence-dune-condition" id="toc-fréquence-dune-condition" class="nav-link" data-scroll-target="#fréquence-dune-condition">4.3. Fréquence d’une condition</a></li>
+  </ul></li>
+  <li><a href="#moyenne-médiane-et-quantiles" id="toc-moyenne-médiane-et-quantiles" class="nav-link" data-scroll-target="#moyenne-médiane-et-quantiles">5. Moyenne, médiane et quantiles</a>
+  <ul class="collapse">
+  <li><a href="#tendance-centrale" id="toc-tendance-centrale" class="nav-link" data-scroll-target="#tendance-centrale">5.1. Tendance centrale</a></li>
+  <li><a href="#quartiles-et-quantiles" id="toc-quartiles-et-quantiles" class="nav-link" data-scroll-target="#quartiles-et-quantiles">5.2. Quartiles et quantiles</a></li>
+  <li><a href="#tableau-descriptif" id="toc-tableau-descriptif" class="nav-link" data-scroll-target="#tableau-descriptif">5.3. Tableau descriptif</a></li>
+  </ul></li>
+  <li><a href="#variance-et-écart-type" id="toc-variance-et-écart-type" class="nav-link" data-scroll-target="#variance-et-écart-type">6. Variance et écart-type</a>
+  <ul class="collapse">
+  <li><a href="#définitions-utiles" id="toc-définitions-utiles" class="nav-link" data-scroll-target="#définitions-utiles">6.1. Définitions utiles</a></li>
+  <li><a href="#comparer-deux-groupes" id="toc-comparer-deux-groupes" class="nav-link" data-scroll-target="#comparer-deux-groupes">6.2. Comparer deux groupes</a></li>
+  </ul></li>
+  <li><a href="#taux-de-croissance" id="toc-taux-de-croissance" class="nav-link" data-scroll-target="#taux-de-croissance">7. Taux de croissance</a></li>
+  <li><a href="#visualiser-pour-vérifier" id="toc-visualiser-pour-vérifier" class="nav-link" data-scroll-target="#visualiser-pour-vérifier">8. Visualiser pour vérifier</a>
+  <ul class="collapse">
+  <li><a href="#distribution-des-retards" id="toc-distribution-des-retards" class="nav-link" data-scroll-target="#distribution-des-retards">8.1. Distribution des retards</a></li>
+  <li><a href="#interpréter-sans-exagérer" id="toc-interpréter-sans-exagérer" class="nav-link" data-scroll-target="#interpréter-sans-exagérer">8.2. Interpréter sans exagérer</a></li>
+  </ul></li>
+  <li><a href="#lab-sheet-travail-demandé" id="toc-lab-sheet-travail-demandé" class="nav-link" data-scroll-target="#lab-sheet-travail-demandé">9. Lab Sheet — Travail demandé</a>
+  <ul class="collapse">
+  <li><a href="#partie-a-environnement-et-prise-en-main" id="toc-partie-a-environnement-et-prise-en-main" class="nav-link" data-scroll-target="#partie-a-environnement-et-prise-en-main">Partie A — Environnement et prise en main</a></li>
+  <li><a href="#partie-b-fréquences-et-types" id="toc-partie-b-fréquences-et-types" class="nav-link" data-scroll-target="#partie-b-fréquences-et-types">Partie B — Fréquences et types</a></li>
+  <li><a href="#partie-c-statistiques-descriptives" id="toc-partie-c-statistiques-descriptives" class="nav-link" data-scroll-target="#partie-c-statistiques-descriptives">Partie C — Statistiques descriptives</a></li>
+  <li><a href="#partie-d-évolution-et-visualisation" id="toc-partie-d-évolution-et-visualisation" class="nav-link" data-scroll-target="#partie-d-évolution-et-visualisation">Partie D — Évolution et visualisation</a></li>
+  <li><a href="#partie-e-question-danalyse" id="toc-partie-e-question-danalyse" class="nav-link" data-scroll-target="#partie-e-question-danalyse">Partie E — Question d’analyse</a></li>
+  </ul></li>
+  <li><a href="#livrables" id="toc-livrables" class="nav-link" data-scroll-target="#livrables">10. Livrables</a>
+  <ul class="collapse">
+  <li><a href="#livrables-1" id="toc-livrables-1" class="nav-link" data-scroll-target="#livrables-1">Livrables</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div class="callout callout-style-default callout-tip callout-titled" title="Objectifs du Lab">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Objectifs du Lab
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>À la fin de ce Lab, l’étudiant sera capable de :</p>
+<ul>
+<li><strong>Créer</strong> un projet Python reproductible avec <code>uv</code> et JupyterLab ;</li>
+<li><strong>Charger</strong> un jeu de données réel et volumineux avec <code>pandas</code> ;</li>
+<li><strong>Identifier</strong> les types de variables et les premières erreurs de qualité ;</li>
+<li><strong>Calculer</strong> des effectifs, fréquences, taux de croissance, moyenne, médiane, quartiles, quantiles, variance et écart-type ;</li>
+<li><strong>Interpréter</strong> les indicateurs avec leur unité, leur période et leur population ;</li>
+<li><strong>Produire</strong> quelques graphiques simples pour vérifier les résultats numériques.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Positionnement">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Positionnement
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ce Lab ne demande ni Machine Learning ni formule compliquée. Le but est de prendre de bons réflexes avec Python et <code>pandas</code> : observer les données avant de les modifier, calculer des indicateurs adaptés à la question et expliquer ce qu’ils signifient.</p>
+</div>
+</div>
+<section id="contexte-et-données" class="level2">
+<h2 class="anchored" data-anchor-id="contexte-et-données">1. Contexte et données</h2>
+<p>Nous utiliserons le jeu de données <strong>NYC Flights 2013</strong>, qui contient environ 336 000 vols au départ de New York en 2013 et plusieurs types de variables :</p>
+<ul>
+<li>numériques : retards, durée de vol, distance ;</li>
+<li>catégorielles : compagnie, aéroport de départ, destination ;</li>
+<li>temporelles ou dérivées du temps : mois, jour, heure ;</li>
+<li>identifiants : numéro de vol et numéro d’avion ;</li>
+<li>valeurs manquantes : certaines heures d’arrivée ou durées ne sont pas renseignées.</li>
+</ul>
+<p>Le jeu de données est distribué dans le dépôt public <code>Rdatasets</code>, à partir du paquet <code>nycflights13</code> :</p>
+<p><a href="https://raw.githubusercontent.com/Rdatasets/nycflights13/master/csv/flights.csv" class="uri">https://raw.githubusercontent.com/Rdatasets/nycflights13/master/csv/flights.csv</a></p>
+<p>La source originale est décrite dans le projet <code>nycflights13</code> : <a href="https://github.com/tidyverse/nycflights13" class="uri">https://github.com/tidyverse/nycflights13</a>.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Données réelles, résultats à vérifier">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Données réelles, résultats à vérifier
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le fichier est public et adapté à l’apprentissage, mais il ne représente pas tous les vols américains ni tous les aéroports. Les conclusions du Lab portent uniquement sur les vols présents dans ce fichier et sur l’année 2013.</p>
+</div>
+</div>
+</section>
+<section id="préparer-lenvironnement" class="level2">
+<h2 class="anchored" data-anchor-id="préparer-lenvironnement">2. Préparer l’environnement</h2>
+<section id="créer-le-projet" class="level3">
+<h3 class="anchored" data-anchor-id="créer-le-projet">2.1. Créer le projet</h3>
+<p>Dans un terminal :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> cours-analyse-donnees</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> cours-analyse-donnees</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> init <span class="at">--python</span> 3.12</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add pandas numpy matplotlib seaborn jupyter ipykernel</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> lock</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>La structure attendue est :</p>
+<pre class="text"><code>cours-analyse-donnees/
+├── pyproject.toml
+├── uv.lock
+├── data/
+│   ├── raw/
+│   └── processed/
+├── notebooks/
+└── outputs/</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/raw data/processed notebooks outputs</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sous Windows, la commande de création des dossiers peut être exécutée séparément dans l’explorateur ou avec PowerShell. L’essentiel est de conserver la même organisation.</p>
+</section>
+<section id="vérifier-les-bibliothèques" class="level3">
+<h3 class="anchored" data-anchor-id="vérifier-les-bibliothèques">2.2. Vérifier les bibliothèques</h3>
+<p>Créez une première cellule dans un notebook :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Python      :"</span>, sys.version.split()[<span class="dv">0</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"NumPy       :"</span>, np.__version__)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"pandas      :"</span>, pd.__version__)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matplotlib  :"</span>, matplotlib.__version__)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Seaborn     :"</span>, sns.__version__)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Si une bibliothèque manque, installez-la avec <code>uv add nom-de-la-bibliotheque</code>, puis redémarrez le noyau du notebook.</p>
+</section>
+</section>
+<section id="télécharger-et-inspecter-les-données" class="level2">
+<h2 class="anchored" data-anchor-id="télécharger-et-inspecter-les-données">3. Télécharger et inspecter les données</h2>
+<section id="télécharger-une-copie-locale" class="level3">
+<h3 class="anchored" data-anchor-id="télécharger-une-copie-locale">3.1. Télécharger une copie locale</h3>
+<p>Ne faites pas dépendre tout le Lab d’une nouvelle requête Internet à chaque exécution. Téléchargez une copie brute et conservez-la.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> (</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://raw.githubusercontent.com/Rdatasets/nycflights13/"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"master/csv/flights.csv"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>RAW_DIR <span class="op">=</span> Path(<span class="st">"../data/raw"</span>)  <span class="co"># à adapter si le notebook est ailleurs</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>RAW_DIR.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>flights <span class="op">=</span> pd.read_csv(URL)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>flights.to_csv(RAW_DIR <span class="op">/</span> <span class="st">"flights_2013.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Si le téléchargement a déjà été effectué :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>flights <span class="op">=</span> pd.read_csv(<span class="st">"../data/raw/flights_2013.csv"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Vérifiez le chemin à partir du dossier depuis lequel Jupyter exécute le notebook :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Path.cwd())</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="les-premiers-réflexes" class="level3">
+<h3 class="anchored" data-anchor-id="les-premiers-réflexes">3.2. Les premiers réflexes</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>flights.head()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>flights.tail()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>flights.shape</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>flights.columns.tolist()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>flights.info()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>shape</code> renvoie le nombre de lignes et de colonnes. <code>info()</code> indique les types détectés et le nombre de valeurs non manquantes. Ne commencez pas par modifier les données : commencez par les décrire.</p>
+</section>
+<section id="distinguer-les-types-de-données" class="level3">
+<h3 class="anchored" data-anchor-id="distinguer-les-types-de-données">3.3. Distinguer les types de données</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>flights.dtypes</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>numeriques <span class="op">=</span> flights.select_dtypes(include<span class="op">=</span><span class="st">"number"</span>).columns.tolist()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>textuelles <span class="op">=</span> flights.select_dtypes(include<span class="op">=</span><span class="st">"object"</span>).columns.tolist()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Variables numériques :"</span>, numeriques)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Variables textuelles :"</span>, textuelles)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Dans une analyse, un numéro de vol est numériquement stocké mais n’est pas forcément une grandeur à additionner. Le type Python et le rôle statistique d’une variable ne sont donc pas exactement la même chose.</p>
+</section>
+</section>
+<section id="fréquences-et-répartitions" class="level2">
+<h2 class="anchored" data-anchor-id="fréquences-et-répartitions">4. Fréquences et répartitions</h2>
+<section id="effectif-et-fréquence" class="level3">
+<h3 class="anchored" data-anchor-id="effectif-et-fréquence">4.1. Effectif et fréquence</h3>
+<p>Commençons par les aéroports de départ :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>effectifs_origine <span class="op">=</span> flights[<span class="st">"origin"</span>].value_counts()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>frequences_origine <span class="op">=</span> flights[<span class="st">"origin"</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>repartition_origine <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"effectif"</span>: effectifs_origine,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"frequence_pct"</span>: frequences_origine.<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>repartition_origine</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’<strong>effectif</strong> est un nombre de lignes. La <strong>fréquence</strong> est une proportion, souvent présentée en pourcentage :</p>
+<p><span class="math display">\[
+\text{fréquence en \%}
+=\frac{\text{effectif de la catégorie}}{\text{effectif total}}\times100.
+\]</span></p>
+<p>La somme des fréquences est proche de 100 %. De petits écarts peuvent venir de l’arrondi.</p>
+</section>
+<section id="fréquences-croisées" class="level3">
+<h3 class="anchored" data-anchor-id="fréquences-croisées">4.2. Fréquences croisées</h3>
+<p>Pour comparer l’origine et la compagnie :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>table_compagnie_origine <span class="op">=</span> pd.crosstab(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    flights[<span class="st">"carrier"</span>],</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    flights[<span class="st">"origin"</span>],</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    normalize<span class="op">=</span><span class="st">"index"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>table_compagnie_origine.<span class="bu">round</span>(<span class="dv">1</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>normalize="index"</code> calcule la composition de chaque compagnie. Si l’on souhaite plutôt connaître la composition de chaque aéroport, on utilise <code>normalize="columns"</code>.</p>
+</section>
+<section id="fréquence-dune-condition" class="level3">
+<h3 class="anchored" data-anchor-id="fréquence-dune-condition">4.3. Fréquence d’une condition</h3>
+<p>La proportion de vols retardés au départ de plus de 15 minutes se calcule ainsi :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>retards <span class="op">=</span> flights[<span class="st">"dep_delay"</span>].dropna()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>taux_retard_15 <span class="op">=</span> (retards <span class="op">&gt;</span> <span class="dv">15</span>).mean() <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>taux_retard_15<span class="sc">:.2f}</span><span class="ss"> %"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Dans pandas, une comparaison produit des valeurs <code>True</code> et <code>False</code>, assimilées à 1 et 0 dans une moyenne. Cette technique est utile, mais il faut annoncer le dénominateur : ici, les vols dont le retard au départ est connu.</p>
+</section>
+</section>
+<section id="moyenne-médiane-et-quantiles" class="level2">
+<h2 class="anchored" data-anchor-id="moyenne-médiane-et-quantiles">5. Moyenne, médiane et quantiles</h2>
+<section id="tendance-centrale" class="level3">
+<h3 class="anchored" data-anchor-id="tendance-centrale">5.1. Tendance centrale</h3>
+<p>Pour les retards au départ :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dep_delay <span class="op">=</span> flights[<span class="st">"dep_delay"</span>].dropna()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>moyenne <span class="op">=</span> dep_delay.mean()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>mediane <span class="op">=</span> dep_delay.median()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>mode <span class="op">=</span> dep_delay.mode()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Moyenne :"</span>, moyenne)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Médiane :"</span>, mediane)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Mode(s) :"</span>, mode.head())</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>La <strong>moyenne</strong> est la somme divisée par le nombre de valeurs.</li>
+<li>La <strong>médiane</strong> est la valeur qui sépare les données triées en deux groupes.</li>
+<li>Le <strong>mode</strong> est la valeur la plus fréquente ; il est parfois peu intéressant pour une mesure continue comme un retard.</li>
+</ul>
+<p>Une moyenne supérieure à la médiane indique souvent une queue de valeurs élevées, mais il faut regarder la distribution avant d’affirmer qu’il existe des valeurs aberrantes.</p>
+</section>
+<section id="quartiles-et-quantiles" class="level3">
+<h3 class="anchored" data-anchor-id="quartiles-et-quantiles">5.2. Quartiles et quantiles</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>quartiles <span class="op">=</span> dep_delay.quantile([<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>])</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>deciles <span class="op">=</span> dep_delay.quantile([<span class="fl">0.10</span>, <span class="fl">0.90</span>])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(quartiles)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(deciles)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le quantile <span class="math inline">\(p\)</span> est une valeur en dessous de laquelle se trouvent environ <span class="math inline">\(p\times100\)</span> % des observations :</p>
+<ul>
+<li><span class="math inline">\(Q_1\)</span> ou quantile 0,25 : environ 25 % des valeurs sont inférieures ou égales ;</li>
+<li>médiane ou quantile 0,50 : environ 50 % ;</li>
+<li><span class="math inline">\(Q_3\)</span> ou quantile 0,75 : environ 75 %.</li>
+</ul>
+<p>L’écart interquartile est :</p>
+<p><span class="math display">\[
+IQR=Q_3-Q_1.
+\]</span></p>
+<p>Il décrit la largeur de la moitié centrale des données et résiste mieux aux valeurs extrêmes que l’étendue.</p>
+</section>
+<section id="tableau-descriptif" class="level3">
+<h3 class="anchored" data-anchor-id="tableau-descriptif">5.3. Tableau descriptif</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>resume <span class="op">=</span> flights[[</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dep_delay"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"arr_delay"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"air_time"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"distance"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>]].describe().T</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>resume</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>La colonne <code>50%</code> de <code>describe()</code> correspond à la médiane. Le tableau doit être lu avec l’unité : minutes pour les retards et la durée, miles pour la distance.</p>
+</section>
+</section>
+<section id="variance-et-écart-type" class="level2">
+<h2 class="anchored" data-anchor-id="variance-et-écart-type">6. Variance et écart-type</h2>
+<section id="définitions-utiles" class="level3">
+<h3 class="anchored" data-anchor-id="définitions-utiles">6.1. Définitions utiles</h3>
+<p>La variance mesure la dispersion autour de la moyenne. L’écart-type est sa racine carrée :</p>
+<p><span class="math display">\[
+\operatorname{Var}(X)
+=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2,
+\qquad
+\sigma=\sqrt{\operatorname{Var}(X)}.
+\]</span></p>
+<p>Dans un échantillon, on utilise souvent <span class="math inline">\(n-1\)</span> au dénominateur pour estimer la variance d’une population plus large. <code>pandas</code> utilise par défaut <code>ddof=1</code> :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>variance_echantillon <span class="op">=</span> dep_delay.var()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ecart_type_echantillon <span class="op">=</span> dep_delay.std()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>variance_population <span class="op">=</span> dep_delay.var(ddof<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>ecart_type_population <span class="op">=</span> dep_delay.std(ddof<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pour ce Lab, retenez surtout deux règles :</p>
+<ol type="1">
+<li>l’écart-type est exprimé dans la même unité que la variable ;</li>
+<li>il est sensible aux grandes valeurs, donc on le complète souvent par la médiane et l’IQR.</li>
+</ol>
+<p>Un écart-type de 20 minutes ne signifie pas que tous les retards valent moyenne ± 20. Il indique une dispersion globale, pas une limite stricte.</p>
+</section>
+<section id="comparer-deux-groupes" class="level3">
+<h3 class="anchored" data-anchor-id="comparer-deux-groupes">6.2. Comparer deux groupes</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>resume_origine <span class="op">=</span> (</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    flights.groupby(<span class="st">"origin"</span>)[<span class="st">"dep_delay"</span>]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    .agg(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        effectif<span class="op">=</span><span class="st">"count"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        moyenne<span class="op">=</span><span class="st">"mean"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        mediane<span class="op">=</span><span class="st">"median"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        q1<span class="op">=</span><span class="kw">lambda</span> s: s.quantile(<span class="fl">0.25</span>),</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>        q3<span class="op">=</span><span class="kw">lambda</span> s: s.quantile(<span class="fl">0.75</span>),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        ecart_type<span class="op">=</span><span class="st">"std"</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>resume_origine</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ne comparez jamais deux moyennes sans regarder les effectifs et la médiane. Un groupe très petit peut présenter une moyenne instable.</p>
+</section>
+</section>
+<section id="taux-de-croissance" class="level2">
+<h2 class="anchored" data-anchor-id="taux-de-croissance">7. Taux de croissance</h2>
+<p>Pour suivre une évolution mensuelle, on calcule d’abord une mesure par mois :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>volumes_mensuels <span class="op">=</span> flights.groupby(<span class="st">"month"</span>).size()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>taux_croissance <span class="op">=</span> volumes_mensuels.pct_change() <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>evolution_mensuelle <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"vols"</span>: volumes_mensuels,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"taux_croissance_pct"</span>: taux_croissance.<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>evolution_mensuelle</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le taux de croissance entre une période initiale et une période finale est :</p>
+<p><span class="math display">\[
+\text{croissance en \%}
+=\frac{\text{valeur finale}-\text{valeur initiale}}
+{\text{valeur initiale}}\times100.
+\]</span></p>
+<p>Le premier mois n’a pas de période précédente dans le tableau : son taux est donc <code>NaN</code>. Une baisse est un taux négatif. Une croissance de 10 % suivie d’une baisse de 10 % ne ramène pas exactement à la valeur de départ, car les dénominateurs sont différents.</p>
+</section>
+<section id="visualiser-pour-vérifier" class="level2">
+<h2 class="anchored" data-anchor-id="visualiser-pour-vérifier">8. Visualiser pour vérifier</h2>
+<section id="distribution-des-retards" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-des-retards">8.1. Distribution des retards</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>sns.histplot(dep_delay.clip(<span class="op">-</span><span class="dv">30</span>, <span class="dv">180</span>), bins<span class="op">=</span><span class="dv">40</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Distribution des retards au départ"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"Retard (minutes)"</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>sns.boxplot(x<span class="op">=</span>dep_delay, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Boîte à moustaches des retards"</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Retard (minutes)"</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"../outputs/lab0_distribution_retards.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le <code>clip</code> limite uniquement l’affichage aux valeurs comprises entre -30 et 180 minutes ; il ne modifie pas la série utilisée pour les calculs précédents. Cette distinction doit être écrite dans le notebook.</p>
+</section>
+<section id="interpréter-sans-exagérer" class="level3">
+<h3 class="anchored" data-anchor-id="interpréter-sans-exagérer">8.2. Interpréter sans exagérer</h3>
+<p>Une bonne interprétation contient :</p>
+<ol type="1">
+<li>l’indicateur et sa valeur ;</li>
+<li>l’unité et la population ;</li>
+<li>une comparaison éventuelle ;</li>
+<li>une limite ou une question à approfondir.</li>
+</ol>
+<p>Exemple de forme attendue :</p>
+<blockquote class="blockquote">
+<p>Pour les vols dont le retard au départ est connu, la médiane est de __ minutes et la moyenne de __ minutes. La moyenne est plus élevée, ce qui suggère quelques retards importants. Il faut vérifier la distribution par compagnie et par mois avant d’attribuer cette différence à une cause.</p>
+</blockquote>
+</section>
+</section>
+<section id="lab-sheet-travail-demandé" class="level2">
+<h2 class="anchored" data-anchor-id="lab-sheet-travail-demandé">9. Lab Sheet — Travail demandé</h2>
+<div class="callout callout-style-default callout-important callout-titled" title="Consigne générale">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Consigne générale
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Travaillez dans <code>notebooks/lab0_statistique_descriptive.ipynb</code>. Chaque réponse doit être accompagnée du code qui permet de la retrouver. Les résultats numériques peuvent varier si vous modifiez le filtre ou si le fichier téléchargé n’est pas exactement la même version : indiquez toujours votre source et votre filtre.</p>
+</div>
+</div>
+<section id="partie-a-environnement-et-prise-en-main" class="level3">
+<h3 class="anchored" data-anchor-id="partie-a-environnement-et-prise-en-main">Partie A — Environnement et prise en main</h3>
+<ol type="1">
+<li>Affichez les versions de Python, NumPy, pandas, Matplotlib et Seaborn.</li>
+<li>Montrez l’organisation du projet et expliquez le rôle de <code>pyproject.toml</code>, <code>uv.lock</code>, <code>data/raw/</code> et <code>outputs/</code>.</li>
+<li>Téléchargez le fichier et indiquez son nombre de lignes et de colonnes.</li>
+<li>Listez les colonnes et classez-les en variables numériques, catégorielles, temporelles ou identifiants.</li>
+</ol>
+</section>
+<section id="partie-b-fréquences-et-types" class="level3">
+<h3 class="anchored" data-anchor-id="partie-b-fréquences-et-types">Partie B — Fréquences et types</h3>
+<ol start="5" type="1">
+<li>Calculez l’effectif et la fréquence des vols par aéroport de départ.</li>
+<li>Calculez la fréquence des vols par compagnie, puis affichez uniquement les cinq compagnies les plus fréquentes.</li>
+<li>Construisez un tableau croisé compagnie/aéroport. Comparez les fréquences par ligne et par colonne.</li>
+<li>Calculez le taux de vols dont <code>dep_delay &gt; 15</code>. Indiquez précisément le dénominateur utilisé.</li>
+</ol>
+</section>
+<section id="partie-c-statistiques-descriptives" class="level3">
+<h3 class="anchored" data-anchor-id="partie-c-statistiques-descriptives">Partie C — Statistiques descriptives</h3>
+<ol start="9" type="1">
+<li>Pour <code>dep_delay</code>, calculez la moyenne, la médiane et le mode. Comparez moyenne et médiane en une phrase.</li>
+<li>Calculez <span class="math inline">\(Q_1\)</span>, la médiane, <span class="math inline">\(Q_3\)</span>, le 10e et le 90e quantile.</li>
+<li>Calculez l’IQR, la variance et l’écart-type avec <code>ddof=1</code>. Donnez les unités de chaque résultat.</li>
+<li>Recalculez variance et écart-type avec <code>ddof=0</code>. Expliquez brièvement pourquoi les résultats sont différents.</li>
+<li>Répétez les indicateurs par aéroport de départ et comparez les trois groupes sans désigner un « meilleur » aéroport sans justification.</li>
+</ol>
+</section>
+<section id="partie-d-évolution-et-visualisation" class="level3">
+<h3 class="anchored" data-anchor-id="partie-d-évolution-et-visualisation">Partie D — Évolution et visualisation</h3>
+<ol start="14" type="1">
+<li>Calculez le nombre de vols par mois et le taux de croissance mensuel.</li>
+<li>Produisez un graphique de l’évolution mensuelle du nombre de vols.</li>
+<li>Produisez un histogramme et une boîte à moustaches des retards.</li>
+<li>Écrivez un paragraphe de conclusion avec trois chiffres, deux interprétations et une limite.</li>
+</ol>
+</section>
+<section id="partie-e-question-danalyse" class="level3">
+<h3 class="anchored" data-anchor-id="partie-e-question-danalyse">Partie E — Question d’analyse</h3>
+<ol start="18" type="1">
+<li>La question « quelle compagnie est la plus ponctuelle ? » est-elle suffisamment précise ? Reformulez-la en indiquant la mesure, le seuil, la période et le dénominateur.</li>
+<li>Proposez deux indicateurs complémentaires qui éviteraient de se limiter à la moyenne.</li>
+<li>Expliquez pourquoi une corrélation éventuelle entre distance et retard ne prouverait pas qu’une variable cause l’autre.</li>
+</ol>
+</section>
+</section>
+<section id="livrables" class="level2">
+<h2 class="anchored" data-anchor-id="livrables">10. Livrables</h2>
+<section id="livrables-1" class="level3">
+<h3 class="anchored" data-anchor-id="livrables-1">Livrables</h3>
+<ul>
+<li><code>notebooks/lab0_statistique_descriptive.ipynb</code> ;</li>
+<li><code>data/raw/flights_2013.csv</code> ou un fichier <code>README</code> indiquant comment le télécharger ;</li>
+<li>au moins deux graphiques dans <code>outputs/</code> ;</li>
+<li>un court paragraphe d’interprétation pour les parties B, C et D ;</li>
+<li><code>pyproject.toml</code> et <code>uv.lock</code>.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled" title="Checklist finale">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Checklist finale
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li><label><input type="checkbox">Le notebook s’exécute du début à la fin après redémarrage du noyau.</label></li>
+<li><label><input type="checkbox">Les données brutes ne sont pas écrasées.</label></li>
+<li><label><input type="checkbox">Chaque taux possède un dénominateur explicite.</label></li>
+<li><label><input type="checkbox">Chaque statistique possède une unité et une population.</label></li>
+<li><label><input type="checkbox">La moyenne et la médiane sont interprétées ensemble.</label></li>
+<li><label><input type="checkbox">Les résultats sont accompagnés de graphiques lisibles.</label></li>
+</ul>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copié");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copié");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapitres/06_cas_pratique.html" class="pagination-link" aria-label="Etude de cas : analyser les ventes d'une petite chaîne de magasins">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../tp/lab1_collect_donnees.html" class="pagination-link" aria-label="Lab 1 : Collecte de données">
+        <span class="nav-page-text"><span class="chapter-title">Lab 1 : Collecte de données</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

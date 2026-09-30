@@ -34,11 +34,19 @@ book:
     - index.qmd
     - preface.qmd
     - chapitres/00_introduction_analyse_donnees.qmd
-    - chapitres/01_preparation_donnees.qmd
+    - chapitres/module_collecte_pretraitement_commun.qmd
+    #- chapitres/01_preparation_donnees.qmd
     - chapitres/02_exploration_donnees.qmd
-    - chapitres/03_entropot_donnees.qmd
-    - chapitres/04_powerbi-taipy.qmd
-    - chapitres/05_cas_pratique.qmd
+    - chapitres/03_visualisation_donnees.qmd
+    - chapitres/04_entropot_donnees.qmd
+    - chapitres/05_powerbi-taipy.qmd
+    - chapitres/06_cas_pratique.qmd
+    - tp/lab0_environement_python.qmd
+    - tp/lab1_collect_donnees.qmd
+    - tp/lab2_eda_pretraitement_donnees.qmd
+    - tp/lab3_visualisation_donnees.qmd
+    - tp/lab4_entropot_donnees_powerbi.qmd
+    - tp/lab5_entropot_donnees_taipy.qmd
     - references.qmd
 
 # Configuration pour le code Python

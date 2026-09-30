@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction à l’entrepôt de données – Analyse et visualisation de données</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapitres/05_powerbi-taipy.html" rel="next">
+<link href="../chapitres/03_visualisation_donnees.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapitres/04_entropot_donnees.html"><span class="chapter-title">Introduction à l’entrepôt de données</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title"><span class="chapter-title">Introduction à l’entrepôt de données</span></h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Analyse et visualisation de données</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Recherche"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">index.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../preface.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Préface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/00_introduction_analyse_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’analyse de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/module_collecte_pretraitement_commun.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Collecte, Nettoyage et Préparation des Données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/02_exploration_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploration des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/03_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualisation des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/04_entropot_donnees.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Introduction à l’entrepôt de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/05_powerbi-taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Business Intelligence avec Power BI et Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab0_environement_python.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab1_collect_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 : Collecte de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab2_eda_pretraitement_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 : EDA et prétraitement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab3_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 : Visualiser les données 311</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab4_entropot_donnees_powerbi.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 : Entrepôt de données et dashboard avancé avec Power BI</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab5_entropot_donnees_taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 : Entrepôt de données et dashboard avancé avec Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Dans ce chapitre</h2>
+   
+  <ul>
+  <li><a href="#pourquoi-un-entrepôt-de-données" id="toc-pourquoi-un-entrepôt-de-données" class="nav-link active" data-scroll-target="#pourquoi-un-entrepôt-de-données">1. Pourquoi un entrepôt de données ?</a>
+  <ul class="collapse">
+  <li><a href="#les-systèmes-opérationnels" id="toc-les-systèmes-opérationnels" class="nav-link" data-scroll-target="#les-systèmes-opérationnels">1.1. Les systèmes opérationnels</a></li>
+  <li><a href="#la-base-analytique" id="toc-la-base-analytique" class="nav-link" data-scroll-target="#la-base-analytique">1.2. La base analytique</a></li>
+  <li><a href="#entrepôt-lac-et-datamart" id="toc-entrepôt-lac-et-datamart" class="nav-link" data-scroll-target="#entrepôt-lac-et-datamart">1.3. Entrepôt, lac et datamart</a></li>
+  </ul></li>
+  <li><a href="#le-modèle-en-étoile" id="toc-le-modèle-en-étoile" class="nav-link" data-scroll-target="#le-modèle-en-étoile">2. Le modèle en étoile</a>
+  <ul class="collapse">
+  <li><a href="#la-table-de-faits" id="toc-la-table-de-faits" class="nav-link" data-scroll-target="#la-table-de-faits">2.1. La table de faits</a></li>
+  <li><a href="#les-tables-de-dimensions" id="toc-les-tables-de-dimensions" class="nav-link" data-scroll-target="#les-tables-de-dimensions">2.2. Les tables de dimensions</a></li>
+  <li><a href="#exemple-de-modèle-de-ventes" id="toc-exemple-de-modèle-de-ventes" class="nav-link" data-scroll-target="#exemple-de-modèle-de-ventes">2.3. Exemple de modèle de ventes</a></li>
+  </ul></li>
+  <li><a href="#les-mesures-et-les-indicateurs" id="toc-les-mesures-et-les-indicateurs" class="nav-link" data-scroll-target="#les-mesures-et-les-indicateurs">3. Les mesures et les indicateurs</a></li>
+  <li><a href="#le-flux-etlelt" id="toc-le-flux-etlelt" class="nav-link" data-scroll-target="#le-flux-etlelt">4. Le flux ETL/ELT</a></li>
+  <li><a href="#gouvernance-et-sécurité-sans-complexité-inutile" id="toc-gouvernance-et-sécurité-sans-complexité-inutile" class="nav-link" data-scroll-target="#gouvernance-et-sécurité-sans-complexité-inutile">5. Gouvernance et sécurité, sans complexité inutile</a></li>
+  <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices">Exercices</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div class="callout callout-style-default callout-tip callout-titled" title="Objectifs du chapitre">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Objectifs du chapitre
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>À la fin de ce chapitre, l’étudiant sera capable de :</p>
+<ul>
+<li><strong>Expliquer</strong> pourquoi une organisation sépare souvent les systèmes opérationnels des données destinées à l’analyse ;</li>
+<li><strong>Distinguer</strong> une base transactionnelle, un entrepôt de données, un lac de données et un datamart ;</li>
+<li><strong>Lire</strong> un modèle en étoile composé d’une table de faits et de tables de dimensions ;</li>
+<li><strong>Définir</strong> le grain d’une table de faits et choisir des mesures adaptées ;</li>
+<li><strong>Décrire</strong> les grandes étapes d’un flux ETL/ELT, de la source au tableau de bord.</li>
+</ul>
+</div>
+</div>
+<p>Un tableau de bord fiable ne commence pas par un graphique. Il commence par des données organisées, documentées et mises à jour de façon régulière. L’<strong>entrepôt de données</strong> (<em>data warehouse</em>) fournit cette base pour l’analyse.</p>
+<section id="pourquoi-un-entrepôt-de-données" class="level2">
+<h2 class="anchored" data-anchor-id="pourquoi-un-entrepôt-de-données">1. Pourquoi un entrepôt de données ?</h2>
+<section id="les-systèmes-opérationnels" class="level3">
+<h3 class="anchored" data-anchor-id="les-systèmes-opérationnels">1.1. Les systèmes opérationnels</h3>
+<p>Une application de vente, une caisse ou un site web utilise une base <strong>opérationnelle</strong> pour enregistrer les événements du quotidien : créer une commande, modifier une adresse, enregistrer un paiement. Ces systèmes doivent répondre vite à de petites opérations et éviter les incohérences.</p>
+<p>Une base opérationnelle est souvent organisée pour limiter la répétition des informations. Une commande peut être répartie entre <code>clients</code>, <code>commandes</code> et <code>lignes_commande</code>, reliées par des identifiants.</p>
+<p>Cette organisation est adaptée à l’écriture, mais une question analytique comme « Quel est le chiffre d’affaires mensuel par région et par catégorie depuis trois ans ? » peut nécessiter de nombreuses jointures et plusieurs sources. Exécuter ce type de requête directement sur la base de production peut ralentir l’application.</p>
+</section>
+<section id="la-base-analytique" class="level3">
+<h3 class="anchored" data-anchor-id="la-base-analytique">1.2. La base analytique</h3>
+<p>Un <strong>entrepôt de données</strong> est un espace centralisé, organisé pour analyser l’historique de l’organisation. Il rassemble des données provenant de plusieurs sources, conserve leur contexte et les transforme dans un format plus simple à interroger.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Système</th>
+<th style="text-align: left;">But principal</th>
+<th style="text-align: left;">Exemple de question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Base opérationnelle (OLTP)</td>
+<td style="text-align: left;">Enregistrer les événements courants</td>
+<td style="text-align: left;">« Quel est le statut de la commande 1524 ? »</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Entrepôt analytique (OLAP)</td>
+<td style="text-align: left;">Comparer, agréger et suivre l’historique</td>
+<td style="text-align: left;">« Comment les ventes ont-elles évolué par région ? »</td>
+</tr>
+</tbody>
+</table>
+<p>Les deux systèmes sont complémentaires. L’entrepôt n’a pas pour objectif de remplacer l’application métier.</p>
+</section>
+<section id="entrepôt-lac-et-datamart" class="level3">
+<h3 class="anchored" data-anchor-id="entrepôt-lac-et-datamart">1.3. Entrepôt, lac et datamart</h3>
+<ul>
+<li>Un <strong>data warehouse</strong> contient des données structurées, préparées et gouvernées pour l’analyse.</li>
+<li>Un <strong>data lake</strong> peut stocker des données brutes de formats variés (fichiers, textes, événements) avant leur usage ; il demande des règles claires pour rester compréhensible.</li>
+<li>Un <strong>datamart</strong> est une partie orientée vers un besoin ou un service, par exemple un datamart des ventes ou des ressources humaines.</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled" title="Un entrepôt ne corrige pas une mauvaise question">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Un entrepôt ne corrige pas une mauvaise question
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Centraliser beaucoup de données ne suffit pas. Il faut définir le vocabulaire métier, les unités, la fréquence de mise à jour et les indicateurs attendus. Sinon, on obtient plusieurs chiffres différents pour un même « chiffre d’affaires ».</p>
+</div>
+</div>
+</section>
+</section>
+<section id="le-modèle-en-étoile" class="level2">
+<h2 class="anchored" data-anchor-id="le-modèle-en-étoile">2. Le modèle en étoile</h2>
+<p>Le modèle en étoile est une organisation pédagogique et professionnelle très fréquente pour les données analytiques. Il place une <strong>table de faits</strong> au centre et des <strong>tables de dimensions</strong> autour.</p>
+<section id="la-table-de-faits" class="level3">
+<h3 class="anchored" data-anchor-id="la-table-de-faits">2.1. La table de faits</h3>
+<p>Une table de faits contient les événements mesurables : ventes, livraisons, appels ou visites. Elle comprend généralement :</p>
+<ul>
+<li>des clés vers les dimensions (<code>client_id</code>, <code>produit_id</code>, <code>date_id</code>, <code>magasin_id</code>) ;</li>
+<li>des mesures numériques (<code>quantite</code>, <code>montant</code>, <code>remise</code>) ;</li>
+<li>une ligne par événement selon un niveau de détail défini.</li>
+</ul>
+<p>Le <strong>grain</strong> est la phrase qui précise ce que représente une ligne. Par exemple : « une ligne représente un produit d’une commande, dans un magasin, à une date donnée ». Le grain doit être défini avant de choisir les mesures.</p>
+</section>
+<section id="les-tables-de-dimensions" class="level3">
+<h3 class="anchored" data-anchor-id="les-tables-de-dimensions">2.2. Les tables de dimensions</h3>
+<p>Une dimension décrit le contexte d’un fait :</p>
+<ul>
+<li><code>dim_date</code> : jour, mois, trimestre, année ;</li>
+<li><code>dim_produit</code> : produit, catégorie, marque ;</li>
+<li><code>dim_client</code> : ville, région, segment ;</li>
+<li><code>dim_magasin</code> : magasin, ville, zone.</li>
+</ul>
+<p>Les dimensions contiennent les attributs utilisés pour filtrer, regrouper et expliquer les mesures. Elles sont souvent dénormalisées pour rendre l’exploration plus simple.</p>
+<pre class="text"><code>                         dim_date
+                            |
+dim_client ---- fact_ventes ---- dim_produit
+                            |
+                       dim_magasin</code></pre>
+</section>
+<section id="exemple-de-modèle-de-ventes" class="level3">
+<h3 class="anchored" data-anchor-id="exemple-de-modèle-de-ventes">2.3. Exemple de modèle de ventes</h3>
+<pre class="text"><code>fact_ventes
+-----------
+date_id
+produit_id
+client_id
+magasin_id
+quantite
+prix_unitaire
+remise
+montant_net
+
+dim_produit
+-----------
+produit_id
+libelle
+categorie
+marque
+
+dim_date
+--------
+date_id
+date_complete
+mois
+trimestre
+annee</code></pre>
+<p>Le montant net peut être calculé par :</p>
+<p><span class="math display">\[
+\text{montant\_net}
+=\text{quantité}\times\text{prix unitaire}-\text{remise}.
+\]</span></p>
+<p>Un modèle en étoile ne dicte pas un seul outil : il peut être utilisé dans une base SQL, un fichier analytique ou un modèle Power BI.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Le rôle de la dimension Date">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Le rôle de la dimension Date
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Même si la source contient déjà une date, une dimension Date facilite les regroupements par mois, trimestre, semaine ou jour ouvré. Elle permet aussi de définir clairement les périodes comparées.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="les-mesures-et-les-indicateurs" class="level2">
+<h2 class="anchored" data-anchor-id="les-mesures-et-les-indicateurs">3. Les mesures et les indicateurs</h2>
+<p>Une <strong>mesure additive</strong> peut être additionnée sur toutes les dimensions, comme le nombre d’articles ou le montant des ventes. Une mesure <strong>semi-additive</strong>, comme un stock de fin de journée, peut être additionnée par produit mais pas dans le temps. Une mesure <strong>non additive</strong>, comme un taux ou une moyenne, doit être recalculée à partir de ses éléments plutôt que sommée.</p>
+<p>Exemple : si une région a 10 commandes et une autre 2 commandes, la moyenne globale ne doit pas être calculée comme la moyenne des deux moyennes si les effectifs sont différents. Il faut utiliser :</p>
+<p><span class="math display">\[
+\text{moyenne globale} =
+\frac{\text{total des montants}}{\text{nombre total de commandes}}.
+\]</span></p>
+<p>Les noms des indicateurs doivent préciser leur définition. « Ventes » peut signifier chiffre d’affaires brut, chiffre d’affaires net, commandes payées ou unités vendues. Dans un dictionnaire métier, on documente la formule, l’unité, la période et les filtres.</p>
+</section>
+<section id="le-flux-etlelt" class="level2">
+<h2 class="anchored" data-anchor-id="le-flux-etlelt">4. Le flux ETL/ELT</h2>
+<p>Les données passent généralement par un flux en plusieurs étapes :</p>
+<ol type="1">
+<li><strong>Extract (extraire)</strong> : lire les sources opérationnelles, fichiers ou API ;</li>
+<li><strong>Transform (transformer)</strong> : convertir les dates, harmoniser les unités, dédupliquer, contrôler les valeurs et calculer les champs dérivés ;</li>
+<li><strong>Load (charger)</strong> : déposer les données préparées dans les tables de l’entrepôt.</li>
+</ol>
+<p>Dans une approche <strong>ELT</strong>, on charge d’abord les données dans une plateforme capable de les traiter, puis on réalise les transformations à l’intérieur de cette plateforme. Les deux approches poursuivent le même but : rendre les données fiables et exploitables.</p>
+<p>Un chargement quotidien doit pouvoir répondre à quatre questions simples : quelles sources ont été lues ? combien de lignes ont été reçues ? combien ont été rejetées ? quand le chargement s’est-il terminé ?</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Qualité et traçabilité">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Qualité et traçabilité
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Conservez les données sources ou un journal de chargement, le nombre de lignes avant et après transformation, les erreurs détectées et la date de mise à jour. Ces informations permettent de comprendre pourquoi un indicateur a changé.</p>
+</div>
+</div>
+</section>
+<section id="gouvernance-et-sécurité-sans-complexité-inutile" class="level2">
+<h2 class="anchored" data-anchor-id="gouvernance-et-sécurité-sans-complexité-inutile">5. Gouvernance et sécurité, sans complexité inutile</h2>
+<p>La <strong>gouvernance</strong> désigne les règles qui rendent les données compréhensibles, accessibles aux bonnes personnes et utilisées de manière responsable. Pour commencer, un projet peut mettre en place :</p>
+<ul>
+<li>un dictionnaire des tables et des indicateurs ;</li>
+<li>un responsable pour chaque donnée importante ;</li>
+<li>des règles de qualité (unicité d’un identifiant, prix positif, date obligatoire) ;</li>
+<li>des droits d’accès adaptés, notamment pour les données personnelles ;</li>
+<li>une fréquence de mise à jour annoncée.</li>
+</ul>
+<p>Un tableau de bord ne devrait pas exposer inutilement des noms, numéros de téléphone ou adresses. On peut agréger les résultats, masquer les colonnes sensibles et limiter les accès selon le rôle de l’utilisateur.</p>
+</section>
+<section id="exercices" class="level2">
+<h2 class="anchored" data-anchor-id="exercices">Exercices</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Consigne">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Consigne
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les exercices vérifient la compréhension et peuvent être résolus sans ordinateur. Les calculs sont volontairement courts.</p>
+</div>
+</div>
+<div id="exr-dwh-1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 1 (OLTP ou OLAP ?)</strong></span> Indiquez si la question relève plutôt d’un système opérationnel ou analytique :</p>
+<ol type="a">
+<li>Modifier l’adresse d’un client.</li>
+<li>Comparer les ventes des quatre derniers trimestres par région.</li>
+<li>Vérifier si une commande est payée.</li>
+<li>Calculer la médiane des délais de livraison de l’année.</li>
+</ol>
+</div>
+<div id="exr-dwh-2" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 2 (Identifier le grain)</strong></span> Une table <code>fact_ventes</code> contient une ligne par produit présent dans une commande. Formulez le grain avec une phrase et expliquez pourquoi une commande de trois produits peut produire trois lignes.</p>
+</div>
+<div id="exr-dwh-3" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 3 (Faits ou dimensions)</strong></span> Classez les éléments suivants : <code>montant_net</code>, <code>categorie</code>, <code>annee</code>, <code>quantite</code>, <code>ville_client</code>, <code>prix_unitaire</code>.</p>
+</div>
+<div id="exr-dwh-4" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 4 (Calculer une mesure)</strong></span> Une ligne indique 3 articles à 120 MAD chacun et une remise de 40 MAD. Calculez le montant net. Une deuxième ligne indique 2 articles à 80 MAD sans remise. Quel est le montant total des deux lignes ?</p>
+</div>
+<div id="exr-dwh-5" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 5 (Mesure additive ou non ?)</strong></span> Indiquez si l’on peut additionner directement la mesure sur les périodes suivantes :</p>
+<ol type="a">
+<li>Le montant de ventes.</li>
+<li>Le stock disponible à la fin de chaque jour.</li>
+<li>Un taux de conversion en pourcentage.</li>
+</ol>
+</div>
+<div id="exr-dwh-6" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 6 (Comprendre ETL)</strong></span> Remettez dans l’ordre : charger les données préparées, extraire un fichier CSV, convertir les dates et contrôler les prix négatifs.</p>
+</div>
+<div id="exr-dwh-7" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 7 (Moyenne globale)</strong></span> La région A compte 10 commandes de 100 MAD en moyenne. La région B compte 2 commandes de 300 MAD en moyenne.</p>
+<ol type="a">
+<li>Quel est le total estimé de chaque région ?</li>
+<li>Calculez la moyenne globale.</li>
+<li>Pourquoi la moyenne des deux moyennes, 200 MAD, est-elle incorrecte ?</li>
+</ol>
+</div>
+<div id="exr-dwh-8" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 8 (Qualité et sécurité)</strong></span> Proposez une règle de qualité et une mesure de protection pour chacune des situations :</p>
+<ol type="a">
+<li>La colonne <code>prix</code> contient parfois des valeurs négatives.</li>
+<li>Un tableau de bord doit être partagé avec des responsables régionaux.</li>
+</ol>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copié");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copié");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapitres/03_visualisation_donnees.html" class="pagination-link" aria-label="Visualisation des données">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Visualisation des données</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapitres/05_powerbi-taipy.html" class="pagination-link" aria-label="Business Intelligence avec Power BI et Taipy">
+        <span class="nav-page-text"><span class="chapter-title">Business Intelligence avec Power BI et Taipy</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -6,7 +6,8 @@
 - **Définir** l'analyse de données et la **situer** par rapport à la Data Science, la Business Intelligence (BI) et le Machine Learning ;
 - **Distinguer** les quatre types d'analyse : descriptive, diagnostique, prédictive et prescriptive ;
 - **Identifier** les grandes étapes du cycle de vie d'un projet d'analyse de données ;
-- **Identifier** les outils de base utilisés dans ce cours.
+- **Identifier** les outils de base utilisés dans ce cours ;
+- **Reconnaître** le type d'une variable et **calculer**, à la main comme avec `pandas`, les indicateurs de base (effectif, fréquence, variation relative) et les statistiques descriptives d'une variable numérique (tendance centrale, dispersion, forme) qui seront mobilisés dès le chapitre suivant.
 :::
 
 ## 1. Qu'est-ce que l'analyse de données ?
@@ -22,7 +23,7 @@ L'analyse de données consiste à transformer des données brutes, souvent volum
 :::
 :::
 
-Contrairement à ce que l'on pense parfois, l'essentiel du travail d'un analyste ne consiste pas à produire des graphiques, mais à **comprendre les données** : d'où elles viennent, ce qu'elles représentent réellement, quelles sont leurs limites et leurs biais. La visualisation n'intervient qu'en bout de chaîne, pour communiquer un résultat déjà établi.
+Contrairement à ce que l'on pense parfois, l'essentiel du travail d'un analyste ne consiste pas à produire des graphiques, mais à **comprendre les données** : d'où elles viennent, ce qu'elles représentent réellement, quelles sont leurs limites et leurs biais. La visualisation intervient à deux moments : pendant l’exploration, pour repérer des tendances, des anomalies ou des relations, puis lors de la communication, pour présenter les résultats au public visé.
 
 Il existe quatre domaines liés à l'analyse de données : Data Analysis, Data Science, Business Intelligence, et Machine Learning. Ces quatre termes sont souvent confondus. Ils partagent une matière première commune (la donnée) mais diffèrent par leurs objectifs et leurs méthodes.
 
@@ -65,252 +66,7 @@ On distingue classiquement quatre niveaux d'analyse, de la simple observation du
 
 Ce cours se concentre principalement sur les analyses **descriptive** et **diagnostique** : elles reposent entièrement sur les techniques de préparation, d'exploration et de visualisation présentées dans les chapitres suivants, et ne nécessitent pas d'algorithme d'apprentissage automatique.
 
-## 2. Les premiers indicateurs à connaître
-
-Avant de construire un graphique ou un tableau de bord, il faut savoir **décrire simplement les données**.  
-Une **observation** est une ligne du tableau (par exemple une commande) et une **variable** est une colonne (par exemple le montant de la commande).
-
-Une variable peut être de trois natures :
-
-- **qualitative** : une catégorie ou une étiquette (ville, moyen de paiement, segment client…) ;
-- **quantitative** : un nombre sur lequel on peut calculer (prix, quantité, durée, chiffre d’affaires…) ;
-- **temporelle** : une date ou une période que l’on peut ordonner dans le temps (jour, mois, trimestre…).
-
-Ces distinctions sont fondamentales : les indicateurs et les graphiques adaptés ne sont pas les mêmes selon le type de variable.
-
-### Compter et comparer
-
-::: {.callout-tip title="Effectif et fréquence"}
-
-L’**effectif** d’une catégorie est le nombre d’observations qui appartiennent à cette catégorie.  
-La **fréquence** (ou proportion) est la part que représente cet effectif dans l’ensemble des observations.
-
-$$
-\text{fréquence} = \frac{\text{effectif de la catégorie}}{\text{effectif total}}
-$$
-
-On l’exprime souvent en pourcentage en multipliant par 100.
-
-::: {.callout-note title="Exemple – Effectif et fréquence"}
-Sur 120 commandes, 30 proviennent de Casablanca :
-
-$$
-\text{fréquence} = \frac{30}{120} = 0{,}25 = 25\,\%.
-$$
-
-**Interprétation** : une commande sur quatre est passée à Casablanca.
-:::
-
-:::
-
-::: {.callout-tip title="Variation relative (ou taux de variation)"}
-
-Pour comparer une même grandeur entre deux périodes (ou deux situations), on calcule la **variation relative** :
-
-$$
-\text{variation en \%} =
-\frac{\text{valeur finale} - \text{valeur initiale}}
-{\text{valeur initiale}} \times 100.
-$$
-
-- Un résultat positif indique une hausse.
-- Un résultat négatif indique une baisse.
-
-::: {.callout-note title="Exemple – Variation relative"}
-Le chiffre d’affaires d’un produit passe de 200 MAD à 240 MAD :
-
-$$
-\frac{240 - 200}{200} \times 100 = 20\,\%.
-$$
-
-**Interprétation** : les ventes ont augmenté de 20 %.
-:::
-
-::: {.callout-warning title="Remarques"}
-- Toujours préciser la période de référence (valeur initiale) et la période finale.
-- Une variation de +100 % signifie un doublement ; une variation de −50 % signifie une division par deux.
-:::
-
-:::
-
-### Résumer une variable numérique
-
-Lorsqu’on dispose d’une variable quantitative, on a besoin d’indicateurs qui résument sa **tendance centrale** (où se situent les valeurs) et sa **dispersion** (à quel point elles sont dispersées).
-
-#### Définitions et formules
-
-| Indicateur                     | Définition / formule                                                  | Question à laquelle il répond                             |
-|:-------------------------------|:----------------------------------------------------------------------|:----------------------------------------------------------|
-| **Moyenne** ($\bar{x}$)        | $\displaystyle \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$               | Quel serait le partage équitable du total ?               |
-| **Médiane** ($Me$)             | Valeur qui partage la série ordonnée en deux groupes de même effectif | Quelle valeur est au milieu des observations ?            |
-| **Minimum / Maximum**          | Plus petite et plus grande valeur observée                            | Quelles sont les extrêmes ?                               |
-| **Premier quartile** ($Q_1$)   | Médiane de la moitié inférieure de la série                           | Où se situent les 25 % les plus faibles ?                 |
-| **Troisième quartile** ($Q_3$) | Médiane de la moitié supérieure de la série                           | Où se situent les 75 % les plus faibles ?                 |
-| **Écart interquartile** (IQR)  | $IQR = Q_3 - Q_1$                                                     | Quelle est la largeur de la moitié centrale des données ? |
-| **Écart-type** ($s$)           | $\displaystyle s = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^2}$ | Les valeurs sont-elles proches de la moyenne ?            |
-
-::: {.callout-tip title="Calcul de la médiane et des quartiles"}
-
-**1. Médiane**
-On note 
-
-$$x_1, x_2, \ldots, x_n$$ 
-
-les observations d'une variable quantitative et on note 
-
-$$x_{(1)} \leq x_{(2)} \leq \ldots \leq x_{(n)}$$ 
-
-la série ordonnée.
-
-- Si $n$ est **impair** :  
-  $$
-  Me = x_{\left(\frac{n+1}{2}\right)}
-  $$
-
-- Si $n$ est **pair** :  
-  $$
-  Me = \frac{x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}}{2}
-  $$
-
-**2. Quartiles $Q_1$ et $Q_3$** (méthode de Tukey)
-
-1. On calcule d’abord la **médiane** de toute la série.
-2. On forme la **moitié inférieure** = toutes les observations **strictement inférieures** à la médiane.
-3. On forme la **moitié supérieure** = toutes les observations **strictement supérieures** à la médiane.
-4. $Q_1$ = médiane de la moitié inférieure.  
-5. $Q_3$ = médiane de la moitié supérieure.
-
-:::
-
-::: {.callout-important title="Pourquoi moyenne et médiane ensemble ?"}
-
-- La moyenne est sensible aux valeurs extrêmes (outliers). Une seule commande très élevée peut la tirer fortement vers le haut.  
-- La médiane, elle, est robuste : elle ne change pas (ou peu) si l’on modifie les valeurs extrêmes.  
-- C’est pourquoi on présente presque toujours les deux indicateurs.
-:::
-
-::: {.callout-note title="Exemple 1"}
-Montants de 9 commandes (en MAD) :  
-`420, 95, 250, 110, 130, 160, 190, 80, 45`
-
-**1. Série ordonnée**  
-$$
-x_{(1)}=45,\ x_{(2)}=80,\ x_{(3)}=95,\ x_{(4)}=110,\ x_{(5)}=130,\ 
-x_{(6)}=160,\ x_{(7)}=190,\ x_{(8)}=250,\ x_{(9)}=420
-$$
-
-**2. Effectif** : $n = 9$
-
-**3. Minimum et maximum**  
-- $\min = 45$ MAD  
-- $\max = 420$ MAD
-
-**4. Moyenne**  
-$$
-\bar{x} = \frac{45+80+95+110+130+160+190+250+420}{9} = \frac{1480}{9} \approx 164{,}44\,\text{MAD}
-$$
-
-**5. Médiane** ($n$ impair)  
-$$
-Me = x_{\left(\frac{9+1}{2}\right)} = x_{(5)} = 130\,\text{MAD}
-$$
-
-**6. Quartiles **  
-
-- Moitié inférieure (valeurs < 130) : $45,\ 80,\ 95,\ 110$  
-  → $Q_1$ = médiane de ces 4 valeurs = $\dfrac{80 + 95}{2} = 87{,}5$ MAD
-
-- Moitié supérieure (valeurs > 130) : $160,\ 190,\ 250,\ 420$  
-  → $Q_3$ = médiane de ces 4 valeurs = $\dfrac{190 + 250}{2} = 220$ MAD
-
-**7. Écart interquartile**  
-$$
-IQR = Q_3 - Q_1 = 220 - 87{,}5 = 132{,}5\,\text{MAD}
-$$
-
-**Interprétation**  
-- La moyenne (≈ 164 MAD) est tirée vers le haut par la commande de 420 MAD.  
-- La médiane (130 MAD) est plus représentative du « client typique ».  
-- 50 % des commandes se situent entre 87,5 et 220 MAD (IQR = 132,5 MAD).
-:::
-
-::: {.callout-note title="Exemple 2"}
-Montants de 10 commandes (en MAD) :  
-`30, 55, 90, 70, 150, 125, 105, 180, 220, 380`
-
-**1. Série ordonnée**  
-$$
-x_{(1)}=30,\ x_{(2)}=55,\ x_{(3)}=70,\ x_{(4)}=90,\ x_{(5)}=105,\ 
-x_{(6)}=125,\ x_{(7)}=150,\ x_{(8)}=180,\ x_{(9)}=220,\ x_{(10)}=380
-$$
-
-**2. Effectif** : $n = 10$
-
-**3. Minimum et maximum**  
-- $\min = 30$ MAD  
-- $\max = 380$ MAD
-
-**4. Moyenne**  
-$$
-\bar{x} = \frac{30+55+70+90+105+125+150+180+220+380}{10} = 140{,}5\,\text{MAD}
-$$
-
-**5. Médiane** ($n$ pair)  
-$$
-Me = \frac{x_{(5)} + x_{(6)}}{2} = \frac{105 + 125}{2} = 115\,\text{MAD}
-$$
-
-**6. Quartiles **  
-
-- Moitié inférieure (valeurs < 115) : $30,\ 55,\ 70,\ 90,\ 105$  
-  → $Q_1$ = médiane de ces 5 valeurs = $70$ MAD
-
-- Moitié supérieure (valeurs > 115) : $125,\ 150,\ 180,\ 220,\ 380$  
-  → $Q_3$ = médiane de ces 5 valeurs = $180$ MAD
-
-**7. Écart interquartile**  
-$$
-IQR = Q_3 - Q_1 = 180 - 70 = 110\,\text{MAD}
-$$
-
-**Interprétation**  
-- La moyenne (140,5 MAD) est influencée par la commande de 380 MAD.  
-- La médiane (115 MAD) reflète mieux le centre de la distribution.  
-- La moitié centrale des commandes se situe entre 70 et 180 MAD (IQR = 110 MAD).
-:::
-
-::: {.callout-tip title="Calcul avec python (bibliothèque pandas)"}
-
-```{python}
-#| eval: false
-resume = df["montant"].describe()
-print(resume[["count", "mean", "50%", "min", "max", "25%", "75%"]])
-```
-:::
-
-La méthode `describe()` fournit :
-
-- `count` : effectif
-- `mean` : moyenne
-- `50%` : médiane
-- `min` / `max` : extrêmes
-- `25%` / `75%` : quartiles $Q_1$ et $Q_3$
-
-Elle ne remplace pas l’interprétation : un indicateur doit toujours être accompagné de son **unité**, de sa **période** et de la **population** étudiée.
-
-::: {.callout-warning title="Un indicateur n’est pas une conclusion"}
-Une moyenne de 250 MAD ne dit pas si les commandes sont toutes proches de 250 MAD ou si quelques très grosses commandes compensent beaucoup de petites commandes.  
-Pour comprendre la forme de la distribution, on complète toujours la moyenne par la médiane, les quartiles (ou l’IQR) et, idéalement, un graphique (histogramme, boîte à moustaches…).
-:::
-
-::: {.callout-tip title="Bonnes pratiques"}
-- Toujours indiquer l’unité (MAD, kg, jours…).
-- Préciser la période et le périmètre (tous les clients, un segment, une région…).
-- Présenter moyenne **et** médiane lorsque la distribution est asymétrique.
-- Utiliser l’IQR plutôt que l’écart-type si l’on suspecte des valeurs extrêmes.
-:::
-
-## 3. Cycle de vie et mise en pratique avec Python
+## 2. Cycle de vie et mise en pratique avec Python
 
 ### Le cycle de vie d'un projet d'analyse de données
 
@@ -348,11 +104,11 @@ Comme pour le Machine Learning, Python s'impose comme langage principal pour l'a
 
 #### Environnements de travail
 
-Comme dans le reste de la formation, nous privilégions les **notebooks Jupyter** (JupyterLab, Google Colab) pour l'exploration interactive et la visualisation immédiate cellule par cellule, et **Visual Studio Code** si l'etudiant voulais utiliser des fichier python ou ouvrir jupyter noebook dans cet environnement.
+Comme dans le reste de la formation, nous privilégions les **notebooks Jupyter** (JupyterLab, Google Colab) pour l'exploration interactive et la visualisation immédiate cellule par cellule. **Visual Studio Code** convient également aux étudiants qui souhaitent écrire des scripts Python ou y ouvrir des notebooks Jupyter.
 
 #### Gestion de projet avec `uv` {#sec-uv}
 
-Un projet de *Machine Learning* ne dépend pas uniquement du code que nous écrivons. Il repose également sur un **environnement logiciel** : une version de Python, un ensemble de bibliothèques, des versions compatibles de ces bibliothèques et différents outils nécessaires à l'exécution du projet.
+Un projet d'`Analyse de Données` ne dépend pas uniquement du code que nous écrivons. Il repose également sur un **environnement logiciel** : une version de Python, un ensemble de bibliothèques, des versions compatibles de ces bibliothèques et différents outils nécessaires à l'exécution du projet.
 
 La gestion de cet environnement est importante dès qu'un projet doit être **reproduit, partagé, maintenu ou déployé**. Deux utilisateurs disposant du même code peuvent, par exemple, rencontrer des problèmes différents si leurs versions de Python ou de certaines dépendances ne sont pas les mêmes. La gestion des dépendances constitue ainsi une composante essentielle de la reproductibilité et de la maintenance d'un projet.
 
@@ -409,6 +165,64 @@ La documentation officielle de [`uv` présente](https://docs.astral.sh/uv/gettin
 * création et mise à jour du fichier de verrouillage ;
 * exécution de commandes dans l'environnement du projet ;
 * gestion de projets plus complexes au moyen de *workspaces*.
+
+```{#lst-exemple-projet-uv .bash .code-overflow-wrap lst-cap="Exemple de gestion d'un projet Python avec uv"}
+
+# 1. Création d'un nouveau projet Python
+# Cette commande crée la structure initiale du projet ainsi que
+# le fichier pyproject.toml utilisé pour sa configuration.
+uv init projet-analyse-donnees
+cd projet-analyse-donnees
+
+# 2. Ajout des dépendances du projet
+# Les bibliothèques nécessaires au projet sont ajoutées au fichier
+# pyproject.toml et leurs versions sont enregistrées dans uv.lock.
+uv add pandas
+uv add scikit-learn
+
+# Ajout d'un outil utilisé uniquement pendant le développement.
+# L'option --dev indique que Ruff est une dépendance de développement
+# et n'est pas nécessaire à l'exécution du projet en production.
+uv add ruff --dev
+
+# Suppression d'une dépendance devenue inutile.
+uv remove scikit-learn
+
+# 3. Création et gestion de l'environnement virtuel
+# uv peut créer automatiquement l'environnement virtuel lorsque cela
+# est nécessaire. Cette commande permet de le créer explicitement.
+uv venv
+# cette n'est pas strictement nécessaire, car uv crée automatiquement l'environnement virtuel. Donc, si vous avez déjà exécuté uv add ou uv sync, l'environnement virtuel a déjà été créé.
+
+# Activation de l'environnement virtuel dans un terminal Bash.
+source .venv/bin/activate
+
+# 4. Synchronisation de l'environnement avec la configuration du projet
+# Cette commande garantit que l'environnement correspond aux dépendances
+# et aux versions enregistrées dans le fichier uv.lock.
+uv sync
+
+# 5. Création ou mise à jour du fichier de verrouillage
+# Le fichier uv.lock enregistre les versions précises des dépendances
+# afin de garantir la reproductibilité de l'environnement.
+uv lock
+
+# 6. Exécution de commandes dans l'environnement du projet
+# uv run permet d'exécuter une commande avec les dépendances du projet
+# sans avoir besoin d'activer manuellement l'environnement virtuel.
+uv run python -c "import sys; print(sys.version)"
+uv run mon_script.py
+
+# Vérification de la qualité du code avec Ruff.
+uv run ruff check .
+
+# 7. Organisation d'un projet complexe avec un espace de travail
+# Un workspace permet de regrouper plusieurs packages Python au sein
+# d'un même projet et de gérer leurs dépendances de manière centralisée.
+uv workspace init mon-workspace
+```
+
+
 
 L'intérêt de `uv` dans notre cours est donc moins de remplacer une commande particulière que de fournir une **organisation cohérente de l'ensemble du projet Python**.
 
@@ -488,7 +302,239 @@ Ces outils ne sont pas obligatoires dans ce cours, mais seront mentionnés ponct
 : Les principaux métiers autour de la donnée {#tbl-metiers-donnee}
 
 Ce cours prépare avant tout au cœur du métier de **Data Analyst**, tout en posant des bases indispensables aux trois autres profils.
-:::{.content-visible when-profile="teacher"}
+
+## 3. Décrire une variable
+
+### 3.1 Vocabulaire de base
+
+Avant de plonger dans la collecte et le nettoyage des données, nous allon aborder quelque notions du **vocabulaire statistique**. Cette section pose l'ensemble d'indicateurs que le reste du cours réutilisera : aussi bien pour le prétraitement et le nettoyage de données que pour l'exploration d'un jeu de données propre.
+
+
+::: {.callout-tip title="Observation et variable"}
+
+Une **observation** est une ligne du tableau de données (par exemple une commande, un client, une transaction). Une **variable** est une colonne (par exemple le montant d'une commande, la ville d'un client).
+:::
+
+Avec `pandas`, on identifie rapidement le type déclaré de chaque colonne, à ne pas confondre avec le type *statistique* défini ci-dessous :
+
+```python
+df.dtypes
+df.info()
+```
+
+#### Les types de variables
+
+Une variable peut être de trois natures, ce qui conditionne directement les indicateurs et les graphiques que l'on pourra lui appliquer par la suite :
+
+| Type de variable | Sous-type | Définition | Exemple |
+|:---|:---|:---|:---|
+| **Qualitative** (catégorielle) | Nominale | Catégories sans ordre naturel | Ville, moyen de paiement, quartier |
+| | Ordinale | Catégories avec un ordre naturel | Satisfaction (faible / moyenne / élevée) |
+| **Quantitative** (numérique) | Discrète | Nombre entier, dénombrable | Nombre de produits, nombre d'enfants |
+| | Continue | Nombre pouvant prendre toute valeur dans un intervalle | Prix, poids, durée |
+| **Temporelle** | — | Date ou période, que l'on peut ordonner et découper | Date de commande, mois, trimestre |
+
+: Types et sous-types de variables {#tbl-types-variables}
+
+::: {.callout-warning title="Pourquoi cette distinction est essentielle"}
+Calculer une **moyenne** sur un code postal ou sur un identifiant client n'a aucun sens, même si ces valeurs sont numériques : ce sont en réalité des variables qualitatives. À l'inverse, une variable qualitative ordinale (comme un niveau de satisfaction) peut parfois être résumée par une médiane, mais jamais par une moyenne arithmétique classique. Cette distinction conditionne aussi bien le choix d'un **encodage** (ordinal ou One-Hot, chapitre suivant) que celui d'un indicateur ou d'un graphique — ce dernier lien sera repris au chapitre consacré à la visualisation.
+:::
+
+### 3.2 Décrire une variable qualitative
+
+::: {.callout-tip title="Effectif et fréquence"}
+L'**effectif** d'une catégorie est le nombre d'observations qui appartiennent à cette catégorie. La **fréquence** (ou proportion) est la part que représente cet effectif dans l'ensemble des observations.
+
+$$
+\text{fréquence} = \frac{\text{effectif de la catégorie}}{\text{effectif total}}
+$$
+
+On l'exprime souvent en pourcentage en multipliant par 100.
+
+::: {.callout-note title="Exemple — Effectif et fréquence"}
+Sur 120 commandes, 30 proviennent de Casablanca :
+
+$$
+\text{fréquence} = \frac{30}{120} = 0{,}25 = 25\,\%.
+$$
+
+**Interprétation** : une commande sur quatre est passée à Casablanca.
+:::
+:::
+
+Avec `pandas`, `value_counts()` calcule directement les effectifs (et, avec `normalize=True`, les fréquences) de chaque catégorie :
+
+```python
+df["ville"].value_counts()                    # effectifs par catégorie
+df["ville"].value_counts(normalize=True) * 100 # fréquences en %
+```
+
+::: {.callout-note title="Priorité pour débuter"}
+Pour une variable qualitative, l'effectif et la fréquence de chaque catégorie constituent presque toujours le point de départ de toute description, avant tout graphique.
+:::
+
+### 3.3 Comparer deux périodes
+
+::: {.callout-tip title="Variation relative (ou taux de variation)"}
+Pour comparer une même grandeur entre deux périodes (ou deux situations), on calcule la **variation relative** :
+
+$$
+\text{variation en \%} =
+\frac{\text{valeur finale} - \text{valeur initiale}}
+{\text{valeur initiale}} \times 100.
+$$
+
+- Un résultat positif indique une hausse.
+- Un résultat négatif indique une baisse.
+
+::: {.callout-note title="Exemple — Variation relative"}
+Le chiffre d'affaires d'un produit passe de 200 MAD à 240 MAD :
+
+$$
+\frac{240 - 200}{200} \times 100 = 20\,\%.
+$$
+
+**Interprétation** : les ventes ont augmenté de 20 %.
+:::
+
+::: {.callout-warning title="Remarques"}
+- Toujours préciser la période de référence (valeur initiale) et la période finale.
+- Une variation de +100 % signifie un doublement ; une variation de −50 % signifie une division par deux.
+- Une hausse de 20 % suivie d'une baisse de 20 % ne ramène **pas** à la valeur de départ : les deux variations ne s'appliquent pas à la même base.
+:::
+:::
+
+Sur une série ordonnée dans le temps, `pandas` calcule automatiquement la variation relative d'une période à l'autre avec `pct_change()` :
+
+```python
+df_mensuel["ventes"].pct_change() * 100   # variation en % par rapport au mois précédent
+```
+
+### 3.4 Décrire une variable quantitative
+
+Lorsqu'on dispose d'une variable quantitative, on a besoin d'indicateurs qui résument sa **tendance centrale** (où se situent les valeurs) et sa **dispersion** (à quel point elles sont dispersées), puis, plus finement, sa **forme**.
+
+#### Tendance centrale
+
+| Indicateur | Définition / formule | Sensibilité aux valeurs extrêmes |
+|:---|:---|:---|
+| **Moyenne** ($\bar{x}$) | $\displaystyle \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$ | Élevée |
+| **Médiane** ($Me$) | Valeur qui partage la série ordonnée en deux groupes de même effectif | Faible |
+| **Mode** | Valeur (ou catégorie) la plus fréquente | Faible, mais peu informatif pour une variable continue |
+
+: Indicateurs de tendance centrale {#tbl-tendance-centrale}
+
+::: {.callout-tip title="Calcul de la médiane"}
+On note $x_1, x_2, \ldots, x_n$ les observations d'une variable quantitative et $x_{(1)} \leq x_{(2)} \leq \ldots \leq x_{(n)}$ la série ordonnée.
+
+- Si $n$ est **impair** : $\displaystyle Me = x_{\left(\frac{n+1}{2}\right)}$
+- Si $n$ est **pair** : $\displaystyle Me = \frac{x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}}{2}$
+:::
+
+```python
+df["prix"].mean()
+df["prix"].median()
+df["quartier"].mode()[0]
+```
+
+::: {.callout-warning title="Moyenne ou médiane ?"}
+Sur une distribution fortement asymétrique — typiquement les salaires ou les prix de l'immobilier — la moyenne peut être fortement tirée vers le haut par quelques valeurs extrêmes. La **médiane** donne alors une image plus représentative de la « valeur typique ». C'est précisément pour cette raison qu'on préfère souvent la médiane à la moyenne pour imputer une valeur manquante (chapitre suivant, §3.1).
+:::
+
+#### Dispersion
+
+- l'**écart-type** ($s$) et la **variance** ($s^2$) mesurent l'écart moyen à la moyenne : $\displaystyle s = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^2}$ ;
+- l'**écart interquartile** ($IQR = Q_3 - Q_1$) mesure la dispersion de la moitié centrale des données, de façon robuste aux valeurs extrêmes ;
+- l'**étendue** (maximum − minimum) donne une idée rapide, mais très sensible aux valeurs aberrantes.
+
+::: {.callout-tip title="Calcul des quartiles (méthode de Tukey)"}
+1. On calcule d'abord la **médiane** de toute la série.
+2. On forme la **moitié inférieure** = toutes les observations **strictement inférieures** à la médiane.
+3. On forme la **moitié supérieure** = toutes les observations **strictement supérieures** à la médiane.
+4. $Q_1$ = médiane de la moitié inférieure.
+5. $Q_3$ = médiane de la moitié supérieure.
+:::
+
+```python
+df["prix"].std()
+df["prix"].var()
+df["prix"].quantile([0.25, 0.5, 0.75])
+```
+
+::: {.callout-note title="Exemple détaillé — commandes"}
+Montants de 9 commandes (en MAD) : `420, 95, 250, 110, 130, 160, 190, 80, 45`
+
+**1. Série ordonnée**
+$$
+x_{(1)}=45,\ x_{(2)}=80,\ x_{(3)}=95,\ x_{(4)}=110,\ x_{(5)}=130,\
+x_{(6)}=160,\ x_{(7)}=190,\ x_{(8)}=250,\ x_{(9)}=420
+$$
+
+**2. Effectif** : $n = 9$ · **Minimum** : 45 MAD · **Maximum** : 420 MAD
+
+**3. Moyenne**
+$$
+\bar{x} = \frac{45+80+95+110+130+160+190+250+420}{9} = \frac{1480}{9} \approx 164{,}44\,\text{MAD}
+$$
+
+**4. Médiane** ($n$ impair)
+$$
+Me = x_{\left(\frac{9+1}{2}\right)} = x_{(5)} = 130\,\text{MAD}
+$$
+
+**5. Quartiles**
+
+- Moitié inférieure (valeurs < 130) : $45,\ 80,\ 95,\ 110$ → $Q_1$ = médiane de ces 4 valeurs = $\dfrac{80 + 95}{2} = 87{,}5$ MAD
+- Moitié supérieure (valeurs > 130) : $160,\ 190,\ 250,\ 420$ → $Q_3$ = médiane de ces 4 valeurs = $\dfrac{190 + 250}{2} = 220$ MAD
+
+**6. Écart interquartile**
+$$
+IQR = Q_3 - Q_1 = 220 - 87{,}5 = 132{,}5\,\text{MAD}
+$$
+
+**Interprétation** : la moyenne (≈ 164 MAD) est tirée vers le haut par la commande de 420 MAD ; la médiane (130 MAD) est plus représentative du « client typique » ; 50 % des commandes se situent entre 87,5 et 220 MAD. Ce sont très exactement $Q_1$ et $Q_3$ qui serviront, au chapitre suivant, à détecter d'éventuelles valeurs aberrantes par la méthode de l'IQR.
+:::
+
+Le **coefficient de variation**, défini par $s/\bar{x}$ lorsque la moyenne est positive et non nulle, permet parfois de comparer la dispersion relative de variables ayant des échelles différentes ; il est présenté ici comme un repère, non comme un indicateur obligatoire.
+
+#### Forme de la distribution
+
+Deux indicateurs complètent la description d'une distribution :
+
+- l'**asymétrie** (*skewness*) : une valeur positive indique une distribution étalée vers la droite (queue de valeurs élevées), une valeur négative vers la gauche ;
+- l'**aplatissement** (*kurtosis*) : indique si la distribution comporte davantage de valeurs extrêmes qu'une distribution normale.
+
+```python
+df["prix"].skew()
+df["prix"].kurt()
+```
+
+::: {.callout-note title="Priorité pour débuter"}
+Les indicateurs indispensables sont l'effectif, la moyenne, la médiane, le minimum, le maximum, les quartiles et l'écart-type ou l'IQR. L'asymétrie, l'aplatissement et le coefficient de variation sont des compléments : il suffit d'en comprendre l'idée et de savoir quand demander une explication supplémentaire.
+:::
+
+#### Tout en une seule commande
+
+La méthode `describe()` de `pandas` regroupe l'essentiel de ces indicateurs :
+
+```python
+df.describe()
+```
+
+Elle fournit `count` (effectif), `mean` (moyenne), `50%` (médiane), `min`/`max` (extrêmes) et `25%`/`75%` (quartiles $Q_1$ et $Q_3$). Elle ne remplace pas l'interprétation : un indicateur doit toujours être accompagné de son **unité**, de sa **période** et de la **population** étudiée.
+
+::: {.callout-warning title="Un indicateur n'est pas une conclusion"}
+Une moyenne de 250 MAD ne dit pas si les commandes sont toutes proches de 250 MAD ou si quelques très grosses commandes compensent beaucoup de petites commandes. Pour comprendre la forme de la distribution, on complète toujours la moyenne par la médiane, les quartiles (ou l'IQR) et, idéalement, un graphique — histogramme ou boîte à moustaches, présentés au chapitre consacré à la visualisation.
+:::
+
+::: {.callout-tip title="Bonnes pratiques"}
+- Toujours indiquer l'unité (MAD, kg, jours...).
+- Préciser la période et le périmètre (tous les clients, un segment, une région...).
+- Présenter moyenne **et** médiane lorsque la distribution est asymétrique.
+- Utiliser l'IQR plutôt que l'écart-type si l'on suspecte des valeurs extrêmes.
+:::
+
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-note title="Auto-évaluation" collapse="true"}
 Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
 
@@ -496,6 +542,11 @@ Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui »
 - [ ] Je peux citer et illustrer les quatre types d'analyse de données.
 - [ ] Je peux énumérer, dans l'ordre, les étapes du cycle de vie d'un projet d'analyse de données.
 - [ ] Je connais au moins deux outils récents qui complètent `pandas` et `matplotlib`.
+- [ ] Je sais reconnaître le type d'une variable (qualitative nominale/ordinale, quantitative discrète/continue, temporelle) et pourquoi cette distinction compte.
+- [ ] Je sais calculer un effectif, une fréquence et une variation relative.
+- [ ] Je sais calculer à la main une moyenne, une médiane et les quartiles $Q_1$/$Q_3$ d'une petite série de valeurs.
+- [ ] Je sais expliquer pourquoi la médiane est parfois préférable à la moyenne.
+- [ ] Je sais citer les indicateurs de dispersion (écart-type, variance, IQR, étendue) et dire lequel privilégier en présence de valeurs extrêmes.
 :::
 :::
 
@@ -553,6 +604,36 @@ b. **Descriptive** (évolution des volumes) puis **diagnostique** (recherche des
 :::
 
 ::: {#exr-intro-ad-4}
+### Choisir une analyse
+
+Une responsable constate que les ventes sont plus faibles en août. Elle veut d'abord mesurer la baisse, puis comprendre si elle concerne seulement une région.
+
+a. Quel type d'analyse répond à la première question ?
+b. Quelle comparaison simple peut aider pour la seconde ?
+c. Pourquoi faut-il éviter de conclure à une cause avant d'avoir comparé les données ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-4"}
+a. Une analyse **descriptive** : comparer les ventes d'août à celles d'une période de référence.
+b. Comparer les ventes par région et par mois, avec des effectifs, des totaux ou des moyennes.
+c. Une baisse peut coïncider avec plusieurs facteurs ; une comparaison permet d'abord de vérifier si le phénomène est général ou localisé. Elle ne prouve pas à elle seule une causalité.
+:::
+:::
+
+::: {#exr-intro-ad-5}
+### Reconnaître le type de variable
+
+Classez les variables suivantes en qualitative (nominale ou ordinale), quantitative (discrète ou continue) ou temporelle : `quartier`, `nombre_de_produits`, `date_commande`, `satisfaction` codée « faible / moyenne / élevée ».
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-5"}
+`quartier` est **qualitative nominale** ; `nombre_de_produits` est **quantitative discrète** ; `date_commande` est **temporelle** ; `satisfaction` est **qualitative ordinale**, car ses catégories possèdent un ordre.
+:::
+:::
+
+::: {#exr-intro-ad-6}
 ### Moyenne, médiane et fréquence
 
 Les montants de cinq commandes sont : 80, 100, 100, 120 et 600 MAD.
@@ -563,14 +644,14 @@ c. Quel est l'effectif et la fréquence des commandes d'au moins 100 MAD ?
 :::
 
 ::: {.content-visible when-profile="teacher"}
-::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-4"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-6"}
 a. La moyenne vaut $(80+100+100+120+600)/5=200$ MAD. La médiane est la troisième valeur triée : **100 MAD**.
 b. La médiane est plus représentative : la commande de 600 MAD tire fortement la moyenne vers le haut.
 c. Quatre commandes sur cinq sont d'au moins 100 MAD : effectif **4**, fréquence **80 %**.
 :::
 :::
 
-::: {#exr-intro-ad-5}
+::: {#exr-intro-ad-7}
 ### Lire une variation
 
 Le nombre de visiteurs d'un site passe de 2 000 en avril à 2 400 en mai, puis à 2 280 en juin.
@@ -581,14 +662,14 @@ c. La baisse de mai à juin annule-t-elle entièrement la hausse précédente ?
 :::
 
 ::: {.content-visible when-profile="teacher"}
-::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-5"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-7"}
 a. $(2400-2000)/2000 \times 100 = 20\%$.
 b. $(2280-2400)/2400 \times 100 = -5\%$.
 c. Non. Le niveau de juin reste supérieur à avril : $(2280-2000)/2000 \times 100 = 14\%$ environ.
 :::
 :::
 
-::: {#exr-intro-ad-6}
+::: {#exr-intro-ad-8}
 ### Identifier les indicateurs utiles
 
 Pour chacune des questions, choisissez l'indicateur le plus directement utile : effectif, fréquence, moyenne, médiane, minimum/maximum ou IQR.
@@ -600,37 +681,59 @@ d. Combien de commandes ont été enregistrées ?
 :::
 
 ::: {.content-visible when-profile="teacher"}
-::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-6"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-8"}
 a. **Fréquence** ; b. **médiane** ; c. **IQR** ; d. **effectif**.
 :::
 :::
 
-::: {#exr-intro-ad-7}
-### Reconnaître le type de variable
+::: {#exr-intro-ad-9}
+### Interpréter des statistiques descriptives
 
-Classez les variables suivantes en qualitative, quantitative ou temporelle : `quartier`, `nombre_de_produits`, `date_commande`, `satisfaction` codée « faible / moyenne / élevée ».
+Pour une variable `revenu_mensuel` (en MAD), on obtient : moyenne = 8 500, médiane = 6 200, écart-type = 5 400, asymétrie (*skewness*) = 2,3.
+
+a. Que suggère l'écart important entre la moyenne et la médiane ?
+b. Que confirme la valeur positive et élevée de l'asymétrie ?
 :::
 
 ::: {.content-visible when-profile="teacher"}
-::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-7"}
-`quartier` est **qualitative nominale** ; `nombre_de_produits` est **quantitative discrète** ; `date_commande` est **temporelle** ; `satisfaction` est **qualitative ordinale**, car ses catégories possèdent un ordre.
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-9"}
+a. Un écart important entre une moyenne nettement supérieure à la médiane suggère la présence de quelques revenus très élevés qui tirent la moyenne vers le haut, sans être représentatifs de la majorité des observations.
+b. Une asymétrie positive et élevée confirme une distribution étalée vers la droite (une « longue traîne » de hauts revenus), cohérente avec l'écart observé entre moyenne et médiane.
 :::
 :::
 
-::: {#exr-intro-ad-8}
-### Choisir une analyse
+::: {#exr-intro-ad-10}
+### Lire une dispersion
 
-Une responsable constate que les ventes sont plus faibles en août. Elle veut d'abord mesurer la baisse, puis comprendre si elle concerne seulement une région.
+Deux classes ont la même moyenne à un examen : 12/20. La classe A a un écart-type de 1,5 et la classe B un écart-type de 4.
 
-a. Quel type d'analyse répond à la première question ?
-b. Quelle comparaison simple peut aider pour la seconde ?
-c. Pourquoi faut-il éviter de conclure à une cause avant d'avoir comparé les données ?
+a. Quelle classe est la plus homogène ?
+b. Que signifie l'écart-type plus élevé de la classe B ?
+c. Peut-on dire que les étudiants de B ont de moins bonnes notes ?
 :::
 
 ::: {.content-visible when-profile="teacher"}
-::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-8"}
-a. Une analyse **descriptive** : comparer les ventes d'août à celles d'une période de référence.
-b. Comparer les ventes par région et par mois, avec des effectifs, des totaux ou des moyennes.
-c. Une baisse peut coïncider avec plusieurs facteurs ; une comparaison permet d'abord de vérifier si le phénomène est général ou localisé. Elle ne prouve pas à elle seule une causalité.
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-10"}
+a. La classe **A** est plus homogène.
+b. Les notes de B sont plus éloignées de leur moyenne : les niveaux sont davantage dispersés.
+c. Non. Les deux moyennes sont identiques ; B est seulement plus hétérogène.
+:::
+:::
+
+::: {#exr-intro-ad-11}
+### Calculer des indicateurs simples
+
+Les durées de livraison, en jours, sont : 2, 3, 3, 4, 8.
+
+a. Calculez la moyenne, la médiane et l'étendue.
+b. Quel indicateur est le moins influencé par la durée de 8 jours ?
+c. Quelle question supplémentaire poseriez-vous avant de conclure que le service est lent ?
+:::
+
+::: {.content-visible when-profile="teacher"}
+::: {.callout-tip collapse="true" title="Solution de l'exercice @exr-intro-ad-11"}
+a. Moyenne $=(2+3+3+4+8)/5=\textbf{4}$ jours ; médiane = **3 jours** ; étendue $=8-2=\textbf{6}$ jours.
+b. La **médiane**.
+c. Il faut connaître le nombre total de livraisons, la période, la région et la proportion de livraisons de 8 jours : une seule valeur extrême ne suffit pas.
 :::
 :::

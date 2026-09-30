@@ -1,0 +1,436 @@
+# Lab 4 : Entrepôt de données et dashboard avancé avec Power BI
+
+::: {.callout-tip title="Objectifs du Lab"}
+À la fin de ce Lab, l'étudiant sera capable de :
+
+- **Construire** un modèle analytique en étoile à partir de données massives ;
+- **Importer et transformer** des données avec Power Query ;
+- **Définir** le grain d'une table de faits et les relations avec les dimensions ;
+- **Créer** des mesures DAX fiables et contrôlées ;
+- **Choisir** une visualisation selon la nature de la donnée et la question ;
+- **Concevoir** un dashboard multi-pages, interactif et performant ;
+- **Vérifier** les résultats à l'aide de totaux de contrôle.
+:::
+
+::: {.callout-note title="Question BI du projet"}
+La ville veut piloter son service 311 : **où se concentrent les demandes, quels types de problèmes prennent le plus de temps à traiter et comment le volume évolue-t-il selon le quartier, le canal et la période ?**
+
+Le résultat attendu n'est pas un mur de graphiques. C'est un rapport Power BI qui permet à une personne responsable de passer d'une vue générale à un diagnostic vérifiable.
+:::
+
+## 1. Le jeu de données massif
+
+Le projet utilise le jeu public **NYC 311 Service Requests from 2010 to Present** :
+
+<https://data.cityofnewyork.us/resource/erm2-nwe9.json>
+
+Le jeu contient plusieurs dizaines de millions de demandes historiques et continue d'être alimenté. Il comprend notamment :
+
+| Famille | Exemples |
+|:---|:---|
+| Identifiant | `unique_key` |
+| Temps | `created_date`, `closed_date` |
+| Catégories | `complaint_type`, `descriptor`, `agency` |
+| Localisation | `borough`, `incident_zip`, latitude, longitude |
+| Canal et statut | `open_data_channel_type`, `status` |
+
+Pour un premier rendu, utilisez une période définie, par exemple l'année 2024 ou un trimestre comportant au moins plusieurs centaines de milliers de lignes. Indiquez exactement la période dans le rapport. Une donnée massive ne signifie pas qu'il faut charger toute l'histoire sans contrôle : il faut dimensionner le périmètre à la question et aux ressources de la machine.
+
+## 2. Architecture cible
+
+### 2.1. Les couches
+
+Le projet comporte quatre couches :
+
+```text
+API NYC 311
+      ↓
+staging / requête de préparation
+      ↓
+modèle en étoile Power BI
+      ↓
+mesures DAX + pages du rapport
+```
+
+La couche de staging conserve les champs utiles et prépare les types. Le modèle analytique sépare les événements (`fact_requests`) du contexte (`dim_date`, `dim_location`, `dim_complaint`, `dim_agency`).
+
+### 2.2. Le grain
+
+Le grain de `fact_requests` est :
+
+> une ligne représente une demande 311 identifiée par `unique_key`.
+
+Ce choix permet de compter les demandes distinctes, de calculer un délai pour chaque demande clôturée et de regrouper par date, type, quartier ou canal.
+
+### 2.3. Schéma en étoile
+
+```text
+                         dim_date
+                            |
+dim_complaint ---- fact_requests ---- dim_agency
+                            |
+                       dim_location
+                            |
+                         dim_channel
+```
+
+**Table de faits :**
+
+```text
+fact_requests
+-------------
+request_key
+created_date_key
+closed_date_key
+complaint_key
+agency_key
+location_key
+channel_key
+status
+processing_hours
+is_closed
+```
+
+**Dimensions :**
+
+```text
+dim_date(date_key, date, year, quarter, month, month_name, weekday)
+dim_complaint(complaint_key, complaint_type, descriptor)
+dim_agency(agency_key, agency)
+dim_location(location_key, borough, zip_code)
+dim_channel(channel_key, channel)
+```
+
+Une dimension doit avoir une ligne par clé. Vérifiez cette unicité avant de la relier à la table de faits.
+
+## 3. Acquérir les données dans Power Query
+
+### 3.1. Connexion Web
+
+Dans Power BI Desktop :
+
+1. **Accueil → Obtenir les données → Web** ;
+2. utilisez l'URL de l'API ou la requête M ci-dessous ;
+3. ouvrez **Transformer les données** plutôt que de charger immédiatement ;
+4. renommez la requête en `stg_requests`.
+
+Pour une extraction légère de contrôle :
+
+```text
+https://data.cityofnewyork.us/resource/erm2-nwe9.json?$limit=100
+```
+
+Pour un volume important, filtrez côté serveur. Ne demandez pas toutes les colonnes si la question n'en utilise que dix.
+
+### 3.2. Pagination dans Power Query
+
+L'API renvoie des pages. Dans l'Éditeur avancé, le principe suivant permet de lire plusieurs pages avec un filtre de période. Adaptez les dates et le nombre de pages à votre machine.
+
+```powerquery
+let
+    BaseUrl = "https://data.cityofnewyork.us/resource/erm2-nwe9.json",
+    PageSize = 50000,
+    WhereClause =
+        "created_date between '2024-01-01T00:00:00' " &
+        "and '2024-12-31T23:59:59'",
+    SelectClause =
+        "unique_key,created_date,closed_date,agency," &
+        "complaint_type,descriptor,borough,incident_zip," &
+        "open_data_channel_type,status",
+
+    GetPage = (Offset as number) as list =>
+        let
+            Response = Json.Document(
+                Web.Contents(
+                    BaseUrl,
+                    [
+                        Query = [
+                            #"$select" = SelectClause,
+                            #"$where" = WhereClause,
+                            #"$order" = "created_date",
+                            #"$limit" = Text.From(PageSize),
+                            #"$offset" = Text.From(Offset)
+                        ],
+                        Timeout = #duration(0, 0, 10, 0)
+                    ]
+                )
+            )
+        in
+            Response,
+
+    Pages = List.Generate(
+        () => [Offset = 0, Rows = GetPage(0)],
+        each List.Count([Rows]) > 0,
+        each [
+            Offset = [Offset] + PageSize,
+            Rows = GetPage([Offset] + PageSize)
+        ],
+        each [Rows]
+    ),
+
+    Combined = List.Combine(Pages),
+    AsTable = Table.FromRecords(Combined)
+in
+    AsTable
+```
+
+::: {.callout-warning title="Contrôler avant un téléchargement massif"}
+Commencez avec une journée ou une semaine, vérifiez les colonnes, la pagination et le nombre de lignes, puis élargissez à l'année. Un mauvais filtre peut déclencher un téléchargement très long ou produire un résultat incomplet. Conservez l'URL, la période et le nombre de lignes dans la documentation du rapport.
+:::
+
+### 3.3. Transformer la staging table
+
+Dans `stg_requests` :
+
+1. donnez des noms lisibles aux colonnes ;
+2. convertissez `created_date` et `closed_date` en Date/Heure ;
+3. convertissez `incident_zip` en texte, car un code postal n'est pas une mesure ;
+4. remplacez les chaînes vides par `null` ;
+5. supprimez les colonnes non utilisées ;
+6. ajoutez `processing_hours` :
+
+```powerquery
+Duration.TotalHours([closed_date] - [created_date])
+```
+
+7. ajoutez `is_closed` ;
+8. filtrez les dates invalides seulement après avoir compté et documenté les lignes concernées.
+
+Ne faites pas dans Power Query une transformation qui devrait rester une mesure dynamique. Par exemple, le total des demandes est une mesure ; le type d'une colonne et la normalisation d'un texte sont des transformations.
+
+## 4. Créer les dimensions
+
+### 4.1. Dimension Date
+
+Créez une table Date avec DAX :
+
+```DAX
+dim_date =
+ADDCOLUMNS(
+    CALENDAR(DATE(2024, 1, 1), DATE(2024, 12, 31)),
+    "date_key", YEAR([Date]) * 10000
+        + MONTH([Date]) * 100
+        + DAY([Date]),
+    "year", YEAR([Date]),
+    "month_number", MONTH([Date]),
+    "month_name", FORMAT([Date], "MMMM"),
+    "quarter", "T" & FORMAT([Date], "Q"),
+    "weekday_name", FORMAT([Date], "dddd")
+)
+```
+
+Triez `month_name` par `month_number`. Marquez la table comme table de dates si la version de Power BI le demande.
+
+### 4.2. Dimensions par référence
+
+Dans Power Query, dupliquez `stg_requests` pour créer :
+
+- `dim_complaint` : `complaint_type`, `descriptor`, clé ;
+- `dim_agency` : `agency`, clé ;
+- `dim_location` : `borough`, `incident_zip`, clé ;
+- `dim_channel` : `open_data_channel_type`, clé.
+
+Pour une première version, une clé composée lisible peut être utilisée. Dans un modèle professionnel, on peut créer des clés entières et gérer l'historique des dimensions ; ces sujets sont hors du premier rendu.
+
+### 4.3. Relations
+
+Dans la vue Modèle :
+
+- chaque dimension est du côté **1** ;
+- `fact_requests` est du côté **\*** ;
+- le filtrage va de la dimension vers la table de faits ;
+- une clé de dimension ne doit pas être dupliquée.
+
+Pour `dim_date`, la relation principale utilise `created_date`. La date de clôture est une deuxième relation potentiellement inactive ; n'utilisez-la qu'en connaissance du contexte.
+
+## 5. Mesures DAX du modèle
+
+Créez un dossier de mesures et ajoutez :
+
+```DAX
+Demandes =
+DISTINCTCOUNT(fact_requests[request_key])
+
+Demandes clôturées =
+CALCULATE(
+    [Demandes],
+    fact_requests[is_closed] = TRUE()
+)
+
+Taux de clôture =
+DIVIDE([Demandes clôturées], [Demandes])
+
+Délai médian (heures) =
+MEDIAN(fact_requests[processing_hours])
+
+Délai moyen (heures) =
+AVERAGE(fact_requests[processing_hours])
+
+Délai P90 (heures) =
+PERCENTILEX.INC(
+    FILTER(
+        fact_requests,
+        NOT ISBLANK(fact_requests[processing_hours])
+    ),
+    fact_requests[processing_hours],
+    0.90
+)
+
+Demandes du mois précédent =
+CALCULATE(
+    [Demandes],
+    DATEADD(dim_date[Date], -1, MONTH)
+)
+
+Variation mensuelle % =
+DIVIDE(
+    [Demandes] - [Demandes du mois précédent],
+    [Demandes du mois précédent]
+)
+```
+
+La médiane et le 90e percentile sont souvent plus parlants qu'une moyenne lorsque les délais sont asymétriques. La mesure `P90` répond à une question comme : « en dessous de quel délai se trouvent 90 % des demandes avec délai connu ? »
+
+### 5.1. Contrôles
+
+Créez une page ou un tableau de contrôle avec :
+
+- nombre de lignes importées ;
+- nombre de clés distinctes ;
+- demandes sans date de création ;
+- demandes sans date de clôture ;
+- délais négatifs ;
+- demandes par mois.
+
+Comparez au moins un mois avec un calcul pandas ou une requête API `count(*)`. Un beau rapport qui ne passe pas ces contrôles n'est pas prêt.
+
+## 6. Choisir le bon visuel
+
+Le choix dépend du type de donnée et de la question :
+
+| Question | Données | Visuel recommandé | Pourquoi |
+|:---|:---|:---|:---|
+| Combien de demandes ? | Un nombre | Carte KPI | Lecture immédiate |
+| Comment le volume évolue-t-il ? | Date + mesure | Courbe | Tendance et ruptures |
+| Quels types dominent ? | Catégorie + mesure | Barres horizontales triées | Comparaison de rangs |
+| Quels quartiers ont le plus de demandes ? | Carte ou catégorie | Carte remplie ou barres | Dimension géographique |
+| Comment les canaux se répartissent-ils ? | Deux catégories | Barres empilées à 100 % | Composition |
+| Quel type a le plus long délai ? | Catégorie + distribution | Barres avec médiane ou boîte à moustaches | Comparer une distribution |
+| Existe-t-il un lien volume/délai ? | Deux mesures | Nuage de points | Relation entre grandeurs |
+| Comment détailler une sélection ? | Plusieurs champs | Matrice | Exploration hiérarchique |
+| Qui contribue à un total ? | Catégories hiérarchisées | Arbre de décomposition | Diagnostic interactif |
+
+Évitez les camemberts pour une longue liste de catégories et les cartes lorsque la localisation est incomplète ou ambiguë. Un visuel doit répondre à une question avant de décorer la page.
+
+## 7. Construire un dashboard sophistiqué mais lisible
+
+### Page 1 — Pilotage
+
+En haut :
+
+- demandes totales ;
+- taux de clôture ;
+- délai médian ;
+- délai P90 ;
+- date de dernière actualisation.
+
+Au centre :
+
+- courbe des demandes par mois ;
+- barres des dix types les plus fréquents ;
+- carte ou barres par borough.
+
+À droite ou en haut :
+
+- segments année/mois, borough, agence et canal ;
+- bouton de remise à zéro des filtres.
+
+### Page 2 — Diagnostic des délais
+
+- barres horizontales du délai médian par type ;
+- comparaison moyenne/médiane ;
+- histogramme ou distribution filtrée ;
+- tableau avec demandes, taux de clôture, médiane, P90 ;
+- mise en forme conditionnelle sur les types dépassant un seuil.
+
+### Page 3 — Canaux et géographie
+
+- composition des canaux par borough ;
+- évolution par canal ;
+- carte uniquement si les coordonnées et la granularité sont fiables ;
+- drillthrough vers un borough.
+
+### Page 4 — Exploration
+
+- matrice type → agence → statut ;
+- arbre de décomposition du volume ;
+- page de tooltip avec les KPI et la période filtrée ;
+- bouton vers la page de contrôle.
+
+### 7.1. Interactions et navigation
+
+Ajoutez :
+
+- des interactions cohérentes entre les visuels ;
+- des signets pour alterner vue volume et vue délai ;
+- une navigation entre pages ;
+- un drillthrough par borough ;
+- une page tooltip courte ;
+- des titres dynamiques indiquant les filtres actifs.
+
+Ne rendez pas chaque visuel dépendant de chaque autre visuel sans réfléchir : une interaction inutile peut rendre le rapport difficile à comprendre.
+
+## 8. Performance sur des données massives
+
+Appliquez ces règles :
+
+1. filtrer la période et les colonnes côté serveur ;
+2. éviter de charger des textes longs non utilisés ;
+3. utiliser des dimensions plutôt que de répéter des libellés ;
+4. convertir correctement les types ;
+5. éviter les colonnes calculées très lourdes lorsque Power Query peut faire la préparation ;
+6. réduire la cardinalité des champs non nécessaires ;
+7. créer une table d'agrégation mensuelle si la page générale n'a pas besoin du détail ;
+8. mesurer le temps de rafraîchissement et la taille du modèle.
+
+**Import** offre une exploration rapide après chargement ; **DirectQuery** interroge la source mais dépend davantage de la performance du serveur et des requêtes. Pour ce Lab, privilégiez un périmètre Import maîtrisé et documenté, puis expliquez comment une architecture de production pourrait évoluer.
+
+## 9. Livrable final
+
+Le fichier `lab4_nyc311_powerbi.pbix` doit contenir :
+
+- les requêtes de staging ;
+- les tables du modèle en étoile ;
+- les relations ;
+- les mesures DAX ;
+- les pages de dashboard ;
+- une page de contrôles ;
+- une page « À propos des données » ;
+- la période et la date de rafraîchissement.
+
+La page « À propos des données » doit indiquer la source, l'URL, la date d'extraction, les paramètres et filtres utilisés, le nombre de lignes chargé, le périmètre, le fuseau horaire, le grain, les règles de traitement des dates manquantes et les limites.
+
+## 10. Travail demandé
+
+1. Définissez la question BI, la population et la période.
+2. Importez un petit échantillon, puis validez la pagination avant de charger la période choisie.
+3. Conservez au moins 300 000 lignes ou justifiez une limite technique.
+4. Créez le modèle en étoile et vérifiez l'unicité des dimensions.
+5. Créez les mesures de volume, clôture, médiane, moyenne, P90 et variation mensuelle.
+6. Comparez au moins trois mesures Power BI avec des valeurs calculées hors de Power BI.
+7. Réalisez les quatre pages proposées.
+8. Justifiez le choix d'au moins huit visuels.
+9. Ajoutez un drillthrough et une page tooltip.
+10. Ajoutez une page de contrôle qualité.
+11. Mesurez le temps de rafraîchissement et notez la taille du fichier.
+12. Écrivez une conclusion de cinq à dix lignes répondant à la question BI sans causalité non prouvée.
+
+::: {.callout-note title="Checklist avant remise"}
+- [ ] Le grain de la table de faits est écrit.
+- [ ] Les dimensions n'ont pas de clés dupliquées.
+- [ ] Le total des demandes est contrôlé.
+- [ ] La médiane et le P90 ne sont pas remplacés automatiquement par la moyenne.
+- [ ] Chaque page possède un objectif identifiable.
+- [ ] Les graphiques ont titre, unité, période et filtres.
+- [ ] Le rapport documente les limites et la date de rafraîchissement.
+:::

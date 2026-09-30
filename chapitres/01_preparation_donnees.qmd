@@ -51,7 +51,7 @@ En dehors des bases de données, les données sont fréquemment échangées sous
 
 : Principaux formats de données rencontrés en analyse de données {#tbl-formats-donnees}
 
-::: {.callout-important title="Zoom sur les tendances : le format Parquet"}
+::: {.callout-important title="Zoom sur le format Parquet"}
 Contrairement au CSV, le format **Parquet** stocke les données par colonne plutôt que par ligne. Cela permet de ne lire que les colonnes réellement nécessaires à une analyse, de bénéficier d'une compression efficace et de conserver les types de données (un entier reste un entier, pas une chaîne de caractères à réinterpréter). Il est aujourd'hui privilégié pour les jeux de données volumineux, et s'utilise nativement avec `pandas`, `Polars` ou `DuckDB`.
 :::
 
@@ -148,7 +148,7 @@ borne_basse, borne_haute = q1 - 1.5 * iqr, q3 + 1.5 * iqr
 aberrants = df[(df["prix"] < borne_basse) | (df["prix"] > borne_haute)]
 ```
 
-La **boîte à moustaches** (*boxplot*), présentée au chapitre suivant sur la visualisation, est l'outil graphique privilégié pour repérer visuellement ces valeurs.
+La **boîte à moustaches** (*boxplot*), présentée en détail dans le chapitre consacré à la visualisation des données, est l'outil graphique privilégié pour repérer visuellement ces valeurs.
 
 ::: {.callout-warning title="Une valeur aberrante n'est pas toujours une erreur"}
 Avant de supprimer une valeur aberrante, il faut se demander si elle correspond à une **erreur de saisie** (à corriger ou supprimer) ou à un **phénomène réel mais rare** (par exemple une vente exceptionnelle), qu'il peut être pertinent de conserver, voire d'étudier spécifiquement.
@@ -168,7 +168,7 @@ Les incohérences les plus fréquentes concernent la **casse** et les **espaces 
 
 ### 2.4. Vers une démarche de qualité des données
 
-::: {.callout-important title="Zoom sur les tendances : la validation systématique de la qualité"}
+::: {.callout-important title="Zoom sur la validation systématique de la qualité"}
 Sur des projets d'analyse récurrents (tableaux de bord alimentés quotidiennement, par exemple), il devient risqué de vérifier la qualité des données « à l'œil » à chaque exécution. Des bibliothèques comme **[`Great Expectations`](https://greatexpectations.io)** permettent de définir des règles de validation explicites (« la colonne `prix` doit toujours être positive », « la colonne `date` ne doit jamais être manquante ») et de les exécuter automatiquement à chaque nouvelle collecte de données, afin de détecter une dérive de qualité avant qu'elle n'affecte l'analyse.
 :::
 
@@ -229,7 +229,7 @@ df["tranche_age"] = pd.cut(
 Une transformation n'est pas automatiquement une amélioration. Par exemple, remplacer toutes les valeurs manquantes par zéro change la signification de la variable : « absence d'information » devient « valeur nulle ». Avant chaque transformation, demandez-vous quelle question elle facilite et si son effet sera documenté.
 :::
 
-:::{.content-visible when-profile="teacher"}
+::: {.content-visible when-profile="teacher"}
 ::: {.callout-note title="Auto-évaluation" collapse="true"}
 Avant de passer au chapitre suivant, assurez-vous de pouvoir répondre « oui » aux questions suivantes :
 

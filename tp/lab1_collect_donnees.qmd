@@ -1,0 +1,342 @@
+# Lab 1 : Collecte de données
+
+::: {.callout-tip title="Objectifs du Lab"}
+À la fin de ce Lab, l'étudiant sera capable de :
+
+- **Formuler** une question de collecte avant de chercher des données ;
+- **Concevoir** un questionnaire court, compréhensible et respectueux des personnes ;
+- **Interroger** une API REST avec `requests` et traiter une réponse JSON ;
+- **Télécharger** un fichier public et conserver sa source ;
+- **Documenter** la provenance, la période, les limites et les transformations d'un jeu de données ;
+- **Construire** un petit catalogue de données réutilisable dans les Labs suivants.
+:::
+
+::: {.callout-note title="Fil rouge des Labs 1 à 5"}
+Nous utiliserons progressivement les données ouvertes **NYC 311 Service Requests** pour construire une solution de Business Intelligence. Ce service contient des demandes adressées à la ville de New York : type de problème, agence, quartier, dates de création et de clôture, canal de transmission et localisation. Le volume est important et permet de comparer une exploration pédagogique à une solution destinée à des données massives.
+:::
+
+## 1. Une collecte commence par une question
+
+Une collecte ne consiste pas à télécharger tout ce qui est disponible. Avant de choisir une source, écrivez :
+
+1. la question à laquelle vous voulez répondre ;
+2. la population étudiée ;
+3. la période ;
+4. les variables nécessaires ;
+5. les contraintes de qualité, de droit et de confidentialité.
+
+Exemple de question pour le fil rouge :
+
+> Comment le volume et le délai de traitement des demandes 311 évoluent-ils selon le type de problème, le quartier et le canal de transmission ?
+
+Cette question nécessite notamment une date de création, une date de clôture, un type de demande, un quartier, un statut et un canal. Une variable comme le nom d'un agent n'est pas nécessaire.
+
+## 2. Les trois familles de collecte
+
+### 2.1. Questionnaire
+
+Un questionnaire est utile lorsque l'information n'existe pas encore dans une base ou lorsque l'on cherche une perception, une intention ou une expérience vécue. Il faut distinguer :
+
+- une question **fermée**, facile à compter et à comparer ;
+- une question **ouverte**, plus riche mais plus difficile à analyser ;
+- une échelle ordinale, par exemple de 1 à 5, dont les catégories doivent être expliquées.
+
+Un questionnaire court doit comporter un titre, une introduction, la durée estimée, l'usage des réponses et une possibilité de ne pas répondre à une question non obligatoire.
+
+::: {.callout-warning title="Protection des personnes"}
+Pour ce Lab, ne collectez pas de nom, numéro de téléphone, adresse précise, mot de passe, information médicale ou autre donnée sensible. Utilisez des réponses anonymes et demandez un consentement clair. Dans un projet réel, la collecte doit respecter les règles de l'établissement et la réglementation applicable.
+:::
+
+### 2.2. API
+
+Une API est une interface qui renvoie des données structurées. Une requête REST utilise souvent :
+
+- une URL de ressource ;
+- des paramètres de filtrage ;
+- une limite et parfois un décalage de pagination ;
+- une réponse JSON ;
+- un code HTTP à vérifier.
+
+Une réponse `200` signifie que la requête a été traitée ; cela ne garantit pas que les données sont complètes ou correctes. Il faut lire les métadonnées, les noms de champs et la période.
+
+### 2.3. Fichier ou page Internet
+
+Un fichier CSV, JSON, Excel ou Parquet peut être téléchargé depuis un portail open data. Une page HTML peut parfois être lue, mais le scraping doit respecter les conditions d'utilisation du site, `robots.txt`, la fréquence raisonnable des requêtes et la protection des données.
+
+La source doit être enregistrée avec :
+
+```text
+nom de la source
+URL
+date et heure de téléchargement
+période couverte
+filtres utilisés
+nombre de lignes téléchargées
+colonnes conservées
+limites connues
+```
+
+## 3. Préparer le projet de collecte
+
+```bash
+uv add pandas requests beautifulsoup4 pyarrow
+mkdir -p data/raw data/metadata notebooks outputs
+```
+
+Une structure minimale :
+
+```text
+data/
+├── raw/                 # données telles que reçues
+├── metadata/            # sources, dictionnaires, journaux
+└── processed/           # optionnel : données transformées plus tard
+```
+
+Conservez les données brutes sans les modifier. Si un fichier est trop volumineux pour Git, conservez au minimum le script de téléchargement, l'URL, les paramètres et un échantillon documenté.
+
+## 4. Partie A — Concevoir un mini-questionnaire
+
+### 4.1. Sujet
+
+Le questionnaire porte sur l'utilisation des outils numériques par les étudiants pour apprendre l'analyse de données. Il ne doit pas recueillir d'identité.
+
+Proposition de questions :
+
+1. Combien d'heures par semaine consacrez-vous au travail personnel ?
+2. Quel environnement utilisez-vous principalement ? `JupyterLab`, `VS Code`, `Google Colab`, autre.
+3. À quel niveau évaluez-vous votre aisance avec Python ? `débutant`, `intermédiaire`, `à l'aise`.
+4. Quelle difficulté rencontrez-vous le plus souvent ? question à choix unique.
+5. Quelle amélioration proposeriez-vous ? question ouverte facultative.
+
+Ne mettez pas en relation les réponses avec un nom. Si la classe est très petite, évitez de publier des croisements qui permettraient de reconnaître une personne.
+
+### 4.2. Export et lecture
+
+Après export en CSV, placez le fichier dans `data/raw/questionnaire_outils.csv` :
+
+```python
+import pandas as pd
+
+questionnaire = pd.read_csv("../data/raw/questionnaire_outils.csv")
+questionnaire.head()
+questionnaire.info()
+questionnaire["environnement"].value_counts(dropna=False)
+```
+
+Vérifiez les valeurs autorisées, les réponses manquantes et la présence éventuelle de colonnes ajoutées automatiquement par l'outil de formulaire.
+
+## 5. Partie B — Interroger l'API NYC 311
+
+### 5.1. Découvrir la ressource
+
+Le portail public de New York expose les demandes 311 via l'API Socrata. L'endpoint utilisé dans ce Lab est :
+
+<https://data.cityofnewyork.us/resource/erm2-nwe9.json>
+
+Une première requête limitée permet de comprendre la structure :
+
+```python
+import requests
+
+endpoint = "https://data.cityofnewyork.us/resource/erm2-nwe9.json"
+
+params = {
+    "$limit": 5,
+    "$order": "created_date DESC",
+}
+
+response = requests.get(endpoint, params=params, timeout=30)
+response.raise_for_status()
+sample = response.json()
+sample[:1]
+```
+
+Transformez ensuite la réponse en tableau :
+
+```python
+import pandas as pd
+
+requests_sample = pd.json_normalize(sample)
+requests_sample.columns.tolist()
+requests_sample.to_csv("../data/raw/nyc311_sample.csv", index=False)
+```
+
+### 5.2. Filtrer côté serveur
+
+Il vaut mieux demander au serveur uniquement les lignes et colonnes nécessaires :
+
+```python
+params = {
+    "$select": (
+        "unique_key,created_date,closed_date,agency,"
+        "complaint_type,borough,open_data_channel_type,status"
+    ),
+    "$where": (
+        "created_date between '2024-01-01T00:00:00' "
+        "and '2024-01-31T23:59:59'"
+    ),
+    "$order": "created_date",
+    "$limit": 50000,
+}
+
+response = requests.get(endpoint, params=params, timeout=60)
+response.raise_for_status()
+nyc311_janvier = pd.DataFrame(response.json())
+```
+
+Le serveur peut renvoyer moins de lignes que prévu si le filtre est mal écrit ou si la limite est atteinte. Comparez le nombre obtenu avec une requête de comptage :
+
+```python
+count_params = {
+    "$select": "count(*) as nombre",
+    "$where": (
+        "created_date between '2024-01-01T00:00:00' "
+        "and '2024-01-31T23:59:59'"
+    ),
+}
+
+count_response = requests.get(endpoint, params=count_params, timeout=60)
+count_response.raise_for_status()
+count_response.json()
+```
+
+### 5.3. Pagination
+
+Pour télécharger davantage de lignes, utilisez `$limit` et `$offset`. Ne lancez pas une collecte massive sans définir une période et sans mesurer le volume.
+
+```python
+def collect_page(endpoint, where, limit=50_000, offset=0):
+    params = {
+        "$select": (
+            "unique_key,created_date,closed_date,agency,"
+            "complaint_type,borough,open_data_channel_type,status"
+        ),
+        "$where": where,
+        "$order": "created_date",
+        "$limit": limit,
+        "$offset": offset,
+    }
+    response = requests.get(endpoint, params=params, timeout=120)
+    response.raise_for_status()
+    return response.json()
+
+where = (
+    "created_date between '2024-01-01T00:00:00' "
+    "and '2024-01-31T23:59:59'"
+)
+
+pages = []
+for offset in range(0, 150_000, 50_000):
+    page = collect_page(endpoint, where, offset=offset)
+    if not page:
+        break
+    pages.extend(page)
+
+nyc311 = pd.DataFrame(pages)
+nyc311.to_csv("../data/raw/nyc311_janvier.csv", index=False)
+```
+
+Pour une collecte destinée à un usage régulier, sauvegardez aussi les paramètres et le nombre de lignes dans un fichier de métadonnées :
+
+```python
+import json
+from datetime import datetime, timezone
+
+metadata = {
+    "source": "NYC 311 Service Requests",
+    "url": endpoint,
+    "downloaded_at_utc": datetime.now(timezone.utc).isoformat(),
+    "where": where,
+    "rows": len(nyc311),
+    "columns": nyc311.columns.tolist(),
+}
+
+with open("../data/metadata/nyc311_janvier.json", "w", encoding="utf-8") as f:
+    json.dump(metadata, f, indent=2, ensure_ascii=False)
+```
+
+## 6. Partie C — Une donnée publique téléchargée sur Internet
+
+Choisissez une source publique complémentaire, par exemple une météo, une population ou une donnée économique. La source doit être :
+
+- accessible sans identifiant personnel ;
+- accompagnée d'une documentation ;
+- téléchargeable sous forme de CSV, JSON ou Parquet ;
+- suffisamment claire pour préciser la période et les unités.
+
+Téléchargez une copie et écrivez une fiche :
+
+```markdown
+# Fiche source
+- Nom :
+- URL :
+- Date de téléchargement :
+- Période :
+- Nombre de lignes :
+- Variables principales :
+- Unités :
+- Valeurs manquantes :
+- Licence ou conditions d'utilisation :
+- Limites :
+```
+
+La fiche est aussi importante que le fichier : sans elle, une autre personne ne sait pas comment les données ont été obtenues.
+
+## 7. Contrôle de la collecte
+
+Avant de passer à l'analyse, répondez à ces questions :
+
+- La source est-elle bien celle annoncée ?
+- Le nombre de lignes est-il plausible ?
+- La période couvre-t-elle la question ?
+- Les colonnes ont-elles les types attendus ?
+- Y a-t-il des identifiants dupliqués ?
+- Les dates sont-elles dans le même fuseau ou format ?
+- Les valeurs manquantes sont-elles documentées ?
+- La collecte peut-elle être rejouée demain ?
+
+Une collecte de données est réussie lorsque quelqu'un d'autre peut comprendre et reproduire le chemin entre la source et le fichier brut.
+
+## 8. Lab Sheet — Travail demandé
+
+### Partie A — Questionnaire
+
+1. Rédigez une question de recherche et quatre à six questions de questionnaire.
+2. Justifiez le type de chaque question : fermée, ordinale, numérique ou ouverte.
+3. Expliquez quelles informations vous avez volontairement exclues pour protéger les répondants.
+4. Exportez les réponses anonymisées et donnez le nombre de lignes, de colonnes et de réponses manquantes.
+
+### Partie B — API NYC 311
+
+5. Téléchargez 5 lignes et décrivez au moins huit colonnes disponibles.
+6. Téléchargez les demandes d'un mois précis en conservant au moins huit colonnes utiles au fil rouge.
+7. Comparez le nombre retourné avec une requête `count(*)`.
+8. Ajoutez une pagination et sauvegardez les paramètres de collecte.
+9. Calculez le nombre de demandes par `borough` et par `complaint_type`.
+10. Écrivez deux limites de cette collecte : période, pagination, qualité ou interprétation. Notez aussi la date de collecte, les paramètres de requête utilisés et le nombre de lignes effectivement obtenu.
+
+### Partie C — Source Internet complémentaire
+
+11. Choisissez un fichier ou une API complémentaire.
+12. Rédigez sa fiche source et indiquez sa licence ou ses conditions d'utilisation.
+13. Comparez les types de variables de cette source avec ceux de NYC 311.
+14. Expliquez si une jointure entre les deux sources est réellement possible et quelle clé commune serait nécessaire.
+
+### Partie D — Réflexion
+
+15. Pourquoi est-il préférable de filtrer côté serveur lorsque la donnée est massive ?
+16. Quelle différence faites-vous entre la donnée brute et la donnée traitée ?
+17. Qu'est-ce qu'une collecte complète pour une question donnée ?
+18. Donnez un exemple de biais possible dans un questionnaire et un exemple de biais possible dans une API.
+
+## 9. Livrables
+
+::: {.callout-note title="Checklist finale"}
+- [ ] Les fichiers bruts sont conservés sans modification.
+- [ ] Chaque source possède une URL et une date de collecte.
+- [ ] La date de collecte, les filtres/paramètres et le nombre de lignes obtenu sont consignés.
+- [ ] Les requêtes API fixent un délai maximal.
+- [ ] La pagination est arrêtée par une règle explicite.
+- [ ] Les données personnelles ne sont pas collectées inutilement.
+- [ ] Les fichiers du Lab 2 peuvent être produits à partir de ces sources.
+:::

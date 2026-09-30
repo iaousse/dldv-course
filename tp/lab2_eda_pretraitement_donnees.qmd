@@ -1,0 +1,477 @@
+# Lab 2 : EDA et prétraitement
+
+::: {.callout-tip title="Objectifs du Lab"}
+À la fin de ce Lab, l'étudiant sera capable de :
+
+- **Auditer** un jeu de données avec une démarche structurée ;
+- **Mesurer** les valeurs manquantes, doublons, types incorrects et catégories incohérentes ;
+- **Transformer** les dates et créer des variables utiles à la question métier ;
+- **Explorer** une variable seule, deux variables et plusieurs variables ;
+- **Décider** quoi corriger, conserver, exclure ou documenter ;
+- **Produire** une table propre et un rapport EDA reproductible.
+:::
+
+::: {.callout-important title="Idée centrale"}
+Dans de nombreux projets, la plus grande partie du temps n'est pas consacrée aux graphiques finaux. Elle est consacrée à comprendre les sources, vérifier les hypothèses, corriger les formats, traiter les valeurs manquantes, contrôler les résultats et recommencer. Ce Lab transforme les données collectées au Lab 1 en données analysables, sans masquer les problèmes.
+:::
+
+## 1. Le fichier de départ
+
+Utilisez `data/raw/nyc311_janvier.csv` obtenu au Lab 1. Si vous n'avez pas réussi la collecte, utilisez un export documenté du même endpoint et indiquez la période.
+
+Les colonnes minimales attendues sont :
+
+| Colonne | Rôle |
+|:---|:---|
+| `unique_key` | Identifiant de la demande |
+| `created_date` | Date de création |
+| `closed_date` | Date de clôture éventuelle |
+| `agency` | Agence responsable |
+| `complaint_type` | Type de problème déclaré |
+| `borough` | Arrondissement |
+| `open_data_channel_type` | Canal de transmission |
+| `status` | Statut de la demande |
+
+La question d'analyse est :
+
+> Quels types de demandes sont les plus fréquents et quels facteurs semblent associés à un délai de traitement plus long ?
+
+Le mot **associé** est volontaire : l'EDA peut repérer des différences et des relations, mais elle ne prouve pas une cause.
+
+## 2. Installer et charger proprement
+
+```bash
+uv add pandas numpy matplotlib seaborn pyarrow
+```
+
+Dans le notebook :
+
+```python
+from pathlib import Path
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+RAW_PATH = Path("../data/raw/nyc311_janvier.csv")
+PROCESSED_PATH = Path("../data/processed/nyc311_janvier_clean.csv")
+
+raw = pd.read_csv(RAW_PATH)
+df = raw.copy()
+
+print(df.shape)
+df.head()
+```
+
+Gardez deux objets conceptuellement séparés :
+
+- `raw` : copie de la donnée telle qu'elle a été reçue ;
+- `df` : copie de travail, transformée par des étapes documentées.
+
+## 3. Audit initial
+
+### 3.1. Dimensions et types
+
+```python
+df.shape
+df.columns.tolist()
+df.info()
+df.describe(include="all").T
+```
+
+Demandez-vous pour chaque colonne :
+
+- Est-elle nécessaire à la question ?
+- Est-elle une mesure, une catégorie, une date ou un identifiant ?
+- Son type pandas correspond-il à son rôle ?
+- Son nom et son unité sont-ils explicites ?
+
+### 3.2. Valeurs manquantes
+
+```python
+missing = (
+    df.isna()
+    .agg(["sum", "mean"])
+    .T
+    .rename(columns={"sum": "nombre", "mean": "proportion"})
+)
+missing["pourcentage"] = missing["proportion"] * 100
+missing.sort_values("pourcentage", ascending=False)
+```
+
+Une valeur manquante dans `closed_date` peut signifier qu'une demande est encore ouverte. Elle n'a donc pas la même signification qu'une date de création manquante. Ne remplacez pas toutes les absences par zéro.
+
+### 3.3. Unicité et doublons
+
+```python
+df["unique_key"].nunique()
+len(df)
+df["unique_key"].duplicated().sum()
+df.duplicated().sum()
+```
+
+Un doublon exact et deux lignes portant le même identifiant ne sont pas nécessairement le même problème. Examinez les lignes concernées avant de supprimer :
+
+```python
+doublons_id = df[df["unique_key"].duplicated(keep=False)]
+doublons_id.sort_values("unique_key").head(20)
+```
+
+## 4. Convertir et valider
+
+### 4.1. Dates
+
+Pour NYC 311, les dates fournies sans décalage explicite correspondent à l'heure locale de New York. Il ne faut donc pas leur ajouter `utc=True` au moment de les lire : cela les interpréterait à tort comme des heures UTC. Le code ci-dessous localise les dates naïves à New York et convertit en heure de New York les dates qui contiennent déjà un fuseau. Les rares heures ambiguës ou inexistantes lors du changement d'heure sont marquées manquantes et doivent être comptabilisées dans l'audit.
+
+```python
+NYC_TZ = "America/New_York"
+
+for column in ("created_date", "closed_date"):
+    dates = pd.to_datetime(df[column], errors="coerce")
+    if dates.dt.tz is None:
+        dates = dates.dt.tz_localize(
+            NYC_TZ,
+            ambiguous="NaT",
+            nonexistent="NaT",
+        )
+    else:
+        dates = dates.dt.tz_convert(NYC_TZ)
+    df[column] = dates
+```
+
+`errors="coerce"` transforme les dates illisibles en `NaT`, ce qui permet de les compter. Il faut ensuite les examiner, pas les oublier.
+
+```python
+print(df["created_date"].isna().sum())
+print(df["closed_date"].isna().sum())
+print(df["created_date"].min(), df["created_date"].max())
+```
+
+### 4.2. Catégories textuelles
+
+Les catégories peuvent contenir des espaces ou des valeurs vides :
+
+```python
+categorical_columns = [
+    "agency",
+    "complaint_type",
+    "borough",
+    "open_data_channel_type",
+    "status",
+]
+
+for column in categorical_columns:
+    df[column] = df[column].astype("string").str.strip()
+    df[column] = df[column].replace({"": pd.NA, "nan": pd.NA})
+```
+
+Ne remplacez pas une catégorie par une autre sans conserver la règle. Si deux libellés désignent le même concept, écrivez une table de correspondance :
+
+```python
+mapping_borough = {
+    "BRONX": "Bronx",
+    "BROOKLYN": "Brooklyn",
+    "MANHATTAN": "Manhattan",
+    "QUEENS": "Queens",
+    "STATEN ISLAND": "Staten Island",
+}
+
+df["borough_normalized"] = df["borough"].map(mapping_borough)
+```
+
+Les valeurs non reconnues deviennent `NaN` dans la nouvelle colonne : elles doivent être inspectées avant décision.
+
+### 4.3. Règles de validité
+
+Construisez des indicateurs de contrôle plutôt que de supprimer directement :
+
+```python
+df["date_invalide"] = df["created_date"].isna()
+df["cloture_avant_creation"] = (
+    df["closed_date"].notna()
+    & df["created_date"].notna()
+    & (df["closed_date"] < df["created_date"])
+)
+
+df["statut_incoherent"] = (
+    df["closed_date"].isna()
+    & df["status"].eq("Closed")
+)
+
+df[[
+    "date_invalide",
+    "cloture_avant_creation",
+    "statut_incoherent",
+]].sum()
+```
+
+Une règle de qualité produit d'abord un signal. La correction dépend ensuite de la cause et de la question.
+
+## 5. Créer les variables d'analyse
+
+### 5.1. Délai de traitement
+
+```python
+df["processing_hours"] = (
+    df["closed_date"] - df["created_date"]
+).dt.total_seconds() / 3600
+```
+
+Les demandes encore ouvertes ont un délai manquant. Les délais négatifs sont impossibles dans cette définition et doivent être contrôlés :
+
+```python
+df["processing_hours"].describe()
+df[df["processing_hours"] < 0][
+    ["unique_key", "created_date", "closed_date", "processing_hours"]
+]
+```
+
+Ne supprimez pas les grandes valeurs uniquement parce qu'elles sont grandes : une demande réellement restée ouverte longtemps peut être précisément un résultat important.
+
+### 5.2. Variables temporelles
+
+```python
+df["created_day"] = df["created_date"].dt.day
+df["created_weekday"] = df["created_date"].dt.day_name()
+df["created_hour"] = df["created_date"].dt.hour
+df["created_week"] = df["created_date"].dt.isocalendar().week.astype("int")
+```
+
+Pour comparer les jours, tenez compte du volume : un lundi avec beaucoup de demandes peut avoir plus de demandes longues simplement parce qu'il y a plus de dossiers.
+
+### 5.3. Catégories rares
+
+```python
+top_types = df["complaint_type"].value_counts().head(15)
+top_types
+```
+
+Pour un graphique lisible, vous pouvez afficher les quinze catégories les plus fréquentes et regrouper les autres sous « Autres ». Cette opération est une transformation d'affichage : ne détruisez pas la catégorie originale.
+
+## 6. EDA univariée
+
+### 6.1. Variables catégorielles
+
+```python
+top_types.sort_values().plot(
+    kind="barh",
+    figsize=(8, 6),
+    title="15 types de demandes les plus fréquents",
+)
+plt.xlabel("Nombre de demandes")
+plt.tight_layout()
+plt.savefig("../outputs/lab2_top_types.png", dpi=150)
+```
+
+Décrivez le volume, la concentration et les catégories rares. Une catégorie fréquente n'est pas nécessairement celle qui a le délai le plus long.
+
+### 6.2. Variables numériques
+
+```python
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+sns.histplot(
+    data=df,
+    x="processing_hours",
+    bins=50,
+    ax=axes[0],
+)
+sns.boxplot(
+    data=df,
+    x="processing_hours",
+    ax=axes[1],
+)
+axes[0].set_xlim(0, df["processing_hours"].quantile(0.99))
+axes[0].set_title("Délai : vue limitée au 99e percentile")
+axes[1].set_title("Délai : valeurs extrêmes visibles")
+plt.tight_layout()
+plt.savefig("../outputs/lab2_processing_distribution.png", dpi=150)
+```
+
+La limitation de l'axe sert à lire la majorité des observations ; les calculs doivent rester faits sur la variable complète. Indiquez toujours cette différence dans le commentaire du graphique.
+
+## 7. EDA bivariée et multivariée
+
+### 7.1. Type de demande et délai
+
+```python
+top_type_names = top_types.index
+delay_by_type = (
+    df[df["complaint_type"].isin(top_type_names)]
+    .groupby("complaint_type")["processing_hours"]
+    .agg(
+        demandes="count",
+        mediane="median",
+        moyenne="mean",
+        q1=lambda s: s.quantile(0.25),
+        q3=lambda s: s.quantile(0.75),
+    )
+    .sort_values("mediane", ascending=False)
+)
+
+delay_by_type.head(10)
+```
+
+Le nombre de demandes est indispensable pour interpréter une médiane. Un type avec 20 observations n'offre pas le même niveau de confiance descriptif qu'un type avec 20 000 observations.
+
+### 7.2. Quartier et canal
+
+```python
+pd.crosstab(
+    df["borough"],
+    df["open_data_channel_type"],
+    normalize="index",
+).round(3)
+```
+
+Cette table compare la composition des canaux dans chaque quartier. Elle ne mesure pas l'efficacité du canal : il faudrait une mesure de volume, de délai et une définition de la population comparable.
+
+### 7.3. Volume dans le temps
+
+```python
+monthly = (
+    df.set_index("created_date")
+    .resample("D")
+    .size()
+    .rename("requests")
+)
+
+monthly.plot(figsize=(10, 4), title="Demandes créées par jour")
+plt.ylabel("Nombre de demandes")
+plt.tight_layout()
+```
+
+Repérez les jours atypiques, mais ne les expliquez pas sans source complémentaire. Un pic peut venir d'un événement réel, d'une campagne de communication ou d'un changement de système.
+
+## 8. Traiter les données avec une règle explicite
+
+Pour créer un fichier de travail :
+
+```python
+analysis_columns = [
+    "unique_key",
+    "created_date",
+    "closed_date",
+    "agency",
+    "complaint_type",
+    "borough_normalized",
+    "open_data_channel_type",
+    "status",
+    "processing_hours",
+    "created_weekday",
+    "created_hour",
+]
+
+analysis = df[analysis_columns].copy()
+
+analysis = analysis[
+    analysis["unique_key"].notna()
+    & analysis["created_date"].notna()
+]
+
+analysis.to_csv(PROCESSED_PATH, index=False)
+```
+
+Écrivez ensuite dans `data/metadata/nyc311_cleaning_log.md` :
+
+```markdown
+# Journal de préparation
+- Fichier source :
+- Période :
+- Lignes initiales :
+- Lignes finales :
+- Colonnes supprimées :
+- Dates converties :
+- Valeurs manquantes conservées :
+- Lignes exclues et raison :
+- Variables dérivées :
+- Limites :
+```
+
+Le fichier traité n'est pas « la vérité » : c'est une vue adaptée à une question. Une autre question peut nécessiter d'autres colonnes ou un autre filtre.
+
+## 9. Données volumineuses
+
+Lorsque le CSV devient trop grand pour la mémoire :
+
+```python
+chunks = []
+
+for chunk in pd.read_csv(
+    "../data/raw/nyc311_2024.csv",
+    usecols=[
+        "created_date",
+        "closed_date",
+        "complaint_type",
+        "borough",
+    ],
+    chunksize=100_000,
+):
+    chunk["created_date"] = pd.to_datetime(
+        chunk["created_date"],
+        errors="coerce",
+    )
+    chunk["closed_date"] = pd.to_datetime(
+        chunk["closed_date"],
+        errors="coerce",
+    )
+    chunk["processing_hours"] = (
+        chunk["closed_date"] - chunk["created_date"]
+    ).dt.total_seconds() / 3600
+    chunks.append(chunk)
+
+analysis_large = pd.concat(chunks, ignore_index=True)
+```
+
+Pour plusieurs millions de lignes, ne concaténez pas systématiquement toutes les données si vous avez seulement besoin d'un agrégat. Accumulez par exemple des comptes par mois et par catégorie, ou utilisez DuckDB/Parquet dans un Lab ultérieur.
+
+## 10. Lab Sheet — Travail demandé
+
+### Partie A — Audit
+
+1. Chargez le fichier brut et indiquez son nombre de lignes et de colonnes.
+2. Produisez un tableau des types, valeurs manquantes et taux de valeurs manquantes.
+3. Vérifiez l'unicité de `unique_key` et examinez les doublons éventuels.
+4. Écrivez cinq règles de qualité adaptées à ce fichier.
+
+### Partie B — Prétraitement
+
+5. Convertissez les dates et comptez les valeurs devenues `NaT`.
+6. Normalisez les colonnes textuelles en conservant les valeurs originales.
+7. Créez `processing_hours` et identifiez les délais négatifs.
+8. Créez au moins trois variables temporelles.
+9. Décidez comment traiter les demandes ouvertes pour l'analyse du délai. Justifiez.
+10. Écrivez un journal de préparation sans supprimer silencieusement les erreurs.
+
+### Partie C — Exploration
+
+11. Produisez le top 15 des types de demandes.
+12. Comparez la moyenne, la médiane, $Q_1$ et $Q_3$ du délai pour cinq types fréquents.
+13. Comparez les délais par arrondissement avec les effectifs.
+14. Construisez une table croisée arrondissement/canal.
+15. Produisez un graphique de volume quotidien ou hebdomadaire.
+16. Ajoutez une boîte à moustaches par arrondissement.
+
+### Partie D — Interprétation
+
+17. Donnez deux observations descriptives vérifiables par un chiffre.
+18. Donnez une interprétation que les données ne permettent pas de soutenir.
+19. Expliquez pourquoi une catégorie rare peut avoir une moyenne instable.
+20. Proposez deux données complémentaires utiles à une analyse diagnostique.
+
+### Partie E — Préparer la suite
+
+21. Sauvegardez une table propre et une table de synthèse mensuelle.
+22. Rédigez le dictionnaire des colonnes destinées au Lab 3.
+23. Identifiez trois KPI possibles pour le futur tableau de bord.
+24. Expliquez quelles colonnes devront être des dimensions et lesquelles pourront être des mesures.
+
+## 11. Livrables
+
+::: {.callout-note title="Checklist finale"}
+- [ ] Le fichier brut est conservé.
+- [ ] Les transformations sont visibles dans le notebook.
+- [ ] Les valeurs manquantes ont une interprétation.
+- [ ] Les statistiques sont accompagnées d'effectifs.
+- [ ] Les graphiques indiquent unité, période et filtres.
+- [ ] La table propre peut être utilisée par Power BI.
+:::

@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 1 : Collecte de données – Analyse et visualisation de données</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../tp/lab2_eda_pretraitement_donnees.html" rel="next">
+<link href="../tp/lab0_environement_python.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tp/lab1_collect_donnees.html"><span class="chapter-title">Lab 1 : Collecte de données</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title"><span class="chapter-title">Lab 1 : Collecte de données</span></h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../images/logo_estc.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Analyse et visualisation de données</a> 
+        <div class="sidebar-tools-main">
+    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Recherche"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">index.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../preface.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Préface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/00_introduction_analyse_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’analyse de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/module_collecte_pretraitement_commun.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Collecte, Nettoyage et Préparation des Données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/02_exploration_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploration des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/03_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualisation des données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/04_entropot_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction à l’entrepôt de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/05_powerbi-taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Business Intelligence avec Power BI et Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab0_environement_python.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab1_collect_donnees.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Lab 1 : Collecte de données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab2_eda_pretraitement_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 : EDA et prétraitement</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab3_visualisation_donnees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 : Visualiser les données 311</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab4_entropot_donnees_powerbi.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 : Entrepôt de données et dashboard avancé avec Power BI</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tp/lab5_entropot_donnees_taipy.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 : Entrepôt de données et dashboard avancé avec Taipy</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Dans ce chapitre</h2>
+   
+  <ul>
+  <li><a href="#une-collecte-commence-par-une-question" id="toc-une-collecte-commence-par-une-question" class="nav-link active" data-scroll-target="#une-collecte-commence-par-une-question">1. Une collecte commence par une question</a></li>
+  <li><a href="#les-trois-familles-de-collecte" id="toc-les-trois-familles-de-collecte" class="nav-link" data-scroll-target="#les-trois-familles-de-collecte">2. Les trois familles de collecte</a>
+  <ul class="collapse">
+  <li><a href="#questionnaire" id="toc-questionnaire" class="nav-link" data-scroll-target="#questionnaire">2.1. Questionnaire</a></li>
+  <li><a href="#api" id="toc-api" class="nav-link" data-scroll-target="#api">2.2. API</a></li>
+  <li><a href="#fichier-ou-page-internet" id="toc-fichier-ou-page-internet" class="nav-link" data-scroll-target="#fichier-ou-page-internet">2.3. Fichier ou page Internet</a></li>
+  </ul></li>
+  <li><a href="#préparer-le-projet-de-collecte" id="toc-préparer-le-projet-de-collecte" class="nav-link" data-scroll-target="#préparer-le-projet-de-collecte">3. Préparer le projet de collecte</a></li>
+  <li><a href="#partie-a-concevoir-un-mini-questionnaire" id="toc-partie-a-concevoir-un-mini-questionnaire" class="nav-link" data-scroll-target="#partie-a-concevoir-un-mini-questionnaire">4. Partie A — Concevoir un mini-questionnaire</a>
+  <ul class="collapse">
+  <li><a href="#sujet" id="toc-sujet" class="nav-link" data-scroll-target="#sujet">4.1. Sujet</a></li>
+  <li><a href="#export-et-lecture" id="toc-export-et-lecture" class="nav-link" data-scroll-target="#export-et-lecture">4.2. Export et lecture</a></li>
+  </ul></li>
+  <li><a href="#partie-b-interroger-lapi-nyc-311" id="toc-partie-b-interroger-lapi-nyc-311" class="nav-link" data-scroll-target="#partie-b-interroger-lapi-nyc-311">5. Partie B — Interroger l’API NYC 311</a>
+  <ul class="collapse">
+  <li><a href="#découvrir-la-ressource" id="toc-découvrir-la-ressource" class="nav-link" data-scroll-target="#découvrir-la-ressource">5.1. Découvrir la ressource</a></li>
+  <li><a href="#filtrer-côté-serveur" id="toc-filtrer-côté-serveur" class="nav-link" data-scroll-target="#filtrer-côté-serveur">5.2. Filtrer côté serveur</a></li>
+  <li><a href="#pagination" id="toc-pagination" class="nav-link" data-scroll-target="#pagination">5.3. Pagination</a></li>
+  </ul></li>
+  <li><a href="#partie-c-une-donnée-publique-téléchargée-sur-internet" id="toc-partie-c-une-donnée-publique-téléchargée-sur-internet" class="nav-link" data-scroll-target="#partie-c-une-donnée-publique-téléchargée-sur-internet">6. Partie C — Une donnée publique téléchargée sur Internet</a></li>
+  <li><a href="#contrôle-de-la-collecte" id="toc-contrôle-de-la-collecte" class="nav-link" data-scroll-target="#contrôle-de-la-collecte">7. Contrôle de la collecte</a></li>
+  <li><a href="#lab-sheet-travail-demandé" id="toc-lab-sheet-travail-demandé" class="nav-link" data-scroll-target="#lab-sheet-travail-demandé">8. Lab Sheet — Travail demandé</a>
+  <ul class="collapse">
+  <li><a href="#partie-a-questionnaire" id="toc-partie-a-questionnaire" class="nav-link" data-scroll-target="#partie-a-questionnaire">Partie A — Questionnaire</a></li>
+  <li><a href="#partie-b-api-nyc-311" id="toc-partie-b-api-nyc-311" class="nav-link" data-scroll-target="#partie-b-api-nyc-311">Partie B — API NYC 311</a></li>
+  <li><a href="#partie-c-source-internet-complémentaire" id="toc-partie-c-source-internet-complémentaire" class="nav-link" data-scroll-target="#partie-c-source-internet-complémentaire">Partie C — Source Internet complémentaire</a></li>
+  <li><a href="#partie-d-réflexion" id="toc-partie-d-réflexion" class="nav-link" data-scroll-target="#partie-d-réflexion">Partie D — Réflexion</a></li>
+  </ul></li>
+  <li><a href="#livrables" id="toc-livrables" class="nav-link" data-scroll-target="#livrables">9. Livrables</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div class="callout callout-style-default callout-tip callout-titled" title="Objectifs du Lab">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Objectifs du Lab
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>À la fin de ce Lab, l’étudiant sera capable de :</p>
+<ul>
+<li><strong>Formuler</strong> une question de collecte avant de chercher des données ;</li>
+<li><strong>Concevoir</strong> un questionnaire court, compréhensible et respectueux des personnes ;</li>
+<li><strong>Interroger</strong> une API REST avec <code>requests</code> et traiter une réponse JSON ;</li>
+<li><strong>Télécharger</strong> un fichier public et conserver sa source ;</li>
+<li><strong>Documenter</strong> la provenance, la période, les limites et les transformations d’un jeu de données ;</li>
+<li><strong>Construire</strong> un petit catalogue de données réutilisable dans les Labs suivants.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Fil rouge des Labs 1 à 5">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Fil rouge des Labs 1 à 5
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nous utiliserons progressivement les données ouvertes <strong>NYC 311 Service Requests</strong> pour construire une solution de Business Intelligence. Ce service contient des demandes adressées à la ville de New York : type de problème, agence, quartier, dates de création et de clôture, canal de transmission et localisation. Le volume est important et permet de comparer une exploration pédagogique à une solution destinée à des données massives.</p>
+</div>
+</div>
+<section id="une-collecte-commence-par-une-question" class="level2">
+<h2 class="anchored" data-anchor-id="une-collecte-commence-par-une-question">1. Une collecte commence par une question</h2>
+<p>Une collecte ne consiste pas à télécharger tout ce qui est disponible. Avant de choisir une source, écrivez :</p>
+<ol type="1">
+<li>la question à laquelle vous voulez répondre ;</li>
+<li>la population étudiée ;</li>
+<li>la période ;</li>
+<li>les variables nécessaires ;</li>
+<li>les contraintes de qualité, de droit et de confidentialité.</li>
+</ol>
+<p>Exemple de question pour le fil rouge :</p>
+<blockquote class="blockquote">
+<p>Comment le volume et le délai de traitement des demandes 311 évoluent-ils selon le type de problème, le quartier et le canal de transmission ?</p>
+</blockquote>
+<p>Cette question nécessite notamment une date de création, une date de clôture, un type de demande, un quartier, un statut et un canal. Une variable comme le nom d’un agent n’est pas nécessaire.</p>
+</section>
+<section id="les-trois-familles-de-collecte" class="level2">
+<h2 class="anchored" data-anchor-id="les-trois-familles-de-collecte">2. Les trois familles de collecte</h2>
+<section id="questionnaire" class="level3">
+<h3 class="anchored" data-anchor-id="questionnaire">2.1. Questionnaire</h3>
+<p>Un questionnaire est utile lorsque l’information n’existe pas encore dans une base ou lorsque l’on cherche une perception, une intention ou une expérience vécue. Il faut distinguer :</p>
+<ul>
+<li>une question <strong>fermée</strong>, facile à compter et à comparer ;</li>
+<li>une question <strong>ouverte</strong>, plus riche mais plus difficile à analyser ;</li>
+<li>une échelle ordinale, par exemple de 1 à 5, dont les catégories doivent être expliquées.</li>
+</ul>
+<p>Un questionnaire court doit comporter un titre, une introduction, la durée estimée, l’usage des réponses et une possibilité de ne pas répondre à une question non obligatoire.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Protection des personnes">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Protection des personnes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour ce Lab, ne collectez pas de nom, numéro de téléphone, adresse précise, mot de passe, information médicale ou autre donnée sensible. Utilisez des réponses anonymes et demandez un consentement clair. Dans un projet réel, la collecte doit respecter les règles de l’établissement et la réglementation applicable.</p>
+</div>
+</div>
+</section>
+<section id="api" class="level3">
+<h3 class="anchored" data-anchor-id="api">2.2. API</h3>
+<p>Une API est une interface qui renvoie des données structurées. Une requête REST utilise souvent :</p>
+<ul>
+<li>une URL de ressource ;</li>
+<li>des paramètres de filtrage ;</li>
+<li>une limite et parfois un décalage de pagination ;</li>
+<li>une réponse JSON ;</li>
+<li>un code HTTP à vérifier.</li>
+</ul>
+<p>Une réponse <code>200</code> signifie que la requête a été traitée ; cela ne garantit pas que les données sont complètes ou correctes. Il faut lire les métadonnées, les noms de champs et la période.</p>
+</section>
+<section id="fichier-ou-page-internet" class="level3">
+<h3 class="anchored" data-anchor-id="fichier-ou-page-internet">2.3. Fichier ou page Internet</h3>
+<p>Un fichier CSV, JSON, Excel ou Parquet peut être téléchargé depuis un portail open data. Une page HTML peut parfois être lue, mais le scraping doit respecter les conditions d’utilisation du site, <code>robots.txt</code>, la fréquence raisonnable des requêtes et la protection des données.</p>
+<p>La source doit être enregistrée avec :</p>
+<pre class="text"><code>nom de la source
+URL
+date et heure de téléchargement
+période couverte
+filtres utilisés
+nombre de lignes téléchargées
+colonnes conservées
+limites connues</code></pre>
+</section>
+</section>
+<section id="préparer-le-projet-de-collecte" class="level2">
+<h2 class="anchored" data-anchor-id="préparer-le-projet-de-collecte">3. Préparer le projet de collecte</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add pandas requests beautifulsoup4 pyarrow</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/raw data/metadata notebooks outputs</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Une structure minimale :</p>
+<pre class="text"><code>data/
+├── raw/                 # données telles que reçues
+├── metadata/            # sources, dictionnaires, journaux
+└── processed/           # optionnel : données transformées plus tard</code></pre>
+<p>Conservez les données brutes sans les modifier. Si un fichier est trop volumineux pour Git, conservez au minimum le script de téléchargement, l’URL, les paramètres et un échantillon documenté.</p>
+</section>
+<section id="partie-a-concevoir-un-mini-questionnaire" class="level2">
+<h2 class="anchored" data-anchor-id="partie-a-concevoir-un-mini-questionnaire">4. Partie A — Concevoir un mini-questionnaire</h2>
+<section id="sujet" class="level3">
+<h3 class="anchored" data-anchor-id="sujet">4.1. Sujet</h3>
+<p>Le questionnaire porte sur l’utilisation des outils numériques par les étudiants pour apprendre l’analyse de données. Il ne doit pas recueillir d’identité.</p>
+<p>Proposition de questions :</p>
+<ol type="1">
+<li>Combien d’heures par semaine consacrez-vous au travail personnel ?</li>
+<li>Quel environnement utilisez-vous principalement ? <code>JupyterLab</code>, <code>VS Code</code>, <code>Google Colab</code>, autre.</li>
+<li>À quel niveau évaluez-vous votre aisance avec Python ? <code>débutant</code>, <code>intermédiaire</code>, <code>à l'aise</code>.</li>
+<li>Quelle difficulté rencontrez-vous le plus souvent ? question à choix unique.</li>
+<li>Quelle amélioration proposeriez-vous ? question ouverte facultative.</li>
+</ol>
+<p>Ne mettez pas en relation les réponses avec un nom. Si la classe est très petite, évitez de publier des croisements qui permettraient de reconnaître une personne.</p>
+</section>
+<section id="export-et-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="export-et-lecture">4.2. Export et lecture</h3>
+<p>Après export en CSV, placez le fichier dans <code>data/raw/questionnaire_outils.csv</code> :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>questionnaire <span class="op">=</span> pd.read_csv(<span class="st">"../data/raw/questionnaire_outils.csv"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>questionnaire.head()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>questionnaire.info()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>questionnaire[<span class="st">"environnement"</span>].value_counts(dropna<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Vérifiez les valeurs autorisées, les réponses manquantes et la présence éventuelle de colonnes ajoutées automatiquement par l’outil de formulaire.</p>
+</section>
+</section>
+<section id="partie-b-interroger-lapi-nyc-311" class="level2">
+<h2 class="anchored" data-anchor-id="partie-b-interroger-lapi-nyc-311">5. Partie B — Interroger l’API NYC 311</h2>
+<section id="découvrir-la-ressource" class="level3">
+<h3 class="anchored" data-anchor-id="découvrir-la-ressource">5.1. Découvrir la ressource</h3>
+<p>Le portail public de New York expose les demandes 311 via l’API Socrata. L’endpoint utilisé dans ce Lab est :</p>
+<p><a href="https://data.cityofnewyork.us/resource/erm2-nwe9.json" class="uri">https://data.cityofnewyork.us/resource/erm2-nwe9.json</a></p>
+<p>Une première requête limitée permet de comprendre la structure :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>endpoint <span class="op">=</span> <span class="st">"https://data.cityofnewyork.us/resource/erm2-nwe9.json"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$limit"</span>: <span class="dv">5</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$order"</span>: <span class="st">"created_date DESC"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(endpoint, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>response.raise_for_status()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> response.json()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>sample[:<span class="dv">1</span>]</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Transformez ensuite la réponse en tableau :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>requests_sample <span class="op">=</span> pd.json_normalize(sample)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>requests_sample.columns.tolist()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>requests_sample.to_csv(<span class="st">"../data/raw/nyc311_sample.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="filtrer-côté-serveur" class="level3">
+<h3 class="anchored" data-anchor-id="filtrer-côté-serveur">5.2. Filtrer côté serveur</h3>
+<p>Il vaut mieux demander au serveur uniquement les lignes et colonnes nécessaires :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$select"</span>: (</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"unique_key,created_date,closed_date,agency,"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"complaint_type,borough,open_data_channel_type,status"</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$where"</span>: (</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"created_date between '2024-01-01T00:00:00' "</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"and '2024-01-31T23:59:59'"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$order"</span>: <span class="st">"created_date"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$limit"</span>: <span class="dv">50000</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(endpoint, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>response.raise_for_status()</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>nyc311_janvier <span class="op">=</span> pd.DataFrame(response.json())</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le serveur peut renvoyer moins de lignes que prévu si le filtre est mal écrit ou si la limite est atteinte. Comparez le nombre obtenu avec une requête de comptage :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>count_params <span class="op">=</span> {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$select"</span>: <span class="st">"count(*) as nombre"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$where"</span>: (</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"created_date between '2024-01-01T00:00:00' "</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"and '2024-01-31T23:59:59'"</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>count_response <span class="op">=</span> requests.get(endpoint, params<span class="op">=</span>count_params, timeout<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>count_response.raise_for_status()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>count_response.json()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="pagination" class="level3">
+<h3 class="anchored" data-anchor-id="pagination">5.3. Pagination</h3>
+<p>Pour télécharger davantage de lignes, utilisez <code>$limit</code> et <code>$offset</code>. Ne lancez pas une collecte massive sans définir une période et sans mesurer le volume.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collect_page(endpoint, where, limit<span class="op">=</span><span class="dv">50_000</span>, offset<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"$select"</span>: (</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"unique_key,created_date,closed_date,agency,"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"complaint_type,borough,open_data_channel_type,status"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"$where"</span>: where,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"$order"</span>: <span class="st">"created_date"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"$limit"</span>: limit,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"$offset"</span>: offset,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(endpoint, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">120</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    response.raise_for_status()</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.json()</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>where <span class="op">=</span> (</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"created_date between '2024-01-01T00:00:00' "</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"and '2024-01-31T23:59:59'"</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>pages <span class="op">=</span> []</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> offset <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">150_000</span>, <span class="dv">50_000</span>):</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    page <span class="op">=</span> collect_page(endpoint, where, offset<span class="op">=</span>offset)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> page:</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    pages.extend(page)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>nyc311 <span class="op">=</span> pd.DataFrame(pages)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>nyc311.to_csv(<span class="st">"../data/raw/nyc311_janvier.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pour une collecte destinée à un usage régulier, sauvegardez aussi les paramètres et le nombre de lignes dans un fichier de métadonnées :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timezone</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>metadata <span class="op">=</span> {</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"source"</span>: <span class="st">"NYC 311 Service Requests"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"url"</span>: endpoint,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"downloaded_at_utc"</span>: datetime.now(timezone.utc).isoformat(),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"where"</span>: where,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rows"</span>: <span class="bu">len</span>(nyc311),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"columns"</span>: nyc311.columns.tolist(),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"../data/metadata/nyc311_janvier.json"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    json.dump(metadata, f, indent<span class="op">=</span><span class="dv">2</span>, ensure_ascii<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="partie-c-une-donnée-publique-téléchargée-sur-internet" class="level2">
+<h2 class="anchored" data-anchor-id="partie-c-une-donnée-publique-téléchargée-sur-internet">6. Partie C — Une donnée publique téléchargée sur Internet</h2>
+<p>Choisissez une source publique complémentaire, par exemple une météo, une population ou une donnée économique. La source doit être :</p>
+<ul>
+<li>accessible sans identifiant personnel ;</li>
+<li>accompagnée d’une documentation ;</li>
+<li>téléchargeable sous forme de CSV, JSON ou Parquet ;</li>
+<li>suffisamment claire pour préciser la période et les unités.</li>
+</ul>
+<p>Téléchargez une copie et écrivez une fiche :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Fiche source</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Nom :</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>URL :</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Date de téléchargement :</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Période :</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Nombre de lignes :</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Variables principales :</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Unités :</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Valeurs manquantes :</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Licence ou conditions d'utilisation :</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Limites :</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>La fiche est aussi importante que le fichier : sans elle, une autre personne ne sait pas comment les données ont été obtenues.</p>
+</section>
+<section id="contrôle-de-la-collecte" class="level2">
+<h2 class="anchored" data-anchor-id="contrôle-de-la-collecte">7. Contrôle de la collecte</h2>
+<p>Avant de passer à l’analyse, répondez à ces questions :</p>
+<ul>
+<li>La source est-elle bien celle annoncée ?</li>
+<li>Le nombre de lignes est-il plausible ?</li>
+<li>La période couvre-t-elle la question ?</li>
+<li>Les colonnes ont-elles les types attendus ?</li>
+<li>Y a-t-il des identifiants dupliqués ?</li>
+<li>Les dates sont-elles dans le même fuseau ou format ?</li>
+<li>Les valeurs manquantes sont-elles documentées ?</li>
+<li>La collecte peut-elle être rejouée demain ?</li>
+</ul>
+<p>Une collecte de données est réussie lorsque quelqu’un d’autre peut comprendre et reproduire le chemin entre la source et le fichier brut.</p>
+</section>
+<section id="lab-sheet-travail-demandé" class="level2">
+<h2 class="anchored" data-anchor-id="lab-sheet-travail-demandé">8. Lab Sheet — Travail demandé</h2>
+<section id="partie-a-questionnaire" class="level3">
+<h3 class="anchored" data-anchor-id="partie-a-questionnaire">Partie A — Questionnaire</h3>
+<ol type="1">
+<li>Rédigez une question de recherche et quatre à six questions de questionnaire.</li>
+<li>Justifiez le type de chaque question : fermée, ordinale, numérique ou ouverte.</li>
+<li>Expliquez quelles informations vous avez volontairement exclues pour protéger les répondants.</li>
+<li>Exportez les réponses anonymisées et donnez le nombre de lignes, de colonnes et de réponses manquantes.</li>
+</ol>
+</section>
+<section id="partie-b-api-nyc-311" class="level3">
+<h3 class="anchored" data-anchor-id="partie-b-api-nyc-311">Partie B — API NYC 311</h3>
+<ol start="5" type="1">
+<li>Téléchargez 5 lignes et décrivez au moins huit colonnes disponibles.</li>
+<li>Téléchargez les demandes d’un mois précis en conservant au moins huit colonnes utiles au fil rouge.</li>
+<li>Comparez le nombre retourné avec une requête <code>count(*)</code>.</li>
+<li>Ajoutez une pagination et sauvegardez les paramètres de collecte.</li>
+<li>Calculez le nombre de demandes par <code>borough</code> et par <code>complaint_type</code>.</li>
+<li>Écrivez deux limites de cette collecte : période, pagination, qualité ou interprétation. Notez aussi la date de collecte, les paramètres de requête utilisés et le nombre de lignes effectivement obtenu.</li>
+</ol>
+</section>
+<section id="partie-c-source-internet-complémentaire" class="level3">
+<h3 class="anchored" data-anchor-id="partie-c-source-internet-complémentaire">Partie C — Source Internet complémentaire</h3>
+<ol start="11" type="1">
+<li>Choisissez un fichier ou une API complémentaire.</li>
+<li>Rédigez sa fiche source et indiquez sa licence ou ses conditions d’utilisation.</li>
+<li>Comparez les types de variables de cette source avec ceux de NYC 311.</li>
+<li>Expliquez si une jointure entre les deux sources est réellement possible et quelle clé commune serait nécessaire.</li>
+</ol>
+</section>
+<section id="partie-d-réflexion" class="level3">
+<h3 class="anchored" data-anchor-id="partie-d-réflexion">Partie D — Réflexion</h3>
+<ol start="15" type="1">
+<li>Pourquoi est-il préférable de filtrer côté serveur lorsque la donnée est massive ?</li>
+<li>Quelle différence faites-vous entre la donnée brute et la donnée traitée ?</li>
+<li>Qu’est-ce qu’une collecte complète pour une question donnée ?</li>
+<li>Donnez un exemple de biais possible dans un questionnaire et un exemple de biais possible dans une API.</li>
+</ol>
+</section>
+</section>
+<section id="livrables" class="level2">
+<h2 class="anchored" data-anchor-id="livrables">9. Livrables</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Checklist finale">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Checklist finale
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li><label><input type="checkbox">Les fichiers bruts sont conservés sans modification.</label></li>
+<li><label><input type="checkbox">Chaque source possède une URL et une date de collecte.</label></li>
+<li><label><input type="checkbox">La date de collecte, les filtres/paramètres et le nombre de lignes obtenu sont consignés.</label></li>
+<li><label><input type="checkbox">Les requêtes API fixent un délai maximal.</label></li>
+<li><label><input type="checkbox">La pagination est arrêtée par une règle explicite.</label></li>
+<li><label><input type="checkbox">Les données personnelles ne sont pas collectées inutilement.</label></li>
+<li><label><input type="checkbox">Les fichiers du Lab 2 peuvent être produits à partir de ces sources.</label></li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copié");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copié");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../tp/lab0_environement_python.html" class="pagination-link" aria-label="Lab 0 : Environnement Python et statistique descriptive">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Lab 0 : Environnement Python et statistique descriptive</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../tp/lab2_eda_pretraitement_donnees.html" class="pagination-link" aria-label="Lab 2 : EDA et prétraitement">
+        <span class="nav-page-text"><span class="chapter-title">Lab 2 : EDA et prétraitement</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
