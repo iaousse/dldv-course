@@ -1,5 +1,14 @@
 # Lab 0 : Environnement Python et statistique descriptive
 
+::: {.callout-important title="Avant de commencer - choisir votre support"}
+Téléchargez un seul format avant de travailler :
+
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le dossier GitHub [`labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets) et téléchargez le fichier source du  [Lab 0](https://github.com/iaousse/dldv-course/blob/main/tp/lab0_environement_python.qmd), choisissez le notebook du Lab 0 et téléchargez-le.
+- **Fichier `.qmd`** pour travailler avec Quarto : ouvrez le dossier GitHub [`labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets) et téléchargez le fichier source du  [Lab 0](https://github.com/iaousse/dldv-course/blob/main/tp/lab0_environement_python.qmd).
+
+Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
+:::
+
 ::: {.callout-tip title="Objectifs du Lab"}
 À la fin de ce Lab, l'étudiant sera capable de :
 
@@ -383,27 +392,27 @@ Exemple de forme attendue :
 
 > Pour les vols dont le retard au départ est connu, la médiane est de __ minutes et la moyenne de __ minutes. La moyenne est plus élevée, ce qui suggère quelques retards importants. Il faut vérifier la distribution par compagnie et par mois avant d'attribuer cette différence à une cause.
 
-## 9. Lab Sheet — Travail demandé
+## 9. Travail demandé
 
 ::: {.callout-important title="Consigne générale"}
-Travaillez dans `notebooks/lab0_statistique_descriptive.ipynb`. Chaque réponse doit être accompagnée du code qui permet de la retrouver. Les résultats numériques peuvent varier si vous modifiez le filtre ou si le fichier téléchargé n'est pas exactement la même version : indiquez toujours votre source et votre filtre.
+Travaillez dans la copie du support téléchargée. Chaque réponse doit être accompagnée du code qui permet de la retrouver. Les résultats numériques peuvent varier si vous modifiez le filtre ou si le fichier téléchargé n'est pas exactement la même version : indiquez toujours votre source et votre filtre.
 :::
 
-### Partie A — Environnement et prise en main
+### Partie A - Environnement et prise en main
 
 1. Affichez les versions de Python, NumPy, pandas, Matplotlib et Seaborn.
 2. Montrez l'organisation du projet et expliquez le rôle de `pyproject.toml`, `uv.lock`, `data/raw/` et `outputs/`.
 3. Téléchargez le fichier et indiquez son nombre de lignes et de colonnes.
 4. Listez les colonnes et classez-les en variables numériques, catégorielles, temporelles ou identifiants.
 
-### Partie B — Fréquences et types
+### Partie B - Fréquences et types
 
 5. Calculez l'effectif et la fréquence des vols par aéroport de départ.
 6. Calculez la fréquence des vols par compagnie, puis affichez uniquement les cinq compagnies les plus fréquentes.
 7. Construisez un tableau croisé compagnie/aéroport. Comparez les fréquences par ligne et par colonne.
 8. Calculez le taux de vols dont `dep_delay > 15`. Indiquez précisément le dénominateur utilisé.
 
-### Partie C — Statistiques descriptives
+### Partie C - Statistiques descriptives
 
 9. Pour `dep_delay`, calculez la moyenne, la médiane et le mode. Comparez moyenne et médiane en une phrase.
 10. Calculez $Q_1$, la médiane, $Q_3$, le 10e et le 90e quantile.
@@ -411,24 +420,24 @@ Travaillez dans `notebooks/lab0_statistique_descriptive.ipynb`. Chaque réponse 
 12. Recalculez variance et écart-type avec `ddof=0`. Expliquez brièvement pourquoi les résultats sont différents.
 13. Répétez les indicateurs par aéroport de départ et comparez les trois groupes sans désigner un « meilleur » aéroport sans justification.
 
-### Partie D — Évolution et visualisation
+### Partie D - Évolution et visualisation
 
 14. Calculez le nombre de vols par mois et le taux de croissance mensuel.
 15. Produisez un graphique de l'évolution mensuelle du nombre de vols.
 16. Produisez un histogramme et une boîte à moustaches des retards.
 17. Écrivez un paragraphe de conclusion avec trois chiffres, deux interprétations et une limite.
 
-### Partie E — Question d'analyse
+### Partie E - Question d'analyse
 
 18. La question « quelle compagnie est la plus ponctuelle ? » est-elle suffisamment précise ? Reformulez-la en indiquant la mesure, le seuil, la période et le dénominateur.
 19. Proposez deux indicateurs complémentaires qui éviteraient de se limiter à la moyenne.
 20. Expliquez pourquoi une corrélation éventuelle entre distance et retard ne prouverait pas qu'une variable cause l'autre.
 
+
+::: {.content-visible when-profile="teacher"}
 ## 10. Livrables
 
-### Livrables
-
-- `notebooks/lab0_statistique_descriptive.ipynb` ;
+- Une copie renseignée du support choisi (`.ipynb` ou `.qmd`) ;
 - `data/raw/flights_2013.csv` ou un fichier `README` indiquant comment le télécharger ;
 - au moins deux graphiques dans `outputs/` ;
 - un court paragraphe d'interprétation pour les parties B, C et D ;
@@ -441,4 +450,5 @@ Travaillez dans `notebooks/lab0_statistique_descriptive.ipynb`. Chaque réponse 
 - [ ] Chaque statistique possède une unité et une population.
 - [ ] La moyenne et la médiane sont interprétées ensemble.
 - [ ] Les résultats sont accompagnés de graphiques lisibles.
+:::
 :::

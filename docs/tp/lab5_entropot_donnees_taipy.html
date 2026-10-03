@@ -79,10 +79,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-0f843ebf765c3981fb4f092a976228be.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,11 +115,199 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background: #a6c5e7;
+      }
+</style>
+<script>
+window.MathJax = {
+  tex: {
+    macros: {
+      Z: "\\mathbb{Z}",
+      N: "\\mathbb{N}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      R: "\\mathbb{R}",
+      B: "\\mathcal{B}",
+      M: "\\mathcal{M}",
+      S: "\\mathbb{S}",
+      abs: ["\\left|#1\\right|", 1],
+      norm: ["\\left\\Vert#1\\right\\Vert", 1],
+      sign: "\\mathrm{sign}",
+      vec: ["\\mathbf{#1}", 1]
+    }
+  }
+};
+</script>
 
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -160,8 +352,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Analyse et visualisation de données</a> 
-        <div class="sidebar-tools-main">
-    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/iaousse/" title="" class="quarto-navigation-tool px-1" aria-label="GitHub" target="_blank"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/mbarekiaousse" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn" target="_blank"><i class="bi bi-linkedin"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Analyse-et-visualisation-de-données.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Analyse-et-visualisation-de-données.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
 </div>
     </div>
       </div>
@@ -214,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Étude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -301,7 +512,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#sécurité-et-maintenance" id="toc-sécurité-et-maintenance" class="nav-link" data-scroll-target="#sécurité-et-maintenance">8. Sécurité et maintenance</a></li>
   <li><a href="#travail-demandé" id="toc-travail-demandé" class="nav-link" data-scroll-target="#travail-demandé">9. Travail demandé</a></li>
-  <li><a href="#livrables" id="toc-livrables" class="nav-link" data-scroll-target="#livrables">10. Livrables</a></li>
   </ul>
 </nav>
     </div>
@@ -312,6 +522,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+
+<div class="callout callout-style-default callout-important callout-titled" title="Avant de commencer — choisir votre support">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Avant de commencer — choisir votre support
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Téléchargez un seul format avant de travailler :</p>
+<ul>
+<li><strong>Notebook <code>.ipynb</code></strong> pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le <a href="https://github.com/iaousse/dldv-course/tree/main/labsheets">dossier GitHub <code>labsheets/</code></a>, choisissez le notebook du Lab 5 et téléchargez-le.</li>
+<li><strong>Fichier <code>.qmd</code></strong> pour travailler avec Quarto : <a href="https://github.com/iaousse/dldv-course/blob/main/tp/lab5_entropot_donnees_taipy.qmd">téléchargez le fichier source du Lab 5</a>.</li>
+</ul>
+<p>Dans GitHub, ouvrez le fichier choisi puis cliquez sur <strong>Download raw file</strong> (ou <strong>Raw</strong>, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le <code>.qmd</code>, utilisez Quarto. Travaillez dans votre propre copie, pas dans l’aperçu GitHub.</p>
+<p>Colab peut servir à exécuter les analyses Python, mais le lancement local de l’application et le déploiement Docker nécessitent un environnement avec terminal ; utilisez de préférence VS Code en local pour ces étapes.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled" title="Objectifs du Lab">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -449,11 +679,13 @@ filtre Taipy + graphique + tableau</code></pre>
 ├── README.md
 └── data/
     └── processed/
+        ├── overall_summary.parquet
         ├── monthly_summary.parquet
         ├── borough_summary.parquet
         ├── type_summary.parquet
+        ├── borough_type_summary.parquet
         └── channel_summary.parquet</code></pre>
-<p>La version complète ajoutera aussi <code>monthly_borough_summary.parquet</code> et <code>monthly_borough_type_summary.parquet</code> pour rendre les filtres mensuels réellement interactifs.</p>
+<p>Le pipeline produit aussi <code>monthly_borough_summary.parquet</code>, <code>monthly_type_summary.parquet</code> et <code>monthly_borough_type_summary.parquet</code>. Chaque combinaison de filtres possède ainsi son propre agrégat exact.</p>
 <p>N’envoyez pas automatiquement le CSV brut massif dans un dépôt public. L’application finale doit contenir les agrégats strictement nécessaires à ses pages.</p>
 </section>
 </section>
@@ -521,40 +753,45 @@ filtre Taipy + graphique + tableau</code></pre>
 <span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>        Demandes_cloturees<span class="op">=</span>(<span class="st">"is_closed"</span>, <span class="st">"sum"</span>),</span>
 <span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>        Delai_median_heures<span class="op">=</span>(<span class="st">"processing_hours"</span>, <span class="st">"median"</span>),</span>
 <span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        Delai_moyen_heures<span class="op">=</span>(<span class="st">"processing_hours"</span>, <span class="st">"mean"</span>),</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    ).reset_index()</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    result[<span class="st">"Taux_cloture"</span>] <span class="op">=</span> (</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"Demandes_cloturees"</span>] <span class="op">/</span> result[<span class="st">"Demandes"</span>]</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>monthly <span class="op">=</span> summarise(df.groupby(<span class="st">"month"</span>))</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>borough <span class="op">=</span> summarise(df.groupby(<span class="st">"borough"</span>))</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>types <span class="op">=</span> summarise(df.groupby(<span class="st">"complaint_type"</span>)).sort_values(</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Demandes"</span>, ascending<span class="op">=</span><span class="va">False</span></span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>channels <span class="op">=</span> summarise(df.groupby(<span class="st">"open_data_channel_type"</span>))</span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>monthly_borough <span class="op">=</span> summarise(df.groupby([<span class="st">"month"</span>, <span class="st">"borough"</span>]))</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>monthly_type <span class="op">=</span> summarise(df.groupby([<span class="st">"month"</span>, <span class="st">"complaint_type"</span>]))</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>monthly_borough_type <span class="op">=</span> summarise(</span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>    df.groupby([<span class="st">"month"</span>, <span class="st">"borough"</span>, <span class="st">"complaint_type"</span>])</span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>monthly.to_parquet(OUT <span class="op">/</span> <span class="st">"monthly_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>borough.to_parquet(OUT <span class="op">/</span> <span class="st">"borough_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>types.head(<span class="dv">50</span>).to_parquet(OUT <span class="op">/</span> <span class="st">"type_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>channels.to_parquet(OUT <span class="op">/</span> <span class="st">"channel_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>monthly_borough.to_parquet(</span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>    OUT <span class="op">/</span> <span class="st">"monthly_borough_summary.parquet"</span>,</span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>monthly_type.to_parquet(</span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>    OUT <span class="op">/</span> <span class="st">"monthly_type_summary.parquet"</span>,</span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>monthly_borough_type.to_parquet(</span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>    OUT <span class="op">/</span> <span class="st">"monthly_borough_type_summary.parquet"</span>,</span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        Delai_P90_heures<span class="op">=</span>(<span class="st">"processing_hours"</span>, <span class="kw">lambda</span> s: s.quantile(<span class="fl">0.90</span>)),</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    ).reset_index()</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    result[<span class="st">"Taux_cloture"</span>] <span class="op">=</span> (</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"Demandes_cloturees"</span>] <span class="op">/</span> result[<span class="st">"Demandes"</span>]</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>overall <span class="op">=</span> summarise(df.assign(_all<span class="op">=</span><span class="st">"Toutes"</span>).groupby(<span class="st">"_all"</span>)).drop(columns<span class="op">=</span><span class="st">"_all"</span>)</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>monthly <span class="op">=</span> summarise(df.groupby(<span class="st">"month"</span>))</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>borough <span class="op">=</span> summarise(df.groupby(<span class="st">"borough"</span>))</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>types <span class="op">=</span> summarise(df.groupby(<span class="st">"complaint_type"</span>)).sort_values(</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Demandes"</span>, ascending<span class="op">=</span><span class="va">False</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>borough_type <span class="op">=</span> summarise(df.groupby([<span class="st">"borough"</span>, <span class="st">"complaint_type"</span>]))</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>channels <span class="op">=</span> summarise(df.groupby(<span class="st">"open_data_channel_type"</span>))</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>monthly_borough <span class="op">=</span> summarise(df.groupby([<span class="st">"month"</span>, <span class="st">"borough"</span>]))</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>monthly_type <span class="op">=</span> summarise(df.groupby([<span class="st">"month"</span>, <span class="st">"complaint_type"</span>]))</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>monthly_borough_type <span class="op">=</span> summarise(</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    df.groupby([<span class="st">"month"</span>, <span class="st">"borough"</span>, <span class="st">"complaint_type"</span>])</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>overall.to_parquet(OUT <span class="op">/</span> <span class="st">"overall_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>monthly.to_parquet(OUT <span class="op">/</span> <span class="st">"monthly_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>borough.to_parquet(OUT <span class="op">/</span> <span class="st">"borough_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>types.head(<span class="dv">50</span>).to_parquet(OUT <span class="op">/</span> <span class="st">"type_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>borough_type.to_parquet(OUT <span class="op">/</span> <span class="st">"borough_type_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>channels.to_parquet(OUT <span class="op">/</span> <span class="st">"channel_summary.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>monthly_borough.to_parquet(</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>    OUT <span class="op">/</span> <span class="st">"monthly_borough_summary.parquet"</span>,</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>monthly_type.to_parquet(</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>    OUT <span class="op">/</span> <span class="st">"monthly_type_summary.parquet"</span>,</span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>monthly_borough_type.to_parquet(</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>    OUT <span class="op">/</span> <span class="st">"monthly_borough_type_summary.parquet"</span>,</span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Cette version utilise une ligne par <code>unique_key</code>. Si le fichier source contient plusieurs versions d’une même demande, il faut documenter pourquoi l’on conserve la première, la dernière ou une ligne dédoublonnée.</p>
 </section>
 <section id="contrôler-les-agrégats" class="level3">
@@ -579,12 +816,15 @@ filtre Taipy + graphique + tableau</code></pre>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>monthly <span class="op">=</span> pd.read_parquet(DATA_DIR <span class="op">/</span> <span class="st">"monthly_summary.parquet"</span>)</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>borough <span class="op">=</span> pd.read_parquet(DATA_DIR <span class="op">/</span> <span class="st">"borough_summary.parquet"</span>)</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>types <span class="op">=</span> pd.read_parquet(DATA_DIR <span class="op">/</span> <span class="st">"type_summary.parquet"</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>monthly_borough <span class="op">=</span> pd.read_parquet(</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    DATA_DIR <span class="op">/</span> <span class="st">"monthly_borough_summary.parquet"</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>monthly_borough_type <span class="op">=</span> pd.read_parquet(</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    DATA_DIR <span class="op">/</span> <span class="st">"monthly_borough_type_summary.parquet"</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>overall <span class="op">=</span> pd.read_parquet(DATA_DIR <span class="op">/</span> <span class="st">"overall_summary.parquet"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>borough_type <span class="op">=</span> pd.read_parquet(DATA_DIR <span class="op">/</span> <span class="st">"borough_type_summary.parquet"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>monthly_borough <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    DATA_DIR <span class="op">/</span> <span class="st">"monthly_borough_summary.parquet"</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>monthly_type <span class="op">=</span> pd.read_parquet(DATA_DIR <span class="op">/</span> <span class="st">"monthly_type_summary.parquet"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>monthly_borough_type <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    DATA_DIR <span class="op">/</span> <span class="st">"monthly_borough_type_summary.parquet"</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="préparer-létat-de-linterface" class="level3">
 <h3 class="anchored" data-anchor-id="préparer-létat-de-linterface">4.2. Préparer l’état de l’interface</h3>
@@ -592,41 +832,43 @@ filtre Taipy + graphique + tableau</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>selected_borough <span class="op">=</span> <span class="st">"Tous"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>selected_type <span class="op">=</span> <span class="st">"Tous"</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>selected_view <span class="op">=</span> monthly.copy()</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>total_requests <span class="op">=</span> <span class="bu">int</span>(monthly[<span class="st">"Demandes"</span>].<span class="bu">sum</span>())</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>total_closed <span class="op">=</span> <span class="bu">int</span>(monthly[<span class="st">"Demandes_cloturees"</span>].<span class="bu">sum</span>())</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>closure_rate <span class="op">=</span> total_closed <span class="op">/</span> total_requests <span class="cf">if</span> total_requests <span class="cf">else</span> <span class="dv">0</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>median_delay <span class="op">=</span> <span class="bu">float</span>(monthly[<span class="st">"Delai_median_heures"</span>].median())</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>total_requests <span class="op">=</span> <span class="bu">int</span>(overall.loc[<span class="dv">0</span>, <span class="st">"Demandes"</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>total_closed <span class="op">=</span> <span class="bu">int</span>(overall.loc[<span class="dv">0</span>, <span class="st">"Demandes_cloturees"</span>])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>closure_rate <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>overall<span class="sc">.</span>loc[<span class="dv">0</span>, <span class="st">'Taux_cloture'</span>]<span class="sc">:.1%}</span><span class="ss">"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>median_delay <span class="op">=</span> <span class="bu">float</span>(overall.loc[<span class="dv">0</span>, <span class="st">"Delai_median_heures"</span>])</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>p90_delay <span class="op">=</span> <span class="bu">float</span>(overall.loc[<span class="dv">0</span>, <span class="st">"Delai_P90_heures"</span>])</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>borough_options <span class="op">=</span> [<span class="st">"Tous"</span>] <span class="op">+</span> <span class="bu">sorted</span>(</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    borough[<span class="st">"borough"</span>].dropna().unique().tolist()</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>type_options <span class="op">=</span> [<span class="st">"Tous"</span>] <span class="op">+</span> types[<span class="st">"complaint_type"</span>].head(<span class="dv">20</span>).tolist()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Dans cette première version, les KPI sont calculés sur les agrégats. Pour un filtre par borough réellement dynamique, il faut disposer d’un agrégat contenant la combinaison <code>month × borough</code> plutôt que deux tables séparées. Préparez donc aussi :</p>
-<p>Cette étape est importante : la bonne interface dépend de la bonne granularité de l’agrégat. Les agrégats <code>month × borough</code> et <code>month × borough × complaint_type</code> sont préparés dans <code>prepare_data.py</code>, puis simplement lus par l’application.</p>
+<p>La bonne granularité des agrégats est essentielle : une demande filtrée par mois, arrondissement ou type doit être calculée à partir des lignes appartenant exactement à cette sélection. Les tables mensuelles et les résumés globaux par combinaison sont préparés dans <code>prepare_data.py</code>, puis lus par l’application.</p>
 </section>
 <section id="fonction-de-filtrage" class="level3">
 <h3 class="anchored" data-anchor-id="fonction-de-filtrage">4.3. Fonction de filtrage</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_view(borough_value, type_value):</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    view <span class="op">=</span> monthly_borough_type.copy()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> borough_value <span class="op">!=</span> <span class="st">"Tous"</span>:</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        view <span class="op">=</span> view[view[<span class="st">"borough"</span>] <span class="op">==</span> borough_value]</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> type_value <span class="op">!=</span> <span class="st">"Tous"</span>:</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        view <span class="op">=</span> view[view[<span class="st">"complaint_type"</span>] <span class="op">==</span> type_value]</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        view.groupby(<span class="st">"month"</span>, as_index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        .agg(</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            Demandes<span class="op">=</span>(<span class="st">"Demandes"</span>, <span class="st">"sum"</span>),</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>            Demandes_cloturees<span class="op">=</span>(<span class="st">"Demandes_cloturees"</span>, <span class="st">"sum"</span>),</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>            Delai_median_heures<span class="op">=</span>(<span class="st">"Delai_median_heures"</span>, <span class="st">"median"</span>),</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        .sort_values(<span class="st">"month"</span>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>selected_view <span class="op">=</span> make_view(selected_borough, selected_type)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> borough_value <span class="op">!=</span> <span class="st">"Tous"</span> <span class="kw">and</span> type_value <span class="op">!=</span> <span class="st">"Tous"</span>:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        monthly_data <span class="op">=</span> monthly_borough_type</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        summary_data <span class="op">=</span> borough_type</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        filters <span class="op">=</span> ((<span class="st">"borough"</span>, borough_value), (<span class="st">"complaint_type"</span>, type_value))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> borough_value <span class="op">!=</span> <span class="st">"Tous"</span>:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        monthly_data <span class="op">=</span> monthly_borough</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        summary_data <span class="op">=</span> borough</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        filters <span class="op">=</span> ((<span class="st">"borough"</span>, borough_value),)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> type_value <span class="op">!=</span> <span class="st">"Tous"</span>:</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        monthly_data <span class="op">=</span> monthly_type</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        summary_data <span class="op">=</span> types</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        filters <span class="op">=</span> ((<span class="st">"complaint_type"</span>, type_value),)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        monthly_data <span class="op">=</span> monthly</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        summary_data <span class="op">=</span> overall</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        filters <span class="op">=</span> ()</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> column, value <span class="kw">in</span> filters:</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        monthly_data <span class="op">=</span> monthly_data[monthly_data[column] <span class="op">==</span> value]</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        summary_data <span class="op">=</span> summary_data[summary_data[column] <span class="op">==</span> value]</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> monthly_data.sort_values(<span class="st">"month"</span>), summary_data.iloc[<span class="dv">0</span>]</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ne prétendez pas filtrer par type avec une table qui ne possède pas la dimension type. Cette vérification de granularité est une compétence essentielle du data analyst.</p>
 </section>
 <section id="construire-la-page" class="level3">
@@ -643,22 +885,33 @@ filtre Taipy + graphique + tableau</code></pre>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">**Type de demande**</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{selected_type}</span><span class="st">|selector|lov=</span><span class="sc">{type_options}</span><span class="st">|dropdown|&gt;</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">## Vue mensuelle</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{selected_view}</span><span class="st">|chart|x=month|y=Demandes|&gt;</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{selected_view}</span><span class="st">|table|&gt;</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">**Demandes :** &lt;|</span><span class="sc">{total_requests}</span><span class="st">|text|&gt;&lt;br /&gt;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="st">**Taux de clôture :** &lt;|</span><span class="sc">{closure_rate}</span><span class="st">|text|&gt;&lt;br /&gt;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="st">**Délai médian (heures) :** &lt;|</span><span class="sc">{median_delay}</span><span class="st">|text|&gt;&lt;br /&gt;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="st">**Délai P90 (heures) :** &lt;|</span><span class="sc">{p90_delay}</span><span class="st">|text|&gt;</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="st">## Vue mensuelle</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{selected_view}</span><span class="st">|chart|x=month|y=Demandes|&gt;</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{selected_view}</span><span class="st">|table|&gt;</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <p>La syntaxe exacte de certains contrôles peut évoluer selon la version de Taipy. Vérifiez la documentation de la version installée si un contrôle ne s’affiche pas.</p>
 </section>
 <section id="réagir-aux-filtres" class="level3">
 <h3 class="anchored" data-anchor-id="réagir-aux-filtres">4.5. Réagir aux filtres</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_change(state, var_name, value):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> var_name <span class="kw">in</span> {<span class="st">"selected_borough"</span>, <span class="st">"selected_type"</span>}:</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        state.selected_view <span class="op">=</span> make_view(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        view, summary <span class="op">=</span> make_view(</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            state.selected_borough,</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>            state.selected_type,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        state.selected_view <span class="op">=</span> view</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        state.total_requests <span class="op">=</span> <span class="bu">int</span>(summary[<span class="st">"Demandes"</span>])</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        state.total_closed <span class="op">=</span> <span class="bu">int</span>(summary[<span class="st">"Demandes_cloturees"</span>])</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        state.closure_rate <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>summary[<span class="st">'Taux_cloture'</span>]<span class="sc">:.1%}</span><span class="ss">"</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        state.median_delay <span class="op">=</span> <span class="bu">float</span>(summary[<span class="st">"Delai_median_heures"</span>])</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        state.p90_delay <span class="op">=</span> <span class="bu">float</span>(summary[<span class="st">"Delai_P90_heures"</span>])</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Pour une application plus avancée, centralisez les calculs dans des fonctions et évitez de modifier des variables globales directement. L’état de l’interface doit rester compréhensible.</p>
 </section>
 <section id="lancer-lapplication" class="level3">
@@ -847,7 +1100,7 @@ data/processed/*.parquet</code></pre>
 <li>Construisez une application Taipy avec trois vues.</li>
 <li>Ajoutez au moins deux filtres synchronisés.</li>
 <li>Affichez quatre KPI et au moins trois graphiques.</li>
-<li>Ajoutez une table détaillée indiquant effectif, médiane et P90.</li>
+<li>Ajoutez une table détaillée indiquant effectif, médiane et P90. Les médianes et percentiles des sous-groupes ne s’additionnent pas : conservez des agrégats calculés pour chaque combinaison de filtres.</li>
 <li>Comparez cinq chiffres avec Power BI.</li>
 <li>Expliquez une différence éventuelle entre les deux solutions.</li>
 <li>Ajoutez un message sur la date de préparation et la période.</li>
@@ -857,31 +1110,6 @@ data/processed/*.parquet</code></pre>
 <li>Rédigez les limites du déploiement gratuit.</li>
 <li>En cinq à dix lignes, recommandez Power BI, Taipy ou une combinaison des deux pour ce projet.</li>
 </ol>
-</section>
-<section id="livrables" class="level2">
-<h2 class="anchored" data-anchor-id="livrables">10. Livrables</h2>
-<div class="callout callout-style-default callout-note callout-titled" title="Checklist finale">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Checklist finale
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul class="task-list">
-<li><label><input type="checkbox">L’application démarre avec <code>uv run python app.py</code>.</label></li>
-<li><label><input type="checkbox">Les données massives ont été préparées hors ligne.</label></li>
-<li><label><input type="checkbox">Les agrégats sont contrôlés avant affichage.</label></li>
-<li><label><input type="checkbox">Les KPI Taipy et Power BI utilisent les mêmes définitions.</label></li>
-<li><label><input type="checkbox">Les filtres ne prétendent pas agir sur une granularité absente.</label></li>
-<li><label><input type="checkbox">Le conteneur écoute sur le port attendu.</label></li>
-<li><label><input type="checkbox">Le déploiement ne contient aucun secret.</label></li>
-<li><label><input type="checkbox">La page publique indique la source, la période et les limites.</label></li>
-</ul>
-</div>
-</div>
 
 
 </section>
@@ -889,6 +1117,19 @@ data/processed/*.parquet</code></pre>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {

@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -44,10 +79,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-0f843ebf765c3981fb4f092a976228be.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -76,6 +115,32 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background: #a6c5e7;
+      }
+</style>
+<script>
+window.MathJax = {
+  tex: {
+    macros: {
+      Z: "\\mathbb{Z}",
+      N: "\\mathbb{N}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      R: "\\mathbb{R}",
+      B: "\\mathcal{B}",
+      M: "\\mathcal{M}",
+      S: "\\mathbb{S}",
+      abs: ["\\left|#1\\right|", 1],
+      norm: ["\\left\\Vert#1\\right\\Vert", 1],
+      sign: "\\mathrm{sign}",
+      vec: ["\\mathbf{#1}", 1]
+    }
+  }
+};
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -109,7 +174,169 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -154,8 +381,27 @@ window.Quarto = {
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Analyse et visualisation de données</a> 
-        <div class="sidebar-tools-main">
-    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/iaousse/" title="" class="quarto-navigation-tool px-1" aria-label="GitHub" target="_blank"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/mbarekiaousse" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn" target="_blank"><i class="bi bi-linkedin"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Analyse-et-visualisation-de-données.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Analyse-et-visualisation-de-données.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
 </div>
     </div>
       </div>
@@ -208,7 +454,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Étude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -268,16 +514,25 @@ window.Quarto = {
   <li><a href="#la-table-de-faits" id="toc-la-table-de-faits" class="nav-link" data-scroll-target="#la-table-de-faits">2.1. La table de faits</a></li>
   <li><a href="#les-tables-de-dimensions" id="toc-les-tables-de-dimensions" class="nav-link" data-scroll-target="#les-tables-de-dimensions">2.2. Les tables de dimensions</a></li>
   <li><a href="#exemple-de-modèle-de-ventes" id="toc-exemple-de-modèle-de-ventes" class="nav-link" data-scroll-target="#exemple-de-modèle-de-ventes">2.3. Exemple de modèle de ventes</a></li>
+  <li><a href="#modèle-en-étoile-ou-en-flocon" id="toc-modèle-en-étoile-ou-en-flocon" class="nav-link" data-scroll-target="#modèle-en-étoile-ou-en-flocon">2.4. Modèle en étoile ou en flocon ?</a></li>
+  <li><a href="#un-mot-sur-lhistorisation-des-dimensions" id="toc-un-mot-sur-lhistorisation-des-dimensions" class="nav-link" data-scroll-target="#un-mot-sur-lhistorisation-des-dimensions">2.5. Un mot sur l’historisation des dimensions</a></li>
   </ul></li>
   <li><a href="#les-mesures-et-les-indicateurs" id="toc-les-mesures-et-les-indicateurs" class="nav-link" data-scroll-target="#les-mesures-et-les-indicateurs">3. Les mesures et les indicateurs</a></li>
-  <li><a href="#le-flux-etlelt" id="toc-le-flux-etlelt" class="nav-link" data-scroll-target="#le-flux-etlelt">4. Le flux ETL/ELT</a></li>
-  <li><a href="#gouvernance-et-sécurité-sans-complexité-inutile" id="toc-gouvernance-et-sécurité-sans-complexité-inutile" class="nav-link" data-scroll-target="#gouvernance-et-sécurité-sans-complexité-inutile">5. Gouvernance et sécurité, sans complexité inutile</a></li>
+  <li><a href="#le-flux-etlelt" id="toc-le-flux-etlelt" class="nav-link" data-scroll-target="#le-flux-etlelt">4. Le flux ETL/ELT</a>
+  <ul class="collapse">
+  <li><a href="#illustrer-un-contrôle-de-qualité-au-chargement" id="toc-illustrer-un-contrôle-de-qualité-au-chargement" class="nav-link" data-scroll-target="#illustrer-un-contrôle-de-qualité-au-chargement">4.1. Illustrer un contrôle de qualité au chargement</a></li>
+  </ul></li>
+  <li><a href="#gouvernance-et-sécurité-sans-complexité-inutile" id="toc-gouvernance-et-sécurité-sans-complexité-inutile" class="nav-link" data-scroll-target="#gouvernance-et-sécurité-sans-complexité-inutile">5. Gouvernance et sécurité, sans complexité inutile</a>
+  <ul class="collapse">
+  <li><a href="#vers-le-cloud-et-le-lakehouse" id="toc-vers-le-cloud-et-le-lakehouse" class="nav-link" data-scroll-target="#vers-le-cloud-et-le-lakehouse">5.1. Vers le cloud et le lakehouse</a></li>
+  </ul></li>
   <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices">Exercices</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+
 
 
 
@@ -297,59 +552,133 @@ window.Quarto = {
 <ul>
 <li><strong>Expliquer</strong> pourquoi une organisation sépare souvent les systèmes opérationnels des données destinées à l’analyse ;</li>
 <li><strong>Distinguer</strong> une base transactionnelle, un entrepôt de données, un lac de données et un datamart ;</li>
-<li><strong>Lire</strong> un modèle en étoile composé d’une table de faits et de tables de dimensions ;</li>
-<li><strong>Définir</strong> le grain d’une table de faits et choisir des mesures adaptées ;</li>
-<li><strong>Décrire</strong> les grandes étapes d’un flux ETL/ELT, de la source au tableau de bord.</li>
+<li><strong>Lire</strong> un modèle en étoile composé d’une table de faits et de tables de dimensions, et le distinguer d’un modèle en flocon ;</li>
+<li><strong>Définir</strong> le grain d’une table de faits et choisir des mesures adaptées (additives, semi-additives, non additives) ;</li>
+<li><strong>Décrire</strong> les grandes étapes d’un flux ETL/ELT, de la source au tableau de bord ;</li>
+<li><strong>Situer</strong> les grands principes de gouvernance des données et les tendances actuelles des architectures analytiques (cloud, lakehouse).</li>
 </ul>
 </div>
 </div>
-<p>Un tableau de bord fiable ne commence pas par un graphique. Il commence par des données organisées, documentées et mises à jour de façon régulière. L’<strong>entrepôt de données</strong> (<em>data warehouse</em>) fournit cette base pour l’analyse.</p>
+<p>Un tableau de bord fiable ne commence pas par un graphique. Il commence par des données organisées, documentées et mises à jour de façon régulière. L’<strong>entrepôt de données</strong> (<em>data warehouse</em>) fournit cette base pour l’analyse — c’est la fondation sur laquelle reposeront les rapports Power BI et les applications Taipy présentés au chapitre suivant.</p>
 <section id="pourquoi-un-entrepôt-de-données" class="level2">
 <h2 class="anchored" data-anchor-id="pourquoi-un-entrepôt-de-données">1. Pourquoi un entrepôt de données ?</h2>
 <section id="les-systèmes-opérationnels" class="level3">
 <h3 class="anchored" data-anchor-id="les-systèmes-opérationnels">1.1. Les systèmes opérationnels</h3>
-<p>Une application de vente, une caisse ou un site web utilise une base <strong>opérationnelle</strong> pour enregistrer les événements du quotidien : créer une commande, modifier une adresse, enregistrer un paiement. Ces systèmes doivent répondre vite à de petites opérations et éviter les incohérences.</p>
-<p>Une base opérationnelle est souvent organisée pour limiter la répétition des informations. Une commande peut être répartie entre <code>clients</code>, <code>commandes</code> et <code>lignes_commande</code>, reliées par des identifiants.</p>
-<p>Cette organisation est adaptée à l’écriture, mais une question analytique comme « Quel est le chiffre d’affaires mensuel par région et par catégorie depuis trois ans ? » peut nécessiter de nombreuses jointures et plusieurs sources. Exécuter ce type de requête directement sur la base de production peut ralentir l’application.</p>
+<p>Une application de vente, une caisse ou un site web utilise une base <strong>opérationnelle</strong> (on parle aussi de système <strong>OLTP</strong>, <em>Online Transaction Processing</em>) pour enregistrer les événements du quotidien : créer une commande, modifier une adresse, enregistrer un paiement. Ces systèmes doivent répondre vite à de petites opérations, éviter les incohérences, et supportent souvent un grand nombre d’utilisateurs simultanés qui écrivent en permanence.</p>
+<p>Une base opérationnelle est souvent organisée pour limiter la répétition des informations — une démarche appelée <strong>normalisation</strong>. Une commande peut être répartie entre <code>clients</code>, <code>commandes</code> et <code>lignes_commande</code>, reliées par des identifiants, plutôt que de répéter le nom et l’adresse du client sur chaque ligne de commande.</p>
+<p>Cette organisation est adaptée à l’écriture rapide et fiable, mais une question analytique comme « Quel est le chiffre d’affaires mensuel par région et par catégorie depuis trois ans ? » peut nécessiter de nombreuses jointures entre plusieurs tables, sur plusieurs sources différentes. Exécuter ce type de requête directement sur la base de production peut ralentir l’application pour tous ses utilisateurs — un risque qu’aucune organisation ne peut se permettre sur son système de vente en direct.</p>
 </section>
 <section id="la-base-analytique" class="level3">
 <h3 class="anchored" data-anchor-id="la-base-analytique">1.2. La base analytique</h3>
-<p>Un <strong>entrepôt de données</strong> est un espace centralisé, organisé pour analyser l’historique de l’organisation. Il rassemble des données provenant de plusieurs sources, conserve leur contexte et les transforme dans un format plus simple à interroger.</p>
+<p>Un <strong>entrepôt de données</strong> est un espace centralisé, organisé pour analyser l’historique de l’organisation. Il rassemble des données provenant de plusieurs sources, conserve leur contexte dans le temps et les transforme dans un format plus simple à interroger — quitte à répéter volontairement certaines informations (<strong>dénormalisation</strong>) pour accélérer la lecture.</p>
+<div id="tbl-oltp-olap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-oltp-olap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: OLTP et OLAP, deux logiques complémentaires
+</figcaption>
+<div aria-describedby="tbl-oltp-olap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Système</th>
+<th style="text-align: left;">Sigle</th>
 <th style="text-align: left;">But principal</th>
 <th style="text-align: left;">Exemple de question</th>
+<th style="text-align: left;">Fréquence d’écriture</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Base opérationnelle (OLTP)</td>
+<td style="text-align: left;">Base opérationnelle</td>
+<td style="text-align: left;"><strong>OLTP</strong></td>
 <td style="text-align: left;">Enregistrer les événements courants</td>
 <td style="text-align: left;">« Quel est le statut de la commande 1524 ? »</td>
+<td style="text-align: left;">Continue, en temps réel</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Entrepôt analytique (OLAP)</td>
+<td style="text-align: left;">Entrepôt analytique</td>
+<td style="text-align: left;"><strong>OLAP</strong></td>
 <td style="text-align: left;">Comparer, agréger et suivre l’historique</td>
 <td style="text-align: left;">« Comment les ventes ont-elles évolué par région ? »</td>
+<td style="text-align: left;">Périodique (souvent quotidienne ou horaire)</td>
 </tr>
 </tbody>
 </table>
-<p>Les deux systèmes sont complémentaires. L’entrepôt n’a pas pour objectif de remplacer l’application métier.</p>
+</div>
+</figure>
+</div>
+<div id="fig-oltp-olap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-oltp-olap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/oltp-vs-olap.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-oltp-olap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Deux systèmes complémentaires : la base opérationnelle (OLTP) alimente, après transformation, l’entrepôt analytique (OLAP)
+</figcaption>
+</figure>
+</div>
+<p>Les deux systèmes sont complémentaires, jamais concurrents. L’entrepôt n’a pas pour objectif de remplacer l’application métier : il en est le prolongement analytique, alimenté à intervalles réguliers plutôt qu’en continu.</p>
 </section>
 <section id="entrepôt-lac-et-datamart" class="level3">
 <h3 class="anchored" data-anchor-id="entrepôt-lac-et-datamart">1.3. Entrepôt, lac et datamart</h3>
+<p>Trois notions sont souvent confondues, alors qu’elles répondent à des besoins différents :</p>
 <ul>
-<li>Un <strong>data warehouse</strong> contient des données structurées, préparées et gouvernées pour l’analyse.</li>
-<li>Un <strong>data lake</strong> peut stocker des données brutes de formats variés (fichiers, textes, événements) avant leur usage ; il demande des règles claires pour rester compréhensible.</li>
-<li>Un <strong>datamart</strong> est une partie orientée vers un besoin ou un service, par exemple un datamart des ventes ou des ressources humaines.</li>
+<li>Un <strong>data warehouse</strong> (entrepôt de données) contient des données <strong>structurées</strong>, préparées et gouvernées pour l’analyse. Les tables suivent un schéma défini à l’avance (<em>schema-on-write</em>) : on sait, avant même d’écrire une ligne, à quoi ressemblera la table.</li>
+<li>Un <strong>data lake</strong> (lac de données) peut stocker des données brutes de formats variés (fichiers CSV, JSON, images, journaux d’événements) avant leur usage, sans schéma imposé à l’écriture (<em>schema-on-read</em> : le schéma n’est défini qu’au moment de la lecture). Il offre une grande flexibilité, mais demande des règles claires — un catalogue de données, des conventions de nommage — pour ne pas devenir un « marécage de données » (<em>data swamp</em>) où plus personne ne sait ce que contient chaque fichier.</li>
+<li>Un <strong>datamart</strong> est une partie de l’entrepôt orientée vers un besoin ou un service précis, par exemple un datamart des ventes ou un datamart des ressources humaines. Il est généralement plus petit, plus rapide à interroger et plus simple à comprendre pour l’équipe qui l’utilise au quotidien.</li>
 </ul>
+<div id="tbl-lake-warehouse-datamart" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lake-warehouse-datamart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Trois niveaux de granularité pour organiser les données de l’entreprise
+</figcaption>
+<div aria-describedby="tbl-lake-warehouse-datamart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Composant</th>
+<th style="text-align: left;">Type de données</th>
+<th style="text-align: left;">Schéma</th>
+<th style="text-align: left;">Utilisateur typique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Data lake</td>
+<td style="text-align: left;">Brutes, tous formats</td>
+<td style="text-align: left;"><em>Schema-on-read</em></td>
+<td style="text-align: left;">Data engineer, data scientist</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Data warehouse</td>
+<td style="text-align: left;">Structurées, nettoyées</td>
+<td style="text-align: left;"><em>Schema-on-write</em></td>
+<td style="text-align: left;">Data analyst, BI developer</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Datamart</td>
+<td style="text-align: left;">Structurées, ciblées sur un domaine</td>
+<td style="text-align: left;"><em>Schema-on-write</em></td>
+<td style="text-align: left;">Équipe métier (ventes, RH, finance)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 <div class="callout callout-style-default callout-warning callout-titled" title="Un entrepôt ne corrige pas une mauvaise question">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -360,39 +689,57 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Centraliser beaucoup de données ne suffit pas. Il faut définir le vocabulaire métier, les unités, la fréquence de mise à jour et les indicateurs attendus. Sinon, on obtient plusieurs chiffres différents pour un même « chiffre d’affaires ».</p>
+<p>Centraliser beaucoup de données ne suffit pas. Il faut définir le vocabulaire métier, les unités, la fréquence de mise à jour et les indicateurs attendus. Sinon, on obtient plusieurs chiffres différents pour un même « chiffre d’affaires » — un problème de gouvernance, pas un problème technique, que nous retrouverons en section 5.</p>
 </div>
 </div>
 </section>
 </section>
 <section id="le-modèle-en-étoile" class="level2">
 <h2 class="anchored" data-anchor-id="le-modèle-en-étoile">2. Le modèle en étoile</h2>
-<p>Le modèle en étoile est une organisation pédagogique et professionnelle très fréquente pour les données analytiques. Il place une <strong>table de faits</strong> au centre et des <strong>tables de dimensions</strong> autour.</p>
+<p>Le modèle en étoile (<em>star schema</em>) est une organisation pédagogique et professionnelle très fréquente pour les données analytiques. Il place une <strong>table de faits</strong> au centre et des <strong>tables de dimensions</strong> autour, reliées directement à la table de faits.</p>
 <section id="la-table-de-faits" class="level3">
 <h3 class="anchored" data-anchor-id="la-table-de-faits">2.1. La table de faits</h3>
 <p>Une table de faits contient les événements mesurables : ventes, livraisons, appels ou visites. Elle comprend généralement :</p>
 <ul>
-<li>des clés vers les dimensions (<code>client_id</code>, <code>produit_id</code>, <code>date_id</code>, <code>magasin_id</code>) ;</li>
-<li>des mesures numériques (<code>quantite</code>, <code>montant</code>, <code>remise</code>) ;</li>
-<li>une ligne par événement selon un niveau de détail défini.</li>
+<li>des <strong>clés étrangères</strong> vers les dimensions (<code>client_id</code>, <code>produit_id</code>, <code>date_id</code>, <code>magasin_id</code>) ;</li>
+<li>des <strong>mesures numériques</strong> (<code>quantite</code>, <code>montant</code>, <code>remise</code>) ;</li>
+<li>une ligne par événement, selon un niveau de détail défini.</li>
 </ul>
-<p>Le <strong>grain</strong> est la phrase qui précise ce que représente une ligne. Par exemple : « une ligne représente un produit d’une commande, dans un magasin, à une date donnée ». Le grain doit être défini avant de choisir les mesures.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Le grain d’une table de faits
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le <strong>grain</strong> est la phrase qui précise ce que représente exactement une ligne de la table de faits. Par exemple : « une ligne représente un produit d’une commande, dans un magasin, à une date donnée ». Le grain doit être défini <strong>avant</strong> de choisir les mesures et les dimensions : toutes les mesures de la table doivent être cohérentes avec ce niveau de détail.</p>
+</div>
+</div>
+<p>Un grain mal défini — ou changé en cours de route — est l’une des erreurs les plus fréquentes et les plus coûteuses dans la conception d’un entrepôt : elle oblige souvent à reconstruire les mesures et les rapports qui en dépendent.</p>
 </section>
 <section id="les-tables-de-dimensions" class="level3">
 <h3 class="anchored" data-anchor-id="les-tables-de-dimensions">2.2. Les tables de dimensions</h3>
-<p>Une dimension décrit le contexte d’un fait :</p>
+<p>Une dimension décrit le <strong>contexte</strong> d’un fait — le qui, le quoi, le où et le quand :</p>
 <ul>
-<li><code>dim_date</code> : jour, mois, trimestre, année ;</li>
-<li><code>dim_produit</code> : produit, catégorie, marque ;</li>
-<li><code>dim_client</code> : ville, région, segment ;</li>
-<li><code>dim_magasin</code> : magasin, ville, zone.</li>
+<li><code>dim_date</code> : jour, mois, trimestre, année, jour ouvré ou non ;</li>
+<li><code>dim_produit</code> : produit, catégorie, sous-catégorie, marque ;</li>
+<li><code>dim_client</code> : ville, région, segment, ancienneté ;</li>
+<li><code>dim_magasin</code> : magasin, ville, zone commerciale.</li>
 </ul>
-<p>Les dimensions contiennent les attributs utilisés pour filtrer, regrouper et expliquer les mesures. Elles sont souvent dénormalisées pour rendre l’exploration plus simple.</p>
-<pre class="text"><code>                         dim_date
-                            |
-dim_client ---- fact_ventes ---- dim_produit
-                            |
-                       dim_magasin</code></pre>
+<p>Les dimensions contiennent les attributs utilisés pour filtrer, regrouper et expliquer les mesures. Elles sont souvent volontairement dénormalisées (une seule table plate plutôt que plusieurs tables reliées) pour rendre l’exploration plus simple pour un analyste ou un outil de BI.</p>
+<div id="fig-modele-etoile" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-modele-etoile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/modele-etoile-vente.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-modele-etoile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Le modèle en étoile : une table de faits centrale reliée directement à ses tables de dimensions
+</figcaption>
+</figure>
+</div>
 </section>
 <section id="exemple-de-modèle-de-ventes" class="level3">
 <h3 class="anchored" data-anchor-id="exemple-de-modèle-de-ventes">2.3. Exemple de modèle de ventes</h3>
@@ -426,7 +773,7 @@ annee</code></pre>
 \text{montant\_net}
 =\text{quantité}\times\text{prix unitaire}-\text{remise}.
 \]</span></p>
-<p>Un modèle en étoile ne dicte pas un seul outil : il peut être utilisé dans une base SQL, un fichier analytique ou un modèle Power BI.</p>
+<p>Un modèle en étoile ne dicte pas un seul outil : il peut être utilisé dans une base SQL, un fichier analytique (Parquet, vu au chapitre 1) ou directement dans le modèle sémantique d’un outil comme Power BI, présenté au chapitre suivant.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Le rôle de la dimension Date">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -437,31 +784,292 @@ annee</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Même si la source contient déjà une date, une dimension Date facilite les regroupements par mois, trimestre, semaine ou jour ouvré. Elle permet aussi de définir clairement les périodes comparées.</p>
+<p>Même si la source contient déjà une date, une dimension Date facilite les regroupements par mois, trimestre, semaine ou jour ouvré, et permet de définir clairement les périodes comparées (par exemple « le même mois l’an dernier »). Elle est presque toujours présente dans un modèle en étoile, même minimal.</p>
 </div>
 </div>
+</section>
+<section id="modèle-en-étoile-ou-en-flocon" class="level3">
+<h3 class="anchored" data-anchor-id="modèle-en-étoile-ou-en-flocon">2.4. Modèle en étoile ou en flocon ?</h3>
+<p>Lorsqu’une dimension est elle-même normalisée en plusieurs tables reliées entre elles (par exemple <code>dim_produit</code> reliée à une table séparée <code>dim_categorie</code>, elle-même reliée à <code>dim_departement</code>), on parle de <strong>modèle en flocon</strong> (<em>snowflake schema</em>) plutôt que de modèle en étoile.</p>
+<div id="tbl-etoile-flocon" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-etoile-flocon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Modèle en étoile et modèle en flocon
+</figcaption>
+<div aria-describedby="tbl-etoile-flocon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Critère</th>
+<th style="text-align: left;">Modèle en étoile</th>
+<th style="text-align: left;">Modèle en flocon</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Nombre de tables de dimensions</td>
+<td style="text-align: left;">Plus petit, dimensions dénormalisées</td>
+<td style="text-align: left;">Plus grand, dimensions normalisées</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Simplicité pour l’analyste</td>
+<td style="text-align: left;">Plus simple à comprendre et à interroger</td>
+<td style="text-align: left;">Plus de jointures à connaître</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Espace de stockage</td>
+<td style="text-align: left;">Légèrement plus élevé (répétition de données)</td>
+<td style="text-align: left;">Réduit (moins de répétition)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Usage recommandé</td>
+<td style="text-align: left;">Par défaut pour la plupart des projets de BI</td>
+<td style="text-align: left;">Dimensions très volumineuses ou très hiérarchisées</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Priorité pour débuter">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Priorité pour débuter
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour la grande majorité des projets, notamment ceux présentés dans ce cours, le modèle en étoile — plus simple à lire et à interroger — est le point de départ recommandé. Le modèle en flocon reste une option pour des dimensions très volumineuses (des millions de produits, par exemple).</p>
+</div>
+</div>
+</section>
+<section id="un-mot-sur-lhistorisation-des-dimensions" class="level3">
+<h3 class="anchored" data-anchor-id="un-mot-sur-lhistorisation-des-dimensions">2.5. Un mot sur l’historisation des dimensions</h3>
+<p>Que se passe-t-il lorsqu’un client déménage, ou qu’un produit change de catégorie ? Ce problème classique, appelé <strong>dimension à évolution lente</strong> (<em>Slowly Changing Dimension</em>, ou SCD), admet plusieurs réponses :</p>
+<ul>
+<li><strong>Type 1</strong> : on écrase l’ancienne valeur par la nouvelle — on perd l’historique, mais le modèle reste simple.</li>
+<li><strong>Type 2</strong> : on ajoute une nouvelle ligne dans la dimension, avec des dates de validité — on conserve l’historique complet, au prix d’un modèle un peu plus complexe.</li>
+</ul>
+<p>Ce sujet est approfondi dans des cours dédiés à la modélisation ; il est mentionné ici pour que le concept de dimension ne soit pas perçu comme figé dans le temps.</p>
 </section>
 </section>
 <section id="les-mesures-et-les-indicateurs" class="level2">
 <h2 class="anchored" data-anchor-id="les-mesures-et-les-indicateurs">3. Les mesures et les indicateurs</h2>
-<p>Une <strong>mesure additive</strong> peut être additionnée sur toutes les dimensions, comme le nombre d’articles ou le montant des ventes. Une mesure <strong>semi-additive</strong>, comme un stock de fin de journée, peut être additionnée par produit mais pas dans le temps. Une mesure <strong>non additive</strong>, comme un taux ou une moyenne, doit être recalculée à partir de ses éléments plutôt que sommée.</p>
-<p>Exemple : si une région a 10 commandes et une autre 2 commandes, la moyenne globale ne doit pas être calculée comme la moyenne des deux moyennes si les effectifs sont différents. Il faut utiliser :</p>
+<p>Une <strong>mesure additive</strong> peut être additionnée sur toutes les dimensions, comme le nombre d’articles ou le montant des ventes. Une mesure <strong>semi-additive</strong>, comme un stock de fin de journée, peut être additionnée par produit mais pas dans le temps (additionner le stock du lundi et du mardi n’a pas de sens ; on préfère en général le dernier stock connu, ou une moyenne). Une mesure <strong>non additive</strong>, comme un taux ou une moyenne, doit être recalculée à partir de ses éléments plutôt que sommée directement.</p>
+<div id="tbl-types-mesures" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-types-mesures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Trois familles de mesures
+</figcaption>
+<div aria-describedby="tbl-types-mesures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Type de mesure</th>
+<th style="text-align: left;">Peut-on l’additionner…</th>
+<th style="text-align: left;">… dans le temps ?</th>
+<th style="text-align: left;">… entre produits ?</th>
+<th style="text-align: left;">Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Additive</strong></td>
+<td style="text-align: left;">Oui</td>
+<td style="text-align: left;">Oui</td>
+<td style="text-align: left;">Oui</td>
+<td style="text-align: left;">Montant des ventes, quantité vendue</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Semi-additive</strong></td>
+<td style="text-align: left;">Parfois</td>
+<td style="text-align: left;">Non</td>
+<td style="text-align: left;">Oui</td>
+<td style="text-align: left;">Stock de fin de journée</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Non additive</strong></td>
+<td style="text-align: left;">Non</td>
+<td style="text-align: left;">Non</td>
+<td style="text-align: left;">Non</td>
+<td style="text-align: left;">Taux de conversion, marge en %</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exemple : ne jamais faire la moyenne d'une moyenne">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Exemple : ne jamais faire la moyenne d’une moyenne
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si une région a 10 commandes et une autre 2 commandes, la moyenne globale ne doit pas être calculée comme la moyenne des deux moyennes régionales si les effectifs sont différents. Il faut utiliser :</p>
 <p><span class="math display">\[
 \text{moyenne globale} =
 \frac{\text{total des montants}}{\text{nombre total de commandes}}.
 \]</span></p>
-<p>Les noms des indicateurs doivent préciser leur définition. « Ventes » peut signifier chiffre d’affaires brut, chiffre d’affaires net, commandes payées ou unités vendues. Dans un dictionnaire métier, on documente la formule, l’unité, la période et les filtres.</p>
+<p>Cette règle, déjà rencontrée au chapitre 2, redevient centrale dans un entrepôt de données : c’est précisément ce type d’erreur que les mesures DAX de Power BI, vues au chapitre suivant, permettent d’éviter — à condition d’être écrites correctement.</p>
+</div>
+</div>
+<p>Les noms des indicateurs doivent préciser leur définition. « Ventes » peut signifier chiffre d’affaires brut, chiffre d’affaires net, commandes payées ou unités vendues. Dans un <strong>dictionnaire métier</strong> (ou <em>data dictionary</em>), on documente pour chaque indicateur sa formule, son unité, sa période de référence et ses filtres :</p>
+<div id="tbl-dictionnaire-metier" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dictionnaire-metier-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Extrait d’un dictionnaire métier
+</figcaption>
+<div aria-describedby="tbl-dictionnaire-metier-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Indicateur</th>
+<th style="text-align: left;">Formule</th>
+<th style="text-align: left;">Unité</th>
+<th style="text-align: left;">Période</th>
+<th style="text-align: left;">Filtre appliqué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Chiffre d’affaires net</td>
+<td style="text-align: left;"><span class="math inline">\(\sum \text{montant\_net}\)</span></td>
+<td style="text-align: left;">MAD</td>
+<td style="text-align: left;">Mensuel</td>
+<td style="text-align: left;">Statut = « Payée »</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Panier moyen</td>
+<td style="text-align: left;">CA net / commandes distinctes</td>
+<td style="text-align: left;">MAD</td>
+<td style="text-align: left;">Mensuel</td>
+<td style="text-align: left;">Statut = « Payée »</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Taux de livraison à temps</td>
+<td style="text-align: left;">Livraisons à temps / livraisons terminées</td>
+<td style="text-align: left;">%</td>
+<td style="text-align: left;">Hebdomadaire</td>
+<td style="text-align: left;">Toutes livraisons closes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 </section>
 <section id="le-flux-etlelt" class="level2">
 <h2 class="anchored" data-anchor-id="le-flux-etlelt">4. Le flux ETL/ELT</h2>
-<p>Les données passent généralement par un flux en plusieurs étapes :</p>
+<p>Les données passent généralement par un flux en plusieurs étapes avant d’atteindre l’entrepôt :</p>
 <ol type="1">
-<li><strong>Extract (extraire)</strong> : lire les sources opérationnelles, fichiers ou API ;</li>
-<li><strong>Transform (transformer)</strong> : convertir les dates, harmoniser les unités, dédupliquer, contrôler les valeurs et calculer les champs dérivés ;</li>
+<li><strong>Extract (extraire)</strong> : lire les sources opérationnelles, fichiers ou API — les mêmes sources de collecte que celles vues au chapitre 1 ;</li>
+<li><strong>Transform (transformer)</strong> : convertir les dates, harmoniser les unités, dédupliquer, contrôler les valeurs et calculer les champs dérivés — les techniques de nettoyage et de transformation du chapitre 1 ;</li>
 <li><strong>Load (charger)</strong> : déposer les données préparées dans les tables de l’entrepôt.</li>
 </ol>
-<p>Dans une approche <strong>ELT</strong>, on charge d’abord les données dans une plateforme capable de les traiter, puis on réalise les transformations à l’intérieur de cette plateforme. Les deux approches poursuivent le même but : rendre les données fiables et exploitables.</p>
+<div id="fig-flux-etl" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-flux-etl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/flux-etl-elt.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-flux-etl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Le flux ETL : extraction, transformation puis chargement dans l’entrepôt
+</figcaption>
+</figure>
+</div>
+<p>Dans une approche <strong>ELT</strong> (<em>Extract, Load, Transform</em>), on inverse les deux dernières étapes : on charge d’abord les données brutes dans une plateforme suffisamment puissante pour les traiter (un entrepôt cloud, par exemple), puis on réalise les transformations à l’intérieur même de cette plateforme, en SQL. Les deux approches poursuivent le même but — rendre les données fiables et exploitables — mais diffèrent par l’endroit où s’exécute la transformation.</p>
+<div id="tbl-etl-elt" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-etl-elt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: ETL et ELT
+</figcaption>
+<div aria-describedby="tbl-etl-elt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Approche</th>
+<th style="text-align: left;">Où la transformation a-t-elle lieu ?</th>
+<th style="text-align: left;">Avantage principal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>ETL</strong></td>
+<td style="text-align: left;">Sur un serveur de traitement dédié, avant le chargement</td>
+<td style="text-align: left;">Contrôle fin, adapté aux volumes modérés</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>ELT</strong></td>
+<td style="text-align: left;">Dans l’entrepôt cible lui-même, après le chargement</td>
+<td style="text-align: left;">Exploite la puissance de calcul du cloud, adapté aux gros volumes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<section id="illustrer-un-contrôle-de-qualité-au-chargement" class="level3">
+<h3 class="anchored" data-anchor-id="illustrer-un-contrôle-de-qualité-au-chargement">4.1. Illustrer un contrôle de qualité au chargement</h3>
+<p>Même sans plateforme d’orchestration, un petit script Python illustre la logique d’un contrôle de qualité effectué à l’étape de transformation, dans l’esprit de <code>Great Expectations</code> déjà mentionné au chapitre 1 :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>brut <span class="op">=</span> pd.read_csv(<span class="st">"ventes_source.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>lignes_avant <span class="op">=</span> <span class="bu">len</span>(brut)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Règles de qualité simples</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>brut <span class="op">=</span> brut.dropna(subset<span class="op">=</span>[<span class="st">"date_vente"</span>, <span class="st">"montant"</span>])</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>brut <span class="op">=</span> brut[brut[<span class="st">"montant"</span>] <span class="op">&gt;=</span> <span class="dv">0</span>]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>brut <span class="op">=</span> brut.drop_duplicates(subset<span class="op">=</span>[<span class="st">"commande_id"</span>, <span class="st">"produit_id"</span>])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>lignes_apres <span class="op">=</span> <span class="bu">len</span>(brut)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>rejets <span class="op">=</span> lignes_avant <span class="op">-</span> lignes_apres</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Lignes lues : </span><span class="sc">{</span>lignes_avant<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Lignes conservées : </span><span class="sc">{</span>lignes_apres<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Lignes rejetées : </span><span class="sc">{</span>rejets<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Un chargement quotidien doit pouvoir répondre à quatre questions simples : quelles sources ont été lues ? combien de lignes ont été reçues ? combien ont été rejetées ? quand le chargement s’est-il terminé ?</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Zoom sur les tendances : l'orchestration automatisée">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Zoom sur les tendances : l’orchestration automatisée
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sur un projet réel, ce type de flux ne s’exécute pas manuellement chaque jour : un <strong>orchestrateur</strong> planifie et surveille son exécution. Les outils les plus utilisés actuellement sont <strong>Apache Airflow</strong>, <strong>Dagster</strong> et <strong>Prefect</strong>, qui permettent de définir un flux comme une succession d’étapes (un <em>graphe orienté acyclique</em>, ou DAG), de relancer automatiquement une étape échouée, et d’alerter une équipe en cas d’anomalie. Ce sujet est approfondi dans les modules d’ingénierie des données ; il est mentionné ici car il complète directement le rôle du Data Analyst.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-important callout-titled" title="Qualité et traçabilité">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -472,21 +1080,38 @@ annee</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Conservez les données sources ou un journal de chargement, le nombre de lignes avant et après transformation, les erreurs détectées et la date de mise à jour. Ces informations permettent de comprendre pourquoi un indicateur a changé.</p>
+<p>Conservez les données sources ou un journal de chargement, le nombre de lignes avant et après transformation, les erreurs détectées et la date de mise à jour. Ces informations permettent de comprendre pourquoi un indicateur a changé d’un jour à l’autre — une question que tout analyste finit par recevoir.</p>
 </div>
 </div>
 </section>
+</section>
 <section id="gouvernance-et-sécurité-sans-complexité-inutile" class="level2">
 <h2 class="anchored" data-anchor-id="gouvernance-et-sécurité-sans-complexité-inutile">5. Gouvernance et sécurité, sans complexité inutile</h2>
-<p>La <strong>gouvernance</strong> désigne les règles qui rendent les données compréhensibles, accessibles aux bonnes personnes et utilisées de manière responsable. Pour commencer, un projet peut mettre en place :</p>
+<p>La <strong>gouvernance des données</strong> désigne les règles qui rendent les données compréhensibles, accessibles aux bonnes personnes et utilisées de manière responsable. Pour commencer, un projet peut mettre en place :</p>
 <ul>
-<li>un dictionnaire des tables et des indicateurs ;</li>
-<li>un responsable pour chaque donnée importante ;</li>
-<li>des règles de qualité (unicité d’un identifiant, prix positif, date obligatoire) ;</li>
-<li>des droits d’accès adaptés, notamment pour les données personnelles ;</li>
-<li>une fréquence de mise à jour annoncée.</li>
+<li>un <strong>dictionnaire des tables et des indicateurs</strong>, comme celui de la <a href="#tbl-dictionnaire-metier" class="quarto-xref">Table&nbsp;<span>5</span></a> ;</li>
+<li>un <strong>responsable</strong> (<em>data owner</em>) pour chaque donnée importante ;</li>
+<li>des <strong>règles de qualité</strong> (unicité d’un identifiant, prix positif, date obligatoire), dans l’esprit du script de la section 4.1 ;</li>
+<li>des <strong>droits d’accès</strong> adaptés, notamment pour les données personnelles, en cohérence avec le cadre réglementaire déjà évoqué au chapitre 1 (RGPD, loi marocaine 09-08) ;</li>
+<li>une <strong>fréquence de mise à jour</strong> annoncée et respectée.</li>
 </ul>
-<p>Un tableau de bord ne devrait pas exposer inutilement des noms, numéros de téléphone ou adresses. On peut agréger les résultats, masquer les colonnes sensibles et limiter les accès selon le rôle de l’utilisateur.</p>
+<p>Un tableau de bord ne devrait pas exposer inutilement des noms, numéros de téléphone ou adresses. On peut agréger les résultats, masquer les colonnes sensibles et limiter les accès selon le rôle de l’utilisateur — un mécanisme appelé <strong>sécurité au niveau des lignes</strong> (<em>Row-Level Security</em>, RLS), que nous retrouverons concrètement dans Power BI au chapitre suivant.</p>
+<section id="vers-le-cloud-et-le-lakehouse" class="level3">
+<h3 class="anchored" data-anchor-id="vers-le-cloud-et-le-lakehouse">5.1. Vers le cloud et le lakehouse</h3>
+<div class="callout callout-style-default callout-important callout-titled" title="Zoom sur les tendances : les entrepôts analytiques dans le cloud">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Zoom sur les tendances : les entrepôts analytiques dans le cloud
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les entrepôts de données historiques étaient hébergés sur des serveurs internes à l’organisation. Aujourd’hui, la majorité des nouveaux projets s’appuient sur des plateformes analytiques <strong>cloud</strong>, qui séparent le stockage et le calcul et permettent de payer à l’usage : <strong>Snowflake</strong>, <strong>Google BigQuery</strong>, <strong>Amazon Redshift</strong> ou <strong>Microsoft Fabric</strong> (qui intègre directement Power BI). Une tendance plus récente, le <strong>lakehouse</strong> (popularisé notamment par Databricks), cherche à combiner la flexibilité d’un data lake avec les garanties de qualité et de structure d’un data warehouse, en s’appuyant sur des formats de table ouverts (comme Delta Lake ou Apache Iceberg). Ces plateformes ne changent pas les principes présentés dans ce chapitre — grain, dimensions, mesures, gouvernance — mais modifient l’endroit et la façon dont ils sont mis en œuvre.</p>
+</div>
+</div>
+</section>
 </section>
 <section id="exercices" class="level2">
 <h2 class="anchored" data-anchor-id="exercices">Exercices</h2>
@@ -547,6 +1172,20 @@ annee</code></pre>
 <li>Un tableau de bord doit être partagé avec des responsables régionaux.</li>
 </ol>
 </div>
+<div id="exr-dwh-9" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 9 (Étoile ou flocon ?)</strong></span> Une équipe hésite entre deux organisations pour la dimension <code>dim_produit</code> : une seule table dénormalisée, ou trois tables reliées (<code>dim_produit</code>, <code>dim_categorie</code>, <code>dim_departement</code>).</p>
+<ol type="a">
+<li>Quel modèle correspond à chaque option (<a href="#tbl-etoile-flocon" class="quarto-xref">Table&nbsp;<span>3</span></a>) ?</li>
+<li>Dans quel cas le modèle en flocon devient-il particulièrement pertinent ?</li>
+</ol>
+</div>
+<div id="exr-dwh-10" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 10 (ETL ou ELT ?)</strong></span> Une organisation dispose d’une plateforme cloud très puissante pour exécuter des requêtes SQL sur de gros volumes, et souhaite limiter le nombre de serveurs de traitement intermédiaires à maintenir.</p>
+<ol type="a">
+<li>Quelle approche (ETL ou ELT, <a href="#tbl-etl-elt" class="quarto-xref">Table&nbsp;<span>6</span></a>) est la plus cohérente avec ce contexte ?</li>
+<li>Quel principe reste identique, quelle que soit l’approche choisie ?</li>
+</ol>
+</div>
 
 
 </section>
@@ -554,6 +1193,19 @@ annee</code></pre>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {

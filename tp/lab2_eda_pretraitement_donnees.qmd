@@ -1,5 +1,14 @@
 # Lab 2 : EDA et prétraitement
 
+::: {.callout-important title="Avant de commencer — choisir votre support"}
+Téléchargez un seul format avant de travailler :
+
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le [dossier GitHub `labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets), choisissez le notebook du Lab 2 et téléchargez-le.
+- **Fichier `.qmd`** pour travailler avec Quarto : [téléchargez le fichier source du Lab 2](https://github.com/iaousse/dldv-course/blob/main/tp/lab2_eda_pretraitement_donnees.qmd).
+
+Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
+:::
+
 ::: {.callout-tip title="Objectifs du Lab"}
 À la fin de ce Lab, l'étudiant sera capable de :
 
@@ -424,7 +433,7 @@ analysis_large = pd.concat(chunks, ignore_index=True)
 
 Pour plusieurs millions de lignes, ne concaténez pas systématiquement toutes les données si vous avez seulement besoin d'un agrégat. Accumulez par exemple des comptes par mois et par catégorie, ou utilisez DuckDB/Parquet dans un Lab ultérieur.
 
-## 10. Lab Sheet — Travail demandé
+## 10. Travail demandé
 
 ### Partie A — Audit
 
@@ -465,6 +474,7 @@ Pour plusieurs millions de lignes, ne concaténez pas systématiquement toutes l
 23. Identifiez trois KPI possibles pour le futur tableau de bord.
 24. Expliquez quelles colonnes devront être des dimensions et lesquelles pourront être des mesures.
 
+::: {.content-visible when-profile="teacher"}
 ## 11. Livrables
 
 ::: {.callout-note title="Checklist finale"}
@@ -474,4 +484,5 @@ Pour plusieurs millions de lignes, ne concaténez pas systématiquement toutes l
 - [ ] Les statistiques sont accompagnées d'effectifs.
 - [ ] Les graphiques indiquent unité, période et filtres.
 - [ ] La table propre peut être utilisée par Power BI.
+:::
 :::

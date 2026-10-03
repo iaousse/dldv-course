@@ -1,5 +1,14 @@
 # Lab 1 : Collecte de données
 
+::: {.callout-important title="Avant de commencer — choisir votre support"}
+Téléchargez un seul format avant de travailler :
+
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le [dossier GitHub `labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets), choisissez le notebook du Lab 1 et téléchargez-le.
+- **Fichier `.qmd`** pour travailler avec Quarto : [téléchargez le fichier source du Lab 1](https://github.com/iaousse/dldv-course/blob/main/tp/lab1_collect_donnees.qmd).
+
+Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
+:::
+
 ::: {.callout-tip title="Objectifs du Lab"}
 À la fin de ce Lab, l'étudiant sera capable de :
 
@@ -175,7 +184,7 @@ params = {
         "created_date between '2024-01-01T00:00:00' "
         "and '2024-01-31T23:59:59'"
     ),
-    "$order": "created_date",
+    "$order": "created_date, unique_key",
     "$limit": 50000,
 }
 
@@ -212,7 +221,7 @@ def collect_page(endpoint, where, limit=50_000, offset=0):
             "complaint_type,borough,open_data_channel_type,status"
         ),
         "$where": where,
-        "$order": "created_date",
+        "$order": "created_date, unique_key",
         "$limit": limit,
         "$offset": offset,
     }
@@ -225,8 +234,9 @@ where = (
     "and '2024-01-31T23:59:59'"
 )
 
+nombre_attendu = int(count_response.json()[0]["nombre"])
 pages = []
-for offset in range(0, 150_000, 50_000):
+for offset in range(0, nombre_attendu, 50_000):
     page = collect_page(endpoint, where, offset=offset)
     if not page:
         break
@@ -234,7 +244,10 @@ for offset in range(0, 150_000, 50_000):
 
 nyc311 = pd.DataFrame(pages)
 nyc311.to_csv("../data/raw/nyc311_janvier.csv", index=False)
+print(f"Lignes collectées : {len(nyc311):,} / {nombre_attendu:,} attendues")
 ```
+
+L'ordre stable par date et identifiant évite de décaler les pages lorsque plusieurs demandes ont la même date. Si le nombre collecté diffère du comptage, notez l'écart et vérifiez si la source a changé pendant l'extraction.
 
 Pour une collecte destinée à un usage régulier, sauvegardez aussi les paramètres et le nombre de lignes dans un fichier de métadonnées :
 
@@ -297,7 +310,7 @@ Avant de passer à l'analyse, répondez à ces questions :
 
 Une collecte de données est réussie lorsque quelqu'un d'autre peut comprendre et reproduire le chemin entre la source et le fichier brut.
 
-## 8. Lab Sheet — Travail demandé
+## 8. Travail demandé
 
 ### Partie A — Questionnaire
 
@@ -329,6 +342,7 @@ Une collecte de données est réussie lorsque quelqu'un d'autre peut comprendre 
 17. Qu'est-ce qu'une collecte complète pour une question donnée ?
 18. Donnez un exemple de biais possible dans un questionnaire et un exemple de biais possible dans une API.
 
+::: {.content-visible when-profile="teacher"}
 ## 9. Livrables
 
 ::: {.callout-note title="Checklist finale"}
@@ -339,4 +353,5 @@ Une collecte de données est réussie lorsque quelqu'un d'autre peut comprendre 
 - [ ] La pagination est arrêtée par une règle explicite.
 - [ ] Les données personnelles ne sont pas collectées inutilement.
 - [ ] Les fichiers du Lab 2 peuvent être produits à partir de ces sources.
+:::
 :::

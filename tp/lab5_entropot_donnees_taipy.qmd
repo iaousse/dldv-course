@@ -1,5 +1,16 @@
 # Lab 5 : Entrepôt de données et dashboard avancé avec Taipy
 
+::: {.callout-important title="Avant de commencer — choisir votre support"}
+Téléchargez un seul format avant de travailler :
+
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le [dossier GitHub `labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets), choisissez le notebook du Lab 5 et téléchargez-le.
+- **Fichier `.qmd`** pour travailler avec Quarto : [téléchargez le fichier source du Lab 5](https://github.com/iaousse/dldv-course/blob/main/tp/lab5_entropot_donnees_taipy.qmd).
+
+Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
+
+Colab peut servir à exécuter les analyses Python, mais le lancement local de l'application et le déploiement Docker nécessitent un environnement avec terminal ; utilisez de préférence VS Code en local pour ces étapes.
+:::
+
 ::: {.callout-tip title="Objectifs du Lab"}
 À la fin de ce Lab, l'étudiant sera capable de :
 
@@ -77,13 +88,15 @@ taipy-nyc311/
 ├── README.md
 └── data/
     └── processed/
+        ├── overall_summary.parquet
         ├── monthly_summary.parquet
         ├── borough_summary.parquet
         ├── type_summary.parquet
+        ├── borough_type_summary.parquet
         └── channel_summary.parquet
 ```
 
-La version complète ajoutera aussi `monthly_borough_summary.parquet` et `monthly_borough_type_summary.parquet` pour rendre les filtres mensuels réellement interactifs.
+Le pipeline produit aussi `monthly_borough_summary.parquet`, `monthly_type_summary.parquet` et `monthly_borough_type_summary.parquet`. Chaque combinaison de filtres possède ainsi son propre agrégat exact.
 
 N'envoyez pas automatiquement le CSV brut massif dans un dépôt public. L'application finale doit contenir les agrégats strictement nécessaires à ses pages.
 
@@ -156,17 +169,20 @@ def summarise(grouped):
         Demandes_cloturees=("is_closed", "sum"),
         Delai_median_heures=("processing_hours", "median"),
         Delai_moyen_heures=("processing_hours", "mean"),
+        Delai_P90_heures=("processing_hours", lambda s: s.quantile(0.90)),
     ).reset_index()
     result["Taux_cloture"] = (
         result["Demandes_cloturees"] / result["Demandes"]
     )
     return result
 
+overall = summarise(df.assign(_all="Toutes").groupby("_all")).drop(columns="_all")
 monthly = summarise(df.groupby("month"))
 borough = summarise(df.groupby("borough"))
 types = summarise(df.groupby("complaint_type")).sort_values(
     "Demandes", ascending=False
 )
+borough_type = summarise(df.groupby(["borough", "complaint_type"]))
 channels = summarise(df.groupby("open_data_channel_type"))
 monthly_borough = summarise(df.groupby(["month", "borough"]))
 monthly_type = summarise(df.groupby(["month", "complaint_type"]))
@@ -174,9 +190,11 @@ monthly_borough_type = summarise(
     df.groupby(["month", "borough", "complaint_type"])
 )
 
+overall.to_parquet(OUT / "overall_summary.parquet", index=False)
 monthly.to_parquet(OUT / "monthly_summary.parquet", index=False)
 borough.to_parquet(OUT / "borough_summary.parquet", index=False)
 types.head(50).to_parquet(OUT / "type_summary.parquet", index=False)
+borough_type.to_parquet(OUT / "borough_type_summary.parquet", index=False)
 channels.to_parquet(OUT / "channel_summary.parquet", index=False)
 monthly_borough.to_parquet(
     OUT / "monthly_borough_summary.parquet",
@@ -219,9 +237,12 @@ DATA_DIR = Path("data/processed")
 monthly = pd.read_parquet(DATA_DIR / "monthly_summary.parquet")
 borough = pd.read_parquet(DATA_DIR / "borough_summary.parquet")
 types = pd.read_parquet(DATA_DIR / "type_summary.parquet")
+overall = pd.read_parquet(DATA_DIR / "overall_summary.parquet")
+borough_type = pd.read_parquet(DATA_DIR / "borough_type_summary.parquet")
 monthly_borough = pd.read_parquet(
     DATA_DIR / "monthly_borough_summary.parquet"
 )
+monthly_type = pd.read_parquet(DATA_DIR / "monthly_type_summary.parquet")
 monthly_borough_type = pd.read_parquet(
     DATA_DIR / "monthly_borough_type_summary.parquet"
 )
@@ -235,11 +256,11 @@ Taipy met à jour une interface à partir de variables Python. Nous commençons 
 selected_borough = "Tous"
 selected_type = "Tous"
 selected_view = monthly.copy()
-
-total_requests = int(monthly["Demandes"].sum())
-total_closed = int(monthly["Demandes_cloturees"].sum())
-closure_rate = total_closed / total_requests if total_requests else 0
-median_delay = float(monthly["Delai_median_heures"].median())
+total_requests = int(overall.loc[0, "Demandes"])
+total_closed = int(overall.loc[0, "Demandes_cloturees"])
+closure_rate = f"{overall.loc[0, 'Taux_cloture']:.1%}"
+median_delay = float(overall.loc[0, "Delai_median_heures"])
+p90_delay = float(overall.loc[0, "Delai_P90_heures"])
 
 borough_options = ["Tous"] + sorted(
     borough["borough"].dropna().unique().tolist()
@@ -247,33 +268,34 @@ borough_options = ["Tous"] + sorted(
 type_options = ["Tous"] + types["complaint_type"].head(20).tolist()
 ```
 
-Dans cette première version, les KPI sont calculés sur les agrégats. Pour un filtre par borough réellement dynamique, il faut disposer d'un agrégat contenant la combinaison `month × borough` plutôt que deux tables séparées. Préparez donc aussi :
-
-Cette étape est importante : la bonne interface dépend de la bonne granularité de l'agrégat. Les agrégats `month × borough` et `month × borough × complaint_type` sont préparés dans `prepare_data.py`, puis simplement lus par l'application.
+La bonne granularité des agrégats est essentielle : une demande filtrée par mois, arrondissement ou type doit être calculée à partir des lignes appartenant exactement à cette sélection. Les tables mensuelles et les résumés globaux par combinaison sont préparés dans `prepare_data.py`, puis lus par l'application.
 
 ### 4.3. Fonction de filtrage
 
 ```python
 def make_view(borough_value, type_value):
-    view = monthly_borough_type.copy()
+    if borough_value != "Tous" and type_value != "Tous":
+        monthly_data = monthly_borough_type
+        summary_data = borough_type
+        filters = (("borough", borough_value), ("complaint_type", type_value))
+    elif borough_value != "Tous":
+        monthly_data = monthly_borough
+        summary_data = borough
+        filters = (("borough", borough_value),)
+    elif type_value != "Tous":
+        monthly_data = monthly_type
+        summary_data = types
+        filters = (("complaint_type", type_value),)
+    else:
+        monthly_data = monthly
+        summary_data = overall
+        filters = ()
 
-    if borough_value != "Tous":
-        view = view[view["borough"] == borough_value]
+    for column, value in filters:
+        monthly_data = monthly_data[monthly_data[column] == value]
+        summary_data = summary_data[summary_data[column] == value]
 
-    if type_value != "Tous":
-        view = view[view["complaint_type"] == type_value]
-
-    return (
-        view.groupby("month", as_index=False)
-        .agg(
-            Demandes=("Demandes", "sum"),
-            Demandes_cloturees=("Demandes_cloturees", "sum"),
-            Delai_median_heures=("Delai_median_heures", "median"),
-        )
-        .sort_values("month")
-    )
-
-selected_view = make_view(selected_borough, selected_type)
+    return monthly_data.sort_values("month"), summary_data.iloc[0]
 ```
 
 Ne prétendez pas filtrer par type avec une table qui ne possède pas la dimension type. Cette vérification de granularité est une compétence essentielle du data analyst.
@@ -294,6 +316,11 @@ Période préparée : 2024
 **Type de demande**
 <|{selected_type}|selector|lov={type_options}|dropdown|>
 
+**Demandes :** <|{total_requests}|text|><br />
+**Taux de clôture :** <|{closure_rate}|text|><br />
+**Délai médian (heures) :** <|{median_delay}|text|><br />
+**Délai P90 (heures) :** <|{p90_delay}|text|>
+
 ## Vue mensuelle
 
 <|{selected_view}|chart|x=month|y=Demandes|>
@@ -309,10 +336,16 @@ La syntaxe exacte de certains contrôles peut évoluer selon la version de Taipy
 ```python
 def on_change(state, var_name, value):
     if var_name in {"selected_borough", "selected_type"}:
-        state.selected_view = make_view(
+        view, summary = make_view(
             state.selected_borough,
             state.selected_type,
         )
+        state.selected_view = view
+        state.total_requests = int(summary["Demandes"])
+        state.total_closed = int(summary["Demandes_cloturees"])
+        state.closure_rate = f"{summary['Taux_cloture']:.1%}"
+        state.median_delay = float(summary["Delai_median_heures"])
+        state.p90_delay = float(summary["Delai_P90_heures"])
 ```
 
 Pour une application plus avancée, centralisez les calculs dans des fonctions et évitez de modifier des variables globales directement. L'état de l'interface doit rester compréhensible.
@@ -486,7 +519,7 @@ Une application publique doit aussi résister à une entrée inattendue. Les fil
 4. Construisez une application Taipy avec trois vues.
 5. Ajoutez au moins deux filtres synchronisés.
 6. Affichez quatre KPI et au moins trois graphiques.
-7. Ajoutez une table détaillée indiquant effectif, médiane et P90.
+7. Ajoutez une table détaillée indiquant effectif, médiane et P90. Les médianes et percentiles des sous-groupes ne s'additionnent pas : conservez des agrégats calculés pour chaque combinaison de filtres.
 8. Comparez cinq chiffres avec Power BI.
 9. Expliquez une différence éventuelle entre les deux solutions.
 10. Ajoutez un message sur la date de préparation et la période.
@@ -496,6 +529,7 @@ Une application publique doit aussi résister à une entrée inattendue. Les fil
 14. Rédigez les limites du déploiement gratuit.
 15. En cinq à dix lignes, recommandez Power BI, Taipy ou une combinaison des deux pour ce projet.
 
+::: {.content-visible when-profile="teacher"}
 ## 10. Livrables
 
 ::: {.callout-note title="Checklist finale"}
@@ -507,4 +541,5 @@ Une application publique doit aussi résister à une entrée inattendue. Les fil
 - [ ] Le conteneur écoute sur le port attendu.
 - [ ] Le déploiement ne contient aucun secret.
 - [ ] La page publique indique la source, la période et les limites.
+:::
 :::

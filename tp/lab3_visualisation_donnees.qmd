@@ -1,5 +1,14 @@
 # Lab 3 : Visualiser les données 311
 
+::: {.callout-important title="Avant de commencer — choisir votre support"}
+Téléchargez un seul format avant de travailler :
+
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le [dossier GitHub `labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets), choisissez le notebook du Lab 3 et téléchargez-le.
+- **Fichier `.qmd`** pour travailler avec Quarto : [téléchargez le fichier source du Lab 3](https://github.com/iaousse/dldv-course/blob/main/tp/lab3_visualisation_donnees.qmd).
+
+Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
+:::
+
 ::: {.callout-tip title="Objectifs du Lab"}
 À la fin de ce Lab, l'étudiant sera capable de :
 
@@ -124,7 +133,7 @@ plt.savefig(OUTPUT_DIR / "lab3_top_types_barres.png", dpi=150)
 
 ### 4.1. Contre-exemple volontaire : le camembert
 
-Construisez maintenant, à titre pédagogique, un camembert des 8 arrondissements/catégories les plus fréquents :
+Construisez maintenant un camembert des huit types de demandes les plus fréquents, à comparer au diagramme en barres :
 
 ```python
 parts = df["complaint_type"].value_counts().head(8)
@@ -136,7 +145,7 @@ plt.savefig(OUTPUT_DIR / "lab3_camembert_a_critiquer.png", dpi=150)
 ```
 
 ::: {.callout-warning title="À faire"}
-Comparez ce camembert au diagramme en barres de la section 4. Lequel des deux permet de répondre le plus vite à la question « quel est le troisième type de demande le plus fréquent, et de combien dépasse-t-il le quatrième ? ». Notez votre réponse : elle servira dans le Lab Sheet.
+Comparez ce camembert au diagramme en barres de la section 4. Lequel des deux permet de répondre le plus vite à la question « quel est le troisième type de demande le plus fréquent, et de combien dépasse-t-il le quatrième ? ». Notez votre réponse pour la partie C du travail demandé.
 :::
 
 ## 5. Relation : le délai dépend-il du moment de la journée ?
@@ -285,7 +294,7 @@ plt.savefig(OUTPUT_DIR / "lab3_figure_communication.png", dpi=150, bbox_inches="
 
 Adaptez évidemment le titre, l'annotation et les valeurs à **votre** graphique et à **vos** résultats : cette figure doit être unique à votre analyse, pas un simple copier-coller.
 
-## 10. Lab Sheet — Travail demandé
+## 10. Travail demandé
 
 ### Partie A — Choisir avant de coder
 
@@ -317,6 +326,7 @@ Adaptez évidemment le titre, l'annotation et les valeurs à **votre** graphique
 14. Rédigez, pour cette figure uniquement, une légende de 3 à 4 phrases destinée à un lecteur qui ne verra que le graphique et sa légende, sans lire le reste du rapport.
 15. Constituez un court portfolio (un fichier Markdown ou un notebook) rassemblant vos huit graphiques, chacun accompagné d'un titre, d'une phrase de lecture et de la question à laquelle il répond.
 
+::: {.content-visible when-profile="teacher"}
 ## 11. Livrables
 
 ::: {.callout-note title="Checklist finale"}
@@ -327,4 +337,5 @@ Adaptez évidemment le titre, l'annotation et les valeurs à **votre** graphique
 - [ ] Le graphique interactif s'ouvre correctement dans un navigateur.
 - [ ] La figure de communication comporte un titre-message et une source.
 - [ ] Les fichiers sont nommés clairement dans `outputs/`.
+:::
 :::

@@ -79,10 +79,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-0f843ebf765c3981fb4f092a976228be.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,11 +115,199 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background: #a6c5e7;
+      }
+</style>
+<script>
+window.MathJax = {
+  tex: {
+    macros: {
+      Z: "\\mathbb{Z}",
+      N: "\\mathbb{N}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      R: "\\mathbb{R}",
+      B: "\\mathcal{B}",
+      M: "\\mathcal{M}",
+      S: "\\mathbb{S}",
+      abs: ["\\left|#1\\right|", 1],
+      norm: ["\\left\\Vert#1\\right\\Vert", 1],
+      sign: "\\mathrm{sign}",
+      vec: ["\\mathbf{#1}", 1]
+    }
+  }
+};
+</script>
 
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -160,8 +352,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Analyse et visualisation de données</a> 
-        <div class="sidebar-tools-main">
-    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/iaousse/" title="" class="quarto-navigation-tool px-1" aria-label="GitHub" target="_blank"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/mbarekiaousse" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn" target="_blank"><i class="bi bi-linkedin"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Analyse-et-visualisation-de-données.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Analyse-et-visualisation-de-données.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
 </div>
     </div>
       </div>
@@ -214,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Étude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -281,8 +492,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#taipy-créer-une-application-bi-en-python" id="toc-taipy-créer-une-application-bi-en-python" class="nav-link" data-scroll-target="#taipy-créer-une-application-bi-en-python">3. Taipy : créer une application BI en Python</a>
   <ul class="collapse">
   <li><a href="#quand-choisir-taipy" id="toc-quand-choisir-taipy" class="nav-link" data-scroll-target="#quand-choisir-taipy">3.1. Quand choisir Taipy ?</a></li>
-  <li><a href="#un-exemple-taipy-minimal" id="toc-un-exemple-taipy-minimal" class="nav-link" data-scroll-target="#un-exemple-taipy-minimal">3.2. Un exemple Taipy minimal</a></li>
-  <li><a href="#organiser-une-petite-application" id="toc-organiser-une-petite-application" class="nav-link" data-scroll-target="#organiser-une-petite-application">3.3. Organiser une petite application</a></li>
+  <li><a href="#anatomie-dune-application-taipy" id="toc-anatomie-dune-application-taipy" class="nav-link" data-scroll-target="#anatomie-dune-application-taipy">3.2. Anatomie d’une application Taipy</a></li>
+  <li><a href="#préparer-les-données-et-calculer-les-indicateurs" id="toc-préparer-les-données-et-calculer-les-indicateurs" class="nav-link" data-scroll-target="#préparer-les-données-et-calculer-les-indicateurs">3.3. Préparer les données et calculer les indicateurs</a></li>
+  <li><a href="#construire-une-visualisation-sophistiquée-avec-python" id="toc-construire-une-visualisation-sophistiquée-avec-python" class="nav-link" data-scroll-target="#construire-une-visualisation-sophistiquée-avec-python">3.4. Construire une visualisation sophistiquée avec Python</a></li>
+  <li><a href="#assembler-lapplication-taipy" id="toc-assembler-lapplication-taipy" class="nav-link" data-scroll-target="#assembler-lapplication-taipy">3.5. Assembler l’application Taipy</a></li>
+  <li><a href="#organiser-une-petite-application" id="toc-organiser-une-petite-application" class="nav-link" data-scroll-target="#organiser-une-petite-application">3.6. Organiser une petite application</a></li>
   </ul></li>
   <li><a href="#comparaison-synthétique" id="toc-comparaison-synthétique" class="nav-link" data-scroll-target="#comparaison-synthétique">4. Comparaison synthétique</a></li>
   <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices">Exercices</a></li>
@@ -291,6 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+
 
 
 
@@ -311,19 +526,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Définir</strong> la Business Intelligence et distinguer un indicateur, un rapport et un tableau de bord ;</li>
 <li><strong>Construire</strong> mentalement le parcours d’une donnée depuis la source jusqu’à une décision ;</li>
 <li><strong>Importer et préparer</strong> des données dans Power BI avec Power Query ;</li>
-<li><strong>Comprendre</strong> un modèle en étoile et créer des mesures simples en DAX ;</li>
+<li><strong>Comprendre</strong> un modèle en étoile dans Power BI et créer des mesures en DAX, y compris des comparaisons dans le temps ;</li>
 <li><strong>Choisir</strong> entre Power BI et une application Python avec Taipy selon le besoin ;</li>
+<li><strong>Construire</strong> une application Taipy fonctionnelle intégrant une visualisation Python soignée ;</li>
 <li><strong>Expliquer</strong> les principes d’un tableau de bord lisible : objectif, public, filtres, contexte et action.</li>
 </ul>
 </div>
 </div>
-<p>La <strong>Business Intelligence (BI)</strong> transforme des données préparées en informations régulièrement consultées pour piloter une activité. Elle ne consiste pas à accumuler des graphiques : un bon tableau de bord aide une personne précise à répondre à des questions précises et à décider.</p>
+<p>La <strong>Business Intelligence (BI)</strong> transforme des données préparées — celles de l’entrepôt du chapitre précédent — en informations régulièrement consultées pour piloter une activité. Elle ne consiste pas à accumuler des graphiques : un bon tableau de bord aide une personne précise à répondre à des questions précises et à décider.</p>
 <section id="comprendre-la-bi" class="level2">
 <h2 class="anchored" data-anchor-id="comprendre-la-bi">1. Comprendre la BI</h2>
 <section id="du-besoin-à-lindicateur" class="level3">
 <h3 class="anchored" data-anchor-id="du-besoin-à-lindicateur">1.1. Du besoin à l’indicateur</h3>
 <p>Un <strong>indicateur</strong> est une mesure définie par une formule, une période et une population. Un <strong>KPI</strong> (<em>Key Performance Indicator</em>) est un indicateur considéré comme essentiel pour suivre un objectif.</p>
 <p>Exemple pour un site de livraison :</p>
+<div id="tbl-objectif-kpi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-objectif-kpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: De l’objectif métier au KPI
+</figcaption>
+<div aria-describedby="tbl-objectif-kpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -358,7 +580,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Un rapport peut contenir plusieurs pages et analyses détaillées. Un tableau de bord est généralement plus synthétique : il met en évidence les quelques indicateurs et alertes nécessaires au suivi.</p>
+</div>
+</figure>
+</div>
+<p>Un <strong>rapport</strong> peut contenir plusieurs pages et des analyses détaillées, destinées à être explorées. Un <strong>tableau de bord</strong> est généralement plus synthétique : il met en évidence les quelques indicateurs et alertes nécessaires au suivi régulier d’une activité, souvent en une seule page consultée chaque jour ou chaque semaine.</p>
+<div id="tbl-livrables-bi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-livrables-bi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Trois livrables BI, trois usages différents
+</figcaption>
+<div aria-describedby="tbl-livrables-bi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Livrable</th>
+<th style="text-align: left;">Fréquence de consultation</th>
+<th style="text-align: left;">Profondeur</th>
+<th style="text-align: left;">Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Tableau de bord</strong></td>
+<td style="text-align: left;">Quotidienne ou hebdomadaire</td>
+<td style="text-align: left;">Quelques KPI clés</td>
+<td style="text-align: left;">Suivi des ventes du jour</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Rapport</strong></td>
+<td style="text-align: left;">Ponctuelle ou mensuelle</td>
+<td style="text-align: left;">Plusieurs pages, détail</td>
+<td style="text-align: left;">Bilan trimestriel des ventes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Analyse ad hoc</strong></td>
+<td style="text-align: left;">Une seule fois</td>
+<td style="text-align: left;">Ciblée sur une question précise</td>
+<td style="text-align: left;">Pourquoi les ventes ont-elles chuté en mars ?</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 </section>
 <section id="le-parcours-dune-solution-bi" class="level3">
 <h3 class="anchored" data-anchor-id="le-parcours-dune-solution-bi">1.2. Le parcours d’une solution BI</h3>
@@ -367,7 +637,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                              rapport / tableau de bord
                                       ↓
                               décision et action</code></pre>
-<p>Le modèle <strong>sémantique</strong> donne un sens commun aux tables, aux relations et aux mesures. Deux personnes doivent obtenir le même chiffre lorsqu’elles utilisent le même KPI.</p>
+<p>Ce parcours reprend directement les briques des deux chapitres précédents : les <strong>sources</strong> (chapitre 1), le <strong>modèle sémantique</strong> qui s’appuie sur le modèle en étoile (chapitre 4), et les <strong>visuels</strong> qui suivent les principes de choix de graphique du chapitre 3.</p>
+<p>Le modèle <strong>sémantique</strong> donne un sens commun aux tables, aux relations et aux mesures. Deux personnes doivent obtenir le même chiffre lorsqu’elles utilisent le même KPI — c’est tout l’enjeu du dictionnaire métier présenté au chapitre précédent.</p>
 </section>
 <section id="règles-dun-tableau-de-bord-débutant" class="level3">
 <h3 class="anchored" data-anchor-id="règles-dun-tableau-de-bord-débutant">1.3. Règles d’un tableau de bord débutant</h3>
@@ -376,7 +647,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>commence par le public et la décision attendue ;</li>
 <li>affiche une période et une unité ;</li>
 <li>présente quelques KPI importants avant les détails ;</li>
-<li>utilise une couleur pour signaler une information, pas pour décorer chaque objet ;</li>
+<li>utilise une couleur pour signaler une information, pas pour décorer chaque objet — voir les principes d’accessibilité du chapitre 3 ;</li>
 <li>permet d’explorer sans cacher la définition des indicateurs ;</li>
 <li>indique la date de dernière actualisation.</li>
 </ol>
@@ -384,10 +655,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="power-bi-une-démarche-structurée" class="level2">
 <h2 class="anchored" data-anchor-id="power-bi-une-démarche-structurée">2. Power BI : une démarche structurée</h2>
-<p>Power BI est une plateforme de Business Intelligence qui permet de connecter des sources, de les transformer, de créer un modèle de données, de calculer des mesures et de construire des rapports interactifs. Le parcours présenté ici commence dans Power BI Desktop ; le partage dépend ensuite de l’environnement et des droits de l’organisation.</p>
+<p>Power BI est une plateforme de Business Intelligence qui permet de connecter des sources, de les transformer, de créer un modèle de données, de calculer des mesures et de construire des rapports interactifs. Le parcours présenté ici commence dans <strong>Power BI Desktop</strong> (application gratuite pour Windows) ; le partage dépend ensuite de l’environnement et des droits de l’organisation, via le <strong>Power BI Service</strong>.</p>
 <section id="étape-1-importer-les-sources" class="level3">
 <h3 class="anchored" data-anchor-id="étape-1-importer-les-sources">2.1. Étape 1 — Importer les sources</h3>
-<p>On peut importer un fichier CSV, un classeur Excel, une base SQL ou d’autres sources disponibles dans l’environnement. À l’import, il faut vérifier :</p>
+<p>Le bouton <strong>Obtenir les données</strong> (<em>Get Data</em>) de Power BI Desktop donne accès à une longue liste de connecteurs : fichiers (CSV, Excel, Parquet, JSON), bases de données (SQL Server, PostgreSQL, MySQL), services cloud, API web, et bien d’autres — les mêmes familles de sources que celles présentées au chapitre 1.</p>
+<div id="fig-powerbi-connecteurs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-powerbi-connecteurs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/powerbi-accueil-connecteurs.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerbi-connecteurs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Écran « Obtenir les données » de Power BI Desktop, avec la liste des connecteurs disponibles (fichiers, bases de données, services en ligne)
+</figcaption>
+</figure>
+</div>
+<p>À l’import, il faut vérifier :</p>
 <ul>
 <li>les noms de colonnes et leurs types ;</li>
 <li>le séparateur et l’encodage d’un CSV ;</li>
@@ -395,13 +677,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>le nombre de lignes et la période couverte ;</li>
 <li>la présence de doublons et de valeurs manquantes.</li>
 </ul>
-<p>Importer n’est pas encore analyser : il faut comprendre ce qui a été chargé.</p>
+<p>Importer n’est pas encore analyser : il faut comprendre ce qui a été chargé, exactement comme lors de la première lecture d’un jeu de données présentée au chapitre 1.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Zoom sur les tendances : mode Import ou DirectQuery ?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Zoom sur les tendances : mode Import ou DirectQuery ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Power BI propose deux modes de connexion. En mode <strong>Import</strong> (le plus courant, et celui utilisé dans ce chapitre), les données sont copiées et stockées dans le fichier Power BI, ce qui offre les meilleures performances mais nécessite une actualisation régulière. En mode <strong>DirectQuery</strong>, Power BI interroge la source à chaque affichage, sans copier les données : les résultats sont toujours à jour, au prix de performances qui dépendent directement de la source interrogée. Un mode hybride, appelé <strong>composite</strong>, permet de mélanger les deux selon les tables.</p>
+</div>
+</div>
 </section>
 <section id="étape-2-transformer-avec-power-query" class="level3">
 <h3 class="anchored" data-anchor-id="étape-2-transformer-avec-power-query">2.2. Étape 2 — Transformer avec Power Query</h3>
-<p><strong>Power Query</strong> sert à préparer les données avant leur utilisation dans le modèle. On peut supprimer des colonnes inutiles, renommer un champ, convertir un type, filtrer des lignes, remplacer une valeur, fusionner des tables ou ajouter une colonne calculée.</p>
-<p>Une transformation doit rester explicable et reproductible. Power Query conserve les étapes appliquées ; il vaut mieux créer plusieurs étapes nommées et simples qu’une modification manuelle impossible à refaire.</p>
-<p>Exemples de contrôles :</p>
+<p><strong>Power Query</strong> sert à préparer les données avant leur utilisation dans le modèle — c’est l’équivalent visuel des étapes de nettoyage et de transformation vues au chapitre 1 (valeurs manquantes, doublons, encodage, types). On peut supprimer des colonnes inutiles, renommer un champ, convertir un type, filtrer des lignes, remplacer une valeur, fusionner des tables ou ajouter une colonne calculée.</p>
+<div id="fig-powerbi-power-query" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-powerbi-power-query-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/powerbi-power-query-editor.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerbi-power-query-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: L’éditeur Power Query, avec la liste des étapes de transformation appliquées dans le panneau de droite
+</figcaption>
+</figure>
+</div>
+<p>Une transformation doit rester explicable et reproductible. Power Query conserve les étapes appliquées dans un panneau dédié (« Étapes appliquées ») ; il vaut mieux créer plusieurs étapes nommées et simples qu’une modification manuelle impossible à refaire. En coulisses, chaque étape est écrite dans le langage <strong>M</strong>, que l’on peut lire et modifier directement pour les transformations les plus avancées.</p>
+<p>Exemples de contrôles à effectuer avant de quitter Power Query :</p>
 <ul>
 <li><code>Montant</code> est numérique et positif ;</li>
 <li><code>DateCommande</code> est bien de type date ;</li>
@@ -409,16 +714,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>la catégorie vide est traitée explicitement ;</li>
 <li>le nombre de lignes final est comparé au nombre attendu.</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Bonne pratique">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Bonne pratique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nommez vos étapes Power Query de façon explicite (« Filtrer lignes annulées » plutôt que « Étape 7 »). Un collègue — ou vous-même dans six mois — doit pouvoir comprendre le raisonnement sans exécuter le fichier.</p>
+</div>
+</div>
 </section>
 <section id="étape-3-construire-le-modèle" class="level3">
 <h3 class="anchored" data-anchor-id="étape-3-construire-le-modèle">2.3. Étape 3 — Construire le modèle</h3>
-<p>Pour un modèle de ventes, on privilégie un schéma en étoile :</p>
+<p>Pour un modèle de ventes, on privilégie un schéma en étoile — exactement celui présenté au chapitre 4 :</p>
 <pre class="text"><code>dim_Date       dim_Produit       dim_Client
       \             |             /
              fact_Ventes
                    |
               dim_Magasin</code></pre>
-<p>La table de faits contient les lignes de vente et les dimensions permettent de filtrer par date, produit, client ou magasin. Les relations doivent être vérifiées : une dimension possède généralement une ligne par identifiant, et plusieurs lignes de faits peuvent lui être liées.</p>
+<div id="fig-powerbi-modele" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-powerbi-modele-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/powerbi-vue-modele-relations.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerbi-modele-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Vue « Modèle » de Power BI Desktop, montrant les relations entre la table de faits et les tables de dimensions
+</figcaption>
+</figure>
+</div>
+<p>La table de faits contient les lignes de vente et les dimensions permettent de filtrer par date, produit, client ou magasin. Les relations doivent être vérifiées : une dimension possède généralement une ligne par identifiant (<strong>cardinalité un</strong>), et plusieurs lignes de faits peuvent lui être liées (<strong>cardinalité plusieurs</strong>) — on parle de relation <strong>« un-à-plusieurs »</strong> (1:<em>). Le sens du filtre (</em>cross-filter direction*) détermine si un filtre appliqué sur la dimension se répercute sur la table de faits (le cas normal), ou aussi dans l’autre sens.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Le piège des relations ambiguës">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -429,41 +757,188 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si une dimension contient plusieurs lignes pour le même identifiant, ou si deux tables sont reliées de manière inattendue, les totaux peuvent être multipliés. Vérifiez toujours le grain, les clés et un total connu avant de publier un rapport.</p>
+<p>Si une dimension contient plusieurs lignes pour le même identifiant, ou si deux tables sont reliées de manière inattendue, les totaux peuvent être multipliés. Vérifiez toujours le grain, les clés et un total connu avant de publier un rapport — la même précaution que pour l’exercice de vérification du chapitre 4.</p>
 </div>
 </div>
 </section>
 <section id="étape-4-créer-des-mesures-en-dax" class="level3">
 <h3 class="anchored" data-anchor-id="étape-4-créer-des-mesures-en-dax">2.4. Étape 4 — Créer des mesures en DAX</h3>
-<p>DAX est le langage de formules utilisé dans les modèles Power BI. Une <strong>mesure</strong> est recalculée selon le contexte de filtre du visuel, de la page ou de l’utilisateur.</p>
+<p><strong>DAX</strong> (<em>Data Analysis Expressions</em>) est le langage de formules utilisé dans les modèles Power BI. Une <strong>mesure</strong> est recalculée dynamiquement selon le <strong>contexte de filtre</strong> du visuel, de la page ou de l’utilisateur — c’est ce qui la distingue fondamentalement d’une <strong>colonne calculée</strong>, qui est évaluée une seule fois, ligne par ligne, au chargement des données.</p>
 <pre class="dax"><code>ChiffreAffaires = SUM(fact_Ventes[MontantNet])
 
 NombreCommandes = DISTINCTCOUNT(fact_Ventes[CommandeID])
 
 PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])</code></pre>
-<p><code>DIVIDE</code> évite une erreur lorsque le dénominateur est nul. Pour débuter, il faut distinguer une mesure d’une colonne calculée : la mesure s’adapte aux filtres, tandis qu’une colonne calculée est créée ligne par ligne dans la table.</p>
-<p>Une mesure peut être comparée à une période précédente, mais la logique de dates doit être préparée soigneusement. Dans un premier tableau de bord, trois ou quatre mesures bien définies valent mieux que de nombreuses formules difficiles à expliquer.</p>
+<p><code>DIVIDE</code> évite une erreur lorsque le dénominateur est nul — une bonne pratique systématique, préférable à l’opérateur <code>/</code> brut.</p>
+<div id="fig-powerbi-dax" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-powerbi-dax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/powerbi-formule-dax.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerbi-dax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Barre de formule DAX de Power BI Desktop lors de la création d’une nouvelle mesure
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Mesure ou colonne calculée ?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Mesure ou colonne calculée ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="tbl-mesure-colonne" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mesure-colonne-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Différence entre mesure et colonne calculée
+</figcaption>
+<div aria-describedby="tbl-mesure-colonne-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Mesure</th>
+<th style="text-align: left;">Colonne calculée</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Quand est-elle calculée ?</td>
+<td style="text-align: left;">À chaque interaction, selon le contexte de filtre</td>
+<td style="text-align: left;">Une seule fois, au chargement des données</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Où apparaît-elle ?</td>
+<td style="text-align: left;">Dans les visuels (cartes, graphiques)</td>
+<td style="text-align: left;">Comme une colonne normale de la table</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Exemple</td>
+<td style="text-align: left;"><code>ChiffreAffaires = SUM(...)</code></td>
+<td style="text-align: left;"><code>MargeUnitaire = fact_Ventes[Prix] - fact_Ventes[Cout]</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<section id="aller-plus-loin-calculate-et-lintelligence-temporelle" class="level4">
+<h4 class="anchored" data-anchor-id="aller-plus-loin-calculate-et-lintelligence-temporelle">Aller plus loin : <code>CALCULATE</code> et l’intelligence temporelle</h4>
+<p>La fonction <code>CALCULATE</code> modifie le contexte de filtre d’une mesure, ce qui permet des comparaisons dans le temps très fréquentes dans un tableau de bord :</p>
+<pre class="dax"><code>VentesAnneeDerniere =
+CALCULATE(
+    [ChiffreAffaires],
+    SAMEPERIODLASTYEAR(dim_Date[DateComplete])
+)
+
+EvolutionAnnuelle =
+DIVIDE([ChiffreAffaires] - [VentesAnneeDerniere], [VentesAnneeDerniere])</code></pre>
+<p>Ce type de comparaison — utile pour répondre à « comment se comportent nos ventes par rapport à l’an dernier ? » — nécessite une <strong>dimension Date complète et marquée comme table de dates</strong> dans le modèle, condition indispensable au bon fonctionnement des fonctions d’intelligence temporelle.</p>
+<div id="tbl-fonctions-dax" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fonctions-dax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Quelques fonctions DAX fréquemment utilisées
+</figcaption>
+<div aria-describedby="tbl-fonctions-dax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Fonction DAX</th>
+<th style="text-align: left;">Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>SUM</code>, <code>AVERAGE</code>, <code>COUNT</code></td>
+<td style="text-align: left;">Agrégations de base</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>DISTINCTCOUNT</code></td>
+<td style="text-align: left;">Compte les valeurs distinctes (ex. commandes uniques)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>DIVIDE</code></td>
+<td style="text-align: left;">Division sécurisée (gère le zéro)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>CALCULATE</code></td>
+<td style="text-align: left;">Modifie le contexte de filtre d’une mesure</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>SAMEPERIODLASTYEAR</code>, <code>DATEADD</code></td>
+<td style="text-align: left;">Comparaisons dans le temps</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>FILTER</code></td>
+<td style="text-align: left;">Filtre une table selon une condition</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Pour débuter, il faut surtout retenir la distinction entre mesure et colonne calculée, et le rôle protecteur de <code>DIVIDE</code>. Dans un premier tableau de bord, trois ou quatre mesures bien définies valent mieux que de nombreuses formules difficiles à expliquer.</p>
+</section>
 </section>
 <section id="étape-5-construire-les-visuels" class="level3">
 <h3 class="anchored" data-anchor-id="étape-5-construire-les-visuels">2.5. Étape 5 — Construire les visuels</h3>
-<p>Pour une page de suivi des ventes, une composition simple peut être :</p>
+<p>Pour une page de suivi des ventes, une composition simple peut suivre les principes du chapitre 3 :</p>
 <ul>
-<li>une ligne de cartes KPI : chiffre d’affaires, commandes, panier moyen, taux de livraison à temps ;</li>
-<li>une courbe du chiffre d’affaires par mois ;</li>
-<li>un graphique en barres par région ou catégorie ;</li>
-<li>un tableau détaillé filtrable ;</li>
-<li>des segments (<em>slicers</em>) pour l’année, la région et la catégorie.</li>
+<li>une ligne de <strong>cartes KPI</strong> : chiffre d’affaires, commandes, panier moyen, taux de livraison à temps ;</li>
+<li>une <strong>courbe</strong> du chiffre d’affaires par mois (évolution, chapitre 3 §4.5) ;</li>
+<li>un <strong>graphique en barres</strong> par région ou catégorie (comparaison, §4.2) ;</li>
+<li>un <strong>tableau ou une matrice</strong> détaillé et filtrable ;</li>
+<li>des <strong>segments</strong> (<em>slicers</em>) pour l’année, la région et la catégorie.</li>
 </ul>
-<p>Chaque visuel doit répondre à une question. Un graphique avec trop de séries ou trop de couleurs devient difficile à lire.</p>
+<div id="fig-powerbi-rapport" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-powerbi-rapport-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/powerbi-rapport-visuels.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerbi-rapport-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Page de rapport Power BI combinant cartes KPI, courbe d’évolution, barres par catégorie et segments de filtre
+</figcaption>
+</figure>
+</div>
+<p>Chaque visuel doit répondre à une question. Un graphique avec trop de séries ou trop de couleurs devient difficile à lire — le même principe de sobriété que celui du <em>data storytelling</em> présenté au chapitre 3.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Zoom sur les tendances : l'IA dans Power BI">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Zoom sur les tendances : l’IA dans Power BI
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les versions récentes de Power BI intègrent des fonctionnalités d’intelligence artificielle : le module <strong>Q&amp;A</strong> permet d’interroger les données en langage naturel (« quel est le chiffre d’affaires de mars à Casablanca ? »), les <strong>visuels de décomposition</strong> (<em>decomposition tree</em>) explorent automatiquement quelles catégories expliquent le plus une variation, et <strong>Copilot pour Power BI</strong> peut générer une première ébauche de rapport ou résumer les tendances observées. Ces outils accélèrent l’exploration, mais ne dispensent jamais de vérifier la définition exacte des mesures affichées.</p>
+</div>
+</div>
 </section>
 <section id="étape-6-vérifier-et-partager" class="level3">
 <h3 class="anchored" data-anchor-id="étape-6-vérifier-et-partager">2.6. Étape 6 — Vérifier et partager</h3>
-<p>Avant tout partage, vérifiez les totaux sur un petit exemple connu, la date d’actualisation, les filtres, les titres et les droits d’accès. Un rapport partagé avec des données personnelles doit respecter les règles de l’organisation et le principe du moindre accès.</p>
+<p>Avant tout partage, vérifiez les totaux sur un petit exemple connu, la date d’actualisation, les filtres, les titres et les droits d’accès.</p>
+<p>Le partage s’effectue en publiant le rapport dans un <strong>espace de travail</strong> (<em>workspace</em>) du <strong>Power BI Service</strong>, où il peut être organisé en <strong>application</strong>, actualisé automatiquement selon une planification, et consulté depuis un navigateur ou l’application mobile. Pour restreindre l’accès aux données selon le profil de l’utilisateur (par exemple, un directeur régional ne voit que sa région), Power BI propose la <strong>sécurité au niveau des lignes</strong> (<em>Row-Level Security</em>, RLS), déjà annoncée comme principe de gouvernance au chapitre 4.</p>
+<p>Un rapport partagé avec des données personnelles doit respecter les règles de l’organisation et le principe du moindre accès.</p>
 </section>
 </section>
 <section id="taipy-créer-une-application-bi-en-python" class="level2">
 <h2 class="anchored" data-anchor-id="taipy-créer-une-application-bi-en-python">3. Taipy : créer une application BI en Python</h2>
-<p>Taipy permet de construire des applications Python interactives avec des contrôles, des graphiques, des tableaux et des filtres. Il est particulièrement intéressant quand l’équipe veut intégrer l’analyse dans une application métier ou conserver une logique Python personnalisée.</p>
+<p>Taipy permet de construire des applications Python interactives avec des contrôles, des graphiques, des tableaux et des filtres. Il est particulièrement intéressant quand l’équipe veut intégrer l’analyse dans une application métier ou conserver une logique Python personnalisée, en s’appuyant sur les bibliothèques de visualisation déjà vues au chapitre 3.</p>
 <section id="quand-choisir-taipy" class="level3">
 <h3 class="anchored" data-anchor-id="quand-choisir-taipy">3.1. Quand choisir Taipy ?</h3>
 <p>Taipy peut être pertinent lorsque :</p>
@@ -476,45 +951,196 @@ PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])</code></pre>
 <p>Power BI peut être plus adapté lorsqu’une organisation veut une solution de BI prête à l’emploi, un catalogue de rapports, des connexions gérées et des usages majoritairement orientés vers l’exploration métier.</p>
 <p>Ce ne sont pas des outils absolument opposés. Une équipe peut préparer les données avec Python, les exposer dans Power BI, ou intégrer un indicateur Power BI dans un parcours applicatif selon son architecture.</p>
 </section>
-<section id="un-exemple-taipy-minimal" class="level3">
-<h3 class="anchored" data-anchor-id="un-exemple-taipy-minimal">3.2. Un exemple Taipy minimal</h3>
-<p>Le code suivant illustre le principe avec des données déjà disponibles. Il ne remplace pas la préparation et la validation des données.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> taipy.gui <span class="im">import</span> Gui</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Mois"</span>: [<span class="st">"Janvier"</span>, <span class="st">"Février"</span>, <span class="st">"Mars"</span>],</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ventes"</span>: [<span class="dv">12000</span>, <span class="dv">14500</span>, <span class="dv">13200</span>],</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>mois <span class="op">=</span> <span class="st">"Tous"</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>texte <span class="op">=</span> <span class="st">"### Suivi des ventes"</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>page <span class="op">=</span> <span class="st">"""</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="st"># Suivi des ventes</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="st">Sélection : &lt;|</span><span class="sc">{mois}</span><span class="st">|selector|lov=Tous;Janvier;Février;Mars|&gt;</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{df}</span><span class="st">|table|&gt;</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>Gui(page<span class="op">=</span>page).run()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Dans cet exemple, <code>df</code> contient les données affichées, <code>page</code> décrit l’interface et le sélecteur permet de choisir une valeur. Dans un vrai projet, on ajoute une fonction qui filtre les données, des indicateurs calculés et des graphiques adaptés. Les noms exacts de certains contrôles peuvent évoluer selon la version de Taipy : il faut vérifier la documentation de la version utilisée.</p>
+<section id="anatomie-dune-application-taipy" class="level3">
+<h3 class="anchored" data-anchor-id="anatomie-dune-application-taipy">3.2. Anatomie d’une application Taipy</h3>
+<p>Taipy s’organise autour de deux briques complémentaires :</p>
+<div id="tbl-taipy-briques" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-taipy-briques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Les deux briques de Taipy
+</figcaption>
+<div aria-describedby="tbl-taipy-briques-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Brique</th>
+<th style="text-align: left;">Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Taipy GUI</strong></td>
+<td style="text-align: left;">Construit l’interface : pages, contrôles (sélecteurs, tableaux, graphiques), mise en page</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Taipy Core</strong></td>
+<td style="text-align: left;">Orchestre les traitements : données, tâches, scénarios reproductibles — utile pour des pipelines plus complexes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Pour un tableau de bord simple comme celui de ce chapitre, <strong>Taipy GUI</strong> suffit largement ; <strong>Taipy Core</strong> devient utile lorsque l’application doit orchestrer plusieurs traitements enchaînés (par exemple, un pipeline de préparation suivi d’un calcul de prévision).</p>
+</section>
+<section id="préparer-les-données-et-calculer-les-indicateurs" class="level3">
+<h3 class="anchored" data-anchor-id="préparer-les-données-et-calculer-les-indicateurs">3.3. Préparer les données et calculer les indicateurs</h3>
+<p>Contrairement au reste de ce chapitre, les cellules de code qui suivent sont <strong>réellement exécutées</strong> lors de la génération de ce livre : les données, les indicateurs et le graphique que vous voyez ci-dessous sont calculés en direct par Python, exactement comme le ferait l’application Taipy finale.</p>
+<div id="67a13757" class="cell" data-execution_count="1">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ventes <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mois"</span>: [<span class="st">"Janvier"</span>, <span class="st">"Janvier"</span>, <span class="st">"Janvier"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Février"</span>, <span class="st">"Février"</span>, <span class="st">"Février"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Mars"</span>, <span class="st">"Mars"</span>, <span class="st">"Mars"</span>],</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"magasin"</span>: [<span class="st">"Casablanca"</span>, <span class="st">"Rabat"</span>, <span class="st">"Tanger"</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"chiffre_affaires"</span>: [<span class="dv">15200</span>, <span class="dv">9800</span>, <span class="dv">7100</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                          <span class="dv">16100</span>, <span class="dv">10450</span>, <span class="dv">7600</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                          <span class="dv">17800</span>, <span class="dv">9950</span>, <span class="dv">8200</span>],</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>indicateurs <span class="op">=</span> {</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"chiffre_affaires_total"</span>: ventes[<span class="st">"chiffre_affaires"</span>].<span class="bu">sum</span>(),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"meilleur_mois"</span>: ventes.groupby(<span class="st">"mois"</span>)[<span class="st">"chiffre_affaires"</span>].<span class="bu">sum</span>().idxmax(),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"magasin_principal"</span>: ventes.groupby(<span class="st">"magasin"</span>)[<span class="st">"chiffre_affaires"</span>].<span class="bu">sum</span>().idxmax(),</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>indicateurs</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>{'chiffre_affaires_total': np.int64(102200),
+ 'meilleur_mois': 'Mars',
+ 'magasin_principal': 'Casablanca'}</code></pre>
+</div>
+</div>
+<p>Cette table <code>ventes</code>, volontairement compacte, joue ici le rôle de la table de faits déjà préparée par l’entrepôt de données du chapitre 4. Dans une application réelle, elle proviendrait d’un fichier, d’une base de données ou d’une API, préparée avec les techniques du chapitre 1.</p>
+</section>
+<section id="construire-une-visualisation-sophistiquée-avec-python" class="level3">
+<h3 class="anchored" data-anchor-id="construire-une-visualisation-sophistiquée-avec-python">3.4. Construire une visualisation sophistiquée avec Python</h3>
+<p>L’application Taipy affichera le graphique produit ici, construit en appliquant directement les bonnes pratiques du chapitre 3 : deux graphiques complémentaires (évolution et comparaison), une palette accessible, des titres-messages et une source.</p>
+<div id="2dfc2c61" class="cell" data-execution_count="2">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>sns.set_palette(<span class="st">"colorblind"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Panneau 1 : évolution du chiffre d'affaires total par mois</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>evolution <span class="op">=</span> ventes.groupby(<span class="st">"mois"</span>, sort<span class="op">=</span><span class="va">False</span>)[<span class="st">"chiffre_affaires"</span>].<span class="bu">sum</span>()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(evolution.index, evolution.values, marker<span class="op">=</span><span class="st">"o"</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Le chiffre d'affaires progresse chaque mois"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Chiffre d'affaires (MAD)"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">""</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Panneau 2 : comparaison par magasin, triée</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>par_magasin <span class="op">=</span> ventes.groupby(<span class="st">"magasin"</span>)[<span class="st">"chiffre_affaires"</span>].<span class="bu">sum</span>().sort_values()</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].barh(par_magasin.index, par_magasin.values)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Casablanca reste le magasin le plus performant"</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Chiffre d'affaires cumulé (MAD)"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="fl">0.01</span>, <span class="op">-</span><span class="fl">0.02</span>, <span class="st">"Source : extrait pédagogique — janvier à mars"</span>, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_powerbi-taipy_files/figure-html/cell-3-output-1.png" width="1046" height="444" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Pourquoi cette cellule s'exécute-t-elle alors que le reste de ce chapitre ne s'exécute pas ?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Pourquoi cette cellule s’exécute-t-elle alors que le reste de ce chapitre ne s’exécute pas ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les extraits Power BI et DAX de ce chapitre décrivent une interface graphique et un langage propres à Power BI, qu’un livre Quarto ne peut pas exécuter. À l’inverse, la préparation des données et la construction du graphique ci-dessus sont écrites en Python : elles s’exécutent réellement au moment de la génération du livre (<code>execute: freeze: auto</code> dans <code>_quarto.yml</code>), exactement comme elles s’exécuteraient à l’intérieur d’une application Taipy.</p>
+</div>
+</div>
+</section>
+<section id="assembler-lapplication-taipy" class="level3">
+<h3 class="anchored" data-anchor-id="assembler-lapplication-taipy">3.5. Assembler l’application Taipy</h3>
+<p>Le code suivant montre comment ce même graphique et ces mêmes indicateurs seraient intégrés dans une page Taipy interactive, avec un sélecteur de magasin. <strong>Ce bloc n’est pas exécuté dans le livre</strong> : <code>Gui(page).run()</code> démarre un serveur web local qui reste actif en attendant les interactions de l’utilisateur, ce qui bloquerait indéfiniment la génération de ce livre. Pour le voir fonctionner, copiez ce code dans un fichier <code>app.py</code> et exécutez-le vous-même avec <code>uv run app.py</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> taipy.gui <span class="im">import</span> Gui</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>ventes <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mois"</span>: [<span class="st">"Janvier"</span>, <span class="st">"Février"</span>, <span class="st">"Mars"</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"magasin"</span>: [<span class="st">"Casablanca"</span>] <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> [<span class="st">"Rabat"</span>] <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> [<span class="st">"Tanger"</span>] <span class="op">*</span> <span class="dv">3</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"chiffre_affaires"</span>: [<span class="dv">15200</span>, <span class="dv">16100</span>, <span class="dv">17800</span>, <span class="dv">9800</span>, <span class="dv">10450</span>, <span class="dv">9950</span>, <span class="dv">7100</span>, <span class="dv">7600</span>, <span class="dv">8200</span>],</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>magasin_selectionne <span class="op">=</span> <span class="st">"Tous"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>liste_magasins <span class="op">=</span> <span class="st">"Tous;Casablanca;Rabat;Tanger"</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> filtrer(magasin):</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> magasin <span class="op">==</span> <span class="st">"Tous"</span>:</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> ventes</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ventes[ventes[<span class="st">"magasin"</span>] <span class="op">==</span> magasin]</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> construire_figure(state):</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    df_filtre <span class="op">=</span> filtrer(state.magasin_selectionne)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    evolution <span class="op">=</span> df_filtre.groupby(<span class="st">"mois"</span>, sort<span class="op">=</span><span class="va">False</span>)[<span class="st">"chiffre_affaires"</span>].<span class="bu">sum</span>()</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    ax.plot(evolution.index, evolution.values, marker<span class="op">=</span><span class="st">"o"</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"Chiffre d'affaires — </span><span class="sc">{</span>state<span class="sc">.</span>magasin_selectionne<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">"MAD"</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    state.figure <span class="op">=</span> fig</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>page <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="st"># Suivi des ventes — Atlas Marchés</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="st">Magasin : &lt;|</span><span class="sc">{magasin_selectionne}</span><span class="st">|selector|lov=</span><span class="sc">{liste_magasins}</span><span class="st">|on_change=construire_figure|&gt;</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{figure}</span><span class="st">|chart|&gt;</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{ventes}</span><span class="st">|table|&gt;</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>Gui(page<span class="op">=</span>page).run()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Dans cet exemple, <code>ventes</code> contient les données affichées, <code>page</code> décrit l’interface en langage Taipy Markdown, et le sélecteur déclenche <code>construire_figure</code> à chaque changement de magasin. Dans un vrai projet, on ajoute des indicateurs calculés (chiffre d’affaires, panier moyen) affichés sous forme de cartes, en réutilisant directement les fonctions de préparation vues en section 3.3. Les noms exacts de certains contrôles peuvent évoluer selon la version de Taipy : il faut vérifier la documentation de la version utilisée.</p>
 </section>
 <section id="organiser-une-petite-application" class="level3">
-<h3 class="anchored" data-anchor-id="organiser-une-petite-application">3.3. Organiser une petite application</h3>
-<p>Même une application pédagogique gagne à séparer :</p>
+<h3 class="anchored" data-anchor-id="organiser-une-petite-application">3.6. Organiser une petite application</h3>
+<p>Même une application pédagogique gagne à séparer les responsabilités, à l’image de la séparation ETL vue au chapitre 4 :</p>
 <pre class="text"><code>projet/
 ├── data/              # données sources ou exemple
-├── preparation.py     # lecture et nettoyage
-├── indicateurs.py     # calculs métier
+├── preparation.py     # lecture et nettoyage (chapitre 1)
+├── indicateurs.py     # calculs métier (chapitre 2 et 4)
+├── visualisations.py  # graphiques matplotlib/seaborn (chapitre 3)
 ├── app.py             # interface Taipy
 └── README.md          # installation et utilisation</code></pre>
-<p>Cette séparation permet de tester les indicateurs indépendamment de l’interface. L’application ne doit pas recalculer silencieusement un indicateur avec une définition différente de celle du rapport.</p>
+<p>Cette séparation permet de tester les indicateurs indépendamment de l’interface. L’application ne doit pas recalculer silencieusement un indicateur avec une définition différente de celle du rapport Power BI — le dictionnaire métier du chapitre 4 doit rester la référence commune aux deux outils.</p>
 </section>
 </section>
 <section id="comparaison-synthétique" class="level2">
 <h2 class="anchored" data-anchor-id="comparaison-synthétique">4. Comparaison synthétique</h2>
+<div id="tbl-powerbi-taipy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-powerbi-taipy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Power BI et Taipy, deux approches complémentaires de la BI
+</figcaption>
+<div aria-describedby="tbl-powerbi-taipy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -545,18 +1171,36 @@ PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])</code></pre>
 <td style="text-align: left;">Fonctions et code Python</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Visualisation</td>
+<td style="text-align: left;">Visuels intégrés (cartes, courbes, barres…)</td>
+<td style="text-align: left;"><code>matplotlib</code>/<code>seaborn</code>/<code>Plotly</code>, comme au chapitre 3</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Usage principal</td>
 <td style="text-align: left;">Rapports, exploration et partage BI</td>
 <td style="text-align: left;">Application interactive intégrée à un projet</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">Licence et coût</td>
+<td style="text-align: left;">Gratuit pour Desktop ; licence pour le partage en Service</td>
+<td style="text-align: left;">Open source (bibliothèque Python)</td>
+</tr>
 <tr class="odd">
+<td style="text-align: left;">Courbe d’apprentissage</td>
+<td style="text-align: left;">Interface visuelle, langage DAX à apprendre</td>
+<td style="text-align: left;">Nécessite de savoir programmer en Python</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">Point d’attention</td>
 <td style="text-align: left;">Relations, contexte des mesures, droits</td>
 <td style="text-align: left;">Organisation du code, déploiement, versions</td>
 </tr>
 </tbody>
 </table>
-<p>Le choix doit partir du besoin, pas de la préférence pour un outil. Dans les deux cas, les mêmes bases restent indispensables : question métier, qualité des données, modèle clair, indicateurs documentés et visualisation lisible.</p>
+</div>
+</figure>
+</div>
+<p>Le choix doit partir du besoin, pas de la préférence pour un outil. Dans les deux cas, les mêmes bases restent indispensables : question métier, qualité des données (chapitre 1), modèle clair (chapitre 4), indicateurs documentés et visualisation lisible (chapitre 3).</p>
 </section>
 <section id="exercices" class="level2">
 <h2 class="anchored" data-anchor-id="exercices">Exercices</h2>
@@ -570,7 +1214,7 @@ PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Ces exercices sont conceptuels ou demandent seulement un calcul court. Aucun logiciel n’est nécessaire.</p>
+<p>Ces exercices sont conceptuels ou demandent seulement un calcul court. Aucun logiciel n’est nécessaire, sauf mention contraire.</p>
 </div>
 </div>
 <div id="exr-bi-1" class="theorem exercise">
@@ -594,6 +1238,7 @@ PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])</code></pre>
 <li>Corriger le type d’une colonne <code>Date</code>.</li>
 <li>Calculer le chiffre d’affaires selon les filtres du rapport.</li>
 <li>Supprimer une colonne inutilisée avant le modèle.</li>
+<li>Comparer le chiffre d’affaires à celui de l’année précédente.</li>
 </ol>
 </div>
 <div id="exr-bi-5" class="theorem exercise">
@@ -612,6 +1257,20 @@ PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])</code></pre>
 <div id="exr-bi-8" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercice 8 (Critiquer une page)</strong></span> Une page affiche 25 graphiques sans unité, sans date de mise à jour et avec une couleur différente pour chaque barre. Citez trois améliorations prioritaires et justifiez-les.</p>
 </div>
+<div id="exr-bi-9" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 9 (Mesure ou colonne calculée ?)</strong></span> Pour chacun des besoins suivants, indiquez s’il s’agit plutôt d’une mesure ou d’une colonne calculée (<a href="#tbl-mesure-colonne" class="quarto-xref">Table&nbsp;<span>3</span></a>) :</p>
+<ol type="a">
+<li>Calculer, pour chaque ligne de vente, la marge unitaire (<code>Prix - Coût</code>).</li>
+<li>Calculer le chiffre d’affaires total affiché sur une carte, qui doit changer selon le mois sélectionné.</li>
+</ol>
+</div>
+<div id="exr-bi-10" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 10 (Choisir la visualisation Taipy)</strong></span> En reprenant les données de la section 3.3 (<code>ventes</code>, avec les colonnes <code>mois</code>, <code>magasin</code>, <code>chiffre_affaires</code>), quel type de graphique du chapitre 3 utiliseriez-vous pour répondre à chacune des questions suivantes, et pourquoi ?</p>
+<ol type="a">
+<li>Comment le chiffre d’affaires évolue-t-il entre janvier et mars ?</li>
+<li>Quel magasin contribue le plus au chiffre d’affaires total ?</li>
+</ol>
+</div>
 
 
 </section>
@@ -619,6 +1278,19 @@ PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])</code></pre>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1024,8 +1696,8 @@ PanierMoyen = DIVIDE([ChiffreAffaires], [NombreCommandes])</code></pre>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapitres/06_cas_pratique.html" class="pagination-link" aria-label="Etude de cas : analyser les ventes d'une petite chaîne de magasins">
-        <span class="nav-page-text"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapitres/06_cas_pratique.html" class="pagination-link" aria-label="Étude de cas : analyser les ventes d'une petite chaîne de magasins">
+        <span class="nav-page-text"><span class="chapter-title">Étude de cas : analyser les ventes d’une petite chaîne de magasins</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,5 +1,16 @@
 # Lab 4 : Entrepôt de données et dashboard avancé avec Power BI
 
+::: {.callout-important title="Avant de commencer — choisir votre support"}
+Téléchargez un seul format avant de travailler :
+
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le [dossier GitHub `labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets), choisissez le notebook du Lab 4 et téléchargez-le.
+- **Fichier `.qmd`** pour travailler avec Quarto : [téléchargez le fichier source du Lab 4](https://github.com/iaousse/dldv-course/blob/main/tp/lab4_entropot_donnees_powerbi.qmd).
+
+Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
+
+Le support contient les consignes ; la modélisation et le rapport se construisent dans **Power BI Desktop** et sont remis au format `.pbix`.
+:::
+
 ::: {.callout-tip title="Objectifs du Lab"}
 À la fin de ce Lab, l'étudiant sera capable de :
 
@@ -395,7 +406,7 @@ Appliquez ces règles :
 
 **Import** offre une exploration rapide après chargement ; **DirectQuery** interroge la source mais dépend davantage de la performance du serveur et des requêtes. Pour ce Lab, privilégiez un périmètre Import maîtrisé et documenté, puis expliquez comment une architecture de production pourrait évoluer.
 
-## 9. Livrable final
+## 9. Spécification du rapport attendu
 
 Le fichier `lab4_nyc311_powerbi.pbix` doit contenir :
 
@@ -425,6 +436,13 @@ La page « À propos des données » doit indiquer la source, l'URL, la date d'e
 11. Mesurez le temps de rafraîchissement et notez la taille du fichier.
 12. Écrivez une conclusion de cinq à dix lignes répondant à la question BI sans causalité non prouvée.
 
+::: {.content-visible when-profile="teacher"}
+## 11. Livrables
+
+- Le fichier `lab4_nyc311_powerbi.pbix`, avec les requêtes, le modèle en étoile, les relations, les mesures et les pages demandées.
+- Une page de contrôles qualité et une page « À propos des données » documentant source, période, extraction et limites.
+- Une conclusion de cinq à dix lignes répondant à la question BI.
+
 ::: {.callout-note title="Checklist avant remise"}
 - [ ] Le grain de la table de faits est écrit.
 - [ ] Les dimensions n'ont pas de clés dupliquées.
@@ -433,4 +451,5 @@ La page « À propos des données » doit indiquer la source, l'URL, la date d'e
 - [ ] Chaque page possède un objectif identifiable.
 - [ ] Les graphiques ont titre, unité, période et filtres.
 - [ ] Le rapport documente les limites et la date de rafraîchissement.
+:::
 :::

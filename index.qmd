@@ -30,7 +30,7 @@ number-sections: false
 
 ```{=html}
 <p style="text-align: center;">
-  <img src="images/qrcode.png" style="width: 60%;" alt="Code QR pour accéder à la ressource éducative libre">
+  <img src="images/qrcode.png" style="width: 60%;" alt="Code QR pour accéder à la ressource éducative libre" />
 </p>
 ```
 

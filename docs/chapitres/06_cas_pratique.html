@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Etude de cas : analyser les ventes d’une petite chaîne de magasins – Analyse et visualisation de données</title>
+<title>Étude de cas : analyser les ventes d’une petite chaîne de magasins – Analyse et visualisation de données</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -79,10 +79,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-0f843ebf765c3981fb4f092a976228be.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-0d9d9a46e068c065468cb3eda7b4f719.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,6 +115,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background: #a6c5e7;
+      }
+</style>
+<script>
+window.MathJax = {
+  tex: {
+    macros: {
+      Z: "\\mathbb{Z}",
+      N: "\\mathbb{N}",
+      C: "\\mathbb{C}",
+      Q: "\\mathbb{Q}",
+      R: "\\mathbb{R}",
+      B: "\\mathcal{B}",
+      M: "\\mathcal{M}",
+      S: "\\mathbb{S}",
+      abs: ["\\left|#1\\right|", 1],
+      norm: ["\\left\\Vert#1\\right\\Vert", 1],
+      sign: "\\mathrm{sign}",
+      vec: ["\\mathbf{#1}", 1]
+    }
+  }
+};
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -144,7 +174,169 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -153,7 +345,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapitres/06_cas_pratique.html"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapitres/06_cas_pratique.html"><span class="chapter-title">Étude de cas : analyser les ventes d’une petite chaîne de magasins</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Recherche" onclick="window.quartoOpenSearch();">
@@ -166,7 +358,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></h1>
+      <h1 class="title"><span class="chapter-title">Étude de cas : analyser les ventes d’une petite chaîne de magasins</span></h1>
                       </div>
   </div>
     
@@ -189,8 +381,27 @@ window.Quarto = {
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Analyse et visualisation de données</a> 
-        <div class="sidebar-tools-main">
-    <a href="../Analyse-et-visualisation-de-données.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/iaousse/" title="" class="quarto-navigation-tool px-1" aria-label="GitHub" target="_blank"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/mbarekiaousse" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn" target="_blank"><i class="bi bi-linkedin"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Analyse-et-visualisation-de-données.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Analyse-et-visualisation-de-données.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
 </div>
     </div>
       </div>
@@ -243,7 +454,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Etude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
+  <a href="../chapitres/06_cas_pratique.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Étude de cas : analyser les ventes d’une petite chaîne de magasins</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -294,7 +505,9 @@ window.Quarto = {
   <ul>
   <li><a href="#le-besoin-métier" id="toc-le-besoin-métier" class="nav-link active" data-scroll-target="#le-besoin-métier">1. Le besoin métier</a>
   <ul class="collapse">
-  <li><a href="#périmètre-et-définitions" id="toc-périmètre-et-définitions" class="nav-link" data-scroll-target="#périmètre-et-définitions">1.1. Périmètre et définitions</a></li>
+  <li><a href="#les-parties-prenantes" id="toc-les-parties-prenantes" class="nav-link" data-scroll-target="#les-parties-prenantes">1.1. Les parties prenantes</a></li>
+  <li><a href="#les-quatre-questions-posées" id="toc-les-quatre-questions-posées" class="nav-link" data-scroll-target="#les-quatre-questions-posées">1.2. Les quatre questions posées</a></li>
+  <li><a href="#périmètre-et-définitions" id="toc-périmètre-et-définitions" class="nav-link" data-scroll-target="#périmètre-et-définitions">1.3. Périmètre et définitions</a></li>
   </ul></li>
   <li><a href="#le-jeu-de-données" id="toc-le-jeu-de-données" class="nav-link" data-scroll-target="#le-jeu-de-données">2. Le jeu de données</a>
   <ul class="collapse">
@@ -314,7 +527,13 @@ window.Quarto = {
   </ul></li>
   <li><a href="#construire-le-modèle-analytique" id="toc-construire-le-modèle-analytique" class="nav-link" data-scroll-target="#construire-le-modèle-analytique">5. Construire le modèle analytique</a></li>
   <li><a href="#concevoir-la-page-power-bi" id="toc-concevoir-la-page-power-bi" class="nav-link" data-scroll-target="#concevoir-la-page-power-bi">6. Concevoir la page Power BI</a></li>
-  <li><a href="#construire-une-vue-taipy" id="toc-construire-une-vue-taipy" class="nav-link" data-scroll-target="#construire-une-vue-taipy">7. Construire une vue Taipy</a></li>
+  <li><a href="#construire-une-vue-taipy" id="toc-construire-une-vue-taipy" class="nav-link" data-scroll-target="#construire-une-vue-taipy">7. Construire une vue Taipy</a>
+  <ul class="collapse">
+  <li><a href="#charger-et-préparer-les-données" id="toc-charger-et-préparer-les-données" class="nav-link" data-scroll-target="#charger-et-préparer-les-données">7.1. Charger et préparer les données</a></li>
+  <li><a href="#calculer-les-indicateurs-1" id="toc-calculer-les-indicateurs-1" class="nav-link" data-scroll-target="#calculer-les-indicateurs-1">7.2. Calculer les indicateurs</a></li>
+  <li><a href="#construire-une-visualisation-sophistiquée" id="toc-construire-une-visualisation-sophistiquée" class="nav-link" data-scroll-target="#construire-une-visualisation-sophistiquée">7.3. Construire une visualisation sophistiquée</a></li>
+  <li><a href="#assembler-lapplication-taipy" id="toc-assembler-lapplication-taipy" class="nav-link" data-scroll-target="#assembler-lapplication-taipy">7.4. Assembler l’application Taipy</a></li>
+  </ul></li>
   <li><a href="#interpréter-et-communiquer" id="toc-interpréter-et-communiquer" class="nav-link" data-scroll-target="#interpréter-et-communiquer">8. Interpréter et communiquer</a></li>
   <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices">Exercices</a></li>
   </ul>
@@ -322,6 +541,7 @@ window.Quarto = {
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+
 
 
 
@@ -339,18 +559,65 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>À la fin de ce cas pratique, l’étudiant sera capable de :</p>
 <ul>
-<li><strong>Cadrer</strong> une question d’analyse à partir d’un besoin métier ;</li>
+<li><strong>Cadrer</strong> une question d’analyse à partir d’un besoin métier et des parties prenantes concernées ;</li>
 <li><strong>Repérer</strong> les problèmes de qualité dans un petit jeu de données ;</li>
 <li><strong>Calculer et interpréter</strong> des indicateurs simples : chiffre d’affaires, quantité, panier moyen, médiane et taux ;</li>
-<li><strong>Choisir</strong> un modèle en étoile adapté à une analyse de ventes ;</li>
-<li><strong>Proposer</strong> une page Power BI et une vue Taipy cohérentes avec les questions ;</li>
+<li><strong>Choisir</strong> un modèle en étoile adapté à une analyse de ventes et en dériver des mesures DAX ;</li>
+<li><strong>Proposer</strong> une page Power BI et construire une véritable application Taipy cohérentes avec les questions ;</li>
 <li><strong>Rédiger</strong> une conclusion prudente, fondée sur les données et accompagnée de limites.</li>
 </ul>
 </div>
 </div>
-<p>Ce chapitre suit un projet de bout en bout. L’entreprise fictive <strong>Atlas Marchés</strong> possède trois magasins à Casablanca, Rabat et Tanger. La direction souhaite comprendre les ventes du premier trimestre 2026 et décider où concentrer ses efforts commerciaux. Les données sont volontairement petites afin que les calculs puissent être vérifiés à la main.</p>
+<p>Ce chapitre suit un projet de bout en bout, en mobilisant tous les chapitres précédents : collecte et préparation (chapitre 1), exploration (chapitre 2), visualisation (chapitre 3), modélisation en entrepôt (chapitre 4) et restitution en BI (chapitre 5). L’entreprise fictive <strong>Atlas Marchés</strong> possède trois magasins à Casablanca, Rabat et Tanger. La direction souhaite comprendre les ventes du premier trimestre 2026 et décider où concentrer ses efforts commerciaux. Les données sont volontairement petites afin que les calculs puissent être vérifiés à la main — et, dans ce chapitre, également par une cellule Python réellement exécutée.</p>
 <section id="le-besoin-métier" class="level2">
 <h2 class="anchored" data-anchor-id="le-besoin-métier">1. Le besoin métier</h2>
+<section id="les-parties-prenantes" class="level3">
+<h3 class="anchored" data-anchor-id="les-parties-prenantes">1.1. Les parties prenantes</h3>
+<p>Trois profils attendent des réponses différentes de cette analyse :</p>
+<div id="tbl-parties-prenantes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parties-prenantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Parties prenantes de l’analyse Atlas Marchés
+</figcaption>
+<div aria-describedby="tbl-parties-prenantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Rôle</th>
+<th style="text-align: left;">Question principale</th>
+<th style="text-align: left;">Niveau de détail attendu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Directrice générale</td>
+<td style="text-align: left;">Où concentrer les efforts commerciaux du prochain trimestre ?</td>
+<td style="text-align: left;">Synthétique, quelques KPI</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Responsable de magasin</td>
+<td style="text-align: left;">Comment mon magasin se compare-t-il aux deux autres ?</td>
+<td style="text-align: left;">Intermédiaire, comparaisons</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Analyste de gestion</td>
+<td style="text-align: left;">D’où provient exactement le chiffre d’affaires ?</td>
+<td style="text-align: left;">Détaillé, par produit et catégorie</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Cette diversité de publics justifie, comme annoncé au chapitre 5 (§1.3), une page de synthèse et une page de détail plutôt qu’une seule page surchargée.</p>
+</section>
+<section id="les-quatre-questions-posées" class="level3">
+<h3 class="anchored" data-anchor-id="les-quatre-questions-posées">1.2. Les quatre questions posées</h3>
 <p>La direction pose quatre questions :</p>
 <ol type="1">
 <li>Quel est le chiffre d’affaires net par mois et par magasin ?</li>
@@ -358,9 +625,10 @@ window.Quarto = {
 <li>Le panier moyen est-il différent selon les magasins ?</li>
 <li>Quelles informations faudrait-il surveiller dans un tableau de bord mensuel ?</li>
 </ol>
-<p>La question n’est pas « faire un graphique ». Le livrable attendu est une analyse descriptive, quelques explications prudentes et une proposition de suivi.</p>
+<p>La question n’est pas « faire un graphique ». Le livrable attendu est une analyse descriptive, quelques explications prudentes et une proposition de suivi — exactement la distinction entre analyse descriptive et diagnostique posée dès l’introduction de ce cours.</p>
+</section>
 <section id="périmètre-et-définitions" class="level3">
-<h3 class="anchored" data-anchor-id="périmètre-et-définitions">1.1. Périmètre et définitions</h3>
+<h3 class="anchored" data-anchor-id="périmètre-et-définitions">1.3. Périmètre et définitions</h3>
 <p>Le périmètre est limité aux ventes <strong>payées</strong> enregistrées entre le 1er janvier et le 31 mars 2026. Une ligne du fichier correspond à une ligne de produit dans une commande. Le montant net est défini ainsi :</p>
 <p><span class="math display">\[
 \text{montant net}
@@ -371,12 +639,12 @@ window.Quarto = {
 \text{panier moyen}
 =\frac{\text{chiffre d'affaires net}}{\text{nombre de commandes distinctes}}.
 \]</span></p>
-<p>Ces définitions sont annoncées avant les calculs ; elles évitent de changer de formule au milieu de l’analyse.</p>
+<p>Ces définitions sont annoncées avant les calculs ; elles évitent de changer de formule au milieu de l’analyse, et constitueront le point de départ du dictionnaire métier de la section 5.</p>
 </section>
 </section>
 <section id="le-jeu-de-données" class="level2">
 <h2 class="anchored" data-anchor-id="le-jeu-de-données">2. Le jeu de données</h2>
-<p>Voici un extrait pédagogique. Dans un vrai projet, le fichier complet pourrait contenir beaucoup plus de lignes.</p>
+<p>Voici un extrait pédagogique. Dans un vrai projet, le fichier complet pourrait contenir beaucoup plus de lignes, collectées comme décrit au chapitre 1 (export de caisse, base de données de vente, ou API).</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 10%">
@@ -553,8 +821,8 @@ window.Quarto = {
 </table>
 <section id="première-lecture" class="level3">
 <h3 class="anchored" data-anchor-id="première-lecture">2.1. Première lecture</h3>
-<p>Le grain est <strong>une ligne de produit dans une commande</strong>. La commande C001 apparaît deux fois car elle contient deux produits. Pour compter les commandes, il faut compter les identifiants distincts, et non les lignes.</p>
-<p>La ligne C006 est annulée. Si le chiffre d’affaires concerne les ventes payées, elle doit être exclue, mais cette décision doit être documentée. Elle ne doit pas être supprimée du fichier original : on conserve le statut pour pouvoir analyser les annulations.</p>
+<p>Le grain est <strong>une ligne de produit dans une commande</strong>, au sens défini au chapitre 4. La commande C001 apparaît deux fois car elle contient deux produits. Pour compter les commandes, il faut compter les identifiants distincts, et non les lignes.</p>
+<p>La ligne C006 est annulée. Si le chiffre d’affaires concerne les ventes payées, elle doit être exclue, mais cette décision doit être documentée. Elle ne doit pas être supprimée du fichier original : on conserve le statut pour pouvoir analyser les annulations — un exemple concret de la traçabilité demandée au chapitre 4 (§4.1).</p>
 </section>
 </section>
 <section id="préparer-les-données" class="level2">
@@ -607,7 +875,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>Il faut également vérifier que la remise ne dépasse pas le montant brut de la ligne, que les dates ne sont pas inversées et que les identifiants ne comportent pas d’espaces cachés.</p>
+<p>Il faut également vérifier que la remise ne dépasse pas le montant brut de la ligne, que les dates ne sont pas inversées et que les identifiants ne comportent pas d’espaces cachés — les mêmes contrôles de qualité que ceux présentés au chapitre 1.</p>
 </section>
 <section id="transformation" class="level3">
 <h3 class="anchored" data-anchor-id="transformation">3.2. Transformation</h3>
@@ -769,15 +1037,15 @@ mois = mois(date)</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Casablanca</td>
-<td style="text-align: right;">435</td>
+<td style="text-align: right;">430</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">108,75</td>
+<td style="text-align: right;">107,50</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Rabat</td>
-<td style="text-align: right;">157</td>
+<td style="text-align: right;">265</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">52,33</td>
+<td style="text-align: right;">88,33</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Tanger</td>
@@ -817,7 +1085,20 @@ mois = mois(date)</code></pre>
 <p><span class="math display">\[60,\ 60,\ 67,\ 72,\ 75,\ 90,\ 108,\ 24,\ 40,\ 49,\ 150\]</span></p>
 <p>Triés :</p>
 <p><span class="math display">\[24,\ 40,\ 49,\ 60,\ 60,\ 67,\ 72,\ 75,\ 90,\ 108,\ 150.\]</span></p>
-<p>La médiane est la sixième valeur, soit <strong>67 MAD</strong>. La moyenne est <span class="math inline">\(795/11 \approx \textbf{72,27}\)</span> MAD. La moyenne un peu supérieure à la médiane suggère que quelques lignes élevées, notamment 150 MAD, tirent la moyenne vers le haut.</p>
+<p>La médiane est la sixième valeur, soit <strong>67 MAD</strong>. La moyenne est <span class="math inline">\(795/11 \approx \textbf{72,27}\)</span> MAD. La moyenne un peu supérieure à la médiane suggère que quelques lignes élevées, notamment 150 MAD, tirent la moyenne vers le haut — un rappel direct du chapitre 2 (§4.1).</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Vérification">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Vérification
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tous les indicateurs de cette section sont recalculés, à partir des mêmes 12 lignes, par une véritable cellule Python exécutée en section 7 : les deux méthodes doivent converger vers les mêmes chiffres.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="construire-le-modèle-analytique" class="level2">
@@ -826,17 +1107,38 @@ mois = mois(date)</code></pre>
 <pre class="text"><code>dim_date -----------\
 dim_produit --------- fact_ventes
 dim_magasin --------/</code></pre>
-<p><code>fact_ventes</code> contient <code>Commande</code>, <code>DateID</code>, <code>ProduitID</code>, <code>MagasinID</code>, <code>Quantite</code>, <code>PrixUnitaire</code>, <code>Remise</code>, <code>MontantNet</code> et <code>Statut</code>. Les dimensions décrivent les dates, produits et magasins.</p>
-<p>Les mesures attendues sont :</p>
+<p><code>fact_ventes</code> contient <code>Commande</code>, <code>DateID</code>, <code>ProduitID</code>, <code>MagasinID</code>, <code>Quantite</code>, <code>PrixUnitaire</code>, <code>Remise</code>, <code>MontantNet</code> et <code>Statut</code>. Les dimensions décrivent les dates, produits et magasins — exactement la structure présentée au chapitre 4.</p>
+<p>Les mesures attendues, avant même d’être écrites dans un outil précis, sont :</p>
 <pre class="text"><code>ChiffreAffaires = somme de MontantNet pour les lignes payées
 Commandes = nombre d'identifiants Commande distincts pour les lignes payées
 PanierMoyen = ChiffreAffaires / Commandes
 Quantités = somme de Quantite pour les lignes payées</code></pre>
+<p>Traduites en DAX pour Power BI (chapitre 5, §2.4), ces mesures s’écrivent :</p>
+<pre class="dax"><code>ChiffreAffaires =
+CALCULATE(
+    SUM(fact_Ventes[MontantNet]),
+    fact_Ventes[Statut] = "Payée"
+)
+
+Commandes =
+CALCULATE(
+    DISTINCTCOUNT(fact_Ventes[Commande]),
+    fact_Ventes[Statut] = "Payée"
+)
+
+PanierMoyen = DIVIDE([ChiffreAffaires], [Commandes])
+
+Quantites =
+CALCULATE(
+    SUM(fact_Ventes[Quantite]),
+    fact_Ventes[Statut] = "Payée"
+)</code></pre>
+<p>Le filtre <code>fact_Ventes[Statut] = "Payée"</code> est appliqué explicitement dans chaque mesure via <code>CALCULATE</code>, plutôt que d’être filtré une fois pour toutes en amont : cela permet de garder, dans le même modèle, la possibilité d’analyser aussi les commandes annulées si besoin, sans dupliquer la table.</p>
 <p>Le tableau de bord ne doit pas calculer le panier moyen comme la moyenne des montants de lignes : une commande peut contenir plusieurs lignes. Le grain explique cette différence.</p>
 </section>
 <section id="concevoir-la-page-power-bi" class="level2">
 <h2 class="anchored" data-anchor-id="concevoir-la-page-power-bi">6. Concevoir la page Power BI</h2>
-<p>Une page « Vue générale » peut contenir :</p>
+<p>Une page « Vue générale » peut contenir, en suivant les principes de composition du chapitre 5 (§2.5) :</p>
 <ol type="1">
 <li>quatre cartes : chiffre d’affaires net, commandes, panier moyen et quantités vendues ;</li>
 <li>une courbe du chiffre d’affaires par mois ;</li>
@@ -845,31 +1147,207 @@ Quantités = somme de Quantite pour les lignes payées</code></pre>
 <li>des segments pour le mois, le magasin et la catégorie ;</li>
 <li>une note indiquant « données payées, période janvier–mars 2026, dernière actualisation ».</li>
 </ol>
-<p>Une deuxième page « Diagnostic » peut détailler les produits, les annulations et les différences entre magasins. La première page répond à « où en sommes-nous ? », la seconde aide à explorer « où regarder ensuite ? ».</p>
-<p>Avant le partage, on compare les cartes aux totaux calculés manuellement : 795 MAD, 9 commandes distinctes et 88,33 MAD de panier moyen.</p>
+<div id="fig-powerbi-atlas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-powerbi-atlas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/powerbi-atlas-marches-vue-generale.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-powerbi-atlas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Maquette de la page « Vue générale » du tableau de bord Atlas Marchés dans Power BI Desktop, construite à partir des mesures ChiffreAffaires, Commandes, PanierMoyen et Quantites
+</figcaption>
+</figure>
+</div>
+<p>Une deuxième page « Diagnostic » peut détailler les produits, les annulations et les différences entre magasins :</p>
+<ul>
+<li>un tableau détaillé par produit, avec quantité et chiffre d’affaires ;</li>
+<li>un graphique en barres du chiffre d’affaires par catégorie et par magasin (comparaison croisée) ;</li>
+<li>un indicateur du nombre et du montant des lignes annulées, pour suivre ce phénomène séparément du chiffre d’affaires payé.</li>
+</ul>
+<p>La première page répond à « où en sommes-nous ? » (analyse descriptive), la seconde aide à explorer « où regarder ensuite ? » (analyse diagnostique) — la distinction posée dès l’introduction de ce cours.</p>
+<p>Avant le partage, on compare les cartes aux totaux calculés manuellement : <strong>795 MAD</strong>, <strong>9 commandes distinctes</strong> et <strong>88,33 MAD</strong> de panier moyen.</p>
 </section>
 <section id="construire-une-vue-taipy" class="level2">
 <h2 class="anchored" data-anchor-id="construire-une-vue-taipy">7. Construire une vue Taipy</h2>
-<p>La même analyse peut être intégrée à une application Python. La logique doit être séparée de l’affichage :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> indicateurs(df):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    payees <span class="op">=</span> df[df[<span class="st">"Statut"</span>] <span class="op">==</span> <span class="st">"Payée"</span>]</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    chiffre_affaires <span class="op">=</span> payees[<span class="st">"MontantNet"</span>].<span class="bu">sum</span>()</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    commandes <span class="op">=</span> payees[<span class="st">"Commande"</span>].nunique()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    panier_moyen <span class="op">=</span> chiffre_affaires <span class="op">/</span> commandes <span class="cf">if</span> commandes <span class="cf">else</span> <span class="dv">0</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"chiffre_affaires"</span>: chiffre_affaires,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"commandes"</span>: commandes,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"panier_moyen"</span>: panier_moyen,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Une interface Taipy peut ensuite proposer un filtre <code>Magasin</code>, afficher les trois indicateurs et mettre à jour une table mensuelle. Le résultat doit rester cohérent avec le dictionnaire métier et les calculs Power BI.</p>
+<p>La même analyse peut être intégrée à une application Python. Contrairement aux sections précédentes, qui décrivent une interface Power BI que ce livre ne peut pas exécuter, le code Python qui suit est <strong>réellement exécuté</strong> lors de la génération de ce chapitre : les indicateurs et le graphique affichés ci-dessous sont calculés en direct, à partir des 12 lignes du jeu de données de la section 2.</p>
+<section id="charger-et-préparer-les-données" class="level3">
+<h3 class="anchored" data-anchor-id="charger-et-préparer-les-données">7.1. Charger et préparer les données</h3>
+<div id="6f59bf70" class="cell" data-execution_count="1">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ventes <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"commande"</span>:  [<span class="st">"C001"</span>, <span class="st">"C001"</span>, <span class="st">"C002"</span>, <span class="st">"C003"</span>, <span class="st">"C004"</span>, <span class="st">"C005"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"C006"</span>, <span class="st">"C007"</span>, <span class="st">"C008"</span>, <span class="st">"C009"</span>, <span class="st">"C010"</span>, <span class="st">"C010"</span>],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>:      [<span class="st">"2026-01-05"</span>, <span class="st">"2026-01-05"</span>, <span class="st">"2026-01-08"</span>, <span class="st">"2026-01-15"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"2026-02-03"</span>, <span class="st">"2026-02-10"</span>, <span class="st">"2026-02-18"</span>, <span class="st">"2026-02-22"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"2026-03-06"</span>, <span class="st">"2026-03-12"</span>, <span class="st">"2026-03-20"</span>, <span class="st">"2026-03-20"</span>],</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"magasin"</span>:   [<span class="st">"Casablanca"</span>, <span class="st">"Casablanca"</span>, <span class="st">"Rabat"</span>, <span class="st">"Tanger"</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Casablanca"</span>, <span class="st">"Rabat"</span>, <span class="st">"Tanger"</span>, <span class="st">"Casablanca"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Rabat"</span>, <span class="st">"Tanger"</span>, <span class="st">"Casablanca"</span>, <span class="st">"Casablanca"</span>],</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"categorie"</span>: [<span class="st">"Épicerie"</span>, <span class="st">"Épicerie"</span>, <span class="st">"Boissons"</span>, <span class="st">"Hygiène"</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Épicerie"</span>, <span class="st">"Épicerie"</span>, <span class="st">"Boissons"</span>, <span class="st">"Hygiène"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Boissons"</span>, <span class="st">"Épicerie"</span>, <span class="st">"Boissons"</span>, <span class="st">"Hygiène"</span>],</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"produit"</span>:   [<span class="st">"Huile"</span>, <span class="st">"Riz"</span>, <span class="st">"Jus"</span>, <span class="st">"Savon"</span>, <span class="st">"Huile"</span>, <span class="st">"Riz"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Jus"</span>, <span class="st">"Savon"</span>, <span class="st">"Jus"</span>, <span class="st">"Riz"</span>, <span class="st">"Jus"</span>, <span class="st">"Savon"</span>],</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"qte"</span>:            [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"prix_unitaire"</span>:  [<span class="dv">75</span>, <span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">12</span>, <span class="dv">75</span>, <span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">12</span>],</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"remise"</span>:         [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">0</span>],</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"statut"</span>:    [<span class="st">"Payée"</span>, <span class="st">"Payée"</span>, <span class="st">"Payée"</span>, <span class="st">"Payée"</span>, <span class="st">"Payée"</span>, <span class="st">"Payée"</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Annulée"</span>, <span class="st">"Payée"</span>, <span class="st">"Payée"</span>, <span class="st">"Payée"</span>, <span class="st">"Payée"</span>, <span class="st">"Payée"</span>],</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>ventes[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(ventes[<span class="st">"date"</span>])</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>ventes[<span class="st">"montant_net"</span>] <span class="op">=</span> ventes[<span class="st">"qte"</span>] <span class="op">*</span> ventes[<span class="st">"prix_unitaire"</span>] <span class="op">-</span> ventes[<span class="st">"remise"</span>]</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>ventes[<span class="st">"mois"</span>] <span class="op">=</span> ventes[<span class="st">"date"</span>].dt.strftime(<span class="st">"%B"</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>payees <span class="op">=</span> ventes[ventes[<span class="st">"statut"</span>] <span class="op">==</span> <span class="st">"Payée"</span>]</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(payees.head().to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>commande       date    magasin categorie produit  qte  prix_unitaire  remise statut  montant_net     mois
+    C001 2026-01-05 Casablanca  Épicerie   Huile    2             75       0  Payée          150  January
+    C001 2026-01-05 Casablanca  Épicerie     Riz    3             20       0  Payée           60  January
+    C002 2026-01-08      Rabat  Boissons     Jus    4             18       5  Payée           67  January
+    C003 2026-01-15     Tanger   Hygiène   Savon    5             12       0  Payée           60  January
+    C004 2026-02-03 Casablanca  Épicerie   Huile    1             75       0  Payée           75 February</code></pre>
+</div>
+</div>
+</section>
+<section id="calculer-les-indicateurs-1" class="level3">
+<h3 class="anchored" data-anchor-id="calculer-les-indicateurs-1">7.2. Calculer les indicateurs</h3>
+<div id="d1d0d9bb" class="cell" data-execution_count="2">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> indicateurs(df):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    payees <span class="op">=</span> df[df[<span class="st">"statut"</span>] <span class="op">==</span> <span class="st">"Payée"</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    chiffre_affaires <span class="op">=</span> payees[<span class="st">"montant_net"</span>].<span class="bu">sum</span>()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    commandes <span class="op">=</span> payees[<span class="st">"commande"</span>].nunique()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    panier_moyen <span class="op">=</span> chiffre_affaires <span class="op">/</span> commandes <span class="cf">if</span> commandes <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    quantites <span class="op">=</span> payees[<span class="st">"qte"</span>].<span class="bu">sum</span>()</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"chiffre_affaires"</span>: chiffre_affaires,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"commandes"</span>: commandes,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"panier_moyen"</span>: <span class="bu">round</span>(panier_moyen, <span class="dv">2</span>),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"quantites"</span>: quantites,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>resultats <span class="op">=</span> indicateurs(ventes)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>resultats</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>{'chiffre_affaires': np.int64(795),
+ 'commandes': 9,
+ 'panier_moyen': np.float64(88.33),
+ 'quantites': np.int64(39)}</code></pre>
+</div>
+</div>
+<p>Ces résultats doivent — et retrouvent effectivement — les valeurs calculées à la main en section 4 : un chiffre d’affaires net de 795 MAD, pour 9 commandes distinctes, et un panier moyen de 88,33 MAD.</p>
+</section>
+<section id="construire-une-visualisation-sophistiquée" class="level3">
+<h3 class="anchored" data-anchor-id="construire-une-visualisation-sophistiquée">7.3. Construire une visualisation sophistiquée</h3>
+<p>En reprenant les bonnes pratiques du chapitre 3 (titre-message, palette accessible, deux graphiques complémentaires plutôt qu’un seul graphique surchargé) :</p>
+<div id="7ae7130b" class="cell" data-execution_count="3">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>sns.set_palette(<span class="st">"colorblind"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.5</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Panneau 1 : chiffre d'affaires net par mois</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>par_mois <span class="op">=</span> payees.groupby(<span class="st">"mois"</span>, sort<span class="op">=</span><span class="va">False</span>)[<span class="st">"montant_net"</span>].<span class="bu">sum</span>()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>par_mois <span class="op">=</span> par_mois.reindex([<span class="st">"January"</span>, <span class="st">"February"</span>, <span class="st">"March"</span>])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot([<span class="st">"Janvier"</span>, <span class="st">"Février"</span>, <span class="st">"Mars"</span>], par_mois.values, marker<span class="op">=</span><span class="st">"o"</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Le chiffre d'affaires ralentit sur le trimestre"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Chiffre d'affaires net (MAD)"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Panneau 2 : chiffre d'affaires net par magasin, trié</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>par_magasin <span class="op">=</span> payees.groupby(<span class="st">"magasin"</span>)[<span class="st">"montant_net"</span>].<span class="bu">sum</span>().sort_values()</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].barh(par_magasin.index, par_magasin.values)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Casablanca porte l'essentiel des ventes"</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Chiffre d'affaires net (MAD)"</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>fig.text(<span class="fl">0.01</span>, <span class="op">-</span><span class="fl">0.02</span>, <span class="st">"Source : Atlas Marchés — ventes payées, janvier à mars 2026"</span>, fontsize<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06_cas_pratique_files/figure-html/cell-4-output-1.png" width="1047" height="444" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ce graphique répond directement à la première question de la direction (§1.2) : il montre, en un coup d’œil, que le chiffre d’affaires ralentit d’un mois à l’autre et que Casablanca domine largement les deux autres magasins.</p>
+</section>
+<section id="assembler-lapplication-taipy" class="level3">
+<h3 class="anchored" data-anchor-id="assembler-lapplication-taipy">7.4. Assembler l’application Taipy</h3>
+<p>Comme au chapitre 5, l’assemblage final dans une interface Taipy interactive n’est <strong>pas exécuté</strong> dans ce livre : <code>Gui(page).run()</code> démarrerait un serveur bloquant. Le code suivant montre comment les résultats des sections 7.1 à 7.3 s’intègrent dans une page filtrable par magasin.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> taipy.gui <span class="im">import</span> Gui</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ventes, indicateurs() et le graphique reprennent le code des sections 7.1 à 7.3</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>magasin_selectionne <span class="op">=</span> <span class="st">"Tous"</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>liste_magasins <span class="op">=</span> <span class="st">"Tous;Casablanca;Rabat;Tanger"</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> filtrer_et_recalculer(state):</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> state.magasin_selectionne <span class="op">==</span> <span class="st">"Tous"</span>:</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        sous_ensemble <span class="op">=</span> ventes</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        sous_ensemble <span class="op">=</span> ventes[ventes[<span class="st">"magasin"</span>] <span class="op">==</span> state.magasin_selectionne]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    resultats <span class="op">=</span> indicateurs(sous_ensemble)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    state.chiffre_affaires <span class="op">=</span> resultats[<span class="st">"chiffre_affaires"</span>]</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    state.commandes <span class="op">=</span> resultats[<span class="st">"commandes"</span>]</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    state.panier_moyen <span class="op">=</span> resultats[<span class="st">"panier_moyen"</span>]</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>page <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="st"># Atlas Marchés — Suivi des ventes T1 2026</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="st">Magasin : &lt;|</span><span class="sc">{magasin_selectionne}</span><span class="st">|selector|lov=</span><span class="sc">{liste_magasins}</span><span class="st">|on_change=filtrer_et_recalculer|&gt;</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|layout|columns=1 1 1|</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{chiffre_affaires}</span><span class="st">|text|format=</span><span class="sc">%d</span><span class="st"> MAD|class_name=kpi-card|&gt;</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{commandes}</span><span class="st">|text|format=</span><span class="sc">%d</span><span class="st"> commandes|class_name=kpi-card|&gt;</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{panier_moyen}</span><span class="st">|text|format=</span><span class="sc">%.2f</span><span class="st"> MAD|class_name=kpi-card|&gt;</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="st">|&gt;</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;|</span><span class="sc">{ventes}</span><span class="st">|table|&gt;</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>Gui(page<span class="op">=</span>page).run()</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cette page reprend fidèlement le dictionnaire métier de la section 1.3 : les mêmes formules, qu’il s’agisse de la version Power BI (DAX, section 5) ou de la version Taipy (Python, ci-dessus), doivent produire les mêmes résultats. C’est précisément ce que la cellule exécutée en section 7.2 permet de vérifier.</p>
+</section>
 </section>
 <section id="interpréter-et-communiquer" class="level2">
 <h2 class="anchored" data-anchor-id="interpréter-et-communiquer">8. Interpréter et communiquer</h2>
 <p>Une conclusion raisonnable pour l’extrait serait :</p>
 <blockquote class="blockquote">
-<p>Sur les ventes payées de l’extrait, le chiffre d’affaires net atteint 795 MAD pour 9 commandes, avec un panier moyen de 88,33 MAD. Casablanca représente 435 MAD et le panier moyen y est supérieur à celui de Rabat et Tanger. Les lignes de vente ont une médiane de 67 MAD et une moyenne de 72,27 MAD, ce qui signale une légère influence de quelques montants élevés. Ces résultats sont exploratoires : l’échantillon est très petit, ne couvre que trois mois et ne permet pas d’expliquer les causes ni de mesurer la rentabilité.</p>
+<p>Sur les ventes payées de l’extrait, le chiffre d’affaires net atteint 795 MAD pour 9 commandes, avec un panier moyen de 88,33 MAD. Casablanca représente 430 MAD et le panier moyen y est supérieur à celui de Rabat et Tanger. Les lignes de vente ont une médiane de 67 MAD et une moyenne de 72,27 MAD, ce qui signale une légère influence de quelques montants élevés. Ces résultats sont exploratoires : l’échantillon est très petit, ne couvre que trois mois et ne permet pas d’expliquer les causes ni de mesurer la rentabilité.</p>
 </blockquote>
-<p>La conclusion sépare les <strong>faits calculés</strong>, les <strong>interprétations prudentes</strong> et les <strong>limites</strong>. Elle ne transforme pas une différence observée en causalité.</p>
+<p>La conclusion sépare les <strong>faits calculés</strong>, les <strong>interprétations prudentes</strong> et les <strong>limites</strong>. Elle ne transforme pas une différence observée en causalité — le même principe de prudence que celui rappelé au chapitre 2 à propos de la corrélation.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Aller plus loin">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Aller plus loin
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sur un jeu de données réel, cette même démarche se prolongerait naturellement : automatiser le chargement et le contrôle de qualité avec un flux ETL/ELT planifié (chapitre 4, §4), historiser les ventes pour comparer un trimestre à l’année précédente avec <code>CALCULATE</code> et <code>SAMEPERIODLASTYEAR</code> (chapitre 5, §2.4), et enrichir le modèle avec de nouvelles dimensions — un profil client, une équipe commerciale — pour affiner le diagnostic au-delà du simple magasin.</p>
+</div>
+</div>
 </section>
 <section id="exercices" class="level2">
 <h2 class="anchored" data-anchor-id="exercices">Exercices</h2>
@@ -883,7 +1361,7 @@ Quantités = somme de Quantite pour les lignes payées</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Répondez sans ordinateur. Les données de l’énoncé suffisent ; les calculs sont courts et peuvent être réalisés avec une calculatrice.</p>
+<p>Répondez sans ordinateur pour les exercices 1 à 8 ; les données de l’énoncé suffisent et les calculs sont courts. Les exercices 9 et 10 portent sur les choix d’outillage et peuvent s’appuyer sur le code des sections 5 à 7.</p>
 </div>
 </div>
 <div id="exr-cas-1" class="theorem exercise">
@@ -896,7 +1374,7 @@ Quantités = somme de Quantite pour les lignes payées</code></pre>
 <p><span class="theorem-title"><strong>Exercice 3 (Calculer une ligne)</strong></span> Calculez le montant net de 4 jus à 18 MAD avec une remise de 5 MAD, puis celui de 5 savons à 12 MAD sans remise.</p>
 </div>
 <div id="exr-cas-4" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercice 4 (Vérifier le total)</strong></span> Le chiffre d’affaires net est de 795 MAD et le magasin de Casablanca réalise 435 MAD.</p>
+<p><span class="theorem-title"><strong>Exercice 4 (Vérifier le total)</strong></span> Le chiffre d’affaires net est de 795 MAD et le magasin de Casablanca réalise 430 MAD.</p>
 <ol type="a">
 <li>Quelle part du chiffre d’affaires total représente Casablanca ?</li>
 <li>Quel montant reste pour Rabat et Tanger ensemble ?</li>
@@ -922,6 +1400,17 @@ Quantités = somme de Quantite pour les lignes payées</code></pre>
 <li>Citez deux informations manquantes avant de conclure sur la performance globale.</li>
 </ol>
 </div>
+<div id="exr-cas-9" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 9 (Power BI ou Taipy pour Atlas Marchés ?)</strong></span> La direction d’Atlas Marchés veut un tableau de bord consultable par les trois responsables de magasin, actualisé chaque semaine, sans écrire de code. L’équipe technique veut, séparément, intégrer les mêmes indicateurs dans l’application de caisse déjà développée en Python.</p>
+<p>En vous appuyant sur la <a href="05_powerbi-taipy.html#tbl-powerbi-taipy" class="quarto-xref">Table&nbsp;<span>6</span></a> du chapitre 5, quel outil recommanderiez-vous à chacun des deux besoins, et pourquoi ?</p>
+</div>
+<div id="exr-cas-10" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercice 10 (Vérifier la cohérence entre les deux outils)</strong></span> La mesure DAX <code>ChiffreAffaires</code> de la section 5 et la fonction Python <code>indicateurs()</code> de la section 7.2 doivent produire le même résultat pour la même question.</p>
+<ol type="a">
+<li>Quelle valeur commune les deux doivent-elles retrouver pour le chiffre d’affaires net total ?</li>
+<li>Que faudrait-il vérifier si, sur un vrai projet, les deux outils affichaient des chiffres différents ?</li>
+</ol>
+</div>
 
 
 </section>
@@ -929,6 +1418,19 @@ Quantités = somme de Quantite pour les lignes payées</code></pre>
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
