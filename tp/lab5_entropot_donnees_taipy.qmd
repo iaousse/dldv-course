@@ -1,14 +1,10 @@
 # Lab 5 : Entrepôt de données et dashboard avancé avec Taipy
 
-::: {.callout-important title="Avant de commencer — choisir votre support"}
+::: {.callout-important title="Avant de commencer - choisir votre support"}
 Téléchargez un seul format avant de travailler :
 
-- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le [dossier GitHub `labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets), choisissez le notebook du Lab 5 et téléchargez-le.
-- **Fichier `.qmd`** pour travailler avec Quarto : [téléchargez le fichier source du Lab 5](https://github.com/iaousse/dldv-course/blob/main/tp/lab5_entropot_donnees_taipy.qmd).
-
-Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
-
-Colab peut servir à exécuter les analyses Python, mais le lancement local de l'application et le déploiement Docker nécessitent un environnement avec terminal ; utilisez de préférence VS Code en local pour ces étapes.
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le dossier GitHub [`labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets) et téléchargez le fichier source du  [Lab 5](https://github.com/iaousse/dldv-course/tree/main/labsheets/lab5_entropot_donnees_taipy.ipynb).
+- **Fichier `.qmd`** pour travailler avec Quarto : ouvrez le dossier GitHub [`tp/`](https://github.com/iaousse/dldv-course/tree/main/tp) et téléchargez le fichier source du  [Lab 5](https://github.com/iaousse/dldv-course/tree/main/tp/lab5_entropot_donnees_taipy.qmd).
 :::
 
 ::: {.callout-tip title="Objectifs du Lab"}

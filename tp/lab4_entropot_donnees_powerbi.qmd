@@ -1,14 +1,10 @@
 # Lab 4 : Entrepôt de données et dashboard avancé avec Power BI
 
-::: {.callout-important title="Avant de commencer — choisir votre support"}
+::: {.callout-important title="Avant de commencer - choisir votre support"}
 Téléchargez un seul format avant de travailler :
 
-- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le [dossier GitHub `labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets), choisissez le notebook du Lab 4 et téléchargez-le.
-- **Fichier `.qmd`** pour travailler avec Quarto : [téléchargez le fichier source du Lab 4](https://github.com/iaousse/dldv-course/blob/main/tp/lab4_entropot_donnees_powerbi.qmd).
-
-Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
-
-Le support contient les consignes ; la modélisation et le rapport se construisent dans **Power BI Desktop** et sont remis au format `.pbix`.
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le dossier GitHub [`labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets) et téléchargez le fichier source du  [Lab 4](https://github.com/iaousse/dldv-course/tree/main/labsheets/lab4_entropot_donnees_powerbi.ipynb).
+- **Fichier `.qmd`** pour travailler avec Quarto : ouvrez le dossier GitHub [`tp/`](https://github.com/iaousse/dldv-course/tree/main/tp) et téléchargez le fichier source du  [Lab 4](https://github.com/iaousse/dldv-course/tree/main/tp/lab4_entropot_donnees_powerbi.qmd).
 :::
 
 ::: {.callout-tip title="Objectifs du Lab"}

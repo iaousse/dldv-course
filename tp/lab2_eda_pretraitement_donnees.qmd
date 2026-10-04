@@ -1,12 +1,10 @@
 # Lab 2 : EDA et prétraitement
 
-::: {.callout-important title="Avant de commencer — choisir votre support"}
+::: {.callout-important title="Avant de commencer - choisir votre support"}
 Téléchargez un seul format avant de travailler :
 
-- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le [dossier GitHub `labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets), choisissez le notebook du Lab 2 et téléchargez-le.
-- **Fichier `.qmd`** pour travailler avec Quarto : [téléchargez le fichier source du Lab 2](https://github.com/iaousse/dldv-course/blob/main/tp/lab2_eda_pretraitement_donnees.qmd).
-
-Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le dossier GitHub [`labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets) et téléchargez le fichier source du  [Lab 2](https://github.com/iaousse/dldv-course/tree/main/labsheets/lab2_eda_pretraitement_donnees.ipynb).
+- **Fichier `.qmd`** pour travailler avec Quarto : ouvrez le dossier GitHub [`tp/`](https://github.com/iaousse/dldv-course/tree/main/tp) et téléchargez le fichier source du  [Lab 2](https://github.com/iaousse/dldv-course/tree/main/tp/lab2_eda_pretraitement_donnees.qmd).
 :::
 
 ::: {.callout-tip title="Objectifs du Lab"}

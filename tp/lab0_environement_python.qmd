@@ -3,8 +3,8 @@
 ::: {.callout-important title="Avant de commencer - choisir votre support"}
 Téléchargez un seul format avant de travailler :
 
-- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le dossier GitHub [`labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets) et téléchargez le fichier source du  [Lab 0](https://github.com/iaousse/dldv-course/blob/main/tp/lab0_environement_python.qmd), choisissez le notebook du Lab 0 et téléchargez-le.
-- **Fichier `.qmd`** pour travailler avec Quarto : ouvrez le dossier GitHub [`labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets) et téléchargez le fichier source du  [Lab 0](https://github.com/iaousse/dldv-course/blob/main/tp/lab0_environement_python.qmd).
+- **Notebook `.ipynb`** pour Google Colab, JupyterLab, Jupyter Notebook ou VS Code : ouvrez le dossier GitHub [`labsheets/`](https://github.com/iaousse/dldv-course/tree/main/labsheets) et téléchargez le fichier source du  [Lab 0](https://github.com/iaousse/dldv-course/tree/main/labsheets/lab0_environement_python.ipynb).
+- **Fichier `.qmd`** pour travailler avec Quarto : ouvrez le dossier GitHub [`tp/`](https://github.com/iaousse/dldv-course/tree/main/tp) et téléchargez le fichier source du  [Lab 0](https://github.com/iaousse/dldv-course/tree/main/tp/lab0_environement_python.qmd).
 
 Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou **Raw**, puis enregistrez le fichier). Dans Colab, importez le notebook dans votre Drive ; dans Jupyter ou VS Code, ouvrez la copie téléchargée et choisissez un noyau Python. Pour le `.qmd`, utilisez Quarto. Travaillez dans votre propre copie, pas dans l'aperçu GitHub.
 :::
@@ -20,9 +20,6 @@ Dans GitHub, ouvrez le fichier choisi puis cliquez sur **Download raw file** (ou
 - **Produire** quelques graphiques simples pour vérifier les résultats numériques.
 :::
 
-::: {.callout-note title="Positionnement"}
-Ce Lab ne demande ni Machine Learning ni formule compliquée. Le but est de prendre de bons réflexes avec Python et `pandas` : observer les données avant de les modifier, calculer des indicateurs adaptés à la question et expliquer ce qu'ils signifient.
-:::
 
 ## 1. Contexte et données
 
